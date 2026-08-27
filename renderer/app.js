@@ -183,13 +183,12 @@ function menuDefs(){
     File: [
       {label:'<u>N</u>ew Project…', accel:'Ctrl+N', action:openNewProject},
       {label:'<u>O</u>pen Project', accel:'Ctrl+O', disabled:!hasSel, action:()=>sel&&openProject(sel.id)},
-      {label:'<u>C</u>lose Project', disabled:true},
+      {label:'<u>C</u>lose Project', disabled: viewMode!=='workspace', action:()=>{ if(activeProjectId) closeProjectWindow(activeProjectId); }},
       {sep:true},
-      {label:'<u>I</u>mport Documents…', action:()=>notBuilt('Document import')},
-      {label:'E<u>x</u>port List…', action:()=>notBuilt('Export list')},
+      {label:'<u>I</u>mport Documents…', disabled:!hasSel, action:()=>newDocFor(menuProject())},
+      {label:'E<u>x</u>port List…', action:()=>exportText('Projects', visibleProjects().map(x=>[x.id,x.title,x.customer,locOf(x),isHold(x)?'On Hold':x.stage,x.status,dash(x.next),money(x.value)].join('\t')).join('\n'))},
       {sep:true},
-      {label:'<u>P</u>rint List…', accel:'Ctrl+P', action:()=>notBuilt('Print')},
-      {label:'Print Pre<u>v</u>iew', action:()=>notBuilt('Print preview')},
+      {label:'<u>P</u>rint List…', accel:'Ctrl+P', action:()=>exportText('Projects', visibleProjects().map(x=>[x.id,x.title,x.customer,x.status,money(x.value)].join('\t')).join('\n'))},
       {sep:true},
       {label:'<u>R</u>ecent Projects', submenu:recentSub},
       {sep:true},
@@ -213,9 +212,9 @@ function menuDefs(){
       {label:'<u>O</u>pen', accel:'Enter', bold:true, disabled:!hasSel, action:()=>sel&&openProject(sel.id)},
       {label:'Open in <u>N</u>ew Window', disabled:!hasSel, action:()=>sel&&openProject(sel.id,true)},
       {sep:true},
-      {label:'Upload <u>E</u>stimate…', disabled:!hasSel, action:()=>notBuilt('Upload estimate')},
-      {label:'Upload <u>P</u>urchase Order…', disabled:!hasSel, action:()=>notBuilt('Upload purchase order')},
-      {label:'Upload <u>D</u>ocument…', disabled:!hasSel, action:()=>notBuilt('Upload document')},
+      {label:'New <u>E</u>stimate…', disabled:!hasSel, action:()=>newEstimateFor(menuProject())},
+      {label:'Upload <u>P</u>urchase Order…', disabled:!hasSel, action:()=>newPOFor(menuProject())},
+      {label:'Upload <u>D</u>ocument…', disabled:!hasSel, action:()=>newDocFor(menuProject())},
       {sep:true},
       {label:'Set <u>S</u>tage', submenu:setStageSub, disabled:!hasSel},
       {label:'Set Sta<u>t</u>us', submenu:setStatusSub, disabled:!hasSel},
@@ -224,14 +223,14 @@ function menuDefs(){
       {label:'P<u>r</u>operties', accel:'Alt+Enter', disabled:!hasSel, action:()=>sel&&showProperties(sel.id)}
     ],
     Documents: [
-      {label:'Upload <u>E</u>stimate…', disabled:!hasSel, action:()=>notBuilt('Upload estimate')},
-      {label:'Upload <u>P</u>urchase Order…', disabled:!hasSel, action:()=>notBuilt('Upload purchase order')},
-      {label:'Upload <u>D</u>ocument…', disabled:!hasSel, action:()=>notBuilt('Upload document')}
+      {label:'New <u>E</u>stimate…', disabled:!hasSel, action:()=>newEstimateFor(menuProject())},
+      {label:'Upload <u>P</u>urchase Order…', disabled:!hasSel, action:()=>newPOFor(menuProject())},
+      {label:'Upload <u>D</u>ocument…', disabled:!hasSel, action:()=>newDocFor(menuProject())}
     ],
     Tools: [
       {label:'Re<u>c</u>alculate Flags', action:()=>{ recalcAlerts(); saveState(); render(); }},
       {sep:true},
-      {label:'<u>O</u>ptions…', action:()=>notBuilt('Options')}
+      {label:'<u>O</u>ptions…', action:openOptions}
     ],
     Window: [
       {label:'Next Window', accel:'Ctrl+Tab', action:nextWindow, disabled:openProjects.length<1},
@@ -242,7 +241,7 @@ function menuDefs(){
       {label:'Close All Projects', disabled:openProjects.length<1, action:closeAllProjects}
     ],
     Help: [
-      {label:'<u>H</u>elp Topics', accel:'F1', action:()=>notBuilt('Help')},
+      {label:'<u>H</u>elp Topics', accel:'F1', action:showAbout},
       {sep:true},
       {label:'<u>A</u>bout Project Manager…', action:showAbout}
     ]
@@ -290,10 +289,10 @@ function buildToolbar(){
   add('icon', TB.find, 'Find', () => $('#find-input').focus());
   add('icon', TB.filter, 'Filter', () => openCombo('status'));
   tb.appendChild(el('div','tsep'));
-  add('icon', TB.upload, 'Upload Document', () => { const s=selectedProject(); s?notBuilt('Upload document'):notBuilt('Upload document'); });
-  add('icon', TB.print, 'Print List', () => notBuilt('Print'));
+  add('icon', TB.upload, 'Upload Document to selected project', () => { const s=selectedProject(); if(s) newDocFor(s); else messageBox('Upload Document', ICON.info, 'Select a project first, then upload.', ['OK']); });
+  add('icon', TB.print, 'Export List', () => exportText('Projects', visibleProjects().map(x=>[x.id,x.title,x.customer,locOf(x),isHold(x)?'On Hold':x.stage,x.status,dash(x.next),money(x.value)].join('\t')).join('\n')));
   tb.appendChild(el('div','tsep'));
-  add('icon', TB.help, 'Help', () => notBuilt('Help'));
+  add('icon', TB.help, 'Help', showAbout);
 }
 
 /* ============================================================
@@ -568,9 +567,9 @@ function showRowContext(p, x, y){
     {label:'Open Project', accel:'Enter', bold:true, action:()=>openProject(p.id)},
     {label:'Open in New Window', action:()=>openProject(p.id,true)},
     {sep:true},
-    {label:'Upload Estimate…', action:()=>notBuilt('Upload estimate')},
-    {label:'Upload Purchase Order…', action:()=>notBuilt('Upload purchase order')},
-    {label:'Upload Document…', action:()=>notBuilt('Upload document')},
+    {label:'New Estimate…', action:()=>newEstimateFor(p)},
+    {label:'Upload Purchase Order…', action:()=>newPOFor(p)},
+    {label:'Upload Document…', action:()=>newDocFor(p)},
     {sep:true},
     {label:'Set Stage', submenu:STAGES.map(s=>({label:s, checked:p.stage===s, action:()=>{ p.stage=s; p.status=STATUSES[s][0]; recalcAlerts(); saveState(); render(); }}))},
     {label:'Set Status', submenu:(STATUSES[p.stage]||[]).map(s=>({label:s, checked:p.status===s, action:()=>{ p.status=s; saveState(); render(); }}))},
@@ -844,15 +843,16 @@ function buildProjectToolbar(){
   const add=(html,title,action)=>{ const b=el('div','tool',html); b.title=title; b.addEventListener('mouseup',()=>action&&action()); tb.appendChild(b); };
   add('<svg width="16" height="16" viewBox="0 0 16 16" style="shape-rendering:crispEdges"><path fill="#008000" d="M14 6H6V4L2 7l4 3V8h8z"/></svg><span>Project Browser</span>','Back to Project Browser (Ctrl+Tab)', exitToBrowser);
   tb.appendChild(el('div','tsep'));
-  add(TB.upload+'<span>Upload Document</span>','Upload a document', ()=>notBuilt('Upload document'));
-  add('<svg width="16" height="16" viewBox="0 0 16 16" style="shape-rendering:crispEdges"><path fill="#000" d="M1 3h14v10H1z"/><path fill="#a6caf0" d="M2 4h12v8H2z"/><path fill="#008000" d="M2 10l3-3 3 3 2-2 4 4H2z"/><path fill="#ffd800" d="M11 5h2v2h-2z"/></svg><span>Upload Photos</span>','Upload photos', ()=>notBuilt('Upload photos'));
+  add(SEC_ICON.docR+'<span>New Estimate</span>','Create a new estimate', ()=>newEstimateFor(byId(activeProjectId)));
+  add(TB.upload+'<span>Upload Document</span>','Upload a document', ()=>openUploadDoc(byId(activeProjectId)));
+  add('<svg width="16" height="16" viewBox="0 0 16 16" style="shape-rendering:crispEdges"><path fill="#000" d="M1 3h14v10H1z"/><path fill="#a6caf0" d="M2 4h12v8H2z"/><path fill="#008000" d="M2 10l3-3 3 3 2-2 4 4H2z"/><path fill="#ffd800" d="M11 5h2v2h-2z"/></svg><span>Upload Photos</span>','Upload photos', ()=>openUploadPhotos(byId(activeProjectId)));
   tb.appendChild(el('div','tsep'));
   add(SEC_ICON.check+'<span>New Task</span>','Add a task', ()=>openNewTask(byId(activeProjectId)));
   const setStatusBtn = el('div','tool','<svg width="16" height="16" viewBox="0 0 16 16" style="shape-rendering:crispEdges"><path fill="#000080" d="M2 3h12v4H2z"/><path fill="#808080" d="M2 9h12v1H2zM2 11h9v1H2z"/></svg><span>Set Status</span>');
   setStatusBtn.title='Set status'; setStatusBtn.addEventListener('mouseup',()=>{ const p=byId(activeProjectId); openStagePopup(p, p.stage, setStatusBtn); });
   tb.appendChild(setStatusBtn);
   tb.appendChild(el('div','tsep'));
-  add(TB.print,'Print', ()=>notBuilt('Print'));
+  add(TB.print,'Export section', ()=>{ const p=byId(activeProjectId); const sec=uiSection[p.id]||'Overview'; exportText(`${p.id} — ${findSection(sec).label}`, sectionExport(p,sec)); });
   tb.appendChild(el('span',null,'')).style.flex='1';
   // prev / next in the list
   const i = navList.indexOf(activeProjectId);
@@ -1333,6 +1333,10 @@ function editorAction(act){
     case 'ed-margin': return openMargin(p, bd);
     case 'ed-group': return openCostGroup(p, bd);
     case 'ed-send': closeFullWindow(); return openSendToEstimate(p, bd);
+    case 'ed-attach': { const it=(bd.groups[sel.gi]||{items:[]}).items[sel.ii]; if(!it) return; return formDialog('Attach Quote', [{id:'supplier',label:'Supplier',value:it.supplier||''},{id:'quote',label:'Quote ref',value:it.quote||'',required:true}], o=>{ it.supplier=o.supplier; it.quote=o.quote; it.source=`${o.supplier} ${o.quote}`.trim(); saveState(); renderCostEditor(); }); }
+    case 'ed-move': { const it=(bd.groups[sel.gi]||{items:[]}).items[sel.ii]; if(!it) return; return formDialog('Move Under', [{id:'group',label:'Group',type:'select',options:bd.groups.map(g=>g.name),value:bd.groups[sel.gi].name}], o=>{ const dst=bd.groups.findIndex(g=>g.name===o.group); if(dst<0||dst===sel.gi) return; bd.groups[sel.gi].items.splice(sel.ii,1); bd.groups[dst].items.push(it); editState.sel={gi:dst,ii:bd.groups[dst].items.length-1}; saveState(); renderCostEditor(); }); }
+    case 'ed-indent': case 'ed-outdent': { const it=(bd.groups[sel.gi]||{items:[]}).items[sel.ii]; if(it){ it.convert=(act==='ed-outdent'); if(act==='ed-indent'&&!it.kind) it.kind='MAT'; saveState(); renderCostEditor(); } return; }
+    case 'ed-fill': case 'ed-preview': case 'ed-setup': case 'ed-quotelog': case 'ed-template': return notBuilt('This action');
     case 'print': return notBuilt('Print');
     default: return notBuilt('This action');
   }
@@ -1661,7 +1665,8 @@ function tasksBody(p){
   const cols=[{label:'',w:'24px'},{label:'Task',w:'minmax(0,1fr)'},{label:'Due',w:'80px'},{label:'Status',w:'92px'}];
   const gtc=cols.map(c=>c.w).join(' ');
   const head=`<div class="dhead" style="grid-template-columns:${gtc}">`+cols.map(c=>`<div class="col">${esc(c.label)}</div>`).join('')+`</div>`;
-  const body=t.length? t.map((x,i)=>`<div class="drow" style="grid-template-columns:${gtc}"><div class="c center"><span class="lchk${x.done?' on':''}" data-task="${i}">${CHK_GREEN}</span></div><div class="c" style="${x.done?'color:#808080':''}">${esc(x.text)}</div><div class="c">${esc(x.due||'—')}</div><div class="c">${x.done?'Done':'Open'}</div></div>`).join('') : emptyState('No tasks yet.');
+  const tsel=getSel(p,'Tasks',0);
+  const body=t.length? t.map((x,i)=>`<div class="drow${i===tsel?' sel':''}" data-drow="${i}" style="grid-template-columns:${gtc}"><div class="c center"><span class="lchk${x.done?' on':''}" data-task="${i}">${CHK_GREEN}</span></div><div class="c" style="${x.done&&i!==tsel?'color:#808080':''}">${esc(x.text)}</div><div class="c">${esc(x.due||'—')}</div><div class="c">${x.done?'Done':'Open'}</div></div>`).join('') : emptyState('No tasks yet.');
   const list=`<div class="dlist"><div class="dlist-inner">${head}${body}<div style="flex:1"></div></div>${DSCROLL}</div>`;
   const actions=actionColHTML([{label:'New Task…',default:1,act:'task-new'},{label:'Edit…',act:'task-edit'},{sep:1},{label:'Mark Done',act:'task-done'},{label:'Remove…',act:'task-remove'}]);
   const open=t.filter(x=>!x.done).length;
@@ -1838,9 +1843,20 @@ function docAction(p, sec, act){
     case 'mark-accepted': return doc?openMarkAccepted(p,doc):null;
     case 'upload-po': return openUploadPO(p,false);
     case 'upload-revised-po': return openUploadPO(p,true);
-    case 'record-request': return notBuilt('Record request');
+    case 'record-request': { const o=selectedDoc(p,sec); return formDialog('Record Request', [
+        {id:'what',label:'Requested',value:sec==='POs'?'Revised PO':'Revision',required:true},{id:'date',label:'On',value:fmtToday(),width:110},{id:'note',label:'Note'}
+      ], v=>{ if(o){ o.statusDetail=`${o.status||'Active'} — ${v.what} requested ${v.date}`; } logActivity(p,`${v.what} requested — ${v.date}${v.note?' ('+v.note+')':''}`); refreshWS(p); }); }
+    case 'resend': { const e=selectedDoc(p,sec); if(!e) return; return formDialog('Resend', [
+        {id:'to',label:'Send to',value:e.sentTo||(p.contact?p.contact.name:''),required:true},{id:'date',label:'On',value:fmtToday(),width:110}
+      ], v=>{ e.sent=true; e.sentTo=v.to; e.sentDate=v.date; e.status=`Sent ${v.date} — awaiting response`; logActivity(p,`${e.id} resent to ${v.to}`); refreshWS(p); }); }
+    case 'terms': { const o=selectedDoc(p,sec); if(!o) return; return formDialog('PO Terms', [
+        {id:'terms',label:'Terms',value:o.terms||'',type:'textarea',h:44}
+      ], v=>{ o.terms=v.terms; refreshWS(p); }); }
     case 'add-co': return openAddChangeOrder(p);
-    case 'upload-doc': case 'upload-signed': return notBuilt('Upload document');
+    case 'upload-doc': return openUploadDoc(p);
+    case 'upload-signed': { const c=selectedDoc(p,sec); return formDialog('Upload Signed Copy', [
+        {id:'name',label:'File name',value:c?`CO-${c.n} signed.pdf`:'signed.pdf',required:true}
+      ], v=>{ if(c) c.document=v.name; if(p.ws.docs) p.ws.docs.files.unshift({name:v.name,cat:'Signed documents',uploaded:fmtToday(),size:'0.3 MB',by:state.user,kind:'pdf'}); logActivity(p,`Signed copy uploaded — ${v.name}`); refreshWS(p); }); }
     case 'mark-approved': return doc?openApproveCO(p,doc):null;
     case 'mark-declined': return doc?declineCO(p,doc):null;
     case 'remove': return doc?removeDoc(p,sec,doc):null;
@@ -1860,12 +1876,97 @@ function docAction(p, sec, act){
 }
 /* ---- record-group actions ---- */
 function recordAction(p, sec, act){
+  const w=p.ws;
   switch(act){
+    // tasks
     case 'task-new': return openNewTask(p);
+    case 'task-edit': { const t=selTask(p); if(!t) return; return formDialog('Edit Task', [{id:'text',label:'Task',value:t.text,required:true},{id:'due',label:'Due',value:t.due||'',width:110}], o=>{ t.text=o.text; t.due=o.due; refreshWS(p); }); }
+    case 'task-done': { const t=selTask(p); if(t){ t.done=!t.done; logActivity(p,`Task ${t.done?'completed':'reopened'} — ${t.text}`); refreshWS(p); } return; }
+    case 'task-remove': { const t=selTask(p); if(!t) return; return messageBox('Remove Task', ICON.question, `Remove <b>${esc(t.text)}</b>?`, ['Yes','No'], a=>{ if(a==='Yes'){ w.tasks.splice(w.tasks.indexOf(t),1); uiSel[selKey(p,'Tasks')]=0; refreshWS(p); } }); }
+    // activity
     case 'act-note': return openActNote(p);
+    case 'act-export': return exportText(`${p.id} — Activity`, (w.activity||[]).map(a=>`${a.date||''}\t${a.text}`).join('\n'));
+    // billing
     case 'bill-payment': return openRecordPayment(p);
+    case 'bill-invoice': { const b=w.billing||(w.billing={invoiceAmount:p.value,paid:0,status:'Not billed'}); return formDialog('Upload Invoice', [
+      {id:'num',label:'Invoice #',value:b.invoice||(p.id.replace('BPC-','INV-')),required:true},{id:'amount',label:'Amount',value:money(b.invoiceAmount||p.value),width:110},{id:'date',label:'Dated',value:fmtToday(),width:110},{id:'file',label:'File',placeholder:'(metadata only)'}
+    ], o=>{ b.invoice=o.num; b.billed=parseMoney(o.amount); b.status='Billed — awaiting payment'; b.dueDate=plusDays(o.date,30);
+      if(w.docs){ w.docs.files.unshift({name:`${o.num}.pdf`,cat:'Final documents',uploaded:o.date,size:'0.2 MB',by:state.user,kind:'pdf'}); }
+      if(p.alert && /billing/i.test(p.alert.kind||'')) p.alert=null; logActivity(p,`Final invoice ${o.num} uploaded — ${money(b.billed)}`); refreshWS(p); }, {hint:'Files the invoice and marks the project billed.'}); }
+    // documents
+    case 'doc-upload': return openUploadDoc(p);
+    case 'doc-set': { const f=selDoc(p); if(!f) return; return formDialog('Set Category', [{id:'cat',label:'Category',type:'select',options:['Contracts','Signed documents','Drawings','Specifications','Inspection','Change orders','Final documents','Other'],value:f.cat}], o=>{ f.cat=o.cat; refreshWS(p); }); }
+    case 'doc-rename': { const f=selDoc(p); if(!f) return; return formDialog('Rename', [{id:'name',label:'Name',value:f.name,required:true}], o=>{ f.name=o.name; refreshWS(p); }); }
+    case 'doc-remove': { const f=selDoc(p); if(!f) return; return messageBox('Remove', ICON.question, `Remove <b>${esc(f.name)}</b>?`, ['Yes','No'], a=>{ if(a==='Yes'){ w.docs.files.splice(w.docs.files.indexOf(f),1); uiSel[selKey(p,'Documents')]=0; logActivity(p,`Document removed — ${f.name}`); refreshWS(p); } }); }
+    case 'doc-cat': return formDialog('New Category', [{id:'name',label:'Name',required:true}], ()=>{ notBuilt; refreshWS(p); });
+    // project records
+    case 'rec-add': return openRecord(p, null);
+    case 'rec-edit': { const r=selRecord(p); return r?openRecord(p,r):null; }
+    case 'rec-attach': { const r=selRecord(p); if(!r) return; return formDialog('Attach File', [{id:'name',label:'File name',required:true}], o=>{ r.attachment=o.name; logActivity(p,`File attached to record — ${o.name}`); refreshWS(p); }); }
+    case 'rec-remove': { const r=selRecord(p); if(!r) return; return messageBox('Remove', ICON.question, `Remove <b>${esc(r.subject)}</b>?`, ['Yes','No'], a=>{ if(a==='Yes'){ w.records.items.splice(w.records.items.indexOf(r),1); uiSel[selKey(p,'Records')]=0; refreshWS(p); } }); }
+    // customer / contacts
+    case 'cust-add': return openContact(p, null);
+    case 'cust-edit': { const c=selContact(p); return c?openContact(p,c):null; }
+    case 'cust-primary': { const c=selContact(p); if(c){ (w.contacts||[]).forEach(x=>x.primary=false); c.primary=true; if(!p.contact) p.contact={}; p.contact={name:c.name,role:c.role,phone:c.phone}; logActivity(p,`Primary contact set — ${c.name}`); refreshWS(p); } return; }
+    case 'cust-remove': { const c=selContact(p); if(!c) return; return messageBox('Remove', ICON.question, `Remove contact <b>${esc(c.name)}</b>?`, ['Yes','No'], a=>{ if(a==='Yes'){ w.contacts.splice(w.contacts.indexOf(c),1); uiSel[selKey(p,'Customer')]=0; refreshWS(p); } }); }
     default: return notBuilt('This action');
   }
+}
+function selTask(p){ const a=p.ws.tasks||[]; return a[getSel(p,'Tasks',0)]; }
+function selDoc(p){ const a=(p.ws.docs&&p.ws.docs.files)||[]; return a[getSel(p,'Documents',0)]; }
+function selRecord(p){ const a=(p.ws.records&&p.ws.records.items)||[]; return a[getSel(p,'Records',0)]; }
+function selContact(p){ const a=p.ws.contacts||[]; return a[getSel(p,'Customer',0)]; }
+function openUploadDoc(p, defaultCat){
+  if(!p.ws.docs) p.ws.docs={totalMB:0,files:[],filedFrom:[]};
+  return formDialog('Upload Document', [
+    {id:'name',label:'File name',required:true,placeholder:'e.g. Signed contract.pdf'},
+    {id:'cat',label:'Category',type:'select',options:['Contracts','Signed documents','Drawings','Specifications','Inspection','Change orders','Final documents','Other'],value:defaultCat||'Other'},
+    {id:'size',label:'Size',value:'0.4 MB',width:90}
+  ], o=>{ p.ws.docs.files.unshift({name:o.name,cat:o.cat,uploaded:fmtToday(),size:o.size,by:state.user,kind:/\.(jpg|png|photo)/i.test(o.name)?'photo':'pdf'}); uiSel[selKey(p,'Documents')]=0; logActivity(p,`Document uploaded — ${o.name}`); refreshWS(p); }, {hint:'Files the document against the project (metadata only).', icon:TB.upload});
+}
+function openRecord(p, existing){
+  if(!p.ws.records) p.ws.records={items:[]};
+  return formDialog(existing?'Edit Record':'Add Project Record', [
+    {id:'kind',label:'Type',type:'select',options:['Email','Note','Screenshot','Instruction','Meeting'],value:existing?existing.kind.replace(/^./,c=>c.toUpperCase()):'Note'},
+    {id:'subject',label:'Subject',value:existing?existing.subject:'',required:true},
+    {id:'from',label:'From',value:existing?existing.from:state.user},
+    {id:'date',label:'Date',value:existing?existing.date:fmtToday(),width:110},
+    {id:'body',label:'Body',type:'textarea',value:existing?existing.body:'',h:56}
+  ], o=>{ const rec={kind:o.kind.toLowerCase(),subject:o.subject,from:o.from,date:o.date,body:o.body}; if(existing) Object.assign(existing,rec); else { p.ws.records.items.unshift(rec); uiSel[selKey(p,'Records')]=0; } logActivity(p,`Record ${existing?'edited':'added'} — ${o.subject}`); refreshWS(p); }, {width:400});
+}
+function openContact(p, existing){
+  if(!p.ws.contacts) p.ws.contacts=[];
+  return formDialog(existing?'Edit Contact':'Add Contact', [
+    {id:'name',label:'Name',value:existing?existing.name:'',required:true},
+    {id:'role',label:'Role',value:existing?existing.role:''},
+    {id:'phone',label:'Phone',value:existing?existing.phone:''},
+    {id:'email',label:'Email',value:existing?existing.email:''}
+  ], o=>{ if(existing) Object.assign(existing,o); else { p.ws.contacts.push(o); uiSel[selKey(p,'Customer')]=p.ws.contacts.length-1; } logActivity(p,`Contact ${existing?'edited':'added'} — ${o.name}`); refreshWS(p); });
+}
+function sectionExport(p, sec){
+  const w=p.ws;
+  if(sec==='Estimates') return (w.estimates||[]).map(e=>[e.id,e.date,money(e.amount),e.status].join('\t')).join('\n');
+  if(sec==='POs') return (w.pos||[]).map(o=>[o.number,o.received,money(o.amount),o.status].join('\t')).join('\n');
+  if(sec==='ChangeOrders') return (w.changeOrders||[]).map(c=>['CO '+c.n,c.date,signedMoney(c.amount),c.status].join('\t')).join('\n');
+  if(sec==='Shipping') return (w.shipping?w.shipping.shipments:[]).map(s=>[s.n,s.carrier,s.bol||'—',s.status,s.storedAt||'—'].join('\t')).join('\n');
+  if(sec==='Documents') return (w.docs?w.docs.files:[]).map(f=>[f.name,f.cat,f.uploaded,f.size].join('\t')).join('\n');
+  if(sec==='Records') return (w.records?w.records.items:[]).map(r=>[r.kind,r.date,r.subject,r.from].join('\t')).join('\n');
+  if(sec==='Tasks') return (w.tasks||[]).map(t=>[t.done?'[x]':'[ ]',t.text,t.due||''].join('\t')).join('\n');
+  if(sec==='Activity') return (w.activity||[]).map(a=>[a.date||'',a.text].join('\t')).join('\n');
+  return `${p.id}\t${p.title}\n${p.customer}\n${p.stage} · ${p.status}\nValue ${money(p.value)}`;
+}
+function openOptions(){
+  formDialog('Options', [{id:'user',label:'User name',value:state.user,required:true}], o=>{ state.user=o.user; saveState(); render(); });
+}
+function exportText(title, text){
+  const body=el('div');
+  body.innerHTML=`<div class="dlg-title"><span class="dlg-title-text">${esc(title)}</span><button class="tb-btn" data-role="x"><i class="gl-close"></i></button></div>
+    <div class="dlg-body" style="width:460px"><div style="color:#404040;margin-bottom:6px">Select all and copy (Ctrl+A, Ctrl+C).</div><div class="tinput"><textarea class="ta" id="ex-text" style="height:180px" readonly>${esc(text||'(empty)')}</textarea></div>
+    <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:12px"><button class="btn dlgbtn default" id="ex-ok"><span>Close</span></button></div></div>`;
+  const dlg=openDialog(body,460,300); const close=()=>closeDialog();
+  $('#ex-ok',dlg).addEventListener('click',close); $('[data-role="x"]',dlg).addEventListener('click',close);
+  dlg.addEventListener('keydown',e=>{ if(e.key==='Escape'){e.preventDefault();close();} });
+  setTimeout(()=>{ const t=$('#ex-text',dlg); t.focus(); t.select(); },0);
 }
 function openActNote(p){
   const body=el('div');
@@ -1897,13 +1998,60 @@ function openRecordPayment(p){
 /* ---- field actions ---- */
 function selShipment(p){ const s=p.ws.shipping; if(!s) return null; const d=s.shipments.findIndex(x=>x.flag); return s.shipments[getSel(p,'Shipping',d>=0?d:0)]; }
 function fieldAction(p, sec, act){
+  const sh=()=>selShipment(p);
   switch(act){
     case 'ship-add': return openAddShipment(p);
-    case 'ship-receipt': { const sh=selShipment(p); return sh?openRecordReceipt(p,sh):null; }
+    case 'ship-receipt': { const s=sh(); return s?openRecordReceipt(p,s):null; }
+    case 'ship-call': { const s=sh(); if(!s) return; return formDialog(`Record Call — Shipment ${s.n}`, [
+      {id:'call',label:'Call received',value:fmtToday(),width:120},{id:'detail',label:'Detail',value:'',placeholder:'window offered, notes…'}
+    ], o=>{ s.call=o.call; s.callReceived=`${o.call}${o.detail?' — '+o.detail:''}`; if(s.state==='notshipped'||!s.state) s.state='awaiting'; if(s.status.startsWith('Not shipped')) s.status='Awaiting carrier call'; (s.log=s.log||[]).unshift({date:o.call,event:'Call received',detail:o.detail||'Carrier called'}); logActivity(p,`Shipment ${s.n} — carrier call recorded`); refreshWS(p); }); }
+    case 'ship-schedule': { const s=sh(); if(!s) return; return formDialog(`Schedule Delivery — Shipment ${s.n}`, [
+      {id:'date',label:'Scheduled',value:fmtToday(),width:120},{id:'window',label:'Window',value:'8:00–12:00',width:140},{id:'where',label:'Deliver to',type:'select',options:['Main lot','Site'],value:s.storedAt||'Main lot'}
+    ], o=>{ s.scheduled=`${o.date.replace(/\/\d\d$/,'')} ${o.window}`.trim(); s.scheduledFull=`${o.date}, ${o.window}`; s.state='scheduled'; s.status='Scheduled'; s.storedAt=o.where; (s.log=s.log||[]).unshift({date:o.date,event:'Scheduled',detail:`${o.date}, ${o.window}`}); logActivity(p,`Shipment ${s.n} scheduled ${o.date}`); refreshWS(p); }); }
+    case 'ship-store': { const s=sh(); if(!s) return; return formDialog(`Storage Location — Shipment ${s.n}`, [
+      {id:'loc',label:'Stored at',value:s.storedFull||s.storedAt||'Main lot',required:true}
+    ], o=>{ s.storedAt=o.loc; s.storedFull=o.loc; (s.log=s.log||[]).unshift({date:fmtToday(),event:'Stored',detail:o.loc}); logActivity(p,`Shipment ${s.n} storage set — ${o.loc}`); refreshWS(p); }); }
+    case 'ship-log': { const s=sh(); if(!s) return; return formDialog(`Add Log Entry — Shipment ${s.n}`, [
+      {id:'date',label:'Date',value:fmtToday(),width:120},{id:'event',label:'Event',value:'',required:true},{id:'detail',label:'Detail',value:''}
+    ], o=>{ (s.log=s.log||[]).push({date:o.date,event:o.event,detail:o.detail}); logActivity(p,`Shipment ${s.n} log — ${o.event}`); refreshWS(p); }); }
+    case 'ship-remove': { const s=sh(); if(!s) return; return messageBox('Remove Shipment', ICON.question, `Remove <b>Shipment ${s.n}</b>?`, ['Yes','No'], a=>{ if(a==='Yes'){ const arr=p.ws.shipping.shipments; arr.splice(arr.indexOf(s),1); uiSel[selKey(p,'Shipping')]=0; logActivity(p,`Shipment ${s.n} removed`); refreshWS(p); } }); }
+    case 'ship-photos': { const s=sh(); return openUploadPhotos(p, 'Delivery', n=>{ if(s) s.photos=(s.photos||0)+n; }); }
+    // photos
+    case 'photo-upload': return openUploadPhotos(p);
+    case 'photo-cat': return formDialog('New Category', [{id:'name',label:'Name',required:true}], o=>{ p.ws.photoAlbum.categories.push({name:o.name,date:fmtToday(),count:0}); logActivity(p,`Photo category added — ${o.name}`); refreshWS(p); });
+    case 'photo-set': { const c=selPhotoCat(p); if(!c) return; return formDialog('Rename Category', [{id:'name',label:'Name',value:c.name,required:true}], o=>{ c.name=o.name; logActivity(p,`Photo category renamed — ${o.name}`); refreshWS(p); }); }
+    case 'photo-remove': { const c=selPhotoCat(p); if(!c) return; return messageBox('Remove', ICON.question, `Remove category <b>${esc(c.name)}</b> and its ${c.count} photos?`, ['Yes','No'], a=>{ if(a==='Yes'){ const arr=p.ws.photoAlbum.categories; arr.splice(arr.indexOf(c),1); uiSel[selKey(p,'Photos')]=0; logActivity(p,`Photo category removed — ${c.name}`); refreshWS(p); } }); }
+    // site
+    case 'site-upload': return formDialog('Upload to Site', [
+      {id:'name',label:'File name',required:true,placeholder:'e.g. Site plan REV C.pdf'},{id:'group',label:'Group',type:'select',options:(p.ws.site.items||[]).map(g=>g.name)},{id:'kind',label:'Kind',type:'select',options:['Document','Photo']}
+    ], o=>{ const g=(p.ws.site.items||[]).find(x=>x.name===o.group)||p.ws.site.items[0]; (g.children=g.children||[]).push({name:o.name,kind:o.kind==='Photo'?'photo':'pdf',date:fmtToday()}); logActivity(p,`Site file added — ${o.name}`); refreshWS(p); }, {hint:'Records the file against the project (metadata).'});
+    case 'site-group': return formDialog('New Site Group', [{id:'name',label:'Name',required:true}], o=>{ p.ws.site.items.push({name:o.name,kind:'folder',children:[]}); logActivity(p,`Site group added — ${o.name}`); refreshWS(p); });
+    case 'site-rename': { const f=selSiteNode(p); if(!f) return; return formDialog('Rename', [{id:'name',label:'Name',value:f.node.name,required:true}], o=>{ f.node.name=o.name; refreshWS(p); }); }
+    case 'site-remove': { const f=selSiteNode(p); if(!f||f.group) return notBuilt('Remove a group'); const g=p.ws.site.items[f.gi]; return messageBox('Remove', ICON.question, `Remove <b>${esc(f.node.name)}</b>?`, ['Yes','No'], a=>{ if(a==='Yes'){ g.children.splice(f.ii,1); uiSel[selKey(p,'Site')]=0; refreshWS(p); } }); }
+    // progress
+    case 'prog-event': return formDialog('Add Installation Event', [
+      {id:'date',label:'Date',value:fmtToday(),width:120},{id:'event',label:'Event',required:true},{id:'detail',label:'Detail'},{id:'done',label:'Completed',type:'check',value:true}
+    ], o=>{ (p.ws.progress.events=p.ws.progress.events||[]).push({date:o.date,event:o.event,detail:o.detail,kind:o.done?'done':'pending'}); logActivity(p,`Progress — ${o.event}`); refreshWS(p); });
+    case 'prog-issue': return formDialog('Add Issue', [
+      {id:'issue',label:'Issue',required:true},{id:'detail',label:'Detail'},{id:'status',label:'Status',type:'select',options:['Open','Resolved']}
+    ], o=>{ (p.ws.progress.issues=p.ws.progress.issues||[]).push({issue:o.issue,detail:o.detail,status:o.status}); logActivity(p,`Issue raised — ${o.issue}`); refreshWS(p); });
+    case 'prog-photos': case 'comp-photos': return openUploadPhotos(p, act==='prog-photos'?'Progress':'Completion', n=>{ if(act==='prog-photos'){ p.ws.progress.photos=(p.ws.progress.photos||0)+n; } else { p.ws.completion.finalPhotos=(p.ws.completion.finalPhotos||0)+n; } });
     case 'comp-mark': return toggleCompletion(p);
-    case 'photo-upload': case 'ship-photos': case 'comp-photos': case 'prog-photos': return notBuilt('Upload photos');
     default: return notBuilt('This action');
   }
+}
+function selPhotoCat(p){ const a=(p.ws.photoAlbum&&p.ws.photoAlbum.categories)||[]; return a[getSel(p,'Photos',0)]; }
+function selSiteNode(p){ const f=siteFlat(p); return f[getSel(p,'Site',0)]; }
+function openUploadPhotos(p, defaultCat, after){
+  const cats=(p.ws.photoAlbum&&p.ws.photoAlbum.categories)||[];
+  const opts=cats.map(c=>c.name).concat(['(new category…)']);
+  return formDialog('Upload Photos', [
+    {id:'count',label:'How many',value:'1',width:60},{id:'cat',label:'Category',type:'select',options:opts,value:defaultCat&&cats.some(c=>c.name===defaultCat)?defaultCat:opts[0]},{id:'newcat',label:'New name',placeholder:'if new category'}
+  ], o=>{ const n=Math.max(1,parseInt(o.count)||1); let catName=o.cat==='(new category…)'?(o.newcat||'Photos'):o.cat;
+    if(!p.ws.photoAlbum){ p.ws.photoAlbum={categories:[],uncategorised:0}; }
+    let c=p.ws.photoAlbum.categories.find(x=>x.name===catName); if(!c){ c={name:catName,date:fmtToday(),count:0}; p.ws.photoAlbum.categories.push(c); }
+    c.count+=n; c.date=fmtToday(); logActivity(p,`${n} photo${n>1?'s':''} uploaded — ${catName}`); if(after) after(n); refreshWS(p);
+  }, {hint:'Records the photos against the project (metadata).'});
 }
 function openAddShipment(p){
   const s=p.ws.shipping; const n=(s.shipments.reduce((m,x)=>Math.max(m,x.n),0))+1;
@@ -2341,6 +2489,39 @@ function openDialog(node, w, h){
 }
 function closeDialog(){ overlay().classList.add('hidden'); overlay().innerHTML=''; }
 
+/* ---------- generic form dialog (used to wire most actions) ---------- */
+function formDialog(title, fields, onSubmit, opts){
+  opts=opts||{};
+  const body=el('div');
+  const rowHTML=f=>{
+    const lw=f.lw||96;
+    if(f.type==='textarea') return `<div class="frow" style="grid-template-columns:${lw}px 1fr;align-items:flex-start"><label>${esc(f.label)}</label><div class="tinput"><textarea class="ta" id="f-${f.id}" style="height:${f.h||48}px">${esc(f.value||'')}</textarea></div></div>`;
+    if(f.type==='check') return `<div class="frow" style="grid-template-columns:${lw}px 1fr"><label></label><div class="check${f.value?' on':''}" id="f-${f.id}"><span class="box">${ICON.check}</span><span>${esc(f.label)}</span></div></div>`;
+    if(f.type==='select') return `<div class="frow" style="grid-template-columns:${lw}px 1fr"><label>${esc(f.label)}</label><div class="combo" id="f-${f.id}" data-val="${esc(f.value!=null?f.value:(f.options[0]||''))}" style="${f.width?'width:'+f.width+'px':''}"><span class="val">${esc(f.value!=null?f.value:(f.options[0]||''))}</span><span class="arrow">${ICON.down}</span></div></div>`;
+    return `<div class="frow" style="grid-template-columns:${lw}px 1fr"><label>${esc(f.label)}${f.required?' *':''}</label><div class="tinput" style="${f.width?'width:'+f.width+'px':''}"><input id="f-${f.id}" type="text" value="${esc(f.value||'')}" ${f.placeholder?`placeholder="${esc(f.placeholder)}"`:''} maxlength="${f.max||120}"></div></div>`;
+  };
+  body.innerHTML=`<div class="dlg-title">${opts.icon?`<span class="ico">${opts.icon}</span>`:''}<span class="dlg-title-text">${esc(title)}</span><button class="tb-btn" data-role="x"><i class="gl-close"></i></button></div>`+
+    `<div class="dlg-body" style="width:${opts.width||360}px">${fields.map(rowHTML).join('')}`+
+    (opts.hint?`<div class="hintstrip" style="margin-top:8px">${esc(opts.hint)}</div>`:'')+
+    `<div style="display:flex;justify-content:flex-end;gap:6px;margin-top:12px"><button class="btn dlgbtn default" id="f-ok"><span>${esc(opts.ok||'OK')}</span></button><button class="btn dlgbtn" id="f-cancel">Cancel</button></div></div>`;
+  const dlg=openDialog(body, opts.width||360, 200);
+  fields.filter(f=>f.type==='select').forEach(f=>{ const c=$('#f-'+f.id,dlg); c.addEventListener('mousedown',e=>{e.preventDefault();closeAllPopups();const r=c.getBoundingClientRect(); buildPopup((f.options||[]).map(o=>({label:esc(o),checked:c.dataset.val===o,action:()=>{c.dataset.val=o;c.querySelector('.val').textContent=o;}})),r.left,r.bottom);}); });
+  fields.filter(f=>f.type==='check').forEach(f=>{ const c=$('#f-'+f.id,dlg); c.addEventListener('click',()=>c.classList.toggle('on')); });
+  const close=()=>closeDialog();
+  const collect=()=>{ const o={}; fields.forEach(f=>{ const e=$('#f-'+f.id,dlg); if(!e) return; if(f.type==='check') o[f.id]=e.classList.contains('on'); else if(f.type==='select') o[f.id]=e.dataset.val; else o[f.id]=(e.value||'').trim(); }); return o; };
+  $('#f-ok',dlg).addEventListener('click',()=>{ const o=collect(); const req=fields.find(f=>f.required&&!o[f.id]); if(req){ const e=$('#f-'+req.id,dlg); e&&e.focus&&e.focus(); return; } close(); onSubmit(o); });
+  $('#f-cancel',dlg).addEventListener('click',close); $('[data-role="x"]',dlg).addEventListener('click',close);
+  dlg.addEventListener('keydown',e=>{ if(e.key==='Enter'&&(e.target.tagName||'')!=='TEXTAREA'){e.preventDefault();$('#f-ok',dlg).click();} else if(e.key==='Escape'){e.preventDefault();close();} });
+  const first=fields.find(f=>f.type!=='check'&&f.type!=='select'); if(first) setTimeout(()=>{const e=$('#f-'+first.id,dlg); e&&e.focus&&e.focus();},0);
+  return dlg;
+}
+function refreshWS(p){ saveState(); editState?renderCostEditor():(viewState?renderViewer():render()); }
+function menuProject(){ return viewMode==='workspace'&&activeProjectId? byId(activeProjectId) : selectedProject(); }
+function withProjectSection(p, sec, then){ if(!p) return; enrichProject(p); if(viewMode!=='workspace'||activeProjectId!==p.id) openProject(p.id); uiSection[p.id]=sec; render(); then(p); }
+function newEstimateFor(p){ withProjectSection(p,'Estimates',()=>openUploadEstimate(p,'version')); }
+function newPOFor(p){ withProjectSection(p,'POs',()=>openUploadPO(p,false)); }
+function newDocFor(p){ withProjectSection(p,'Documents',()=>openUploadDoc(p)); }
+
 /* ---------- New Project (Screen 02) ---------- */
 function openNewProject(){
   closeAllPopups();
@@ -2579,7 +2760,7 @@ function messageBox(title, icon, html, buttons, cb){
 }
 function notBuilt(what){
   messageBox('Project Manager', ICON.info,
-    `<b>${esc(what)}</b> is part of a later design sheet and isn’t wired up in this first build (the Shell).<br>The screens still to come: Workspace, Money &amp; paper, Field, Record, Storyboard.`,
+    `<b>${esc(what)}</b> isn’t available in this build.<br>This action needs printing, file, or system support that isn’t wired up yet.`,
     ['OK']);
 }
 function showAbout(){
