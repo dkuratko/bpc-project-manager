@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self'">
+<title>Build Play Contracting - Project Manager</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- The whole application frame is drawn here; JS fills the dynamic parts. -->
+<div id="frame" class="frame">
+
+  <!-- 1 . Title bar (application frame) -->
+  <div class="titlebar" id="titlebar">
+    <span class="ico" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 16 16" style="shape-rendering:crispEdges"><path fill="#000" d="M2 1h12v14H2z"/><path fill="#fff" d="M3 2h10v12H3z"/><path fill="#0a246a" d="M4 3h8v3H4z"/><path fill="#808080" d="M4 8h8v1H4zM4 10h8v1H4zM4 12h6v1H4z"/></svg>
+    </span>
+    <span class="title-text">Build Play Contracting - Project Manager - <span id="active-child">[Project Browser]</span></span>
+    <span class="spacer"></span>
+    <button class="tb-btn" id="btn-min" title="Minimize"><i class="gl-min"></i></button>
+    <button class="tb-btn" id="btn-max" title="Maximize"><i class="gl-max"></i></button>
+    <button class="tb-btn tb-close" id="btn-close" title="Close"><i class="gl-close"></i></button>
+  </div>
+
+  <!-- 2 . Menu bar -->
+  <div class="menubar" id="menubar"></div>
+  <div class="rule"></div>
+
+  <!-- 3 . Toolbar -->
+  <div class="toolbar" id="toolbar"></div>
+  <div class="rule"></div>
+
+  <!-- 4 . Filter / find band -->
+  <div class="filterband" id="filterband"></div>
+
+  <!-- MDI client area: the desktop that holds child windows -->
+  <div class="mdi" id="mdi">
+
+    <!-- Child window: Project Browser (always open) -->
+    <div class="child-window" id="win-browser">
+      <div class="child-title" data-role="child-title">
+        <span class="ico" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 16 16" style="shape-rendering:crispEdges"><path fill="#000" d="M1 3h5l1 1h8v10H1z"/><path fill="#ffcc66" d="M2 4h4l1 1h7v8H2z"/></svg>
+        </span>
+        <span class="child-title-text">Project Browser</span>
+        <span class="spacer"></span>
+        <button class="tb-btn" disabled><i class="gl-min"></i></button>
+        <button class="tb-btn" disabled><i class="gl-max"></i></button>
+      </div>
+      <div class="child-body">
+        <div class="pane-tree">
+          <div class="tree" id="tree"></div>
+        </div>
+        <div class="pane-split"></div>
+        <div class="pane-list">
+          <div class="listview" id="listview">
+            <div class="lv-head" id="lv-head"></div>
+            <div class="lv-rows" id="lv-rows"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Status bar -->
+  <div class="statusbar" id="statusbar"></div>
+
+</div>
+
+<!-- Modal / popup layer -->
+<div id="overlay" class="overlay hidden"></div>
+<div id="menu-layer"></div>
+<div id="context-layer"></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "bpc-project-manager",
+  "productName": "Build Play Contracting - Project Manager",
+  "version": "1.0.0",
+  "description": "Project Manager 1.0 for Build Play Contracting - Shell (Project Browser)",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Build Play Contracting",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "electron": "^32.0.0"
+  }
+}
