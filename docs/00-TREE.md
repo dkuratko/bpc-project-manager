@@ -342,8 +342,18 @@ BY PURCHASE ─── how money leaves.  BY COMPONENT ─── internal analysi
    ✔ SCOPE GROUPS DEFAULT THE LINES — a group built while scoping seeds an
         estimate line, label and members both. still renameable, splittable,
         mergeable. stops you doing the same grouping twice.
+   ✔ modelled on the REAL estimate 26-148A0 — see docs/design/
+   ✔ lines are UNIT PRICED: # · title · qty/unit · unit price · amount
+   ✔ line title = manufacturer - product [part number] Install [method]
    ✔ every line is a NODE. a node carries:
-        subitems (must sum to it) · inclusions · exclusions · add options
+        description · subitems · options · notes
+   ✔ SUBITEMS are INCLUSIVE and PARTIAL — "↳" and the amount in parentheses,
+        already inside the line total, and they need not sum to it
+   ✔ OPTIONS are EXCLUDED from the total, shown with a leading "+"
+        headline reads "BASE SCOPE, OPTIONS EXCLUDED"
+   ✔ NOTES replace inclusions/exclusions — one row type with a KIND:
+        disclaimer · inclusion · exclusion · assumption
+   ✔ project-level options block with CHECKBOXES — "check to accept"
         each sitting directly under whatever it modifies
    ✔ the job is just the root node — job-level and line-level behave identically
    ✔ usually one line. sometimes a design # with children.

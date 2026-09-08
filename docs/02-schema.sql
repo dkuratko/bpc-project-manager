@@ -634,9 +634,19 @@ CREATE TABLE document_lines (
   document_id   TEXT NOT NULL REFERENCES documents(id),
   parent_id     TEXT REFERENCES document_lines(id),
   sequence_no   INTEGER NOT NULL DEFAULT 0,
-  label         TEXT NOT NULL,              -- "INSTALLATION of Design #4471"
+  line_number   INTEGER,                    -- 01, 02, 03 — printed on the document
+  label         TEXT NOT NULL,              -- "Landscape Structures - PlayBooster
+                                            --  PB-4400 Install [DB]"
   design_no     TEXT,
+  quantity      REAL,                       -- lines are UNIT PRICED
+  unit          TEXT,                       --   5 EA · 1 LS
+  unit_price    REAL,
   amount        REAL,
+  -- SUBITEMS are INCLUSIVE and PARTIAL. They show a breakdown that already
+  -- sits inside the line total — printed in parentheses — and they do NOT
+  -- have to sum to it.
+  -- OPTIONS are EXCLUDED from the total. The headline reads
+  --   "ESTIMATE TOTAL — BASE SCOPE, OPTIONS EXCLUDED".
   section       TEXT NOT NULL DEFAULT 'scope'
                   CHECK(section IN ('scope','job_add_option','change_order')),
   from_scope_group_id TEXT REFERENCES scope_groups(id),  -- seeded this line;
@@ -669,9 +679,22 @@ CREATE TABLE document_notes (
   id          TEXT PRIMARY KEY,
   document_id TEXT NOT NULL REFERENCES documents(id),
   line_id     TEXT REFERENCES document_lines(id),   -- NULL = job level
-  kind        TEXT NOT NULL CHECK(kind IN ('inclusion','exclusion')),
+  kind        TEXT NOT NULL DEFAULT 'disclaimer'
+                CHECK(kind IN ('disclaimer','inclusion','exclusion','assumption')),
   text        TEXT NOT NULL,
   sequence_no INTEGER NOT NULL DEFAULT 0
+);
+
+-- Document-level standing text — the TERMS & EXCLUSIONS paragraph at the foot
+-- of every estimate. This IS reused between jobs, unlike per-line notes which
+-- are written fresh each time.
+CREATE TABLE boilerplate (
+  id          TEXT PRIMARY KEY,
+  slot        TEXT NOT NULL,               -- 'terms_and_exclusions'
+  name        TEXT NOT NULL,
+  text        TEXT NOT NULL,
+  is_default  INTEGER NOT NULL DEFAULT 0,
+  active      INTEGER NOT NULL DEFAULT 1
 );
 
 CREATE TABLE approvals (
