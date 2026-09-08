@@ -9,16 +9,38 @@ When a screen is approved, its final is copied in here and recorded below.
 
 `✔ FINAL` = approved, build from this · `◐ ITERATING` · `▢ NOT STARTED`
 
+## Screen kinds
+
+Your workspace folders already carry this as `[M]` and `[p]`. Recorded here so
+it survives outside the folder names.
+
+```
+MAIN   a primary application window. title bar · menu · toolbar · status bar.
+       you navigate TO it and it stays open while you work.
+       teal desk visible around it.
+
+POPUP  a modal dialog on a translucent scrim. opened FROM a main window,
+       blocks it, closes back to it. no menu bar, no status bar.
+       may open a further popup (New Footing Spec opens from inside the wizard).
+```
+
+★ **Open architectural question.** Are MAIN windows *MDI children inside one
+Project Manager frame* — as the old build was — or separate top-level windows?
+Every screen so far renders as a window on a teal desk, which reads as MDI, but
+it has not actually been decided. It affects the shell, the Window menu, and
+how you move between a project and its versions.
+
 ---
 
 ## Cost Breakdown — BPCc
 
-| # | Screen | Status | File | Brief |
-|---|---|---|---|---|
-| 1 | Scope | **✔ FINAL v4** | `docs/design/cost-breakdown-01-scope.v4.dc.html` | `03a` + `03b` + `03c` |
-| 2 | Requirements | **✔ FINAL v1** | `docs/design/cost-breakdown-02-requirements.v1.dc.html` | `03d` |
-| 3 | Purchasing | **✔ FINAL v1** *(pending $ format)* | `docs/design/cost-breakdown-03-purchasing.v1.dc.html` | `03e` |
-| 4 | Cost | **✔ FINAL v2** | `docs/design/cost-breakdown-04-cost.v2.dc.html` | `03g` + `03h` |
+| # | Screen | Kind | Status | File | Brief |
+|---|---|---|---|---|---|
+| 1 | Scope | MAIN · tab 1 | **✔ FINAL v4** | `docs/design/cost-breakdown-01-scope.v4.dc.html` | `03a` + `03b` + `03c` |
+| 2 | Requirements | MAIN · tab 2 | **✔ FINAL v1** | `docs/design/cost-breakdown-02-requirements.v1.dc.html` | `03d` |
+| 3 | Purchasing | MAIN · tab 3 | **✔ FINAL v1** *(pending $ format)* | `docs/design/cost-breakdown-03-purchasing.v1.dc.html` | `03e` |
+| 4 | Cost | MAIN · tab 4 | **✔ FINAL v2** | `docs/design/cost-breakdown-04-cost.v2.dc.html` | `03g` + `03h` |
+| — | Problems panel | POPUP | **✔ FINAL v1** | `docs/design/cost-breakdown-problems-panel.v1.dc.html` | `03i` |
 
 **Tab 1 · Scope — v4 · FINAL**
 Identity columns (icon · Item · Manufacturer · Part number · Category · Method ·
@@ -32,15 +54,17 @@ separator when built.
 
 ## Catalog
 
-| # | Screen | Status | File | Brief |
-|---|---|---|---|---|
-| — | New Component Wizard (3 steps) | **✔ FINAL** | `docs/design/cost-breakdown-03-purchasing.v1.dc.html
+| # | Screen | Kind | Status | File | Brief |
+|---|---|---|---|---|---|
+| — | New Component Wizard (3 steps) | POPUP | **✔ FINAL** | `docs/design/cost-breakdown-03-purchasing.v1.dc.html
     from  [M] cost breakdown - purchasing/v1 - Purchasing Zone.dc.html
 docs/design/cost-breakdown-04-cost.v2.dc.html
     from  [M] cost breakdown - cost /Cost Zone v2.dc.html
+docs/design/cost-breakdown-problems-panel.v1.dc.html
+    from  [p] cost breakdown - problem panel/Problems Panel.dc.html
 docs/design/component-wizard.final.dc.html` | — |
-| — | Readiness panel | **✔ FINAL** | *(same file)* | — |
-| — | New Footing Spec, inline | **✔ FINAL** | *(same file)* | — |
+| — | Readiness panel | POPUP | **✔ FINAL** | *(same file)* | — |
+| — | New Footing Spec | POPUP *(from the wizard)* | **✔ FINAL** | *(same file)* | — |
 
 *Superseded by later decisions — fix when building, do not re-render:*
 - `Complexity 1.20 × labor` on the installation method → **removed**, replaced by project conditions
@@ -54,11 +78,13 @@ docs/design/component-wizard.final.dc.html` | — |
 ## Not yet designed
 
 ```
-▢ PROBLEMS PANEL (cost breakdown)  ← the last piece of the cost breakdown
-▢ NEW PROJECT dialog          ▢ PROJECT LIST            ▢ VERSION VIEW
-▢ ESTIMATE EDITOR             ▢ CATALOG BROWSER         ▢ CONTACTS
-▢ ACTIVE VERSIONS LIST        ▢ CALENDAR                ▢ SHIPMENTS
-▢ POST COST
+MAIN    ▢ PROJECT LIST      ▢ VERSION VIEW       ▢ ESTIMATE EDITOR
+        ▢ CATALOG BROWSER   ▢ CONTACTS           ▢ ACTIVE VERSIONS LIST
+        ▢ CALENDAR          ▢ SHIPMENTS          ▢ POST COST
+
+POPUP   ▢ NEW PROJECT       ▢ NEW ADD OPTION     ▢ NEW GROUP
+        ▢ NEW SERVICE       ▢ NEW ASSEMBLY       ▢ SERVICE RATE TABLE
+        ▢ RECORD APPROVAL   ▢ RECORD SHIPMENT
 ```
 
 ---
@@ -77,6 +103,7 @@ docs/design/component-wizard.final.dc.html` | — |
 03f  money-formatting.md ........... cross-cutting, applies to every screen
 03g  cost-zone.md .................. tab 4
 03h  cost-revision-1.md ............ collapsible groups
+03i  problems-panel.md ............. the issuability gate (POPUP)
 ```
 
 ## Origin of committed files
@@ -90,6 +117,8 @@ docs/design/cost-breakdown-03-purchasing.v1.dc.html
     from  [M] cost breakdown - purchasing/v1 - Purchasing Zone.dc.html
 docs/design/cost-breakdown-04-cost.v2.dc.html
     from  [M] cost breakdown - cost /Cost Zone v2.dc.html
+docs/design/cost-breakdown-problems-panel.v1.dc.html
+    from  [p] cost breakdown - problem panel/Problems Panel.dc.html
 docs/design/component-wizard.final.dc.html
     from  [p] component creation v1/New Component Wizard - Dialogs.dc.html
 ```

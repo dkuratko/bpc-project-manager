@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><style>
+body{margin:0;background:#4a4a4a;font:11px Tahoma,Verdana,Geneva,sans-serif;color:#000;
+--r:inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+--s:inset 1px 1px #808080, inset -1px -1px #fff, inset 2px 2px #0a0a0a, inset -2px -2px #dfdfdf;
+--t:inset 1px 1px #808080, inset -1px -1px #fff}
+*{box-sizing:border-box}
+a{color:#000080}
+a:hover{color:#1084d0}
+</style></helmet>
+<div style="min-height:100vh;background:#008080;display:flex;align-items:flex-start;justify-content:center;padding:60px 24px;font:11px Tahoma,Verdana,Geneva,sans-serif">
+<div style="position:absolute;inset:0;background:rgba(0,0,0,.42)"></div>
+<div style="position:relative;width:560px;max-width:100%;background:#c0c0c0;box-shadow:var(--r), 4px 4px 14px rgba(0,0,0,.45);padding:3px">
+
+<div style="height:20px;background:linear-gradient(90deg,#000080,#1084d0);display:flex;align-items:center;padding:0 3px 0 4px;gap:6px">
+<span style="color:#fff;font-weight:bold;flex:1;white-space:nowrap">Problems — BPCc-26-10A0</span>
+<div style="width:16px;height:14px;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;cursor:default;position:relative"><span style="position:absolute;width:9px;height:1px;background:#000;transform:rotate(45deg)"></span><span style="position:absolute;width:9px;height:1px;background:#000;transform:rotate(-45deg)"></span></div>
+</div>
+
+<div style="padding:10px 10px 9px;display:flex;flex-direction:column;gap:9px">
+
+<div style="background:#ffe0e0;color:#a00;box-shadow:inset 0 0 0 1px #a00;padding:6px 9px;font-weight:bold;display:flex;gap:9px;align-items:center"><span>⚠</span><span>CANNOT ISSUE ESTIMATE. &nbsp;2 problems.</span></div>
+
+<div style="box-shadow:var(--s);background:#fff;padding:3px 2px">
+<div style="display:flex;align-items:center;gap:9px;padding:3px 8px">
+<span style="width:11px;text-align:center">✓</span>
+<span style="flex:1;white-space:nowrap">Scope — 10 rows in 2 groups, 2 add options</span>
+<span style="width:58px;text-align:right;color:#404040">tab 1</span>
+</div>
+<div style="display:flex;align-items:center;gap:9px;padding:3px 8px">
+<span style="width:11px;text-align:center">✓</span>
+<span style="flex:1;white-space:nowrap">All components Active</span>
+<span style="width:58px;text-align:right;color:#404040">catalog</span>
+</div>
+<div style="display:flex;align-items:center;gap:9px;padding:3px 8px;background:#ffe0e0;color:#a00">
+<span style="width:11px;text-align:center;font-weight:bold">!</span>
+<span style="flex:1;white-space:nowrap">Excavate Footing has no rate for <span style="font:11px 'Lucida Console',monospace">F-2x4</span></span>
+<span style="padding:2px 9px;background:#c0c0c0;box-shadow:var(--r);color:#000;cursor:default;white-space:nowrap">Fix…</span>
+<span style="width:58px;text-align:right">catalog</span>
+</div>
+<div style="display:flex;align-items:center;gap:9px;padding:3px 8px">
+<span style="width:11px;text-align:center">✓</span>
+<span style="flex:1;white-space:nowrap">All pooled materials have a procurement method</span>
+<span style="width:58px;text-align:right;color:#404040">tab 3</span>
+</div>
+<div style="display:flex;align-items:center;gap:9px;padding:3px 8px;background:#ffe0e0;color:#a00">
+<span style="width:11px;text-align:center;font-weight:bold">!</span>
+<span style="flex:1;white-space:nowrap">Removed EWF has no disposition selected</span>
+<span style="padding:2px 9px;background:#c0c0c0;box-shadow:var(--r);color:#000;cursor:default;white-space:nowrap">Fix…</span>
+<span style="width:58px;text-align:right">tab 3</span>
+</div>
+<div style="display:flex;align-items:center;gap:9px;padding:3px 8px">
+<span style="width:11px;text-align:center">✓</span>
+<span style="flex:1;white-space:nowrap">Equipment sourcing decided — telehandler, mixer</span>
+<span style="width:58px;text-align:right;color:#404040">tab 3</span>
+</div>
+<div style="display:flex;align-items:center;gap:9px;padding:3px 8px;color:#808080">
+<span style="width:11px;text-align:center">○</span>
+<span style="flex:1;white-space:nowrap">No product quotes — customer furnishes the equipment</span>
+<span style="width:58px;text-align:right">tab 3</span>
+</div>
+<div style="display:flex;align-items:center;gap:9px;padding:3px 8px">
+<span style="width:11px;text-align:center">✓</span>
+<span style="flex:1;white-space:nowrap">Markup 20% · contingency 5% set</span>
+<span style="width:58px;text-align:right;color:#404040">version</span>
+</div>
+</div>
+
+<div style="background:#ffffe1;box-shadow:inset 0 0 0 1px #000;padding:8px 10px;line-height:1.55"><b>Fix…</b> on the rate row opens the <i>Excavate Footing</i> rate table with a blank <span style="font:11px 'Lucida Console',monospace">F-2x4</span> row and an interpolated suggestion of <b>0.65 hr</b> pre-filled from the volume curve — between <span style="font:11px 'Lucida Console',monospace">F-1x2</span> at 0.35 hr and <span style="font:11px 'Lucida Console',monospace">F-3x12</span> at 2.65 hr. Accept it or type the real number. <b>It is never used in a calculation until you do.</b></div>
+
+<div style="display:flex;justify-content:flex-end;gap:6px;padding-top:1px">
+<div style="padding:4px 14px;background:#c0c0c0;box-shadow:var(--r);color:#808080;cursor:default;white-space:nowrap">Issue estimate</div>
+<div style="padding:4px 20px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap">Close</div>
+</div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:760,&quot;height&quot;:560}}"></script>
+</body>
+</html>
