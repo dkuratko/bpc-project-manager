@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Document Builder — Build Play Contracting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="builder.css">
+</head>
+<body>
+<!-- ================================================================
+     Screen 19 — Document Builder (Estimate / cost-breakdown editor)
+     The window chrome is static; everything inside #grid, #totals,
+     #inspector, #statusbar and #preview is drawn from the data model
+     in builder.js.
+     ================================================================ -->
+<div class="desk">
+  <div class="window" id="window">
+
+    <!-- Title bar -->
+    <div class="titlebar">
+      <svg class="ico" width="16" height="16" viewBox="0 0 16 16"><path fill="#000" d="M3 1h7l3 3v11H3z"/><path fill="#fff" d="M4 2h5v3h3v9H4z"/><path fill="#5980a6" d="M5 8h6v1H5zM5 10h6v1H5zM5 12h4v1H5z"/></svg>
+      <span class="title-text" id="title-text">Estimate BPC-26-6C0 (draft) - Document Builder - [BPC-26-6 Northgate HOA Pocket Park]</span>
+      <span class="spacer"></span>
+      <div class="sysbtn" title="Minimize"><i class="gl-min"></i></div>
+      <div class="sysbtn" title="Maximize"><i class="gl-max"></i></div>
+      <div class="sysbtn" title="Close"><i class="gl-close"></i></div>
+    </div>
+
+    <!-- Menu bar -->
+    <div class="menubar" id="menubar"></div>
+    <div class="groove"></div>
+
+    <!-- Toolbar -->
+    <div class="toolbar" id="toolbar"></div>
+    <div class="groove"></div>
+
+    <!-- Document header strip -->
+    <div class="docstrip" id="docstrip"></div>
+
+    <!-- Column / view options bar -->
+    <div class="colbar" id="colbar"></div>
+
+    <!-- Body: work column (grid + inspector + totals) | preview column -->
+    <div class="body">
+      <div class="workcol">
+        <!-- Grid -->
+        <div class="gridframe">
+          <div class="gridscroll" id="gridscroll">
+            <div class="grid" id="grid"></div>
+          </div>
+          <div class="vscroll" id="vscroll" aria-hidden="true">
+            <div class="sb-arrow sb-up"><svg width="7" height="4" viewBox="0 0 7 4"><path fill="#000" d="M0 4h7L3.5 0z"/></svg></div>
+            <div class="sb-thumb"></div>
+            <div class="sb-arrow sb-down"><svg width="7" height="4" viewBox="0 0 7 4"><path fill="#000" d="M0 0h7L3.5 4z"/></svg></div>
+          </div>
+        </div>
+
+        <!-- Bottom row: inspector | totals -->
+        <div class="bottomrow">
+          <fieldset class="panel inspector-panel">
+            <legend id="inspector-legend">Selected row</legend>
+            <div id="inspector"></div>
+          </fieldset>
+          <fieldset class="panel totals-panel">
+            <legend>Totals</legend>
+            <div id="totals"></div>
+          </fieldset>
+        </div>
+      </div>
+
+      <!-- Preview column -->
+      <div class="previewcol" id="previewcol">
+        <div class="preview-head">
+          <span class="b">Preview</span>
+          <span class="muted" id="preview-page">Page 1 of 3</span>
+          <span class="spacer"></span>
+          <div class="btn sm" id="prev-back">&lt;</div>
+          <div class="btn sm" id="prev-fwd">&gt;</div>
+        </div>
+        <div class="preview-stage">
+          <div class="preview-paper" id="preview-paper"></div>
+        </div>
+        <fieldset class="panel doc-panel">
+          <legend>Document</legend>
+          <div id="docsettings"></div>
+        </fieldset>
+      </div>
+    </div>
+
+    <!-- Status bar -->
+    <div class="statusbar" id="statusbar"></div>
+
+  </div>
+</div>
+
+<div id="popup-layer"></div>
+
+<script src="builder.data.js"></script>
+<script src="builder.print.js"></script>
+<script src="builder.js"></script>
+</body>
+</html>

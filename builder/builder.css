@@ -1,0 +1,274 @@
+/* ================================================================
+   Document Builder — retro window, estimate palette
+   A mix: Windows-2000 bevels (box-shadow insets) kept for the
+   chrome, re-tinted to the estimate's warm paper colours, with
+   IBM Plex Mono type and the estimate's violet/amber accents.
+   ================================================================ */
+
+:root{
+  --face:#e3ded1;      /* warm putty control face */
+  --white:#fbf9f2;     /* warm bevel highlight */
+  --lt:#efe9db;        /* inner light */
+  --shadow:#b0a894;    /* warm inner shadow */
+  --dk:#4a4436;        /* warm outer dark */
+  --field:#fdfdfc;     /* paper field */
+  --ink:#1c1c1a;       /* estimate ink */
+  --muted:#6d6a63;
+  --muted2:#8a867d;
+  --faint:#9a968d;
+  --disabled:#a8a290;
+  --rowbg:#f7f6f2;     /* estimate warm-grey table rows */
+  --band:#f4f1e8;      /* note band (warm) */
+  --disc-band:#fbf4d6; /* disclaimer band (soft yellow) */
+  --disc-ink:oklch(0.50 0.14 75);  /* amber disclaimer text */
+  --section:#e6e0d2;   /* section band */
+  --violet:oklch(0.45 0.12 300);   /* [OPT] / option accent */
+  --sel:#1c1c1a;       /* inverted hover (menus) */
+  --tag-bg:#efece3; --tag-bd:#ddd8ca; --tag-ink:#5b564a;
+  /* raised (button / toolbar / out) */
+  --raise: inset -1px -1px var(--dk), inset 1px 1px var(--white), inset -2px -2px var(--shadow), inset 2px 2px var(--lt);
+  /* sunken (input / field / list well) */
+  --sink: inset 1px 1px var(--shadow), inset -1px -1px var(--white), inset 2px 2px var(--dk), inset -2px -2px var(--lt);
+  /* pressed button */
+  --press: inset 1px 1px var(--shadow), inset -1px -1px var(--white), inset 2px 2px var(--dk), inset -2px -2px var(--lt);
+  /* thin outset (status cells / header cells) */
+  --thin-out: inset 1px 1px var(--white), inset -1px -1px var(--shadow);
+  --thin-hd:  inset -1px -1px var(--shadow), inset 1px 1px var(--white);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:#0f7a72;   /* retro teal desktop, a touch warmer/muted */
+  font-family:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+  font-size:11px;
+  color:var(--ink);
+}
+svg{shape-rendering:crispEdges;display:block}
+
+.desk{min-height:100%;display:flex;align-items:center;justify-content:center;padding:20px}
+
+/* ---- window ---- */
+.window{
+  width:1024px;height:768px;flex:none;background:var(--face);padding:3px;
+  display:flex;flex-direction:column;
+  box-shadow:var(--raise), 3px 3px 10px rgba(0,0,0,.35);
+}
+
+/* ---- title bar ---- */
+.titlebar{
+  height:18px;flex:none;display:flex;align-items:center;gap:4px;padding:0 2px 0 3px;white-space:nowrap;
+  background:linear-gradient(90deg,#1c1c1a 0%,#4a4032 58%,#8a7a5f 100%);color:#fdfdfc;font-weight:600;letter-spacing:.02em;
+}
+.titlebar .ico{flex:none}
+.titlebar .title-text{overflow:hidden;text-overflow:ellipsis}
+.titlebar .spacer{flex:1}
+.sysbtn{width:16px;height:14px;flex:none;background:var(--face);display:flex;align-items:center;justify-content:center;box-shadow:var(--raise)}
+.sysbtn i{display:block}
+.gl-min{width:7px;height:2px;background:#000;margin-top:6px}
+.gl-max{width:9px;height:8px;border:1px solid #000;border-top-width:2px}
+.gl-close{width:8px;height:8px;position:relative}
+.gl-close::before,.gl-close::after{content:"";position:absolute;left:0;top:3px;width:9px;height:1.6px;background:#000}
+.gl-close::before{transform:rotate(45deg)}
+.gl-close::after{transform:rotate(-45deg)}
+
+/* ---- separators ---- */
+.groove{height:2px;flex:none;border-top:1px solid var(--shadow);border-bottom:1px solid var(--white)}
+.vsep{width:2px;height:20px;margin:0 3px;flex:none;border-left:1px solid var(--shadow);border-right:1px solid var(--white)}
+.vsep.sm{height:16px}
+
+/* ---- menu bar ---- */
+.menubar{height:19px;flex:none;display:flex;align-items:stretch;padding:0 1px;background:var(--face)}
+.menubar .m{display:flex;align-items:center;padding:0 7px;white-space:nowrap;cursor:default;user-select:none}
+.menubar .m u{text-decoration:underline}
+.menubar .m:hover,.menubar .m.open{background:var(--sel);color:#fff}
+
+/* ---- toolbar ---- */
+.toolbar{height:30px;flex:none;display:flex;align-items:center;gap:1px;padding:2px 4px;background:var(--face);overflow:hidden}
+.tbtn{display:flex;align-items:center;height:24px;padding:0 7px;white-space:nowrap;box-shadow:var(--raise);cursor:default;user-select:none}
+.tbtn.icon{width:24px;padding:0;justify-content:center}
+.tbtn.pressed,.tbtn.active{box-shadow:var(--press)}
+.tbtn:active{box-shadow:var(--press)}
+.tbtn.disabled{color:var(--disabled);text-shadow:1px 1px var(--white)}
+.tspacer{flex:1}
+
+/* ---- document header strip ---- */
+.docstrip{height:26px;flex:none;display:flex;align-items:center;gap:8px;padding:0 6px;white-space:nowrap;background:var(--face);box-shadow:var(--thin-out)}
+.docstrip .b{font-weight:700}
+.docstrip .badge{padding:1px 6px;background:var(--ink);color:var(--field);font-weight:700;letter-spacing:.1em;font-size:10px}
+.docstrip .dim{color:var(--muted)}
+.docstrip .spacer{flex:1}
+
+/* ---- column / view options bar ---- */
+.colbar{height:24px;flex:none;display:flex;align-items:center;gap:7px;padding:2px 6px;white-space:nowrap;background:var(--face);box-shadow:var(--thin-out)}
+.colbar .dim{color:var(--muted)}
+.colbar .spacer{flex:1}
+.colbar .cbox{display:flex;align-items:center;gap:4px;cursor:default;user-select:none}
+.btn{background:var(--face);display:flex;align-items:center;justify-content:center;white-space:nowrap;box-shadow:var(--raise);cursor:default;user-select:none;height:20px}
+.btn:active{box-shadow:var(--press)}
+.btn.sm{width:30px}
+
+/* checkbox */
+.chk{width:12px;height:12px;flex:none;background:var(--field);display:flex;align-items:center;justify-content:center;box-shadow:var(--sink);cursor:default}
+.chk.lg{width:13px;height:13px}
+
+/* combo (read-only dropdown) */
+.combo{height:20px;display:flex;align-items:center;background:var(--field);white-space:nowrap;box-shadow:var(--sink);cursor:default}
+.combo>span{flex:1;padding-left:3px;overflow:hidden;text-overflow:ellipsis}
+.combo .arrow{width:16px;height:16px;margin-right:2px;flex:none;background:var(--face);display:flex;align-items:center;justify-content:center;box-shadow:var(--raise)}
+
+/* ---- body layout ---- */
+.body{flex:1;min-height:0;display:flex;gap:4px;padding-top:4px;background:var(--face)}
+.workcol{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+
+/* ---- grid ---- */
+.gridframe{flex:1;min-height:0;display:flex;background:var(--rowbg);padding:2px 0 0 2px;box-shadow:var(--sink)}
+.gridscroll{flex:1;min-width:0;overflow:hidden;display:flex;flex-direction:column}
+.grid{display:flex;flex-direction:column;flex:1;min-height:0;overflow-y:auto;overflow-x:hidden}
+.grid::-webkit-scrollbar{width:0}   /* real scroll, faux scrollbar drawn beside */
+
+.row{height:18px;flex:none;display:grid;align-items:center;grid-template-columns:var(--tmpl)}
+.row.head{height:18px}
+.row .cell{padding:0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .cell.center{display:flex;align-items:center;justify-content:center;padding:0}
+.row .cell.end{text-align:right}
+.row .cell.mid{text-align:center}
+.hcell{background:var(--face);display:flex;align-items:center;padding:0 4px;white-space:nowrap;overflow:hidden;box-shadow:var(--thin-hd)}
+.hcell.end{justify-content:flex-end}
+.hcell.mid{justify-content:center}
+
+.row.line .cell.name{font-weight:700}
+.row .name.sub{padding-left:10px}
+
+/* ---- selectable row-highlight styles (choose one) ----
+   The grid gets a class .sel-1 .. .sel-6; warm / estimate-friendly. */
+/* 1 · Soft violet fill */
+.grid.sel-1 .row.selected .cell{background:#ece7f4}
+.grid.sel-1 .row.selected{box-shadow:inset 0 0 0 1px #bcabdd}
+/* 2 · Left violet bar, faint warm tint */
+.grid.sel-2 .row.selected .cell{background:#f2efe6}
+.grid.sel-2 .row.selected{box-shadow:inset 3px 0 0 var(--violet)}
+/* 3 · Warm sand fill */
+.grid.sel-3 .row.selected .cell{background:#eae2d1}
+.grid.sel-3 .row.selected{box-shadow:inset 0 0 0 1px #cbbfa1}
+/* 4 · Dotted focus on warm panel */
+.grid.sel-4 .row.selected .cell{background:#efe9db}
+.grid.sel-4 .row.selected{outline:1px dotted var(--muted);outline-offset:-2px}
+/* 5 · Underline only, no fill */
+.grid.sel-5 .row.selected{box-shadow:inset 0 -2px 0 var(--ink)}
+.grid.sel-5 .row.selected .cell.name{font-weight:700}
+/* 6 · Solid ink, paper text */
+.grid.sel-6 .row.selected .cell{background:var(--ink);color:var(--field)}
+.grid.sel-6 .row.selected .cell .tag{color:var(--field)}
+.row.internal .cell,.row.dim .cell{color:var(--disabled)}
+.row.selectable{cursor:default}
+
+.tag{display:inline-block;padding:0 4px;margin-right:3px;background:var(--tag-bg);border:1px solid var(--tag-bd);color:var(--tag-ink);white-space:nowrap;font-size:10px}
+.opt-tag{font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--violet)}
+.tw{color:var(--faint)}   /* the ↳ turn arrow */
+.muted{color:var(--faint)}
+
+/* full-width special rows.  Note + disclaimer wrap so the whole
+   message is visible; the indent (--indent) aligns them under the
+   activity name and follows the Tags column on/off. */
+.row.band{display:grid;grid-template-columns:var(--indent,40px) minmax(0,1fr);min-height:17px;height:auto;align-items:stretch;background:var(--band)}
+.row.band .txt{padding:2px 6px 2px 4px;white-space:normal;line-height:1.35;font-style:italic;color:var(--muted2);font-size:10px}
+.row.disc{display:grid;grid-template-columns:var(--indent,40px) minmax(0,1fr);min-height:17px;height:auto;align-items:stretch;background:var(--disc-band)}
+.row.disc .txt{padding:2px 6px 2px 4px;white-space:normal;line-height:1.35;font-style:italic;color:var(--disc-ink);font-size:10px}
+.row.rollup{display:grid;grid-template-columns:var(--indent,40px) minmax(0,1fr);height:16px;align-items:center}
+.row.rollup .txt{padding:0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--faint);font-size:10px}
+.row.rollup .txt.over{color:#b1332a;font-weight:700}   /* sub items exceed the line price */
+.row.section{display:grid;grid-template-columns:minmax(0,1fr) 122px;height:18px;align-items:center;background:var(--section);font-weight:700}
+.row.section .l{padding:0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row.section .r{padding:0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right}
+
+.expand{display:flex;align-items:center;justify-content:center;cursor:default}
+.gridpad{flex:1}
+
+/* inline qty editor (selected sub) */
+.qtyedit{height:16px;background:var(--field);display:flex;align-items:center;justify-content:flex-end;padding-right:2px;border:1px solid #000080;margin:0 1px}
+.qtyedit .car{width:1px;height:11px;background:#000;margin-left:1px}
+
+/* faux scrollbar */
+.vscroll{width:16px;flex:none;display:flex;flex-direction:column;background:repeating-conic-gradient(#fff 0 25%,var(--face) 0 50%) 0 0/2px 2px}
+.sb-arrow{height:16px;flex:none;background:var(--face);display:flex;align-items:center;justify-content:center;box-shadow:var(--raise)}
+.sb-thumb{height:180px;flex:none;background:var(--face);box-shadow:var(--raise)}
+.vscroll .sb-arrow.sb-down{margin-top:auto}
+
+/* ---- bottom row ---- */
+.bottomrow{height:150px;flex:none;display:flex;gap:4px}
+.panel{position:relative;margin:0;padding:14px 9px 9px;border:1px solid;border-color:var(--shadow) var(--white) var(--white) var(--shadow);box-shadow:inset 1px 1px var(--white),inset -1px -1px var(--shadow);min-width:0}
+.panel>legend{position:absolute;top:-7px;left:9px;padding:0 4px;background:var(--face);white-space:nowrap}
+.inspector-panel{flex:1;min-width:0}
+.totals-panel{width:236px;flex:none}
+
+#inspector{display:flex;gap:12px;height:100%}
+.insp-fields{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.insp-actions{width:148px;flex:none;display:flex;flex-direction:column;gap:3px}
+.frow{display:flex;align-items:center;gap:5px;height:20px}
+.frow.top{align-items:flex-start}
+.flabel{flex:none;color:var(--muted)}
+.field{height:20px;display:flex;align-items:center;padding-left:3px;background:var(--field);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:var(--sink)}
+.field.area{height:36px;align-items:flex-start;padding:3px 4px;line-height:1.35;white-space:normal}
+input.field{border:0;outline:0;font:inherit;color:inherit}
+input.field:focus{box-shadow:var(--sink),0 0 0 1px #000080 inset}
+.tagfield{flex:1;min-width:0;height:20px;display:flex;align-items:center;padding:0 3px;background:var(--field);box-shadow:var(--sink);overflow:hidden}
+.tagfield .ghost{color:#b3b3ac}
+.tag.rm{cursor:default;display:inline-flex;align-items:center;gap:2px}
+.tag.rm .x{color:#8a3b3b;font-weight:700;padding:0 1px}
+.tag.rm:hover{background:#f6e4e4;border-color:#d9b3b3}
+.taginput{flex:1;min-width:44px;border:0;outline:0;background:transparent;font:inherit;color:inherit;padding:0 2px;height:16px}
+.insp-actions .btn{width:148px;justify-content:center}
+.insp-actions .sep{height:2px;margin:1px 0;border-top:1px solid var(--shadow);border-bottom:1px solid var(--white)}
+.insp-hint{flex:1;color:var(--muted);line-height:1.3;display:flex;align-items:flex-end}
+.insp-empty{color:var(--muted);display:flex;align-items:center;height:100%;padding-left:2px}
+
+/* ---- totals ---- */
+#totals{display:flex;flex-direction:column;height:100%}
+.trow{display:grid;grid-template-columns:minmax(0,1fr) 84px;height:18px;align-items:center}
+.trow>div{padding:0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trow .lbl{color:var(--muted)}
+.trow .val{text-align:right}
+.trow.total{height:22px;font-weight:700}
+.trow.total .val{font-size:13px}
+.trow.small{height:17px}.trow.small .lbl,.trow.small .val{color:var(--muted)}
+.tsep{height:2px;margin:3px 0;border-top:1px solid var(--shadow);border-bottom:1px solid var(--white)}
+.tnote{color:var(--muted);line-height:1.3}
+.tspring{flex:1}
+.pdf-btn{width:218px;flex:none;height:23px;padding:1px;background:var(--face);border:1px solid #000;display:flex;align-items:center;justify-content:center;box-shadow:var(--raise);font-weight:700;cursor:default}
+.pdf-btn:active{box-shadow:var(--press)}
+
+/* ---- preview column ---- */
+.previewcol{width:250px;flex:none;display:flex;flex-direction:column;gap:4px}
+.previewcol.hidden{display:none}
+.preview-head{height:22px;flex:none;display:flex;align-items:center;gap:6px;padding:0 5px;white-space:nowrap;background:var(--face);box-shadow:var(--thin-out)}
+.preview-head .b{font-weight:700}
+.preview-head .muted{color:var(--muted)}
+.preview-head .spacer{flex:1}
+.preview-stage{flex:1;min-height:0;background:var(--shadow);display:flex;justify-content:center;align-items:flex-start;padding:6px;overflow:hidden;box-shadow:var(--sink)}
+.preview-paper{box-shadow:2px 2px 0 rgba(0,0,0,.35)}
+.doc-panel{flex:none}
+#docsettings{display:flex;flex-direction:column;gap:4px}
+.dfield{width:158px;height:20px;display:flex;align-items:center;background:var(--field);white-space:nowrap;box-shadow:var(--sink)}
+.dsmall{height:20px;display:flex;align-items:center;padding-left:3px;background:var(--field);white-space:nowrap;overflow:hidden;box-shadow:var(--sink)}
+.drow{display:flex;align-items:center;gap:5px;height:20px}
+.drow.chkrow{height:16px}
+.dlabel{flex:none;color:var(--muted)}
+
+/* ---- status bar ---- */
+.statusbar{height:20px;flex:none;display:flex;align-items:stretch;gap:2px;padding-top:2px;background:var(--face)}
+.statusbar .sc{display:flex;align-items:center;padding:0 4px;white-space:nowrap;overflow:hidden;box-shadow:var(--thin-out)}
+.statusbar .sc.grow{flex:1;min-width:0}
+
+/* ---- popup menus ---- */
+#popup-layer{position:fixed;inset:0;pointer-events:none}
+.popmenu{position:absolute;pointer-events:auto;background:var(--face);padding:2px;box-shadow:var(--raise),2px 2px 4px rgba(0,0,0,.35);min-width:150px}
+.popmenu .mi{display:flex;align-items:center;gap:8px;height:19px;padding:0 20px 0 22px;white-space:nowrap;cursor:default;position:relative}
+.popmenu .mi:hover{background:var(--sel);color:#fff}
+.popmenu .mi.disabled{color:var(--disabled)}
+.popmenu .mi.disabled:hover{background:transparent;color:var(--disabled)}
+.popmenu .mi .acc{margin-left:auto;padding-left:24px;color:var(--muted)}
+.popmenu .mi:hover .acc{color:#fff}
+.popmenu .mi .tick{position:absolute;left:6px}
+.popmenu .msep{height:2px;margin:3px 1px;border-top:1px solid var(--shadow);border-bottom:1px solid var(--white)}

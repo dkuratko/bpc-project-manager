@@ -9,6 +9,30 @@
         "start"
       ],
       "port": 3000
+    },
+    {
+      "name": "builder",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "3010",
+        "--directory",
+        "builder"
+      ],
+      "port": 3010
+    },
+    {
+      "name": "builder-verify",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "3013",
+        "--directory",
+        "builder"
+      ],
+      "port": 3013
     }
   ]
 }

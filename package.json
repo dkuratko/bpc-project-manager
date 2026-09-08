@@ -5,11 +5,15 @@
   "description": "Project Manager 1.0 for Build Play Contracting - Shell (Project Browser)",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "estimator": "electron . --estimator"
   },
   "author": "Build Play Contracting",
   "license": "UNLICENSED",
   "devDependencies": {
     "electron": "^32.0.0"
+  },
+  "dependencies": {
+    "sql.js": "^1.14.2"
   }
 }
