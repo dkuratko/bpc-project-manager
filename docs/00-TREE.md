@@ -1,6 +1,6 @@
 # BPC — Master Tree
 **Living document.** Ask for "the tree" any time and this is what gets shown.
-Draft 7 · 2026-09-07 · process walked · schema drafted · screens in progress
+Draft 8 · 2026-09-07 · process walked · schema drafted · screens in progress
 
 `✔` confirmed · `[?]` assumption · `▢` not discussed · `★` open decision (elsewhere: emphasis)
 
@@ -527,19 +527,47 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
 
 ---
 
-## 10 · OPEN
+## 10 · OPEN — ★ PICK UP HERE
 
 ```
-▢ NEW PROJECT exact field list
+★ MOBILIZATION — the cost formula. everything else about it is settled:
+     ✔ it is a standalone SERVICE, unit = trip
+     ✔ trips are a quantity set per job — equipment or customer driven
+     ✔ trip count is known at COST BREAKDOWN time
+     ✔ cost is miles × a per-mile rate, and that rate is itself a
+       calculation of LABOUR and EQUIPMENT WEIGHT
+     ✔ distance may force lodging and per diem — real, separate costs
+     ▢ NEW PROJECT FIELD: distance to site (miles). not haul_distance_mi,
+       which is spoils.
+
+     FOUR QUESTIONS OUTSTANDING:
+       1. two real jobs — a close one and a far one. distance, trips, crew,
+          what was hauled, and what it COST (not what was charged).
+          two data points give the formula.
+       2. one-way or round-trip miles?
+          Tucson $2,200 vs Mesa $450 is ~5×; Tucson is ~6× the one-way
+          distance, so miles may already be doubled somewhere.
+       3. equipment weight — does the app know it (a shipping weight on
+          every component) or do you pick a truck class per job?
+       4. per diem and lodging — per person per night, per room per night?
+          nights set by hand, or derived from the schedule?
+
+▢ ESTIMATE EDITOR v10 — brief written, render pending
+     docs/05f-estimate-v10.md · preview at
+     docs/design/preview/estimate-v10-preview.html
 ▢ the material list itself — principle settled, contents are data entry
 [?] is an unpaid warranty callback recorded against the version?
 ```
 
-## 11 · NEXT — the process is fully walked
+## 11 · NEXT
 
 ```
-▶ SCHEMA ── entities now fall out of the map almost mechanically
-  then ─ SCREENS ── one per real decision point, not one per table
+▶ MOBILIZATION formula, then it becomes an ordinary standalone service and
+  nothing downstream needs a special case
+  then ─ estimate editor v10 render
+  then ─ remaining screens: PROJECT LIST · VERSION VIEW · NEW PROJECT ·
+         CATALOG BROWSER · CONTACTS · ACTIVE VERSIONS · CALENDAR ·
+         SHIPMENTS · POST COST
   then ─ BUILD
 
 OUT OF SCOPE, decided:
@@ -547,8 +575,7 @@ OUT OF SCOPE, decided:
   approval workflows .................. none. completeness gates only.
   inventory / stock ................... none
   dependency & cure modelling ......... none. you just know.
-  boilerplate libraries ............... none. free text.
-  multi-user / accounts / sync ........ none. one machine.
+  multi-user / accounts / sync ........ schema ready, one machine today
 ```
 
 ---
