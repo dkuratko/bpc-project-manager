@@ -2,10 +2,16 @@
 Modelled on the real estimates. **Section 02 · ESTIMATE OF WORK only.**
 All previous versions of this brief and both exploration briefs are withdrawn.
 
-Reference PDFs, committed:
+Reference PDFs, committed. **Both are correct and current** — they simply show
+different row types:
 ```
-docs/design/reference/estimate-26-138A0-subitems.pdf   ← sub-items
-docs/design/reference/estimate-26-142A0-options.pdf    ← optional add-ons
+docs/design/reference/estimate-26-138A0-subitems.pdf
+     the nested row is a SUB-ITEM — SKYWAYS 20'x30'x10' Cantelieved Shade
+docs/design/reference/estimate-26-142A0-options.pdf
+     the nested rows are OPTIONS — Footings and Rebar, Permitting
+docs/design/reference/mockup-26-148A0-NOT-a-real-estimate.dc.html
+     an early mock-up, NOT an issued estimate. it showed sub-item amounts in
+     parentheses; the real documents do not. ignore its formatting.
 ```
 
 ---
