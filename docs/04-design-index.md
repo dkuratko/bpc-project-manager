@@ -16,8 +16,8 @@ When a screen is approved, its final is copied in here and recorded below.
 | # | Screen | Status | File | Brief |
 |---|---|---|---|---|
 | 1 | Scope | **✔ FINAL v4** | `docs/design/cost-breakdown-01-scope.v4.dc.html` | `03a` + `03b` + `03c` |
-| 2 | Requirements | ◐ brief written | — | `03d` |
-| 3 | Purchasing | ▢ | — | — |
+| 2 | Requirements | **✔ FINAL v1** | `docs/design/cost-breakdown-02-requirements.v1.dc.html` | `03d` |
+| 3 | Purchasing | ◐ brief written | — | `03e` |
 | 4 | Cost | ▢ | — | — |
 
 **Tab 1 · Scope — v4 · FINAL**
@@ -68,6 +68,7 @@ separator when built.
 03b  scope-revision-1.md ........... identity columns
 03c  scope-revision-2.md ........... groups
 03d  requirements-zone.md .......... tab 2
+03e  purchasing-zone.md ............ tab 3
 ```
 
 ## Origin of committed files
@@ -75,6 +76,8 @@ separator when built.
 ```
 docs/design/cost-breakdown-01-scope.v4.dc.html
     from  [M] cost breakdown - scope v1/Scope Zone v4.dc.html
+docs/design/cost-breakdown-02-requirements.v1.dc.html
+    from  [M] cost breakdown - requirements/Requirements Zone v1.dc.html
 docs/design/component-wizard.final.dc.html
     from  [p] component creation v1/New Component Wizard - Dialogs.dc.html
 ```
@@ -93,4 +96,17 @@ runtime and is not committed. They render inside that environment, not standalon
 4. Quantity subtotals reconcile too — every column adds up.
 5. "— not selected —" and "$0.00" are different states and must look different.
 6. One screen per brief. One window. No dialogs unless the brief is the dialog.
+7. Toolbar: Add component / Add service / New one-time… are ENABLED ONLY on
+   tab 1. Greyed on tabs 2, 3 and 4 — they are scope actions.
+   Recalculate stays enabled everywhere. Issue estimate follows the gate.
+
+## Pending small fixes
+
+- tab 1 Scope v4 ...... grey the three scope buttons? no — tab 1 is where they live.
+                        add a separator above ungrouped rows (see note above).
+- tab 2 Reqs v1 ....... grey the three scope buttons. ladder values need the
+                        tab-3 update below.
+- tabs 1 & 2 .......... price ladder still carries the pre-v4 figures
+                        (13,615.28 / 19,598.93). Correct values, derived from
+                        the v4 scope, are in brief 03e. Status-bar only.
 ```
