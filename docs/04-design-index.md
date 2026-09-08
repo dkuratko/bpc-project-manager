@@ -44,6 +44,12 @@ thin File · Window · Help menu. See the note at the end of this file.
 | 4 | Cost | MAIN · tab 4 | **✔ FINAL v2** | `docs/design/cost-breakdown-04-cost.v2.dc.html` | `03g` + `03h` |
 | — | Problems panel | POPUP | **✔ FINAL v1** | `docs/design/cost-breakdown-problems-panel.v1.dc.html` | `03i` |
 
+## Estimate
+
+| # | Screen | Kind | Status | File | Brief |
+|---|---|---|---|---|---|
+| — | Estimate editor | MAIN | ◐ v1, right pane being redone | `docs/design/estimate-editor.v1.dc.html` | `05` + `05a` |
+
 **Tab 1 · Scope — v4 · FINAL**
 Identity columns (icon · Item · Manufacturer · Part number · Category · Method ·
 Footing · Qty · Unit · ✕), manual scope groups with collapse, add options with
@@ -80,7 +86,7 @@ docs/design/component-wizard.final.dc.html` | — |
 ## Not yet designed
 
 ```
-MAIN    ▢ PROJECT LIST      ▢ VERSION VIEW       ▢ ESTIMATE EDITOR
+MAIN    ▢ PROJECT LIST      ▢ VERSION VIEW
         ▢ CATALOG BROWSER   ▢ CONTACTS           ▢ ACTIVE VERSIONS LIST
         ▢ CALENDAR          ▢ SHIPMENTS          ▢ POST COST
 
