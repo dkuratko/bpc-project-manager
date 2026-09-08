@@ -504,7 +504,10 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
 ✔ COST BREAKDOWN · tab 2 REQUIREMENTS — FINAL v1
 ✔ COST BREAKDOWN · tab 3 PURCHASING — FINAL v1 (pending $ format)
 ✔ COST BREAKDOWN · tab 4 COST — FINAL v2 (collapsible, reconciles at $12,462.07)
-▢ COST BREAKDOWN · problems panel — the last piece
+✔ COST BREAKDOWN · problems panel — FINAL v1 (POPUP)
+✔ SHELL IS MDI — child windows in one Project Manager frame,
+     Window menu, Cascade, Ctrl+Tab. the teal desk is the client area.
+     ★ menu/toolbar placement (frame vs child) still undecided
 ▢ NEW PROJECT · PROJECT LIST · PROJECT VIEW · VERSION VIEW ★
 ▢ COST BREAKDOWN EDITOR ★ .... the four zones
 ▢ ESTIMATE EDITOR ★ .......... autofill + override + live effective markup

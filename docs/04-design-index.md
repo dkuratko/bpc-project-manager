@@ -24,11 +24,15 @@ POPUP  a modal dialog on a translucent scrim. opened FROM a main window,
        may open a further popup (New Footing Spec opens from inside the wizard).
 ```
 
-★ **Open architectural question.** Are MAIN windows *MDI children inside one
-Project Manager frame* — as the old build was — or separate top-level windows?
-Every screen so far renders as a window on a teal desk, which reads as MDI, but
-it has not actually been decided. It affects the shell, the Window menu, and
-how you move between a project and its versions.
+✔ **MDI — decided.** MAIN windows are child windows inside one Project Manager
+frame. There is a Window menu, Cascade, and Ctrl+Tab between open jobs. Several
+versions can be open at once. The teal desk every screen renders on is the MDI
+client area.
+
+★ **Consequence not yet settled — where do the menu bar and toolbar live?**
+Every approved screen carries its own `File Edit Scope Pricing View Tools Help`
+menu and its own toolbar. Classic Win2000 MDI puts both on the *frame*, and
+they change to match the active child. See the note at the end of this file.
 
 ---
 
@@ -125,6 +129,26 @@ docs/design/component-wizard.final.dc.html
 
 Both reference `./support.js`, which is supplied by Claude Design's canvas
 runtime and is not committed. They render inside that environment, not standalone.
+
+---
+
+## ★ MDI menu placement — undecided
+
+```
+A · CLASSIC          menu bar and toolbar live on the FRAME and change to
+                     match the active child. children have a title bar only.
+                     authentic Win2000. one menu on screen no matter how many
+                     jobs are open.
+                     COST: all four cost-breakdown screens lose their menu and
+                     toolbar — structural rework of approved work.
+
+B · CHILD-OWNED      frame keeps a thin menu (File · Window · Help). each child
+                     carries its own menu and toolbar, as designed today.
+                     less authentic. three open jobs means three menu bars.
+                     COST: nothing. every approved screen already works.
+```
+
+Not urgent, but it must be settled before the shell is designed.
 
 ---
 
