@@ -57,8 +57,14 @@ CREATE TABLE labor_roles (
 
 CREATE TABLE equipment (
   id TEXT PRIMARY KEY, name TEXT NOT NULL,
-  active INTEGER NOT NULL DEFAULT 1
+  active INTEGER NOT NULL DEFAULT 1,
   -- NO rate here. Equipment is SOURCED, not rated — see equipment_sourcing.
+  -- A truck and a trailer are ordinary equipment. These columns are NULL on
+  -- anything that is not a vehicle.
+  is_vehicle       INTEGER NOT NULL DEFAULT 0,
+  capacity_lb      REAL,
+  deck_length_ft   REAL,
+  deck_width_ft    REAL
 );
 
 -- Owned or rented. Same shape as material procurement: a rate, a basis,
@@ -69,7 +75,10 @@ CREATE TABLE equipment_sourcing_methods (
   name                TEXT NOT NULL,        -- "Owned" · "United Rentals"
   kind                TEXT NOT NULL CHECK(kind IN ('owned','rented')),
   rate                REAL NOT NULL,
-  rate_basis          TEXT NOT NULL CHECK(rate_basis IN ('hour','day','week','month')),
+  rate_basis          TEXT NOT NULL CHECK(rate_basis IN ('hour','day','week','month','mile')),
+                      -- 'mile' is how an OWNED vehicle is costed: fuel, tyres,
+                      -- maintenance and depreciation all scale with distance,
+                      -- not time. A RENTED vehicle stays on 'day'.
   minimum_periods     REAL,                 -- 3-day minimum
   is_default          INTEGER NOT NULL DEFAULT 0,
   active              INTEGER NOT NULL DEFAULT 1
@@ -165,6 +174,13 @@ CREATE TABLE components (
   type          TEXT,                       -- "Shade structure"
   status        TEXT NOT NULL DEFAULT 'draft'
                   CHECK(status IN ('draft','active','one_time')),
+  -- Shipping envelope. The version totals weight and takes the MAX of each
+  -- dimension across everything in scope, which is what chooses the trailer.
+  -- Length is usually the binding constraint — long post bundles — not weight.
+  ship_weight_lb  REAL,
+  ship_length_ft  REAL,
+  ship_width_ft   REAL,
+  ship_height_ft  REAL,
   one_time_version_id TEXT,                 -- one_time: the version that owns it
   promoted_from_id    TEXT REFERENCES components(id),
   copied_from_id      TEXT REFERENCES components(id),
@@ -276,6 +292,11 @@ CREATE TABLE projects (
   customer_id     TEXT REFERENCES customers(id),
   contact_id      TEXT REFERENCES contacts(id),
   address TEXT, city TEXT, state TEXT, zip TEXT,
+  distance_mi     REAL,   -- ONE WAY, shop to site. drives vehicle cost.
+  drive_time_hr   REAL,   -- ONE WAY. drives crew travel labour.
+                          -- Both are typed, not derived — no average-speed
+                          -- assumption to argue with. NOT haul_distance_mi,
+                          -- which is spoils disposal.
   native_material_id TEXT REFERENCES materials(id),  -- soil_types dissolved
   notes           TEXT,
   created_at      TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -318,6 +339,24 @@ CREATE TABLE versions (
   UNIQUE(project_id, option_letter, version_number)
   -- NO STATUS COLUMN. Status is derived — see §9.
   -- A version NEVER dies: no rejected, no superseded, no closed.
+);
+
+-- Mobilization is a standalone SERVICE with unit = trip. This table holds the
+-- per-job facts that price it, and the fit check that chooses the trailer.
+CREATE TABLE version_mobilization (
+  version_id        TEXT PRIMARY KEY REFERENCES versions(id),
+  trips             INTEGER NOT NULL DEFAULT 1,
+  trips_computed    INTEGER,          -- ceil(total_weight ÷ capacity), min 1
+  trips_overridden  INTEGER NOT NULL DEFAULT 0,
+  load_hr_per_trip  REAL NOT NULL DEFAULT 0,  -- 0 when load time is already in
+                                              -- the install service durations
+  total_weight_lb   REAL,             -- Σ(component ship_weight × qty)
+  longest_piece_ft  REAL,             -- MAX(ship_length) across scope
+  widest_piece_ft   REAL,
+  truck_equipment_id   TEXT REFERENCES equipment(id),
+  trailer_equipment_id TEXT REFERENCES equipment(id),
+  nights            INTEGER NOT NULL DEFAULT 0,
+  rooms             INTEGER NOT NULL DEFAULT 0
 );
 
 CREATE TABLE version_design_numbers (
