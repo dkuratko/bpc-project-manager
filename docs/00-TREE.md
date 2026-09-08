@@ -501,7 +501,10 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
              docs/03a-design-scope-zone.md     (scope only)
              docs/03b-scope-revision-1.md      (identity columns)
              docs/03c-scope-revision-2.md      (groups)
-▢ COST BREAKDOWN · tabs 2, 3, 4 — briefs not yet written
+✔ COST BREAKDOWN · tab 2 REQUIREMENTS — FINAL v1
+✔ COST BREAKDOWN · tab 3 PURCHASING — FINAL v1 (pending $ format)
+✔ COST BREAKDOWN · tab 4 COST — FINAL v2 (collapsible, reconciles at $12,462.07)
+▢ COST BREAKDOWN · problems panel — the last piece
 ▢ NEW PROJECT · PROJECT LIST · PROJECT VIEW · VERSION VIEW ★
 ▢ COST BREAKDOWN EDITOR ★ .... the four zones
 ▢ ESTIMATE EDITOR ★ .......... autofill + override + live effective markup

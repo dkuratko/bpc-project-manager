@@ -18,7 +18,7 @@ When a screen is approved, its final is copied in here and recorded below.
 | 1 | Scope | **✔ FINAL v4** | `docs/design/cost-breakdown-01-scope.v4.dc.html` | `03a` + `03b` + `03c` |
 | 2 | Requirements | **✔ FINAL v1** | `docs/design/cost-breakdown-02-requirements.v1.dc.html` | `03d` |
 | 3 | Purchasing | **✔ FINAL v1** *(pending $ format)* | `docs/design/cost-breakdown-03-purchasing.v1.dc.html` | `03e` |
-| 4 | Cost | ◐ v1 + rev 1 pending | `docs/design/cost-breakdown-04-cost.v1.dc.html` | `03g` + `03h` |
+| 4 | Cost | **✔ FINAL v2** | `docs/design/cost-breakdown-04-cost.v2.dc.html` | `03g` + `03h` |
 
 **Tab 1 · Scope — v4 · FINAL**
 Identity columns (icon · Item · Manufacturer · Part number · Category · Method ·
@@ -36,6 +36,8 @@ separator when built.
 |---|---|---|---|---|
 | — | New Component Wizard (3 steps) | **✔ FINAL** | `docs/design/cost-breakdown-03-purchasing.v1.dc.html
     from  [M] cost breakdown - purchasing/v1 - Purchasing Zone.dc.html
+docs/design/cost-breakdown-04-cost.v2.dc.html
+    from  [M] cost breakdown - cost /Cost Zone v2.dc.html
 docs/design/component-wizard.final.dc.html` | — |
 | — | Readiness panel | **✔ FINAL** | *(same file)* | — |
 | — | New Footing Spec, inline | **✔ FINAL** | *(same file)* | — |
@@ -52,10 +54,11 @@ docs/design/component-wizard.final.dc.html` | — |
 ## Not yet designed
 
 ```
+▢ PROBLEMS PANEL (cost breakdown)  ← the last piece of the cost breakdown
 ▢ NEW PROJECT dialog          ▢ PROJECT LIST            ▢ VERSION VIEW
 ▢ ESTIMATE EDITOR             ▢ CATALOG BROWSER         ▢ CONTACTS
 ▢ ACTIVE VERSIONS LIST        ▢ CALENDAR                ▢ SHIPMENTS
-▢ POST COST                   ▢ PROBLEMS PANEL (cost breakdown)
+▢ POST COST
 ```
 
 ---
@@ -85,6 +88,8 @@ docs/design/cost-breakdown-02-requirements.v1.dc.html
     from  [M] cost breakdown - requirements/Requirements Zone v1.dc.html
 docs/design/cost-breakdown-03-purchasing.v1.dc.html
     from  [M] cost breakdown - purchasing/v1 - Purchasing Zone.dc.html
+docs/design/cost-breakdown-04-cost.v2.dc.html
+    from  [M] cost breakdown - cost /Cost Zone v2.dc.html
 docs/design/component-wizard.final.dc.html
     from  [p] component creation v1/New Component Wizard - Dialogs.dc.html
 ```
