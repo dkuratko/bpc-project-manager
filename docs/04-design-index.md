@@ -48,7 +48,7 @@ thin File · Window · Help menu. See the note at the end of this file.
 
 | # | Screen | Kind | Status | File | Brief |
 |---|---|---|---|---|---|
-| — | Estimate editor | MAIN | ◐ v1, right pane being redone | `docs/design/estimate-editor.v1.dc.html` | `05` + `05a` |
+| — | Estimate editor | MAIN | ◐ v1, right pane being redone | `docs/design/estimate-editor.v1.dc.html` | `05` + `05a` (right pane rewritten) |
 
 **Tab 1 · Scope — v4 · FINAL**
 Identity columns (icon · Item · Manufacturer · Part number · Category · Method ·
