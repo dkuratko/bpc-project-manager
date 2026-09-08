@@ -18,7 +18,7 @@ When a screen is approved, its final is copied in here and recorded below.
 | 1 | Scope | **✔ FINAL v4** | `docs/design/cost-breakdown-01-scope.v4.dc.html` | `03a` + `03b` + `03c` |
 | 2 | Requirements | **✔ FINAL v1** | `docs/design/cost-breakdown-02-requirements.v1.dc.html` | `03d` |
 | 3 | Purchasing | **✔ FINAL v1** *(pending $ format)* | `docs/design/cost-breakdown-03-purchasing.v1.dc.html` | `03e` |
-| 4 | Cost | ◐ brief written | — | `03g` |
+| 4 | Cost | ◐ v1 + rev 1 pending | `docs/design/cost-breakdown-04-cost.v1.dc.html` | `03g` + `03h` |
 
 **Tab 1 · Scope — v4 · FINAL**
 Identity columns (icon · Item · Manufacturer · Part number · Category · Method ·
@@ -73,6 +73,7 @@ docs/design/component-wizard.final.dc.html` | — |
 03e  purchasing-zone.md ............ tab 3
 03f  money-formatting.md ........... cross-cutting, applies to every screen
 03g  cost-zone.md .................. tab 4
+03h  cost-revision-1.md ............ collapsible groups
 ```
 
 ## Origin of committed files
