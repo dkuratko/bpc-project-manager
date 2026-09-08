@@ -671,8 +671,14 @@ CREATE TABLE document_line_objects (
   document_line_id TEXT NOT NULL REFERENCES document_lines(id),
   cost_object_id   TEXT NOT NULL REFERENCES cost_objects(id),
   allocated_cost   REAL,                    -- summed from cost_lines
-  UNIQUE(document_id, cost_object_id)       -- one object → one line
+  UNIQUE(document_id, cost_object_id)       -- one object → one row
 );
+-- The target may be a LINE, a SUB-ITEM or an OPTION — every priced row in
+-- document_lines. A line's cost is everything assigned to it OR to any row
+-- beneath it. Sub-items remain a partial breakdown, so a line may also hold
+-- objects directly.
+-- Editor-only reference shown on each row: 01 · 01.1 · 02.O1 · J.O1.
+-- It never appears on the printed estimate.
 
 -- Free text. NO boilerplate library. Attached to a line, or to the document.
 CREATE TABLE document_notes (
