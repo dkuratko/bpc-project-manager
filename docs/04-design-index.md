@@ -29,10 +29,8 @@ frame. There is a Window menu, Cascade, and Ctrl+Tab between open jobs. Several
 versions can be open at once. The teal desk every screen renders on is the MDI
 client area.
 
-★ **Consequence not yet settled — where do the menu bar and toolbar live?**
-Every approved screen carries its own `File Edit Scope Pricing View Tools Help`
-menu and its own toolbar. Classic Win2000 MDI puts both on the *frame*, and
-they change to match the active child. See the note at the end of this file.
+✔ **Menus and toolbars live on the CHILD**, not the frame. The frame keeps a
+thin File · Window · Help menu. See the note at the end of this file.
 
 ---
 
@@ -132,7 +130,7 @@ runtime and is not committed. They render inside that environment, not standalon
 
 ---
 
-## ★ MDI menu placement — undecided
+## ✔ MDI menu placement — DECIDED: B, child-owned
 
 ```
 A · CLASSIC          menu bar and toolbar live on the FRAME and change to
@@ -148,7 +146,9 @@ B · CHILD-OWNED      frame keeps a thin menu (File · Window · Help). each chi
                      COST: nothing. every approved screen already works.
 ```
 
-Not urgent, but it must be settled before the shell is designed.
+**B is decided.** The frame keeps a thin menu — File · Window · Help — and every
+child window carries its own menu and toolbar exactly as designed. No approved
+screen changes. The frame never has to swap a toolbar when you switch windows.
 
 ---
 
