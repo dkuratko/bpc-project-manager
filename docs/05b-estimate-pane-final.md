@@ -1,162 +1,171 @@
-# Estimate Editor — RIGHT PANE, from the real document
-Replaces every previous attempt. Both exploration briefs are withdrawn — the
-real estimate `26-148A0` answers the question.
+# Estimate Editor — RIGHT PANE
+Modelled on the real estimates. **Section 02 · ESTIMATE OF WORK only.**
+All previous versions of this brief and both exploration briefs are withdrawn.
 
-Reference: `docs/design/reference-real-estimate-26-148A0.dc.html`
+Reference PDFs, committed:
+```
+docs/design/reference/estimate-26-138A0-subitems.pdf   ← sub-items
+docs/design/reference/estimate-26-142A0-options.pdf    ← optional add-ons
+```
 
 ---
 
-## What the real format does
+## ⛔ SCOPE
 
-```
-#  │ ACTIVITY · DESCRIPTION · OPTIONS              │ QTY / UNIT │ UNIT PRICE │ AMOUNT
-───┼──────────────────────────────────────────────┼────────────┼────────────┼──────────
-01 │ DUMOR - 6' Steel Bench [500-60HS] Install [SM]│    5 EA    │  $165.00   │ $825.00
-   │ Surface mount to existing 4" concrete pad;
-   │ layout staked with owner prior to drilling.
-   │ ↳ Anchor bolts & epoxy, set into existing slab │            │            │ ($225.00)
-   │ ↳ Freight consolidation to jobsite             │            │            │ ($150.00)
-   │ [OPT] Surface-mount anchor kit in lieu of embed│    5 EA    │   $55.00   │ +$275.00
-02 │ DUMOR - Grill [#21-00] Installation [EM]       │    1 EA    │  $225.00   │ $225.00
-   DISCLAIMER · Grill location must clear all combustible overhead structures
-   by 10'-0". Relocation after set is billed at T&M.
-```
+Redraw **only the right-hand pane** of the Estimate editor. Window, menu,
+toolbar, context strip, left-hand cost objects pane and price bar are unchanged.
 
-Five things I had wrong, all of them visible here:
+## The one thing to get right
 
-```
-1  LINES ARE UNIT-PRICED.  qty · unit · unit price · amount. not a lump figure.
-2  SUBITEMS ARE INCLUSIVE.  "↳" and the amount in PARENTHESES — already inside
-   the line total, not added to it. and they are a PARTIAL breakdown: line 01's
-   $825.00 with $225.00 and $150.00 shown inside it. they do not have to sum.
-3  OPTIONS CARRY UNIT PRICING TOO, with a leading "+", and are EXCLUDED from
-   the total. the headline says so: "BASE SCOPE, OPTIONS EXCLUDED".
-4  DISCLAIMERS ARE FULL-WIDTH ROWS, no columns, prefixed "DISCLAIMER ·".
-5  A LINE TITLE IS  manufacturer - product [part number] Installation [method]
-```
+The reference documents are **readable because of colour and spacing**, not
+despite them. Keep both. The typeface stays Tahoma 11px to match the app; the
+tint bands, the olive notes, the grey de-emphasis and the generous vertical
+rhythm all carry over exactly.
 
-Plus three structures I did not have at all: a **legend row** explaining `↳`,
-`( )` and `[OPT]`; a **project-level options block with checkboxes**; and a
-**TERMS & EXCLUSIONS** paragraph at the foot.
+This pane will be **less dense than the Scope tab, deliberately.** It is a
+document, not a data grid.
 
 ---
 
-## Build the right pane as this
-
-Group box legend: **The estimate**. One table, white sunken ground.
-
-### Legend strip — above the table, grey, small
+## Palette
 
 ```
-↳ sub-item  ·  (amount) already included in the line total  ·  [OPT] optional, added only if accepted
+band, sub-item / option ......  #f5f5f0   full-width tint behind the row and
+                                          everything attached to it
+note text ....................  #8a7538   olive. ITALIC.
+secondary grey ...............  #909090   qty and unit price on sub-item rows
+unit label grey ..............  #a0a0a0   the "/ EA" half of a qty
+description grey .............  #707070   plain, not italic
+chip fill / border / text ....  #eeeeee / #d0d0d0 / #555555
+rule between line groups .....  #d8d8d8   1px, full width
+column header rule ...........  #000000   1px, under ACTIVITY / QTY / …
+title, amount ................  #000000   bold
 ```
 
-### Columns
-
-| col | width | align |
-|---|---|---|
-| # | 30 | centre, grey |
-| ACTIVITY · DESCRIPTION · OPTIONS | flex | left, **wraps** |
-| QTY / UNIT | 92 | right |
-| UNIT PRICE | 92 | right |
-| AMOUNT | 104 | right |
-
-### Row kinds
+## Spacing
 
 ```
-LINE         numbered, bold title, all four money columns filled
-DESCRIPTION  no number, no amounts. plain sentence, indented, WRAPS.
-SUBITEM      "↳" prefix, indented. amount in PARENTHESES, no qty/unit price.
-OPTION       "[OPT]" prefix. qty · unit price · amount with a leading "+".
-NOTE         full-width, spans all columns. kind in caps then " · " then the
-             text, wrapping. e.g.  DISCLAIMER · …   INCLUSION · …   ASSUMPTION · …
+between line groups ..........  16 px
+chips row → title row ........   3 px      they belong together
+title → note .................   5 px
+tint band, inner padding .....  9 px top and bottom, 10 px left of the ↳
+sub-item title → description .   4 px
+row height ...................  breathe. ~11 px vertical padding on money rows.
 ```
 
-### The content — render exactly this
+---
+
+## Columns
+
+`ACTIVITY` (flex, wraps) · `QTY` (100, right) · `UNIT PRICE` (100, right) ·
+`AMOUNT` (110, right). Header row in letterspaced grey caps with a black rule
+beneath — as in the PDFs, not a `#c0c0c0` bevelled table header.
+
+## Row grammar
 
 ```
-01  Landscape Structures - PlayBooster PB-4400 Install [DB]   1 LS  $10,588.82  $10,588.82
-      Six posts direct-buried, decks, slide, panels and hardware per approved layout.
-      ↳ Play structure assembly                                          ($3,928.69)
-      ↳ Posts and footings                                               ($6,660.13)
-      INCLUSION · Installed per manufacturer's installation drawings.
+LINE          ( chip )( chip )   on their own row, left
+              BOLD TITLE         next row
+              *olive italic note (optional)
+              money columns align to the CHIPS row
+              a line may have NO chips — see Mobilization
 
-02  Shade Systems - 24x24x12 Hip Shade [HIP-242412] Install [SM]  1 EA  $3,138.57  $3,138.57
-      DISCLAIMER · Footings not installed, to be installed before arrival by others,
-      verified level and within 1/4 in over 10 ft.
-      [OPT] Footing installation                              4 EA    $261.25   + $1,045.00
+SUB-ITEM      on a #f5f5f0 band spanning the full width
+              ↳  bold title
+              qty and unit price in GREY, amount in BLACK BOLD
+              amount is INCLUDED in the line above — it never reaches the total
+              may carry a plain grey description line
+              may carry an olive italic note
 
-03  Exerplay - 6 ft Bench [BN-6] Installation [DB]              1 EA    $503.12     $503.12
+OPTION        identical to a sub-item, except:
+              a ( Optional ) chip after the ↳
+              amount prefixed "+" and EXCLUDED from the total
+              the whole row, amount included, in GREY
 
-04  Site work — excavation and EWF removal          ✎ overridden 1 LS  $3,269.49  $3,269.49
-      ↳ Site excavation, 12.00 CY                                        ($2,370.86)
-      ↳ Remove EWF surfacing, 1,700 SF                                     ($898.63)
-      DISCLAIMER · Permits and permit fees by others.
+The tint band wraps the sub-item or option AND its description and note.
 ```
 
-`$10,588.82 + $3,138.57 + $503.12 + $3,269.49 = $17,500.00` ✓
+---
+
+## Render exactly this
+
+```
+( Installation )( Design )                        —      $10,588.82   $10,588.82
+INSTALLATION of Design #4471
+*Site graded not included. Site is to be prepped before arrival.
+▓ ↳ Landscape Structures PlayBooster PB-4400 Installation
+▓                                            1 / EA      $6,660.13    $6,660.13
+▓   Six posts direct-buried, decks, slide, panels and hardware
+▓   *Permitting is not included.
+
+( Installation )( Shade )                    1 / EA      $3,138.57    $3,138.57
+SHADE SYSTEMS 24'x24'x12' Hip Shade [#HIP-242412] Installation [SM]
+*Footings not installed, to be installed before arrival by others, verified
+level and within 1/4 in over 10 ft.
+▓ ↳ ( Optional ) Footing installation        4 / EA        $261.25   + $1,045.00
+▓   *Priced assuming each footing is 3'x12'. Rebar cage included.
+
+( Installation )( Site furnishing )          1 / EA        $503.12      $503.12
+EXERPLAY 6 ft Bench [#BN-6] Installation [DB]
+
+( Installation )( Site work )                     —      $2,819.49    $2,819.49
+SITE WORK — excavation and EWF removal
+▓ ↳ Site excavation                      12.00 / CY        $170.00    $2,040.00
+▓ ↳ Remove EWF surfacing                1,700 / SF          $0.45       $765.00
+▓   *Easy access to EWF dump location is required.
+
+Mobilization                                      —        $450.00      $450.00
+Multi-trip
+
+                                                    SUBTOTAL      $17,500.00
+                                                    TAX             Included
+                                                    TOTAL         $17,500.00
+```
+
+`▓` marks the tint band; do not draw that character.
+
+**The arithmetic, which must hold:**
+`$10,588.82 + $3,138.57 + $503.12 + $2,819.49 + $450.00 = $17,500.00`
+
+Sub-items never reach the total — the PlayBooster's `$6,660.13` sits inside the
+`$10,588.82`, and Site work's two sub-items come to `$2,805.00` inside
+`$2,819.49`. **They are a partial breakdown and do not have to sum.** That is
+deliberate and must not be "corrected."
 
 ### Project-level options block
 
-Beneath the table, its own `#dfdfdf` heading band:
+Beneath the table, after a rule, in letterspaced grey caps:
 
 ```
-PROJECT-LEVEL OPTIONAL ADD-ONS — CHECK TO ACCEPT
+OPTIONAL ADD-ONS — NOT INCLUDED UNLESS ACCEPTED
 
-   ☐  Private utility line locate                                     + $1,200.00
+   ☐  Private utility line locate                                    + $1,200.00
 ```
-
-A real Win2000 checkbox, unticked.
-
-### Totals
-
-```
-                                        SUBTOTAL      $17,500.00
-                                        TAX           INCLUDED
-                                        TOTAL         $17,500.00
-```
-
-### Terms & exclusions
-
-A final block, heading `TERMS & EXCLUSIONS` on a `#dfdfdf` band, then one
-wrapping paragraph of small text. Use the real one from `26-148A0` verbatim.
-
-### Footer add-row
-
-`#dfdfdf`, spanning the table:
-
-```
-＋ Line     ＋ Description     ＋ Sub-item     ＋ Option     ＋ Note ▼
-```
-
-`＋ Note ▼` carries a dropdown for the kind: Disclaimer · Inclusion · Exclusion ·
-Assumption.
-
-### Selection and editing
-
-One row selected — `#000080` ground, white text. Render line **02** selected.
-Text is plain until clicked; render `Posts and footings` mid-edit as the only
-sunken cell on the pane.
 
 ---
 
-## Left pane — one change
+## Editing
 
-`Assigned line` becomes a dropdown per row, as previously specified, and its
-values are now the numbered lines: `01 · 02 · 03 · 04`.
+Selection: one row on `#000080`, white text. Render the **Hip Shade** line
+selected. Text is plain until clicked — render the `SITE WORK` title as the only
+cell in edit state, sunken with a caret.
+
+Footer add-row, `#dfdfdf`, spanning the pane:
+
+```
+＋ Line     ＋ Sub-item     ＋ Option     ＋ Description     ＋ Note ▼
+```
+
+`＋ Note ▼` opens a kind list: Disclaimer · Inclusion · Exclusion · Assumption.
 
 ---
 
-## Model changes this forces
+## Rules this render must not break
 
-Flagged for the schema, not for the renderer:
-
-```
-document_lines needs  quantity · unit · unit_price   in addition to amount
-SUBITEMS are inclusive and partial — drop the "subitems must sum to parent" rule
-OPTIONS are excluded from the total — the headline must say so
-NOTES get a kind: disclaimer · inclusion · exclusion · assumption
-TERMS & EXCLUSIONS is document-level boilerplate and IS reused between jobs,
-   which contradicts the earlier "no boilerplate" decision. Per-line notes are
-   still written fresh; this one paragraph is standing text.
-```
+- **Colour and spacing are the point.** A dense grey grid is a failure even if
+  every value is correct.
+- **Sub-items are included, options are excluded.** The `( Optional )` chip and
+  the leading `+` are the only difference, and both must be unmistakable.
+- **Sub-items do not have to sum to their line.**
+- **Notes wrap.** The long one runs to two lines.
+- **No cost figures.** Cost lives in the left pane.
