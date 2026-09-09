@@ -1,0 +1,171 @@
+# Design brief — VERSION VIEW
+**MAIN**, an MDI child window. Opened by double-clicking a version in the
+Project Browser. Apply `03f-money-formatting.md` and `08-status-colours.md`.
+
+---
+
+## ⛔ SCOPE
+
+One screen, one state. No dialogs, no menus open, no second window.
+
+## ⛔ RENDER THE VALUES LITERALLY
+
+Every figure, date and status below is final.
+
+---
+
+## What it is
+
+**The hub for one job.** A version is the job — it has its own estimate, its own
+schedule, its own invoice, its own warranty — and this is where you see where it
+stands and jump to the screens that do the work.
+
+It is a **status page, not a working surface.** Almost everything on it is
+read-only. The work happens in the cost breakdown, the estimate editor and the
+dialogs the toolbar opens.
+
+---
+
+## Window
+
+**1000 × 660**, MDI child on the teal desk. **10 px Tahoma, `letter-spacing:
+.05em`** — same as the browser.
+
+```
+Version 26-09A0 — Dobson Park Ramadas                        [_][□][×]
+File   Edit   Version   Documents   Tools   Help
+[Cost breakdown] [Estimate] ‖ [Record approval…] [Record shipment…]
+[Schedule…] [Invoice…] ‖ [Post cost]
+```
+
+`Post cost` is **greyed** — the job is not complete.
+
+### Identity strip
+
+Sunken band, two rows, grey labels:
+
+```
+Customer   Exerplay, Inc. · Grant Smith      Project    26-09 Dobson Park Ramadas
+Site       1625 W Ryan Rd, Chandler AZ       Version    Option A · version 0
+```
+
+### Status strip
+
+Full width, **tinted with the status colour** — here `#8ECF8E` green for
+`Scheduled` — with a 4 px `#CC0000` lip at the left because there is a problem.
+
+```
+▌  Scheduled            install 22 Sep          ⚠  No equipment on the lot
+                                                   Play Structure PS-4400
+                                                   outstanding · ship date
+                                                   was 02 Sep
+```
+
+Status name in 15 px bold. The alert on the right in `#a00`.
+
+---
+
+## Body — two columns
+
+Left 430 px, right flex. Group boxes, sunken, legend chips — the Requirements
+tab's construction.
+
+### LEFT · "Progress"
+
+The lifecycle from `Accepted` onward, one row each, with its date. This is the
+spine of the screen.
+
+```
+   ✓  Accepted                    02 Sep    PO 4471-B
+   ✓  Awaiting delivery           02 Sep
+   ⚠  Equipment received             —      1 of 2 shipments
+   ●  Scheduled                   22 Sep    ← current
+      Active
+      Invoice sent
+      Completed, paid
+      Warranty
+      Completed
+```
+
+```
+✓  done, black
+⚠  reached but incomplete, #a00
+●  current, bold, with a 9 px square of the status tint before it
+   future states in #909090, no marker
+```
+
+### LEFT · "Shipments"
+
+```
+Expected ship date              02 Sep      ⚠ 7 days late
+   #1   received 28 Aug   ✓  4 crates · 12 photos
+        Ramada frame · hardware · fabric
+   #2   not received      ⚠  Play Structure PS-4400
+
+                                 1 of 2 components received
+```
+
+### RIGHT · "Documents"
+
+A small table: reference · what · created · sent · state.
+
+```
+BPCc-26-09A0   Cost breakdown   14 Aug     —          complete
+BPCe-26-09A0   Estimate         20 Aug     20 Aug     accepted 02 Sep
+               Change orders    —          —          none
+               Invoice          —          —          not raised
+               Post cost        —          —          not started
+```
+
+Rows with no document show the type in `#909090` and a state in `#909090`.
+Double-clicking a real reference opens it.
+
+### RIGHT · "Money"
+
+```
+Quoted                                        $15,250.00
+Approved                    PO 4471-B         $15,250.00
+Change orders               none                   $0.00
+                                              ───────────
+Revised contract                              $15,250.00
+Invoiced                                           $0.00
+Paid                                               $0.00
+                                              ───────────
+Outstanding                                   $15,250.00
+
+Cost $11,834.00  ·  margin 22.4%
+```
+
+The cost line in `#606060` — internal, never on a customer document.
+
+### RIGHT · "Schedule"
+
+```
+Install date                22 Sep
+Duration                    3.1 days      24.8 hr · crew 3 × Installer
+Equipment                   Telehandler 9.0 hr · Mixer 2.0 hr
+Mobilization                2 trips · 18 mi · 0.4 hr each way
+Materials to deliver        Concrete 4.50 CY · Rebar Cage B 6 EA
+```
+
+### RIGHT · "Warranty"
+
+```
+Starts                      on invoice — not yet started
+Term                        12 months
+Expires                     —
+```
+
+---
+
+## Rules
+
+- **Status colour tints the status strip only**, not the whole window.
+- **A problem shows as a 4 px `#CC0000` lip** on the status strip, plus `#a00`
+  text. Never a red tint.
+- **Almost nothing here is editable.** Dates, money and states are read-only;
+  the toolbar opens the dialogs that change them.
+- **A document row with no document is not blank** — it names the type in grey
+  and says what state it is in, so you can see what has not happened yet.
+- Money carries `$` and two decimals. Cost is `#606060`.
+- Dates are `22 Sep`, with the year only when it is not this one.
