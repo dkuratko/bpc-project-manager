@@ -58,12 +58,7 @@ spine down the whole selected group, and never touches the row's status tint.
 
 | # | Screen | Kind | Status | File | Brief |
 |---|---|---|---|---|---|
-| — | Estimate editor | MAIN | ★ **PARKED — needs review** | `docs/design/estimate-editor.v10.dc.html` | `05f` · `05g` · `05h` |
-
-**Committed file is v10.** Two briefs sit unrendered on top of it: `05g` (v11,
-template chrome, preferred over v10) and `05h` (v12, box-grammar experiment).
-Neither is rendered or approved. Pick one before the invoice and post cost
-screens are designed, since they would follow whichever grammar wins.
+| — | Estimate editor | MAIN | **✔ APPROVED v12** | *(pending file)* | `05f` · `05g` · `05h` |
 | — | Version view | MAIN | **✔ FINAL v3** | `docs/design/version-view.v3.dc.html` | `09` |
 
 All MAIN screens follow `10-main-window-template.md`: identity strip, tinted

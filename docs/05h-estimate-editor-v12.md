@@ -1,7 +1,10 @@
-# Estimate Editor — v12 · EXPERIMENT
+# Estimate Editor — v12 · APPROVED
 Applies `10-main-window-template.md` chrome (as v11) **and** rebuilds the body
-in the Version View's box grammar. This is a test — v11 stands until you
-prefer this.
+in the Version View's box grammar.
+
+**Approved 2026-09-09**, on the condition that job-level add options can be
+**created** in the Optional add-ons box, not merely listed. That is specified
+below.
 
 ---
 
@@ -44,11 +47,37 @@ Boxes size to content and stack from the top. They never stretch.
 expansion showing cost · price · margin, the footer add-row. **Do not redraw
 it.** Its totals block and add-ons block move out into the two boxes below.
 
-**Optional add-ons** — job-level only, in the Version View's labelled-row style:
+**Optional add-ons** — job-level only, and **editable**. This is where job-wide
+options are created, not just displayed.
 
 ```
 ☐  Private utility line locate                             + $1,200.00
+☐  Hard-dig allowance — rock / caliche                     + $1,250.00
+─────────────────────────────────────────────────────────────────────
+＋ Add option
 ```
+
+```
+LABEL      plain text until clicked, then a sunken field. same rule as
+           everywhere else — double-click to edit.
+AMOUNT     editable, monospace, prefixed "+"
+CHECKBOX   whether the customer ACCEPTED it. ticked when the PO comes back
+           naming it. not a UI toggle for you.
+＋ Add option   a #dfdfdf footer row inside this box, matching the estimate
+           table's own footer add-row.
+```
+
+**Two places create add options, and they are different things:**
+
+```
+the estimate table's footer   ＋ Option   →  LINE-SPECIFIC. attaches to the
+                                             selected line. renders as
+                                             ↳ (Optional) inside the table.
+this box's footer             ＋ Add option → JOB-LEVEL. belongs to no line.
+```
+
+Both are scope deltas priced as a marginal recompute; only their attachment
+differs.
 
 **Totals** — labelled rows, grey labels, monospace right-aligned:
 
@@ -66,15 +95,15 @@ the SCREEN STRIP · derived status bar. See `05g`.
 
 ---
 
-## What this risks, and what to judge
+## What this settles
 
-The reason v10 put all three in one white surface is that **the estimate is a
-document**, and your real ones read as one page — line items, then add-ons,
-then totals, flowing together. Three boxes with bevelled frames between them
-may read as three unrelated panels rather than one estimate.
+v10 kept the line table, add-ons and totals on one white surface deliberately —
+the estimate is a document and the real ones read as one page. The open question
+was whether three bevelled boxes would break that.
 
-Judge it on that: **does it still look like something you would send?**
+**They do not.** So the box grammar is not only for status pages: it holds on a
+document too, and the app now has **one body grammar on every screen.**
 
-If it does, the app gains one consistent body grammar across every screen.
-If it does not, v11 stands and the Version View's grammar simply does not
-belong on a document.
+That matters beyond this screen — the **INVOICE** and **POST COST** screens are
+documents in the same sense, and both can now be designed the same way rather
+than inventing a second convention.
