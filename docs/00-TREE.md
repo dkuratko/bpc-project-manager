@@ -607,6 +607,22 @@ hold anything you would want to keep looking at.
      sub-items AND options · row expansion showing cost · price · margin
      · grey selection · edit on double-click only · right-click Delete
 ▢ VEHICLES screen — new. the Tier 1 $/mile dialog lives here.
+★ REVIEW THE ESTIMATE EDITOR — parked, come back to it
+     v10 is committed and approved. Two unrendered briefs sit on top of it:
+       05g · v11  MAIN template chrome — identity strip, tinted status
+                  strip, price bar as screen strip, derived status bar.
+                  Body untouched. Damian preferred this to v10.
+       05h · v12  EXPERIMENT. the Version View's several-small-boxes
+                  grammar applied to the body: "Estimate of work",
+                  "Optional add-ons", "Totals" as three boxes instead of
+                  one white surface.
+     ★ v12 IS A COIN-FLIP. v10 kept them on one surface deliberately —
+       the estimate is a DOCUMENT and the real ones read as one page.
+       Judge it on: does it still look like something you would send?
+       If not, v11 stands, and that also tells us the box grammar belongs
+       on status pages but NOT on documents — worth knowing before the
+       INVOICE and POST COST screens are designed the same way.
+
 ▢ the material list itself — principle settled, contents are data entry
 [?] a "post cost outstanding" counter on the project browser — jobs finished
     with no post cost. the loop that keeps rate tables honest is the easiest
