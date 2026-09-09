@@ -155,10 +155,13 @@ lodging               2 nights × 2 rooms × $145.00 ....    $580.00
                                           added by staying  $1,015.20
 ```
 
-[?] Assumed: per diem applies to **all** labour on the version once `nights > 0`,
-on the basis that if the job needs a stay, the crew is away for its duration.
-If a long job mixes stay-over days with day trips, it would need to apply only
-to the away days — say so and it becomes a day count rather than a total.
+✔ Per diem applies to **all** labour on the version once `nights > 0`.
+
+Accepted as a known simplification. A long job that mixes stay-over days with
+day trips will overpay, because per diem should then be a count of away days
+rather than a share of the total. Revisit when that job actually turns up —
+the change is a day count in place of a percentage of the whole, and nothing
+else in the model moves.
 
 ## The truck's $/mile ✔ — computed, not typed
 
