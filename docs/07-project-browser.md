@@ -131,9 +131,9 @@ A **14 px gutter** sits left of the `±` column.
 whole selected group ties the project and its versions together as one thing;
 a box around a single row would not. The project row also carries the `▶`.
 
-The selected rows are **shaded, never filled** — a 15 % black wash over each
-row's own tint, so the status colour darkens rather than disappearing. See
-`08-status-colours.md` for the computed pairs.
+**The selected row is not shaded.** No wash, no fill, no darkening — the status
+tint is identical selected or not. The arrow and the spine are the entire
+indicator, and they sit beside the row rather than on top of it.
 
 A problem also shows its flag glyph and puts the Status text in `#a00`.
 
@@ -198,8 +198,9 @@ gut  tint    ±  Project   Status               Name                            
 ```
 gut     the 14 px gutter. ▶ = selected, ▌ = 4 px #CC0000 problem lip.
         NOT a column header — leave it unlabelled.
-26-10   SELECTED — ▶ in the gutter, 2 px solid black rectangle, and the row
-        shaded to #d9d9d9 (white tint at 15% black). expanded.
+26-10   SELECTED — ▶ in the gutter and the black spine. Its row stays
+        WHITE, because its status is Quoting. Selection never greys a row.
+        expanded.
 26-09   GREEN row with a red lip — scheduled, no equipment on the lot.
         the row keeps its real phase; the lip says it is wrong.
 26-14   WHITE row with a red lip — blocked from issuing.

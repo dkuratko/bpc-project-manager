@@ -71,53 +71,26 @@ GUTTER    14 px, left of the ± column. holds two things:
              ▌  the 4 px #CC0000 problem lip
           both can appear at once.
 SELECTED  ▶ in the gutter
-        + a 2 px SOLID black rectangle around the row
-        + a 15% black wash over the row's own tint
-          the tint DARKENS, it is never replaced.
+        + a 3 px black spine down the left edge of the whole selected group
+          NO wash, NO fill, NO darkening. the tint is untouched.
 ```
 
 The old database-app record selector — Access, FoxPro, dBASE. It reads at a
 glance, costs no colour, and gives the problem lip a proper home.
 
-The rectangle is **2 px solid black**, not a hairline focus dash — this is the
-row you are working on and it should be unmistakable across a 1400 px window.
 
-### The selected row is shaded, not filled
+### The selected row is NOT shaded
 
-A **15% black wash** over whatever tint the row already has. It darkens rather
-than replaces, so the status colour survives selection.
+Selection changes **nothing** about the row's colour. No wash, no fill, no
+darkening. The status tint is exactly the same selected or not.
 
 ```
-rgba(0, 0, 0, 0.15)  over the row's own tint
+SELECTED = ▶ in the gutter  +  a 3 px black spine down the left edge
 ```
 
-Computed, so there is no ambiguity if alpha renders oddly:
-
-```
-tint            normal      selected
-────────────────────────────────────
-white           #ffffff  →  #d9d9d9
-blue            #9CC3E2  →  #85A6C0
-light green     #B5E3B5  →  #9AC19A
-green           #8ECF8E  →  #79B079
-yellow          #F5E183  →  #D0BF6F
-orange          #F0B778  →  #CC9C66
-red             #E89494  →  #C57E7E
-```
-
-All still take 11 px black text. **The three signals stack** — arrow in the
-gutter, 2 px black rectangle, and the shaded row — so selection is obvious from
-across the screen while the status is still legible on the row itself.
-
-
-```
- ▶ ▌ +  26-09   SCHEDULED              selected AND a problem
-   ▌ +  26-14   Quoting · blocked      problem, not selected
- ▶   −  26-10   Quoting                selected, no problem
-```
-
-**No colour chips.** They existed only because the old grey cursor hid the row
-tint. With the tint no longer covered, they have nothing to do.
+That is the whole indicator. It sits beside the row rather than on top of it,
+so the status colour is never touched — which was the point of moving the
+cursor into a gutter in the first place.
 
 ## Overlay conditions
 

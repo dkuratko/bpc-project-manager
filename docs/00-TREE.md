@@ -79,9 +79,9 @@ PROJECT ─── BPC-26-10 ─── "San Tan Shade Installation"
        A RED ROW ALWAYS MEANS FINISHED. problems never tint a row —
        a 4px #CC0000 lip in the left gutter, plus a flag, plus #a00 text.
        CURSOR: a 3px black SPINE down the whole selected group (project +
-       its expanded versions), ▶ on the project row, and a 15% black wash
-       over each row's own tint — it DARKENS rather than replacing, so the
-       status survives selection. no colour chips.
+       its expanded versions) plus ▶ on the project row. NOTHING ELSE —
+       no wash, no fill, no darkening. the status tint is identical
+       selected or not. no colour chips.
   ✔ "completed, payment required" REMOVED — it had no trigger of its own.
 ```
 
