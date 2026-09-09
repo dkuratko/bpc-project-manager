@@ -69,9 +69,10 @@ $5,390.00              2
 
 | col | w | project row | version row |
 |---|---|---|---|
+| *(gutter)* | 14 | `▶` selected · `▌` problem | same |
 | ± | 20 | − / + | blank |
 | Project | 112 | `26-10` | `26-10A0` indented, monospace |
-| Status | 190 | rollup + colour chip | its own + colour chip |
+| Status | 190 | rollup | its own |
 | Name | flex | project name | the version's scope line |
 | Customer | 150 | ✓ | blank |
 | Contact | 130 | ✓ | blank |
@@ -84,30 +85,36 @@ $5,390.00              2
 **Value and GM% never appear on a project row.** A project has no value — its
 versions do. Expand to see money.
 
-## Status colour — tint and chip
+## Status colour — row tint
 
 Row tint is the ramp from `08-status-colours.md`:
 
 ```
- 1–5   quoting                                   #ffffff   white
- 6–7   Accepted · Awaiting delivery              #c8e6c9   green
- 8     Equipment received                        #f5f0c0   light yellow
- 9     Scheduled                                 #f0e08a   yellow
-10     Active                                    #f4c7d4   pink
-11     Invoice sent, payment required            #f7cfa0   orange
-12–14  Paid · Warranty · Completed               #e0b0b0   red
-PROBLEM                                          #ffadad   + 3 px #a00 left
-                                                   edge + flag + #a00 text
+ 1–5   quoting                                #ffffff   white
+ 6–7   Accepted · Awaiting delivery           #7FB3E0   blue
+ 8     Equipment received                     #A6DE9B   light green
+ 9     Scheduled                              #6BC96B   green
+10     Active                                 #FFE24D   yellow
+11     Invoice sent, payment required         #FFA94D   orange
+12–14  Paid · Warranty · Completed            #F5766E   red
 ```
 
-The **Status cell also carries a 9 × 9 px colour chip** of the same tint, 1 px
-`#808080` border, before the text.
+**A red row always means finished.** Problems never tint a row.
 
-## Selection is grey
+## Gutter, problem lip and cursor
 
-`#c0c0c0`, black text — matching the estimate editor, one selection colour in
-the app. The tint is replaced under selection; **the chip survives it**, and is
-how you still see where the job stands.
+A **14 px gutter** sits left of the `±` column and carries both:
+
+```
+▶   black, on the selected row
+▌   a 4 px #CC0000 lip — this row has a problem
+```
+
+**Selection is `▶` plus a 1 px dotted black rectangle around the row. No fill.**
+The status tint is never covered. There are **no colour chips** — they only
+existed to survive a cursor that filled the row, and that cursor is gone.
+
+A problem also shows its flag glyph and puts the Status text in `#a00`.
 
 ## Expansion
 
@@ -131,27 +138,30 @@ Do not render the menu open.
 ## Render exactly this
 
 ```
-tint    ±  Project   Status                Name                             Customer          Contact          Location      Vers  Value        GM%   Flags
-────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-orange  +  26-07     ▪ INVOICE SENT        The Cypress at South Mountain    Exerplay, Inc.    Grant Smith      Phoenix, AZ    1                        !
-prob    +  26-09     ▪ SCHEDULED           Dobson Park Ramadas              Exerplay, Inc.    Grant Smith      Chandler, AZ   2                        !
-pink    +  26-08     ▪ ACTIVE              Doris J. Thompson Fitness        Exerplay, Inc.    Grant Smith      Tucson, AZ     1
-white   −  26-10     ▪ Quoting             San Tan Shade Installation       Exerplay, Inc.    Grant Smith      Gilbert, AZ    3
-white         26-10A0  ▪ Not sent          PlayBooster + hip shade                                                                 $17,500.00   28.8
-white         26-10A1  ▪ Sent, awaiting    + bench, moved ramp                                                                     $18,240.00   28.7  $
-white         26-10B0  ▪ Not sent          Shade only                                                                               $4,180.00   28.0
-green   +  26-11     ▪ AWAITING DELIVERY   Desert Ridge HOA — PlayBooster   Desert Ridge HOA  Marla Whitfield  Phoenix, AZ    2                        ⚑
-white   +  26-12     ▪ Quoting             Verrado Elementary — Ramada Add  Litchfield ESD    Dana Ruiz        Buckeye, AZ    1                        $
-white   +  26-13     ▪ Quoting             Riparian Preserve — Nature Play  Town of Gilbert   Alan Cortez      Gilbert, AZ    1
-prob    +  26-14     ▪ Quoting · blocked   Skyline HS — Bleacher Shade      Mesa USD          Priya Nand       Mesa, AZ       2                        !
+gut  tint    ±  Project   Status               Name                             Customer          Contact          Location      Vers  Value        GM%   Flags
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+     orange  +  26-07     INVOICE SENT         The Cypress at South Mountain    Exerplay, Inc.    Grant Smith      Phoenix, AZ    1                        !
+  ▌  green   +  26-09     SCHEDULED            Dobson Park Ramadas              Exerplay, Inc.    Grant Smith      Chandler, AZ   2                        !
+     yellow  +  26-08     ACTIVE               Doris J. Thompson Fitness        Exerplay, Inc.    Grant Smith      Tucson, AZ     1
+▶    white   −  26-10     Quoting              San Tan Shade Installation       Exerplay, Inc.    Grant Smith      Gilbert, AZ    3
+     white        26-10A0  Not sent            PlayBooster + hip shade                                                                 $17,500.00   28.8
+     white        26-10A1  Sent, awaiting      + bench, moved ramp                                                                     $18,240.00   28.7  $
+     white        26-10B0  Not sent            Shade only                                                                               $4,180.00   28.0
+     blue    +  26-11     AWAITING DELIVERY    Desert Ridge HOA — PlayBooster   Desert Ridge HOA  Marla Whitfield  Phoenix, AZ    2                        ⚑
+     white   +  26-12     Quoting              Verrado Elementary — Ramada Add  Litchfield ESD    Dana Ruiz        Buckeye, AZ    1                        $
+     white   +  26-13     Quoting              Riparian Preserve — Nature Play  Town of Gilbert   Alan Cortez      Gilbert, AZ    1
+  ▌  white   +  26-14     Quoting · blocked    Skyline HS — Bleacher Shade      Mesa USD          Priya Nand       Mesa, AZ       2                        !
 ```
 
 ```
-26-10   EXPANDED and SELECTED — grey #c0c0c0, black text, chip still visible
-26-09   PROBLEM #ffadad + red edge bar + "SCHEDULED" in #a00
-        scheduled with no equipment on the lot
-26-14   PROBLEM — blocked from issuing
-▪       the colour chip. draw a 9 × 9 px square, not a character.
+gut     the 14 px gutter. ▶ = selected, ▌ = 4 px #CC0000 problem lip.
+        NOT a column header — leave it unlabelled.
+26-10   SELECTED — ▶ in the gutter + dotted rectangle. NO fill.
+        row tint stays white. expanded.
+26-09   GREEN row with a red lip — scheduled, no equipment on the lot.
+        the row keeps its real phase; the lip says it is wrong.
+26-14   WHITE row with a red lip — blocked from issuing.
+        Status text on both problem rows is #a00.
 ```
 
 Default sort: **project number ascending**. Header click flips.

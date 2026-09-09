@@ -72,11 +72,14 @@ PROJECT ─── BPC-26-10 ─── "San Tan Shade Installation"
   ✔       COMPLETED ....................... terminal, on warranty expiry
 
   ✔ STATUS COLOURS — a progression ramp, not semantics. see docs/08.
-       1–5 white · 6–7 green · 8 light yellow · 9 yellow · 10 pink
+       1–5 white · 6–7 blue · 8 light green · 9 green · 10 yellow
        11 orange · 12–14 red   (14 statuses — "completed, payment
        required" was removed; completion IS the invoice)
-       PROBLEM #ffadad OVERRIDES the phase tint, reinforced by a 3px #a00
-       left-edge bar, a flag and #a00 status text. red serves both meanings.
+       standard hues, not pastels. all take 11px black text.
+       A RED ROW ALWAYS MEANS FINISHED. problems never tint a row —
+       a 4px #CC0000 lip in the left gutter, plus a flag, plus #a00 text.
+       CURSOR: ▶ in the gutter + a dotted rectangle. NO fill, so the
+       status colour is never covered. no colour chips.
   ✔ "completed, payment required" REMOVED — it had no trigger of its own.
 ```
 

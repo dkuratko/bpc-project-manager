@@ -5,25 +5,30 @@ Decided 2026-09-08. Applies to every screen that shows a version's state.
 
 ## The ramp
 
-Colour tracks **position in the lifecycle**, not meaning. Green early, red late.
-It is a progression, not a semantic scale — red does **not** mean bad here.
+Colour tracks **position in the lifecycle**, not meaning. Blue at the start,
+red at the end. It is a progression, not a semantic scale — red does **not**
+mean bad here, it means finished.
+
+Standard hues, not pastels. All six still take 11 px black text; anything
+bolder would force white text on the red and the blue, and the rows would stop
+agreeing with each other.
 
 ```
- 1  Draft — no estimate yet                              #ffffff   white
- 2  Estimate created, not sent                           #ffffff   white
- 3  Sent, awaiting                                       #ffffff   white
- 4  Expired — 30 days, no answer                         #ffffff   white
- 5  Blocked — cannot issue                               #ffffff   white
-────────────────────────────────────────────────────────────────────────
- 6  Accepted                                             #c8e6c9   green
- 7  Awaiting delivery                                    #c8e6c9   green
- 8  Equipment received                                   #f5f0c0   light yellow
- 9  Scheduled                                            #f0e08a   yellow
-10  Active                                               #f4c7d4   pink
-11  Invoice sent, payment required  ▶ warranty starts    #f7cfa0   orange
-12  Completed, paid                                      #e0b0b0   red
-13  Warranty — paid, still covered                       #e0b0b0   red
-14  Completed — terminal, on warranty expiry             #e0b0b0   red
+ 1  Draft — no estimate yet                          #ffffff   white
+ 2  Estimate created, not sent                       #ffffff   white
+ 3  Sent, awaiting                                   #ffffff   white
+ 4  Expired — 30 days, no answer                     #ffffff   white
+ 5  Blocked — cannot issue                           #ffffff   white
+──────────────────────────────────────────────────────────────────────
+ 6  Accepted                                         #7FB3E0   blue
+ 7  Awaiting delivery                                #7FB3E0   blue
+ 8  Equipment received                               #A6DE9B   light green
+ 9  Scheduled                                        #6BC96B   green
+10  Active                                           #FFE24D   yellow
+11  Invoice sent, payment required ▶ warranty starts #FFA94D   orange
+12  Completed, paid                                  #F5766E   red
+13  Warranty — paid, still covered                   #F5766E   red
+14  Completed — terminal, on warranty expiry         #F5766E   red
 ```
 
 **ACTIVE covers more than crew-on-site.** A job stays `ACTIVE` from the moment
@@ -31,36 +36,51 @@ work starts until the invoice goes out — including the gap after the crew has
 left and before you have billed. Completion *is* the invoice, so there is no
 state between them.
 
-All tints are pale enough that 11 px black text stays crisp. Statuses 1–5 share
-white; the Status **text** carries the difference, since nothing has been won
-yet and colour would only add noise.
-
 ✔ **"Completed, payment required" was removed.** It sat between finishing work
-and billing for it and had no trigger of its own — completion *is* the invoice.
-Fourteen statuses, not fifteen.
+and billing for it and had no trigger of its own. Fourteen statuses, not fifteen.
 
 ---
 
-## Problems ARE a tint — red serves both
+## Problems are a LIP, not a tint
 
-Decided: red carries both *finished* and *problem*. The two tints sit close, so
-a problem row is reinforced rather than relying on colour alone:
+A problem never changes the row colour. **A red row always means finished
+(12–14) and nothing else.**
 
 ```
-PROBLEM   #ffadad  ground — OVERRIDES the phase tint
-        + 3 px #a00 bar down the left edge
+PROBLEM   4 px #CC0000 lip down the left edge, inside the selector gutter
         + the flag glyph
         + Status text in #a00
-
-DONE      #e0b0b0  ground, no edge bar, black text
 ```
 
-The edge bar and the red status text are what separate them at a glance. A
-completed job is quiet red; a broken one is red **with a hard red edge and red
-text**, and its status reads `SCHEDULED` in `#a00` rather than in black.
+The row keeps its real phase. A scheduled job with no equipment reads as
+**green with a red lip** — where it actually is, visibly wrong.
 
-A problem row loses its phase tint. That is the accepted trade — attention wins
-over position.
+---
+
+## The row cursor — gutter marker
+
+Selection must not cover the status colour, so it does not fill the row.
+
+```
+GUTTER    14 px, left of the ± column. holds two things:
+             ▶  black, on the selected row
+             ▌  the 4 px #CC0000 problem lip
+          both can appear at once.
+SELECTED  ▶ in the gutter + a 1 px dotted black rectangle around the row
+          NO fill. the status tint is untouched.
+```
+
+The old database-app record selector — Access, FoxPro, dBASE. It reads at a
+glance, costs no colour, and gives the problem lip a proper home.
+
+```
+ ▶ ▌ +  26-09   SCHEDULED              selected AND a problem
+   ▌ +  26-14   Quoting · blocked      problem, not selected
+ ▶   −  26-10   Quoting                selected, no problem
+```
+
+**No colour chips.** They existed only because the old grey cursor hid the row
+tint. With the tint no longer covered, they have nothing to do.
 
 ## Overlay conditions
 
