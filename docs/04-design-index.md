@@ -44,6 +44,16 @@ thin File · Window · Help menu. See the note at the end of this file.
 | 4 | Cost | MAIN · tab 4 | **✔ FINAL v2** | `docs/design/cost-breakdown-04-cost.v2.dc.html` | `03g` + `03h` |
 | — | Problems panel | POPUP | **✔ FINAL v1** | `docs/design/cost-breakdown-problems-panel.v1.dc.html` | `03i` |
 
+## Shell
+
+| # | Screen | Kind | Status | File | Brief |
+|---|---|---|---|---|---|
+| — | Project browser | MAIN · the frame | **✔ FINAL v14** | `docs/design/project-browser.v14.dc.html` | `07` + `08` |
+
+The MDI frame's client area **is** the browser. Rows expand to versions;
+option groups get labelled bands; the cursor is a gutter arrow plus a black
+spine down the whole selected group, and never touches the row's status tint.
+
 ## Estimate
 
 | # | Screen | Kind | Status | File | Brief |
@@ -94,7 +104,7 @@ docs/design/component-wizard.final.dc.html` | — |
 ## Not yet designed
 
 ```
-MAIN    ▢ PROJECT LIST      ▢ VERSION VIEW
+MAIN    ▢ VERSION VIEW
         ▢ CATALOG BROWSER   ▢ CONTACTS           ▢ ACTIVE VERSIONS LIST
         ▢ CALENDAR          ▢ SHIPMENTS          ▢ POST COST
 
