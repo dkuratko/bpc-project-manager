@@ -78,8 +78,9 @@ PROJECT ─── BPC-26-10 ─── "San Tan Shade Installation"
        standard hues, not pastels. all take 11px black text.
        A RED ROW ALWAYS MEANS FINISHED. problems never tint a row —
        a 4px #CC0000 lip in the left gutter, plus a flag, plus #a00 text.
-       CURSOR: ▶ in the gutter + a dotted rectangle. NO fill, so the
-       status colour is never covered. no colour chips.
+       CURSOR: ▶ in the gutter + a 2px solid black rectangle + a 15% black
+       wash over the row's own tint. it DARKENS the status colour rather
+       than replacing it, so the status survives selection. no colour chips.
   ✔ "completed, payment required" REMOVED — it had no trigger of its own.
 ```
 

@@ -66,8 +66,10 @@ GUTTER    14 px, left of the ± column. holds two things:
              ▶  black, on the selected row
              ▌  the 4 px #CC0000 problem lip
           both can appear at once.
-SELECTED  ▶ in the gutter + a 2 px SOLID black rectangle around the row
-          NO fill. the status tint is untouched.
+SELECTED  ▶ in the gutter
+        + a 2 px SOLID black rectangle around the row
+        + a 15% black wash over the row's own tint
+          the tint DARKENS, it is never replaced.
 ```
 
 The old database-app record selector — Access, FoxPro, dBASE. It reads at a
@@ -75,6 +77,34 @@ glance, costs no colour, and gives the problem lip a proper home.
 
 The rectangle is **2 px solid black**, not a hairline focus dash — this is the
 row you are working on and it should be unmistakable across a 1400 px window.
+
+### The selected row is shaded, not filled
+
+A **15% black wash** over whatever tint the row already has. It darkens rather
+than replaces, so the status colour survives selection.
+
+```
+rgba(0, 0, 0, 0.15)  over the row's own tint
+```
+
+Computed, so there is no ambiguity if alpha renders oddly:
+
+```
+tint            normal      selected
+────────────────────────────────────
+white           #ffffff  →  #d9d9d9
+blue            #7FB3E0  →  #6C98BE
+light green     #A6DE9B  →  #8DBD84
+green           #6BC96B  →  #5BAB5B
+yellow          #FFE24D  →  #D9C041
+orange          #FFA94D  →  #D99041
+red             #F5766E  →  #D0645E
+```
+
+All still take 11 px black text. **The three signals stack** — arrow in the
+gutter, 2 px black rectangle, and the shaded row — so selection is obvious from
+across the screen while the status is still legible on the row itself.
+
 
 ```
  ▶ ▌ +  26-09   SCHEDULED              selected AND a problem

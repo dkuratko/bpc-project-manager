@@ -110,9 +110,38 @@ A **14 px gutter** sits left of the `±` column and carries both:
 ▌   a 4 px #CC0000 lip — this row has a problem
 ```
 
-**Selection is `▶` plus a 2 px solid black rectangle around the row. No fill.**
-The status tint is never covered. There are **no colour chips** — they only
-existed to survive a cursor that filled the row, and that cursor is gone.
+**Selection is `▶` in the gutter, a 2 px solid black rectangle around the row,
+and a 15% black wash over the row's own tint.** The tint darkens; it is never
+replaced. There are **no colour chips** — they existed only to survive a cursor
+that hid the row colour, and this one does not.
+
+### The selected row is shaded, not filled
+
+A **15% black wash** over whatever tint the row already has. It darkens rather
+than replaces, so the status colour survives selection.
+
+```
+rgba(0, 0, 0, 0.15)  over the row's own tint
+```
+
+Computed, so there is no ambiguity if alpha renders oddly:
+
+```
+tint            normal      selected
+────────────────────────────────────
+white           #ffffff  →  #d9d9d9
+blue            #7FB3E0  →  #6C98BE
+light green     #A6DE9B  →  #8DBD84
+green           #6BC96B  →  #5BAB5B
+yellow          #FFE24D  →  #D9C041
+orange          #FFA94D  →  #D99041
+red             #F5766E  →  #D0645E
+```
+
+All still take 11 px black text. **The three signals stack** — arrow in the
+gutter, 2 px black rectangle, and the shaded row — so selection is obvious from
+across the screen while the status is still legible on the row itself.
+
 
 A problem also shows its flag glyph and puts the Status text in `#a00`.
 
@@ -164,8 +193,8 @@ gut  tint    ±  Project   Status               Name                            
 ```
 gut     the 14 px gutter. ▶ = selected, ▌ = 4 px #CC0000 problem lip.
         NOT a column header — leave it unlabelled.
-26-10   SELECTED — ▶ in the gutter + 2 px solid black rectangle. NO fill.
-        row tint stays white. expanded.
+26-10   SELECTED — ▶ in the gutter, 2 px solid black rectangle, and the row
+        shaded to #d9d9d9 (white tint at 15% black). expanded.
 26-09   GREEN row with a red lip — scheduled, no equipment on the lot.
         the row keeps its real phase; the lip says it is wrong.
 26-14   WHITE row with a red lip — blocked from issuing.
