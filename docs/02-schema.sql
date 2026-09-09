@@ -85,6 +85,35 @@ CREATE TABLE equipment_sourcing_methods (
 );
 
 -- Pure geometry. NO post displacement — dropped. concrete = excavation = spoils.
+-- TIER 1 — an owned vehicle's $/mile, COMPUTED not typed. Attaches to the
+-- sourcing method whose rate it produces (kind='owned', rate_basis='mile').
+--
+--   fuel         = fuel_price ÷ mpg
+--   maintenance  = annual_maintenance ÷ annual_miles
+--   tyres        = tyre_set_cost ÷ tyre_life_miles
+--   depreciation = (purchase_price − salvage_value) ÷ life_miles
+--   fixed        = (insurance_annual + registration_annual) ÷ annual_miles
+--   → $/mile = the sum, written back to equipment_sourcing_methods.rate
+--
+-- Fuel alone is roughly a third of it; the rest is what decides whether the
+-- job is paying for wear or only for diesel.
+CREATE TABLE vehicle_rate_inputs (
+  sourcing_method_id   TEXT PRIMARY KEY REFERENCES equipment_sourcing_methods(id),
+  mpg                  REAL,
+  fuel_price           REAL,
+  annual_maintenance   REAL,
+  annual_miles         REAL,
+  tyre_set_cost        REAL,
+  tyre_life_miles      REAL,
+  purchase_price       REAL,
+  salvage_value        REAL,
+  life_miles           REAL,
+  insurance_annual     REAL,
+  registration_annual  REAL,
+  computed_rate        REAL,          -- the sum, for display and audit
+  computed_at          TEXT
+);
+
 CREATE TABLE footing_specs (
   id          TEXT PRIMARY KEY,
   name        TEXT NOT NULL,                -- "F-3x12"
@@ -355,8 +384,18 @@ CREATE TABLE version_mobilization (
   widest_piece_ft   REAL,
   truck_equipment_id   TEXT REFERENCES equipment(id),
   trailer_equipment_id TEXT REFERENCES equipment(id),
+  -- Staying overnight is RECOMMENDED, never automatic:
+  --   usable_hours_day = workday_hours − (2 × drive_time_hr)
+  --   install_days     = ceil(install duration ÷ usable_hours_day)
+  --   recommend when   distance_mi > threshold AND install_days > 1
+  --   nights           = install_days − 1
+  -- A single-trip day job gives install_days = 1 and therefore no per diem.
   nights            INTEGER NOT NULL DEFAULT 0,
-  rooms             INTEGER NOT NULL DEFAULT 0
+  nights_computed   INTEGER,
+  nights_overridden INTEGER NOT NULL DEFAULT 0,
+  rooms             INTEGER NOT NULL DEFAULT 0,
+  room_rate         REAL,      -- per version: lodging is location-dependent
+  per_diem_pct      REAL       -- ★ percentage of WHAT — undecided
 );
 
 CREATE TABLE version_design_numbers (
@@ -930,6 +969,20 @@ CREATE TABLE alerts (
 -- for concurrent writers. Real multi-user means either a server database
 -- (Postgres) or a sync layer. That is a deployment decision, not a schema
 -- one — everything below is portable to either.
+
+-- Global settings. Key/value so a new one is data entry, not a migration —
+-- the same principle as component specifications and procurement fees.
+--   mobilization.distance_threshold_mi ... ▢ value not established yet
+--   mobilization.per_diem_pct ............ ★ percentage of WHAT — undecided
+--   mobilization.workday_hours ........... 10
+--   vehicle.rate_method .................. 'computed' | 'tracked'
+--        Tier 1 today. The setting exists so it can be switched to actuals
+--        later without touching anything else.
+CREATE TABLE app_settings (
+  key     TEXT PRIMARY KEY,
+  value   TEXT,
+  notes   TEXT
+);
 
 CREATE TABLE users (
   id           TEXT PRIMARY KEY,

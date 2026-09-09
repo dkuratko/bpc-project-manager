@@ -106,14 +106,58 @@ version_mobilization   trips · trips_computed · trips_overridden · load_hr_pe
                        truck_equipment_id · trailer_equipment_id · nights · rooms
 ```
 
-## Still open
+## Per diem and lodging ✔
+
+**Recommended, never automatic.**
 
 ```
-★ per diem and lodging — per person per night, per room per night, and what
-  decides the nights. Tucson at 115 mi is a long day but same-day, so it did
-  not trigger. Where is your line?
-★ the truck's $/mile — one number you type, or computed from mpg, fuel price,
-  maintenance $/mi and purchase price ÷ life miles? The second is a small
-  dialog you fill in once per vehicle, and it is the number that decides
-  whether you are actually being paid for wear.
+usable_hours_day  =  workday_hours − (2 × drive_time_hr)
+install_days      =  ceil( install duration ÷ usable_hours_day )
+
+RECOMMEND staying when   distance_mi > threshold   AND   install_days > 1
+nights            =  install_days − 1
 ```
+
+A single-trip day job gives `install_days = 1`, so no per diem — which is the
+rule stated plainly. The drive-time term earns its place: at two hours each way
+a ten-hour day leaves six usable hours, so a nine-hour install becomes two days
+and you are staying, where a shorter drive would have kept it a day trip.
+
+```
+✔ distance threshold ....  a SETTING. value not established yet.
+✔ room rate .............  entered PER VERSION — lodging is location-dependent
+✔ per diem ..............  a PERCENTAGE
+★ percentage of WHAT ....  undecided. room rate? daily labour? a flat uplift?
+```
+
+## The truck's $/mile ✔ — computed, not typed
+
+**Tier 1 now.** One dialog per vehicle:
+
+```
+fuel          fuel_price ÷ mpg
+maintenance   annual_maintenance ÷ annual_miles
+tyres         tyre_set_cost ÷ tyre_life_miles
+depreciation  (purchase_price − salvage_value) ÷ life_miles
+fixed         (insurance + registration) ÷ annual_miles
+                                                    ──────────
+                                                    = $/mile
+```
+
+Worked, for a ¾-ton truck:
+
+```
+fuel          $3.85 ÷ 14 mpg ........................  $0.275
+maintenance   $2,160 ÷ 18,000 mi ....................  $0.120
+tyres         $1,400 ÷ 50,000 mi ....................  $0.028
+depreciation  ($68,000 − $18,000) ÷ 250,000 mi ......  $0.200
+fixed         ($2,400 + $600) ÷ 18,000 mi ...........  $0.167
+                                                      ────────
+                                                       $0.79/mile
+```
+
+**Tier 2 — a vehicle tracker — is deferred, and a setting exists to switch to
+it.** `vehicle.rate_method` = `computed` today, `tracked` later. Logging real
+odometer, fuel and maintenance would derive $/mile from what the truck actually
+cost, and prompt *"computed says $0.79, last 12 months say $0.94. Update?"* —
+the same loop post cost already runs on the catalog's rate tables.
