@@ -94,8 +94,8 @@ Row tint is the ramp from `08-status-colours.md`:
  8     Equipment received                        #f5f0c0   light yellow
  9     Scheduled                                 #f0e08a   yellow
 10     Active                                    #f4c7d4   pink
-11–12  Invoice sent · Completed, payment req     #f7cfa0   orange
-13–15  Paid · Warranty · Completed               #e0b0b0   red
+11     Invoice sent, payment required            #f7cfa0   orange
+12–14  Paid · Warranty · Completed               #e0b0b0   red
 PROBLEM                                          #ffadad   + 3 px #a00 left
                                                    edge + flag + #a00 text
 ```

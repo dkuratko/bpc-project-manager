@@ -15,26 +15,29 @@ It is a progression, not a semantic scale — red does **not** mean bad here.
  4  Expired — 30 days, no answer                         #ffffff   white
  5  Blocked — cannot issue                               #ffffff   white
 ────────────────────────────────────────────────────────────────────────
- 6  Accepted                                             #dff0d8   green
- 7  Awaiting delivery                                    #dff0d8   green
- 8  Equipment received                                   #fdf6d3   light yellow
- 9  Scheduled                                            #fbeeb0   yellow
-10  Active — crew on site                                #f8dde4   pink
-11  Invoice sent, payment required  ▶ warranty starts    #fbe0c4   orange
-12  Completed, payment required                          #fbe0c4   orange
-13  Completed, paid                                      #f5d0d0   red
-14  Warranty — paid, still covered                       #f5d0d0   red
-15  Completed — terminal, on warranty expiry             #f5d0d0   red
+ 6  Accepted                                             #c8e6c9   green
+ 7  Awaiting delivery                                    #c8e6c9   green
+ 8  Equipment received                                   #f5f0c0   light yellow
+ 9  Scheduled                                            #f0e08a   yellow
+10  Active                                               #f4c7d4   pink
+11  Invoice sent, payment required  ▶ warranty starts    #f7cfa0   orange
+12  Completed, paid                                      #e0b0b0   red
+13  Warranty — paid, still covered                       #e0b0b0   red
+14  Completed — terminal, on warranty expiry             #e0b0b0   red
 ```
+
+**ACTIVE covers more than crew-on-site.** A job stays `ACTIVE` from the moment
+work starts until the invoice goes out — including the gap after the crew has
+left and before you have billed. Completion *is* the invoice, so there is no
+state between them.
 
 All tints are pale enough that 11 px black text stays crisp. Statuses 1–5 share
 white; the Status **text** carries the difference, since nothing has been won
 yet and colour would only add noise.
 
-★ **Open: what moves 11 → 12?** If the invoice is what completes a job, both
-fire at the same moment and 12 never lives on its own. If something else marks
-it — customer sign-off, a punch walk, your own call — that trigger needs
-writing down. Until then 12 is unreachable in practice.
+✔ **"Completed, payment required" was removed.** It sat between finishing work
+and billing for it and had no trigger of its own — completion *is* the invoice.
+Fourteen statuses, not fifteen.
 
 ---
 
@@ -44,12 +47,12 @@ Decided: red carries both *finished* and *problem*. The two tints sit close, so
 a problem row is reinforced rather than relying on colour alone:
 
 ```
-PROBLEM   #ffe0e0  ground — OVERRIDES the phase tint
+PROBLEM   #ffadad  ground — OVERRIDES the phase tint
         + 3 px #a00 bar down the left edge
         + the flag glyph
         + Status text in #a00
 
-DONE      #f5d0d0  ground, no edge bar, black text
+DONE      #e0b0b0  ground, no edge bar, black text
 ```
 
 The edge bar and the red status text are what separate them at a glance. A

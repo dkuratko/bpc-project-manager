@@ -64,7 +64,9 @@ PROJECT ─── BPC-26-10 ─── "San Tan Shade Installation"
   ✔       EQUIPMENT RECEIVED ............... complete, at your lot
   ✔       SCHEDULED ....................... customer set the date
   ✔       ACTIVE .......................... crew on site
-  ✔       COMPLETED, PAYMENT REQUIRED ..... off site, not coming back
+  ✔       ACTIVE .......................... work underway, NOT yet invoiced.
+                                            covers the gap after the crew
+                                            leaves — completion IS the invoice.
   ✔       INVOICE SENT, PAYMENT REQUIRED .. ▶ warranty clock starts
   ✔       COMPLETED, PAID
   ✔       WARRANTY ........................ paid, still covered
@@ -72,11 +74,11 @@ PROJECT ─── BPC-26-10 ─── "San Tan Shade Installation"
 
   ✔ STATUS COLOURS — a progression ramp, not semantics. see docs/08.
        1–5 white · 6–7 green · 8 light yellow · 9 yellow · 10 pink
-       11–12 orange · 13–15 red
+       11 orange · 12–14 red   (14 statuses — "completed, payment
+       required" was removed; completion IS the invoice)
        PROBLEM #ffe0e0 OVERRIDES the phase tint, reinforced by a 3px #a00
        left-edge bar, a flag and #a00 status text. red serves both meanings.
-  ★ what moves 11 (invoice sent) → 12 (completed, payment required)?
-       if the invoice completes the job they fire together and 12 never lives.
+  ✔ "completed, payment required" REMOVED — it had no trigger of its own.
 ```
 
 ## 2 · DOCUMENT REFERENCE ✔
@@ -553,6 +555,9 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
      · grey selection · edit on double-click only · right-click Delete
 ▢ VEHICLES screen — new. the Tier 1 $/mile dialog lives here.
 ▢ the material list itself — principle settled, contents are data entry
+[?] a "post cost outstanding" counter on the project browser — jobs finished
+    with no post cost. the loop that keeps rate tables honest is the easiest
+    thing to skip, and nothing else will remind you. NOTED, not taken.
 [?] is an unpaid warranty callback recorded against the version?
 ```
 
