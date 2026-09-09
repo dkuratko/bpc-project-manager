@@ -1,6 +1,19 @@
 # Design brief — VERSION VIEW
-**MAIN**, an MDI child window. Opened by double-clicking a version in the
-Project Browser. Apply `03f-money-formatting.md` and `08-status-colours.md`.
+**MAIN**, an MDI child window — not a popup. Opened by double-clicking a version
+in the Project Browser, and it **stays open** while you work elsewhere.
+Apply `03f-money-formatting.md` and `08-status-colours.md`.
+
+```
+Project Browser (the frame)
+   double-click a version  →  THIS WINDOW
+                                 [Cost breakdown] →  MDI child
+                                 [Estimate]       →  MDI child
+                                 [Post cost]      →  MDI child
+                                 [Record …]       →  popups
+```
+
+Two jobs open at once is two version views plus whatever each has open beneath
+it, all listed in the Window menu.
 
 ---
 

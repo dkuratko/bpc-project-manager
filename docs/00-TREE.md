@@ -543,6 +543,48 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
 
 ---
 
+
+## 9b · NAVIGATION — how you get anywhere ✔
+
+```
+FRAME                     Project Browser. always present, it IS the client
+                          area. never closes.
+   double-click a PROJECT   →  expands in place. no window.
+   double-click a VERSION   →  opens VERSION VIEW
+
+VERSION VIEW              MDI child. the hub for one job. stays open.
+   [Cost breakdown]         →  COST BREAKDOWN     MDI child, 4 tabs
+   [Estimate]               →  ESTIMATE EDITOR    MDI child
+   [Post cost]              →  POST COST          MDI child
+   [Record approval…]       →  popup
+   [Record shipment…]       →  popup
+   [Schedule…]              →  popup
+   [Invoice…]               →  popup
+
+COST BREAKDOWN            MDI child
+   "2 problems" chip        →  PROBLEMS PANEL     popup
+   [Issue estimate]         →  creates BPCe- and opens the ESTIMATE EDITOR
+   [Add component ▼]        →  catalog picker     popup
+   [New one-time…]          →  COMPONENT WIZARD   popup
+   Fix… on a rate gap       →  SERVICE RATE TABLE popup
+
+ESTIMATE EDITOR           MDI child
+   right-click a row        →  context menu
+   [Issue estimate]         →  locks it. forever.
+
+CATALOG / CONTACTS / VEHICLES   from the browser toolbar. MDI children.
+```
+
+**Everything MAIN stays open.** Two jobs, each with a version view and a cost
+breakdown, is four child windows and the Window menu lists them all. That is
+what MDI bought us and it is worth using — the alternative was closing one job
+to look at another.
+
+**Popups block, then close back.** They record a fact or fix a gap; they never
+hold anything you would want to keep looking at.
+
+---
+
 ## 10 · OPEN
 
 ```
