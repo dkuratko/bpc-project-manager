@@ -515,6 +515,7 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
 ✔ COST BREAKDOWN · tab 3 PURCHASING — FINAL v1 (pending $ format)
 ✔ COST BREAKDOWN · tab 4 COST — FINAL v2 (collapsible, reconciles at $12,462.07)
 ✔ COST BREAKDOWN · problems panel — FINAL v1 (POPUP)
+✔ ESTIMATE EDITOR — FINAL v10 (MAIN)
 ✔ SHELL IS MDI — child windows in one Project Manager frame,
      Window menu, Cascade, Ctrl+Tab. the teal desk is the client area.
      ★ menu/toolbar placement (frame vs child) still undecided
@@ -538,9 +539,10 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
      ▢ distance threshold — stored, no value set. the stay recommendation
        cannot fire until a number goes in. not blocking.
 
-▢ ESTIMATE EDITOR v10 — brief and preview ready, render pending
-     docs/05f-estimate-v10.md
-     docs/design/preview/estimate-v10-preview.html
+✔ ESTIMATE EDITOR — FINAL v10
+     two panes · REF column bridging them · cost objects assignable to lines,
+     sub-items AND options · row expansion showing cost · price · margin
+     · grey selection · edit on double-click only · right-click Delete
 ▢ VEHICLES screen — new. the Tier 1 $/mile dialog lives here.
 ▢ the material list itself — principle settled, contents are data entry
 [?] is an unpaid warranty callback recorded against the version?

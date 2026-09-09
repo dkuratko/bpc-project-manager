@@ -48,7 +48,15 @@ thin File · Window · Help menu. See the note at the end of this file.
 
 | # | Screen | Kind | Status | File | Brief |
 |---|---|---|---|---|---|
-| — | Estimate editor | MAIN | ◐ v1, right pane being redone | `docs/design/estimate-editor.v1.dc.html` | `05` + `05a` (right pane rewritten) |
+| — | Estimate editor | MAIN | **✔ FINAL v10** | `docs/design/estimate-editor.v10.dc.html` | `05` · `05b` · `05c` · `05d` · `05f` |
+
+**Build note.** The toolbar still carries separate `Inclusion` and `Exclusion`
+buttons from an earlier draft. Notes were consolidated into one row type with a
+kind, as the footer's `＋ Note ▾` correctly shows. Collapse the toolbar to match
+when building — do not re-render for it.
+
+**Reference estimates** (`docs/design/reference/`) are the source for the
+document pane. Both are current; they show different row types.
 
 **Tab 1 · Scope — v4 · FINAL**
 Identity columns (icon · Item · Manufacturer · Part number · Category · Method ·
