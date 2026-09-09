@@ -1,13 +1,14 @@
 # Design brief — PROJECT BROWSER
 The application frame. **MAIN**, and the first thing you see on launch.
+Based on `docs/design/reference/ideas-5a-projects-main-page.dc.html`.
 Apply `03f-money-formatting.md`.
 
 ---
 
 ## ⛔ SCOPE
 
-One screen. The frame with its list. No child windows floating over it, no
-dialogs, no menus open. One state.
+One screen. The frame and its list. No child windows over it, no dialogs,
+no open menus. One state.
 
 ## ⛔ RENDER THE VALUES LITERALLY
 
@@ -15,160 +16,180 @@ Every figure and date below is final.
 
 ---
 
-## What it is
+## Carried from 5a, unchanged
 
-The MDI frame's client area **is** the project browser. You launch the app and
-see your jobs; opening a version floats a child window over this.
+Window **1420 px**. Menu with accelerator underlines. The toolbar, the filter
+band, the five counter tiles, the expandable rows with an inset panel, the flag
+legend in the status bar. All of it was right.
 
-**Rows expand.** A project is a container and the version is the job, so one
-list shows both levels rather than a list and a separate drill-down. The
-"what's happening this week" view is this same list with a different scope
-selected — not another screen.
+## Translated to the current model
+
+5a predates two decisions and must be corrected:
 
 ```
-PROJECT ROW    the container. no status of its own — everything shown is
-               rolled up from its versions.
-VERSION ROW    the job. its own status, its own dates, its own money.
-               double-click opens the Version View as a child window.
+5a said                          the model is
+─────────────────────────────────────────────────────────────────────
+"version A" + "renditions A0/A1"  OPTION letter + VERSION number.
+                                  A0, A1, B0 are versions. an option is a
+                                  LETTER AND NOTHING ELSE. renditions do
+                                  not exist.
+"Current estimate BPCe 26-245A0"  correct, but it is the estimate OF a
+                                  version, not of an option.
+BPCp 26-245  (space)              BPCp-26-10  (hyphen), matching every
+                                  other reference in the app
 ```
 
 ---
 
-## Window
+## Acting on your own four critiques
 
-Full MDI frame at **1280 × 720**, teal desk visible only as a thin border —
-this window is the application.
+**1. "No current version" reads badly.** Fixed as you proposed: a project
+carries a **`current_version`** pointer, set by hand. The Value, GM% and Status
+columns describe **that version only** — never a sum, never a guess at intent.
+A project with no current version shows `—` across those three columns and a
+status of `no current version`. Schema gains `projects.current_version_id`.
 
-```
-Build Play Contracting — Project Manager                      [_][□][×]
-File   Edit   View   Project   Window   Help
-[New project] [Open] ‖ [New estimate] ‖ [Refresh]
-```
+**2. Bid due is meaningless on won work.** The column becomes **`Next`** — the
+soonest actionable date on the current version, whatever kind it is. A quote
+shows its expiry, a scheduled job shows its install date, an unpaid job shows
+the invoice date. One column, always relevant.
 
-Menu is the frame's own: thin, as decided. Child windows carry their own.
+**3. Actuals are unreachable.** The inset panel's action row gains
+**`Post cost ▸`**, enabled only on versions that are complete.
+
+**4. Three flags will become eight.** Capped at **three glyphs**; a fourth
+renders as `+2` and the full list is a hover. Legend stays in the status bar.
+
+**5.** The `Estimator` filter is now supportable — the schema has `users`. It
+filters on `projects.owner_user_id`.
 
 ---
 
-## Layout
+## Layout, top to bottom
 
 ```
-┌──────────────┬──────────────────────────────────────────────────────┐
-│  SCOPE TREE  │  FILTER BAND                                         │
-│  190 px      ├──────────────────────────────────────────────────────┤
-│              │  THE LIST                                            │
-│              │                                                      │
-└──────────────┴──────────────────────────────────────────────────────┘
-   STATUS BAR
+title bar
+menu ......... File Edit View Project Version Catalog Reports Window Help
+toolbar ...... New Project · New Version ‖ Open · Duplicate… · Print list
+               ‖ Catalog ▸ · Rates & Resources          right: Estimator [ ▼ ]
+filter band .. Find [ ] Status [ ▼ ] Type [ ▼ ] Due [ ▼ ]
+               ☑ Show versions  ☐ Show lost / complete   right: Saved views ▼
+counters ..... five tiles, equal width
+list ......... sunken white, bevelled header
+status bar ... hints + flag legend   |   count + view
 ```
 
-### Scope tree — 190 px, sunken white, standard Win2000 tree
+### The five counters
+
+Raised `#c0c0c0` tiles. Grey label, big monospace figure, grey sub-line.
+**Each is a filter** — clicking one scopes the list to it.
 
 ```
-   All projects                    7
-   ▾ Active                        3
-       Awaiting delivery           1
-       Scheduled                   1
-       On site                     1
-   Quoting                         3
-   Completed, unpaid               1
-   Warranty                        2
-   Closed                          4
-   ▸ By customer
-   ▸ By year
+Open pipeline        Awaiting customer     Installs this week
+$41,690.00           $18,240.00            2 jobs
+5 projects ·         1 estimate sent       1 without equipment      ← #a00
+current version only
+
+Change orders        Quotes expiring
+$2,850.00            1
+1 pending approval   within 14 days                                 ← #a00
 ```
 
-`Scheduled` is the selected node — highlighted `#000080`, white text. Counts
-right-aligned in grey.
-
-### Filter band — `#c0c0c0`, one row, sunken border
-
-```
-Customer [ All            ▼]   Status [ All          ▼]   Find [            ]   ☐ Alerts only
-```
-
-### The list — sunken white, bevelled column header
+### List columns
 
 | col | w | align |
 |---|---|---|
-| ▾ | 18 | centre |
-| Project / Version | flex | left |
-| Title | 250 | left |
-| Customer | 130 | left |
-| Site | 110 | left |
-| Status | 190 | left |
+| ± | 20 | centre |
+| Project ▲ | 104 | left, monospace |
+| Name | flex | left |
+| Customer | 150 | left |
+| Location | 112 | left |
+| Vers | 46 | centre |
+| Current estimate | 122 | left, monospace |
 | Value | 100 | right |
-| Next | 76 | left |
-| ⚠ | 24 | centre |
-
-**Project rows** are bold with a `#dfdfdf` band, exactly the scope-group band
-used on the Scope tab. **Version rows** are plain white, indented 22 px, with
-their ref in monospace.
+| GM % | 54 | right |
+| Status | 130 | left |
+| Next | 84 | left |
+| Flags | 44 | centre |
 
 ---
 
 ## Render exactly this
 
 ```
-▾ BPC-26-10  San Tan Shade Installation      Exerplay, Inc.  Gilbert AZ
-                                        1 approved · 3 quoted   $17,500.00  22 Sep  ⚠
-    A0   quoted · sent 07 Sep · expires 07 Oct                   $17,500.00  07 Oct
-    A1   quoted · not sent                                       $18,240.00
-    A2   ★ APPROVED · SCHEDULED 22 Sep                           $17,500.00  22 Sep  ⚠
-    B0   quoted · not sent                                        $4,180.00
+− BPCp-26-10  San Tan Shade Installation        Exerplay, Inc.   Gilbert, AZ
+                    3   BPCe-26-10A0    $17,500.00  28.8   Draft · not sent   —
+    ┌ inset panel ──────────────────────────────────────────────────────────┐
+    │ Version  Scope                        Cost        Sell    GM   Estimate │
+    │ A0 ★     PlayBooster + hip shade  $12,462.07  $17,500.00  28.8  not sent│
+    │ A1       + bench, moved ramp      $13,006.44  $18,240.00  28.7  sent 07 Sep
+    │ B0       Shade only                $3,011.90   $4,180.00  28.0  not sent│
+    │                                                                         │
+    │ [Open version A0 ▸] [Compare A0 ↔ A1] [New version] [Post cost ▸]      │
+    │                    Site: hard clay · swell 1.25 · access ×1.30          │
+    └─────────────────────────────────────────────────────────────────────────┘
 
-▸ BPC-26-09  Dobson Park Ramadas             Exerplay, Inc.  Chandler AZ
-                                        1 approved · 1 quoted   $15,250.00  18 Sep
-
-▸ BPC-26-08  Doris J. Thompson Fitness       Exerplay, Inc.  Tucson AZ
-                                        1 approved             $25,969.00  02 Oct
-
-▸ BPC-26-07  The Cypress at South Mountain   Exerplay, Inc.  Phoenix AZ
-                                        completed, unpaid       $5,390.00  invoice 04 Sep  ⚠
-
-▸ BPC-26-06  Verrado Elementary Playground   Miracle SW      Buckeye AZ
-                                        2 quoted                        —
-
-▸ BPC-26-05  Desert Vista HOA Shade          Desert Vista HOA Scottsdale AZ
-                                        warranty to 14 Mar 27  $11,400.00
-
-▸ BPC-26-04  Kino Sports Complex Surfacing   Sundt (GC)      Tucson AZ
-                                        warranty to 02 Jan 27  $38,750.00
++ BPCp-26-09  Dobson Park Ramadas               Exerplay, Inc.   Chandler, AZ
+                    2   BPCe-26-09A0    $15,250.00  22.4   Scheduled          22 Sep   !
++ BPCp-26-08  Doris J. Thompson Fitness Course  Exerplay, Inc.   Tucson, AZ
+                    1   BPCe-26-08A0    $25,969.00  19.1   On site            02 Oct
++ BPCp-26-11  Desert Ridge HOA — PlayBooster    Desert Ridge HOA Phoenix, AZ
+                    2   BPCe-26-11B0    $96,310.00  19.1   Won · B0                    ⚑
++ BPCp-26-12  Verrado Elementary — Ramada Add   Litchfield ESD   Buckeye, AZ
+                    1   BPCe-26-12A1    $28,640.00  22.4   Sent 28 Aug        11 Sep   $
++ BPCp-26-13  Riparian Preserve — Nature Play   Town of Gilbert  Gilbert, AZ
+                    1   BPCe-26-13A0    $43,900.00  20.8   Draft              25 Sep
++ BPCp-26-14  Skyline HS — Bleacher Shade       Mesa USD         Mesa, AZ
+                    2   —                        —      —   no current version         !
 ```
 
-`BPC-26-10` is **expanded**; every other project is collapsed.
-Version `A2` is the **selected row** — `#c0c0c0` ground, black text. No navy
-on a row; navy is menus only.
+`BPCp-26-10` is **expanded and selected** — the project row on `#000080` with
+white text, classic list selection. `A0` in the inset carries a `★` marking it
+the current version.
 
-### The alerts
+**Note `BPCp-26-14`.** Two drafts, neither marked current, so Value, GM% and
+Next all show `—` and the status says so plainly. That is the fix to your first
+critique, rendered.
 
-Two, both derived, never typed:
+### The flags
 
 ```
-BPC-26-10 A2   ⚠  scheduled 22 Sep · equipment not received
-                  Play Structure PS-4400 outstanding, ship date was 02 Sep
-BPC-26-07      ⚠  invoice sent 04 Sep · 4 days
+⚑  pending change order        26-11
+$  quote expiring              26-12
+!  blocked from issuing        26-14
+!  scheduled, no equipment     26-09     ← the dangerous one
 ```
 
-Render the first as a tooltip-styled `#ffffe1` block pinned beneath the list,
-showing only the A2 alert since that row is selected.
+Max three glyphs per row; a fourth becomes `+2`.
 
 ### Status bar
 
 ```
-7 projects · 3 active · 2 alerts                      Scheduled — 1 project
+Enter opens the current version · → expands · Ctrl+N new project
+⚑ change order · $ quote expiring · ! blocked        │   7 of 42 projects · view: Open
 ```
+
+---
+
+## One inconsistency to settle
+
+The estimate editor uses **grey** `#c0c0c0` for a selected row, because there
+the selection doubles as an editing context and navy was too loud. A browse
+list has no such problem and **navy is the Win2000 norm**, which is what 5a
+uses and what this brief specifies.
+
+Two different selection colours in one application is defensible — one is a
+cursor, one is a highlight — but it should be a decision rather than an
+accident. Say if you would rather both were grey.
 
 ---
 
 ## Rules
 
-- **A project row has no status of its own.** What it shows is a rollup —
-  `1 approved · 3 quoted`, or the single state when there is only one.
-- **Value on a project row is the approved money**, not the sum of every
-  quoted version. A project with four quotes and one approval is worth what
-  was approved. Projects with nothing approved show `—`.
-- **Alerts are derived.** A scheduled version with no equipment on the lot is
-  the most dangerous state in the business and must be visible from here.
-- Money carries `$` and two decimals. Dates are `07 Sep`, `14 Mar 27` when the
-  year is not this one.
-- No navy on list rows. Selection is `#c0c0c0`.
+- **Value, GM% and Status describe the CURRENT VERSION only.** Never a sum.
+  A project quoted three ways is one row worth $17,500.00, not $39,920.00.
+- **No current version means dashes**, not the highest draft.
+- **`Next` is context-sensitive** — expiry, install date, or invoice date,
+  whichever applies to the current version.
+- Money carries `$` and two decimals. GM% is one decimal, no sign.
+- Counters are filters, not decoration.
