@@ -58,7 +58,13 @@ spine down the whole selected group, and never touches the row's status tint.
 
 | # | Screen | Kind | Status | File | Brief |
 |---|---|---|---|---|---|
-| — | Estimate editor | MAIN | **✔ FINAL v10** | `docs/design/estimate-editor.v10.dc.html` | `05` · `05b` · `05c` · `05d` · `05f` |
+| — | Estimate editor | MAIN | **✔ FINAL v11** | *(pending file)* | `05f` + `05g` |
+| — | Version view | MAIN | **✔ FINAL** | *(pending file)* | `09` |
+
+All MAIN screens follow `10-main-window-template.md`: identity strip, tinted
+status strip, body, optional screen strip, derived status bar. The cost
+breakdown's four tabs adopt it **at build time** — the change is chrome only and
+identical on each, so they are not re-rendered.
 
 **Build note.** The toolbar still carries separate `Inclusion` and `Exclusion`
 buttons from an earlier draft. Notes were consolidated into one row type with a

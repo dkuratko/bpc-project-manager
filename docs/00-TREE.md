@@ -531,6 +531,12 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
 ✔ COST BREAKDOWN · problems panel — FINAL v1 (POPUP)
 ✔ ESTIMATE EDITOR — FINAL v10 (MAIN)
 ✔ PROJECT BROWSER — FINAL v14 (MAIN, the frame)
+✔ VERSION VIEW — FINAL (MAIN)
+✔ MAIN WINDOW TEMPLATE — adopted. see docs/10.
+     identity strip · tinted status strip · body · optional screen strip ·
+     derived status bar whose "Next" says what has to happen for the job
+     to move, and where a problem always displaces the ordinary next step.
+     cost breakdown adopts it AT BUILD — chrome only, no re-render.
 ✔ SHELL IS MDI — child windows in one Project Manager frame,
      Window menu, Cascade, Ctrl+Tab. the teal desk is the client area.
      ★ menu/toolbar placement (frame vs child) still undecided

@@ -1,5 +1,5 @@
 # MAIN WINDOW TEMPLATE
-Proposed 2026-09-09, from the Version View. Applies to every **MAIN** screen.
+**Adopted 2026-09-09**, from the Version View. Applies to every **MAIN** screen.
 
 ---
 
@@ -55,4 +55,20 @@ PROJECT BROWSER  the exception — it is the frame and shows many jobs, so it
 VERSION VIEW     the full template.
 ```
 
-Adopting it means small additions to two approved screens, not rebuilds.
+## Adoption
+
+```
+✔ VERSION VIEW        the full template. where it came from.
+✔ ESTIMATE EDITOR     v11. identity strip, status strip, price bar as the
+                      screen strip, derived status bar. panes untouched.
+▢ COST BREAKDOWN      chrome only, and identical across all four tabs:
+                        · context strip becomes the IDENTITY STRIP
+                        · a STATUS STRIP is added; the "2 problems" chip
+                          leaves the tab strip and becomes its alert
+                        · the price ladder becomes the SCREEN STRIP
+                        · a derived STATUS BAR is added
+                      ★ NO RE-RENDER NEEDED. the change is mechanical and
+                        the same on every tab — specify once, apply at build.
+—  PROJECT BROWSER    exempt. it is the frame and shows many jobs, so it
+                      keeps its counters, its list and its own status bar.
+```
