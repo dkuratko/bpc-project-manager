@@ -153,10 +153,14 @@ sub-table, no action buttons.
 ### Two weights of divider
 
 ```
-between VERSIONS   1 px #ececec        hairline. A0 → A1.
-between OPTIONS    2 px #a0a0a0        plus 3 px extra space above and below.
-                                       A1 → B0.
+between VERSIONS   1 px #d0d0d0        A0 → A1
+between OPTIONS    1 px #808080        A1 → B0, plus 3 px extra space
+                                       above and below
 ```
+
+Both are hairlines. The difference is **darkness and breathing room**, not
+thickness — a thick rule reads as a section break and an option is a smaller
+thing than that.
 
 An option is a letter and nothing else — a divider so the version list stays
 readable — so the heavier rule just draws the thing it already is. No divider
@@ -188,9 +192,9 @@ gut  tint    ±  Project   Status               Name                            
      yellow  +  26-08     ACTIVE               Doris J. Thompson Fitness        Exerplay, Inc.    Grant Smith      Tucson, AZ     1
 ▶    white   −  26-10     Quoting              San Tan Shade Installation       Exerplay, Inc.    Grant Smith      Gilbert, AZ    3
      white        26-10A0  Not sent            PlayBooster + hip shade                                                                 $17,500.00   28.8
-     ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄  1 px #ececec — between versions
+     ────────────────────────────────────────  1 px #d0d0d0 — between versions
      white        26-10A1  Sent, awaiting      + bench, moved ramp                                                                     $18,240.00   28.7  $
-     ════════════════════════════════════════  2 px #a0a0a0 — option A ends, option B begins
+     ────────────────────────────────────────  1 px #808080 + spacing — option A ends, B begins
      white        26-10B0  Not sent            Shade only                                                                               $4,180.00   28.0
      blue    +  26-11     AWAITING DELIVERY    Desert Ridge HOA — PlayBooster   Desert Ridge HOA  Marla Whitfield  Phoenix, AZ    2                        ⚑
      white   +  26-12     Quoting              Verrado Elementary — Ramada Add  Litchfield ESD    Dana Ruiz        Buckeye, AZ    1                        $
