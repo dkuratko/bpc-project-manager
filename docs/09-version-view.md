@@ -171,6 +171,62 @@ Expires                     —
 
 ---
 
+## Status bar
+
+Three sunken `var(--t)` segments across the foot, matching the browser and the
+cost breakdown.
+
+```
+⚠ Next — receive Play Structure PS-4400 · 7 days late   │ Estimate locked 02 Sep │ changed 08 Sep 14:22 · DK
+                    flex                                          210 px              190 px
+```
+
+### The `Next` segment is derived
+
+It is the single most useful line on the screen: **what has to happen for this
+job to move.** Never typed, always computed from the same facts that drive the
+status.
+
+```
+status                      Next reads
+──────────────────────────────────────────────────────────────────────────
+Draft                       Build the cost breakdown
+Estimate created            Send the estimate
+Sent, awaiting              Awaiting answer — sent 20 Aug, 19 days
+Expired                     Quote expired 19 Sep — reissue or close
+Blocked                     Cannot issue — 2 problems in the cost breakdown
+Accepted                    Waiting on equipment — expected 02 Sep
+Awaiting delivery           Waiting on equipment — expected 02 Sep
+Equipment received          Set an install date
+Scheduled                   Install 22 Sep
+Active                      Raise the invoice when work is complete
+Invoice sent                Awaiting payment — 4 days
+Completed, paid             Post cost not started
+Warranty                    Under warranty to 14 Mar 27
+Completed                   —
+```
+
+**A problem overrides it.** When something is wrong the segment shows the
+problem instead of the ordinary next step, prefixed `⚠` and in `#a00`:
+
+```
+⚠ Next — receive Play Structure PS-4400 · ship date was 02 Sep, 7 days late
+```
+
+Which is the case rendered here — the job is `Scheduled`, so it would normally
+read `Install 22 Sep`, but the missing equipment wins.
+
+### The other two segments
+
+```
+Estimate locked 02 Sep     the document state. a locked estimate can never
+                           be edited, so saying so on every screen is worth
+                           the space.
+changed 08 Sep 14:22 · DK  when, and by whom. the schema has users.
+```
+
+---
+
 ## Rules
 
 - **Status colour tints the status strip only**, not the whole window.
@@ -182,3 +238,5 @@ Expires                     —
   and says what state it is in, so you can see what has not happened yet.
 - Money carries `$` and two decimals. Cost is `#606060`.
 - Dates are `22 Sep`, with the year only when it is not this one.
+- **The status bar's `Next` is derived, never typed**, and a problem always
+  displaces the ordinary next step.
