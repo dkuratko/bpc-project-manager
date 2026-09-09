@@ -182,6 +182,20 @@ screen changes. The frame never has to swap a toolbar when you switch windows.
 
 ---
 
+## A failure mode worth knowing
+
+`Version View v2` emitted its entire right-hand column **after `</html>`**, cut
+off mid-box. The content was correct; the file was malformed.
+
+It happened on the screen with the most markup — six group boxes, each a grid of
+labelled rows. When a brief asks for a lot of structure, say plainly:
+
+```
+· the exact column structure — one flex row, N children, all inside it
+· that the output is ONE well-formed document with nothing after </x-dc>
+· fewer, larger boxes rather than many small ones
+```
+
 ## Rules that hold across every screen
 
 ```

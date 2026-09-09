@@ -41,7 +41,7 @@ dialogs the toolbar opens.
 
 ## Window
 
-**1000 × 660**, MDI child on the teal desk. **10 px Tahoma, `letter-spacing:
+**1000 × 780**, MDI child on the teal desk. **10 px Tahoma, `letter-spacing:
 .05em`** — same as the browser.
 
 ```
@@ -80,8 +80,32 @@ Status name in 15 px bold. The alert on the right in `#a00`.
 
 ## Body — two columns
 
-Left 430 px, right flex. Group boxes, sunken, legend chips — the Requirements
-tab's construction.
+### ⛔ STRUCTURE — this is what broke the last attempt
+
+The body is **one flex row containing exactly two children**, both inside it,
+both inside the window, and the whole file is **one well-formed document**.
+
+```
+<body row>
+   <left  width:430px flex:none>   Progress · Shipments
+   <right flex:1 min-width:0>      Documents · Money · Schedule
+</body row>
+```
+
+In the previous render the right column was emitted **after `</html>`** and cut
+off mid-box. Nothing may appear after `</x-dc>`.
+
+**Five group boxes, not six.** Warranty folds into Schedule as three extra rows
+— it is three lines and does not earn a box of its own. Fewer boxes is also
+less markup to get wrong.
+
+**Boxes size to their content and stack from the top.** They do not stretch to
+fill the window. Leftover height sits empty at the bottom of the shorter column.
+
+Window is **1000 × 780** — the right column is the taller of the two and 700
+was not enough for it.
+
+Group boxes are sunken with legend chips, the Requirements tab's construction.
 
 ### LEFT · "Progress"
 
@@ -161,12 +185,15 @@ Mobilization                2 trips · 18 mi · 0.4 hr each way
 Materials to deliver        Concrete 4.50 CY · Rebar Cage B 6 EA
 ```
 
-### RIGHT · "Warranty"
+### RIGHT · "Schedule" continued — the warranty rows
+
+Appended to the Schedule box after a 1 px `#ececec` rule. No separate box.
 
 ```
-Starts                      on invoice — not yet started
-Term                        12 months
-Expires                     —
+────────────────────────────────────────────────
+Warranty starts             on invoice — not yet started
+Warranty term               12 months
+Warranty expires            —
 ```
 
 ---
@@ -240,3 +267,6 @@ changed 08 Sep 14:22 · DK  when, and by whom. the schema has users.
 - Dates are `22 Sep`, with the year only when it is not this one.
 - **The status bar's `Next` is derived, never typed**, and a problem always
   displaces the ordinary next step.
+- **One well-formed document.** Two columns, both inside one flex row, nothing
+  after `</x-dc>`, nothing truncated.
+- **Boxes size to content.** They never stretch to fill the window.
