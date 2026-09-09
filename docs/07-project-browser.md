@@ -36,13 +36,16 @@ BPCp 26-245 .................. the browser shows the bare number: 26-10
 
 ## Window & layout
 
-**1420 px.** Menu with accelerator underlines.
+**1420 px**, 8 px of teal around it — this window is the application.
+**10 px Tahoma with `letter-spacing: .05em`** throughout, not 11 px. Menu with
+accelerator underlines.
 
 ```
 title bar .... Build Play Contracting — Project Manager
 menu ......... File Edit View Project Version Catalog Reports Window Help
 toolbar ...... New project · New version ‖ Open · Duplicate…
                ‖ Catalog ▸ · Contacts · Vehicles     right: Estimator [ ▼ ]
+               no Print list, no Rates & Resources
 filter band .. Find [ ] Customer [ ▼ ] Status [ ▼ ]
                ☑ Show versions  ☐ Show completed     right: Saved views ▼
 counters ..... five tiles, equal width, each a filter
@@ -52,8 +55,9 @@ status bar ... hints + flag legend  │  count + view
 
 ## The five counters
 
-Raised `#c0c0c0` tiles — grey label, big monospace figure, grey sub-line.
-Warning sub-lines in `#a00`.
+Raised `#c0c0c0` tiles with a **2 px `#808080` top rule**. Grey label, then the
+figure in **19 px Lucida Console**, then a grey sub-line. Warning sub-lines in
+`#a00`.
 
 ```
 Awaiting answer        Won, in progress       Scheduled this week
@@ -82,6 +86,14 @@ $5,390.00              2
 | GM % | 54 | **blank** | this version's GM |
 | Flags | 44 | rolled up, max 3 | its own |
 
+**Every column is separated by a 1 px `#ececec` vertical rule**, in the header
+and in every row. The Flags column has none on its right.
+
+**Version rows repeat Customer, Contact and Location** in `#606060`, rather than
+leaving them blank — a version read on its own still says who and where.
+
+**Value and GM% show a grey `—` on project rows**, not an empty cell.
+
 **Value and GM% never appear on a project row.** A project has no value — its
 versions do. Expand to see money.
 
@@ -101,47 +113,27 @@ Row tint is the ramp from `08-status-colours.md`:
 
 **A red row always means finished.** Problems never tint a row.
 
+**Status text is sentence case** — `Invoice sent`, `Awaiting delivery`,
+`Quoting · blocked` — not capitals.
+
 ## Gutter, problem lip and cursor
 
-A **14 px gutter** sits left of the `±` column and carries both:
+A **14 px gutter** sits left of the `±` column.
 
 ```
-▶   black, on the selected row
-▌   a 4 px #CC0000 lip — this row has a problem
+▌   4 px #CC0000, full row height — this row has a problem
+▶   black triangle on the selected project row
+▐   3 px solid black SPINE running the full height of the selected project
+    AND every one of its expanded rows
 ```
 
-**Selection is `▶` in the gutter, a 2 px solid black rectangle around the row,
-and a 15% black wash over the row's own tint.** The tint darkens; it is never
-replaced. There are **no colour chips** — they existed only to survive a cursor
-that hid the row colour, and this one does not.
+**The cursor is a spine, not a rectangle.** A black bar down the left edge of the
+whole selected group ties the project and its versions together as one thing;
+a box around a single row would not. The project row also carries the `▶`.
 
-### The selected row is shaded, not filled
-
-A **15% black wash** over whatever tint the row already has. It darkens rather
-than replaces, so the status colour survives selection.
-
-```
-rgba(0, 0, 0, 0.15)  over the row's own tint
-```
-
-Computed, so there is no ambiguity if alpha renders oddly:
-
-```
-tint            normal      selected
-────────────────────────────────────
-white           #ffffff  →  #d9d9d9
-blue            #7FB3E0  →  #6C98BE
-light green     #A6DE9B  →  #8DBD84
-green           #6BC96B  →  #5BAB5B
-yellow          #FFE24D  →  #D9C041
-orange          #FFA94D  →  #D99041
-red             #F5766E  →  #D0645E
-```
-
-All still take 11 px black text. **The three signals stack** — arrow in the
-gutter, 2 px black rectangle, and the shaded row — so selection is obvious from
-across the screen while the status is still legible on the row itself.
-
+The selected rows are **shaded, never filled** — a 15 % black wash over each
+row's own tint, so the status colour darkens rather than disappearing. See
+`08-status-colours.md` for the computed pairs.
 
 A problem also shows its flag glyph and puts the Status text in `#a00`.
 
@@ -150,21 +142,22 @@ A problem also shows its flag glyph and puts the Status text in `#a00`.
 Versions become ordinary indented rows in the same table. No inset box, no
 sub-table, no action buttons.
 
-### Two weights of divider
+### Option bands, not dividers
+
+An option gets a **labelled band row**, not a bare rule:
 
 ```
-between VERSIONS   1 px #d0d0d0        A0 → A1
-between OPTIONS    1 px #808080        A1 → B0, plus 3 px extra space
-                                       above and below
+#ececec ground · 1 px #d4d4d4 top and bottom
+
+    OPTION A                    2 versions
+    ↑ #606060, letter-spacing .11em   ↑ #909090
 ```
 
-Both are hairlines. The difference is **darkness and breathing room**, not
-thickness — a thick rule reads as a section break and an option is a smaller
-thing than that.
+That is better than the divider it replaces — an option is a letter and nothing
+else, and a band says which letter you are looking at instead of just marking
+where one ends.
 
-An option is a letter and nothing else — a divider so the version list stays
-readable — so the heavier rule just draws the thing it already is. No divider
-above the first version or below the last.
+**Between versions inside an option: a 1 px `#d4d4d4` rule.**
 
 Actions live on a **right-click menu**:
 

@@ -72,15 +72,16 @@ PROJECT ─── BPC-26-10 ─── "San Tan Shade Installation"
   ✔       COMPLETED ....................... terminal, on warranty expiry
 
   ✔ STATUS COLOURS — a progression ramp, not semantics. see docs/08.
-       1–5 white · 6–7 blue · 8 light green · 9 green · 10 yellow
-       11 orange · 12–14 red   (14 statuses — "completed, payment
+       1–5 white #ffffff · 6–7 blue #9CC3E2 · 8 light green #B5E3B5
+       9 green #8ECF8E · 10 yellow #F5E183 · 11 orange #F0B778
+       12–14 red #E89494        (14 statuses — "completed, payment
        required" was removed; completion IS the invoice)
-       standard hues, not pastels. all take 11px black text.
        A RED ROW ALWAYS MEANS FINISHED. problems never tint a row —
        a 4px #CC0000 lip in the left gutter, plus a flag, plus #a00 text.
-       CURSOR: ▶ in the gutter + a 2px solid black rectangle + a 15% black
-       wash over the row's own tint. it DARKENS the status colour rather
-       than replacing it, so the status survives selection. no colour chips.
+       CURSOR: a 3px black SPINE down the whole selected group (project +
+       its expanded versions), ▶ on the project row, and a 15% black wash
+       over each row's own tint — it DARKENS rather than replacing, so the
+       status survives selection. no colour chips.
   ✔ "completed, payment required" REMOVED — it had no trigger of its own.
 ```
 

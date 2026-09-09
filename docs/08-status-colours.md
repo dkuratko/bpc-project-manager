@@ -20,16 +20,20 @@ agreeing with each other.
  4  Expired — 30 days, no answer                     #ffffff   white
  5  Blocked — cannot issue                           #ffffff   white
 ──────────────────────────────────────────────────────────────────────
- 6  Accepted                                         #7FB3E0   blue
- 7  Awaiting delivery                                #7FB3E0   blue
- 8  Equipment received                               #A6DE9B   light green
- 9  Scheduled                                        #6BC96B   green
-10  Active                                           #FFE24D   yellow
-11  Invoice sent, payment required ▶ warranty starts #FFA94D   orange
-12  Completed, paid                                  #F5766E   red
-13  Warranty — paid, still covered                   #F5766E   red
-14  Completed — terminal, on warranty expiry         #F5766E   red
+ 6  Accepted                                         #9CC3E2   blue
+ 7  Awaiting delivery                                #9CC3E2   blue
+ 8  Equipment received                               #B5E3B5   light green
+ 9  Scheduled                                        #8ECF8E   green
+10  Active                                           #F5E183   yellow
+11  Invoice sent, payment required ▶ warranty starts #F0B778   orange
+12  Completed, paid                                  #E89494   red
+13  Warranty — paid, still covered                   #E89494   red
+14  Completed — terminal, on warranty expiry         #E89494   red
 ```
+
+Values 6, 7, 9, 10 and 11 are taken from `Project Browser v14`. **8 and 12–14
+are inferred** — no row in that render used them — and should be checked against
+the others once they appear on screen together.
 
 **ACTIVE covers more than crew-on-site.** A job stays `ACTIVE` from the moment
 work starts until the invoice goes out — including the gap after the crew has
@@ -93,12 +97,12 @@ Computed, so there is no ambiguity if alpha renders oddly:
 tint            normal      selected
 ────────────────────────────────────
 white           #ffffff  →  #d9d9d9
-blue            #7FB3E0  →  #6C98BE
-light green     #A6DE9B  →  #8DBD84
-green           #6BC96B  →  #5BAB5B
-yellow          #FFE24D  →  #D9C041
-orange          #FFA94D  →  #D99041
-red             #F5766E  →  #D0645E
+blue            #9CC3E2  →  #85A6C0
+light green     #B5E3B5  →  #9AC19A
+green           #8ECF8E  →  #79B079
+yellow          #F5E183  →  #D0BF6F
+orange          #F0B778  →  #CC9C66
+red             #E89494  →  #C57E7E
 ```
 
 All still take 11 px black text. **The three signals stack** — arrow in the
