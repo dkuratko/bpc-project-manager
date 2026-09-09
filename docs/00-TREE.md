@@ -73,8 +73,8 @@ PROJECT ─── BPC-26-10 ─── "San Tan Shade Installation"
   ✔ STATUS COLOURS — a progression ramp, not semantics. see docs/08.
        1–5 white · 6–7 green · 8 light yellow · 9 yellow · 10 pink
        11–12 orange · 13–15 red
-       PROBLEMS ARE NOT A TINT — red means finished here. a problem shows as
-       a 3px #a00 left-edge bar plus a flag plus #a00 status text.
+       PROBLEM #ffe0e0 OVERRIDES the phase tint, reinforced by a 3px #a00
+       left-edge bar, a flag and #a00 status text. red serves both meanings.
   ★ what moves 11 (invoice sent) → 12 (completed, payment required)?
        if the invoice completes the job they fire together and 12 never lives.
 ```

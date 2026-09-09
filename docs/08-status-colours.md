@@ -38,21 +38,26 @@ writing down. Until then 12 is unreachable in practice.
 
 ---
 
-## Problems are NOT a tint
+## Problems ARE a tint — red serves both
 
-The ramp uses red for *finished*, so red can no longer mean *broken* — and
-`#f5d0d0` sits far too close to the `#ffe0e0` problem ground to tell apart.
+Decided: red carries both *finished* and *problem*. The two tints sit close, so
+a problem row is reinforced rather than relying on colour alone:
 
 ```
-TINT      always lifecycle position. never anything else.
-PROBLEM   3 px #a00 bar down the row's left edge
+PROBLEM   #ffe0e0  ground — OVERRIDES the phase tint
+        + 3 px #a00 bar down the left edge
         + the flag glyph
         + Status text in #a00
+
+DONE      #f5d0d0  ground, no edge bar, black text
 ```
 
-A scheduled job with no equipment reads as **yellow with a red edge** — its real
-phase, visibly wrong. Tinting it red instead would have hidden the phase, which
-is the more useful of the two facts.
+The edge bar and the red status text are what separate them at a glance. A
+completed job is quiet red; a broken one is red **with a hard red edge and red
+text**, and its status reads `SCHEDULED` in `#a00` rather than in black.
+
+A problem row loses its phase tint. That is the accepted trade — attention wins
+over position.
 
 ## Overlay conditions
 
