@@ -529,7 +529,22 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
 
 ## 10 · OPEN
 
+```
+✔ MOBILIZATION — COMPLETE.  see docs/06-mobilization.md
+     standalone service, unit = trip · labour from drive time · owned vehicles
+     by the mile · rentals per job, not per trip · trailer chosen by weight AND
+     dimensions, length usually binding · per diem an uplift on pay · lodging
+     per version · vehicle $/mile computed, Tier 1, tracker deferred
+     ▢ distance threshold — stored, no value set. the stay recommendation
+       cannot fire until a number goes in. not blocking.
 
+▢ ESTIMATE EDITOR v10 — brief and preview ready, render pending
+     docs/05f-estimate-v10.md
+     docs/design/preview/estimate-v10-preview.html
+▢ VEHICLES screen — new. the Tier 1 $/mile dialog lives here.
+▢ the material list itself — principle settled, contents are data entry
+[?] is an unpaid warranty callback recorded against the version?
+```
 
 ## 11 · NEXT
 
