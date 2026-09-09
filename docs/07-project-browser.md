@@ -150,10 +150,17 @@ A problem also shows its flag glyph and puts the Status text in `#a00`.
 Versions become ordinary indented rows in the same table. No inset box, no
 sub-table, no action buttons.
 
-**A 1 px `#c0c0c0` divider sits between option groups.** An option is a letter
-and nothing else — a divider so the version list stays readable — so draw the
-divider it already is. `A0 · A1` then a rule, then `B0`. No divider before the
-first option or after the last.
+### Two weights of divider
+
+```
+between VERSIONS   1 px #ececec        hairline. A0 → A1.
+between OPTIONS    2 px #a0a0a0        plus 3 px extra space above and below.
+                                       A1 → B0.
+```
+
+An option is a letter and nothing else — a divider so the version list stays
+readable — so the heavier rule just draws the thing it already is. No divider
+above the first version or below the last.
 
 Actions live on a **right-click menu**:
 
@@ -181,8 +188,9 @@ gut  tint    ±  Project   Status               Name                            
      yellow  +  26-08     ACTIVE               Doris J. Thompson Fitness        Exerplay, Inc.    Grant Smith      Tucson, AZ     1
 ▶    white   −  26-10     Quoting              San Tan Shade Installation       Exerplay, Inc.    Grant Smith      Gilbert, AZ    3
      white        26-10A0  Not sent            PlayBooster + hip shade                                                                 $17,500.00   28.8
+     ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄  1 px #ececec — between versions
      white        26-10A1  Sent, awaiting      + bench, moved ramp                                                                     $18,240.00   28.7  $
-     ────────────────────────────────────────  1 px #c0c0c0 divider — option A ends, option B begins
+     ════════════════════════════════════════  2 px #a0a0a0 — option A ends, option B begins
      white        26-10B0  Not sent            Shade only                                                                               $4,180.00   28.0
      blue    +  26-11     AWAITING DELIVERY    Desert Ridge HOA — PlayBooster   Desert Ridge HOA  Marla Whitfield  Phoenix, AZ    2                        ⚑
      white   +  26-12     Quoting              Verrado Elementary — Ramada Add  Litchfield ESD    Dana Ruiz        Buckeye, AZ    1                        $
@@ -201,7 +209,27 @@ gut     the 14 px gutter. ▶ = selected, ▌ = 4 px #CC0000 problem lip.
         Status text on both problem rows is #a00.
 ```
 
-Default sort: **project number ascending**. Header click flips.
+### Sorting
+
+**Default: project number ascending.** Any header click sorts by that column;
+clicking the same header again reverses.
+
+**Clicking `Status` sorts by lifecycle position, 1 → 14** — not alphabetically.
+The list comes out as the ramp itself:
+
+```
+white      quoting, drafts, expired, blocked
+blue       accepted · awaiting delivery
+light grn  equipment received
+green      scheduled
+yellow     active
+orange     invoice sent
+red        paid · warranty · completed
+```
+
+Projects sort by their **rollup** status. Versions stay nested under their
+project in option-and-version order regardless of the sort — the sort orders
+projects, never versions.
 
 ### Flags
 
