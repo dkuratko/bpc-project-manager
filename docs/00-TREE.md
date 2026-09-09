@@ -529,7 +529,7 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
 ✔ COST BREAKDOWN · tab 3 PURCHASING — FINAL v1 (pending $ format)
 ✔ COST BREAKDOWN · tab 4 COST — FINAL v2 (collapsible, reconciles at $12,462.07)
 ✔ COST BREAKDOWN · problems panel — FINAL v1 (POPUP)
-✔ ESTIMATE EDITOR — FINAL v10 (MAIN)
+✔ ESTIMATE EDITOR — FINAL v12 (MAIN)
 ✔ PROJECT BROWSER — FINAL v14 (MAIN, the frame)
 ✔ VERSION VIEW — FINAL (MAIN)
 ✔ MAIN WINDOW TEMPLATE — adopted. see docs/10.
@@ -607,7 +607,9 @@ hold anything you would want to keep looking at.
      sub-items AND options · row expansion showing cost · price · margin
      · grey selection · edit on double-click only · right-click Delete
 ▢ VEHICLES screen — new. the Tier 1 $/mile dialog lives here.
-✔ ESTIMATE EDITOR — v12 APPROVED. supersedes v10 and v11.
+✔ ESTIMATE EDITOR — FINAL v12. supersedes v10 and v11.
+     ★ build-time: the Optional add-ons box needs a "＋ Add option" footer
+       row — the brief gained it after the render. no re-render needed.
      MAIN template chrome + the body split into three boxes:
      "Estimate of work" · "Optional add-ons" · "Totals".
      job-level add options are CREATED in that box, not just listed —

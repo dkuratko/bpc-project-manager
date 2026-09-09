@@ -58,7 +58,13 @@ spine down the whole selected group, and never touches the row's status tint.
 
 | # | Screen | Kind | Status | File | Brief |
 |---|---|---|---|---|---|
-| — | Estimate editor | MAIN | **✔ APPROVED v12** | *(pending file)* | `05f` · `05g` · `05h` |
+| — | Estimate editor | MAIN | **✔ FINAL v12** | `docs/design/estimate-editor.v12.dc.html` | `05f` · `05g` · `05h` |
+
+**★ One build-time addition.** The rendered `Optional add-ons` box lists its one
+row but has no way to create another — the brief gained that after the render.
+Add a `#dfdfdf` footer row with `＋ Add option` inside that box, and make its
+label and amount editable on double-click like every other cell. Mechanical;
+no re-render.
 | — | Version view | MAIN | **✔ FINAL v3** | `docs/design/version-view.v3.dc.html` | `09` |
 
 All MAIN screens follow `10-main-window-template.md`: identity strip, tinted
