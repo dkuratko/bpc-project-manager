@@ -49,21 +49,28 @@ words `next in sequence` beside it. It resets to 1 every January.
 ### Group box · "Customer"
 
 ```
-Customer          [ Exerplay, Inc.                       ▼] [＋]   ★ required
-Contact           [ Grant Smith                          ▼] [＋]
+Customer          [ Exerplay, Inc.              ▼] [＋]              ★ required
+Contacts          [ Grant Smith                 ▼]  primary  [＋] [✕]
+                  [ Maria Villanueva            ▼]  site     [＋] [✕]
+                  ＋ Add another contact
 ```
 
-Both pull from Contacts. `[＋]` is a small raised button that creates one
-inline without losing what you have typed. The Contact list filters to the
-chosen customer.
+**A project has SEVERAL contacts, each with a role** — the person who asked,
+the person on site, whoever pays. Roles are an open list, not a fixed set.
+
+`[＋]` creates a contact inline without losing what you have typed. `[✕]`
+removes that row. `＋ Add another contact` is grey text, not a button.
 
 ### Group box · "Site"
 
 ```
 Address           [ 1625 W Ryan Rd                        ]
 City              [ Chandler        ]  State [ AZ ]  Zip [ 85286    ]
-Distance          [  18 ] mi          Drive time [ 0.4 ] hr each way
+Distance          [  18 ] mi          Drive time [  24 ] min each way
 ```
+
+Drive time is in **minutes**, which is how you would say it. The mobilization
+formula divides by 60.
 
 Distance and drive time price mobilization. You know roughly where the site is
 as soon as you have the address, so they belong here — but neither is required.

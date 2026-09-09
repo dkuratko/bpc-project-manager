@@ -319,10 +319,12 @@ CREATE TABLE projects (
   sequence_no     INTEGER NOT NULL,         -- resets every January
   title           TEXT NOT NULL,
   customer_id     TEXT REFERENCES customers(id),
-  contact_id      TEXT REFERENCES contacts(id),
+  -- NO single contact_id. A project has SEVERAL contacts, each with a role —
+  -- see project_contacts. The one marked 'primary' is who you deal with.
   address TEXT, city TEXT, state TEXT, zip TEXT,
   distance_mi     REAL,   -- ONE WAY, shop to site. drives vehicle cost.
-  drive_time_hr   REAL,   -- ONE WAY. drives crew travel labour.
+  drive_time_min  REAL,   -- ONE WAY, in MINUTES — that is how it is entered.
+                          -- the mobilization formula divides by 60.
                           -- Both are typed, not derived — no average-speed
                           -- assumption to argue with. NOT haul_distance_mi,
                           -- which is spoils disposal.
@@ -335,6 +337,17 @@ CREATE TABLE projects (
 -- Replaced per-component complexity. Stack MULTIPLICATIVELY.
 -- Adjust the UNDERLYING VALUE so hours stay right for scheduling.
 -- Applied BEFORE markup. Can NEVER touch product cost.
+-- A project has several contacts, each with a role: the person who asked, the
+-- person on site, whoever pays. Roles are an open list, not a fixed set.
+CREATE TABLE project_contacts (
+  id          TEXT PRIMARY KEY,
+  project_id  TEXT NOT NULL REFERENCES projects(id),
+  contact_id  TEXT NOT NULL REFERENCES contacts(id),
+  role        TEXT NOT NULL DEFAULT 'primary',   -- primary · site · billing · …
+  sequence_no INTEGER NOT NULL DEFAULT 0,
+  UNIQUE(project_id, contact_id, role)
+);
+
 CREATE TABLE project_conditions (
   id          TEXT PRIMARY KEY,
   project_id  TEXT NOT NULL REFERENCES projects(id),
