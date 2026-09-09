@@ -63,7 +63,6 @@ PROJECT ─── BPC-26-10 ─── "San Tan Shade Installation"
   ✔       AWAITING DELIVERY ................ waiting on someone else's order
   ✔       EQUIPMENT RECEIVED ............... complete, at your lot
   ✔       SCHEDULED ....................... customer set the date
-  ✔       ACTIVE .......................... crew on site
   ✔       ACTIVE .......................... work underway, NOT yet invoiced.
                                             covers the gap after the crew
                                             leaves — completion IS the invoice.
@@ -76,7 +75,7 @@ PROJECT ─── BPC-26-10 ─── "San Tan Shade Installation"
        1–5 white · 6–7 green · 8 light yellow · 9 yellow · 10 pink
        11 orange · 12–14 red   (14 statuses — "completed, payment
        required" was removed; completion IS the invoice)
-       PROBLEM #ffe0e0 OVERRIDES the phase tint, reinforced by a 3px #a00
+       PROBLEM #ffadad OVERRIDES the phase tint, reinforced by a 3px #a00
        left-edge bar, a flag and #a00 status text. red serves both meanings.
   ✔ "completed, payment required" REMOVED — it had no trigger of its own.
 ```
