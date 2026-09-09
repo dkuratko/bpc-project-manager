@@ -110,7 +110,7 @@ A **14 px gutter** sits left of the `±` column and carries both:
 ▌   a 4 px #CC0000 lip — this row has a problem
 ```
 
-**Selection is `▶` plus a 1 px dotted black rectangle around the row. No fill.**
+**Selection is `▶` plus a 2 px solid black rectangle around the row. No fill.**
 The status tint is never covered. There are **no colour chips** — they only
 existed to survive a cursor that filled the row, and that cursor is gone.
 
@@ -119,7 +119,14 @@ A problem also shows its flag glyph and puts the Status text in `#a00`.
 ## Expansion
 
 Versions become ordinary indented rows in the same table. No inset box, no
-sub-table, no action buttons. Actions live on a **right-click menu**:
+sub-table, no action buttons.
+
+**A 1 px `#c0c0c0` divider sits between option groups.** An option is a letter
+and nothing else — a divider so the version list stays readable — so draw the
+divider it already is. `A0 · A1` then a rule, then `B0`. No divider before the
+first option or after the last.
+
+Actions live on a **right-click menu**:
 
 ```
    Open version
@@ -146,6 +153,7 @@ gut  tint    ±  Project   Status               Name                            
 ▶    white   −  26-10     Quoting              San Tan Shade Installation       Exerplay, Inc.    Grant Smith      Gilbert, AZ    3
      white        26-10A0  Not sent            PlayBooster + hip shade                                                                 $17,500.00   28.8
      white        26-10A1  Sent, awaiting      + bench, moved ramp                                                                     $18,240.00   28.7  $
+     ────────────────────────────────────────  1 px #c0c0c0 divider — option A ends, option B begins
      white        26-10B0  Not sent            Shade only                                                                               $4,180.00   28.0
      blue    +  26-11     AWAITING DELIVERY    Desert Ridge HOA — PlayBooster   Desert Ridge HOA  Marla Whitfield  Phoenix, AZ    2                        ⚑
      white   +  26-12     Quoting              Verrado Elementary — Ramada Add  Litchfield ESD    Dana Ruiz        Buckeye, AZ    1                        $
@@ -156,7 +164,7 @@ gut  tint    ±  Project   Status               Name                            
 ```
 gut     the 14 px gutter. ▶ = selected, ▌ = 4 px #CC0000 problem lip.
         NOT a column header — leave it unlabelled.
-26-10   SELECTED — ▶ in the gutter + dotted rectangle. NO fill.
+26-10   SELECTED — ▶ in the gutter + 2 px solid black rectangle. NO fill.
         row tint stays white. expanded.
 26-09   GREEN row with a red lip — scheduled, no equipment on the lot.
         the row keeps its real phase; the lip says it is wrong.

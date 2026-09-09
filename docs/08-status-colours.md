@@ -66,12 +66,15 @@ GUTTER    14 px, left of the ± column. holds two things:
              ▶  black, on the selected row
              ▌  the 4 px #CC0000 problem lip
           both can appear at once.
-SELECTED  ▶ in the gutter + a 1 px dotted black rectangle around the row
+SELECTED  ▶ in the gutter + a 2 px SOLID black rectangle around the row
           NO fill. the status tint is untouched.
 ```
 
 The old database-app record selector — Access, FoxPro, dBASE. It reads at a
 glance, costs no colour, and gives the problem lip a proper home.
+
+The rectangle is **2 px solid black**, not a hairline focus dash — this is the
+row you are working on and it should be unmistakable across a 1400 px window.
 
 ```
  ▶ ▌ +  26-09   SCHEDULED              selected AND a problem
