@@ -59,7 +59,7 @@ spine down the whole selected group, and never touches the row's status tint.
 | # | Screen | Kind | Status | File | Brief |
 |---|---|---|---|---|---|
 | — | Estimate editor | MAIN | **✔ FINAL v11** | *(pending file)* | `05f` + `05g` |
-| — | Version view | MAIN | **✔ FINAL** | *(pending file)* | `09` |
+| — | Version view | MAIN | **✔ FINAL v3** | `docs/design/version-view.v3.dc.html` | `09` |
 
 All MAIN screens follow `10-main-window-template.md`: identity strip, tinted
 status strip, body, optional screen strip, derived status bar. The cost
