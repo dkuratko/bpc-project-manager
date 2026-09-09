@@ -88,6 +88,11 @@ Tax                                                          Included
 Total                                                      $17,500.00
 ```
 
+## Dates
+
+**Every date carries its year** — `created 07 Sep 2026`, `sent 07 Sep 2026`,
+`expires 07 Oct 2026`. See `11-date-formatting.md`.
+
 ## Chrome — as v11
 
 Identity strip · tinted status strip with the problem lip · the price bar as

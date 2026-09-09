@@ -1,6 +1,6 @@
 # Design brief — PROJECT BROWSER
 The application frame. **MAIN**, the first thing you see on launch.
-Apply `03f-money-formatting.md` and `08-status-colours.md`.
+Apply `03f-money-formatting.md`, `08-status-colours.md` and `11-date-formatting.md`.
 
 **Style reference:** `docs/design/reference/ideas-5a-projects-main-page.dc.html`
 Take its *look* — window chrome, toolbar, filter band, counter tiles, expandable
@@ -62,7 +62,7 @@ figure in **19 px Lucida Console**, then a grey sub-line. Warning sub-lines in
 ```
 Awaiting answer        Won, in progress       Scheduled this week
 $46,880.00             $137,529.00            1 job
-2 sent · oldest 28 Aug 4 jobs                 22 Sep · no equipment   ← #a00
+2 sent · oldest 28 Aug 2026 4 jobs                 22 Sep · no equipment   ← #a00
 
 Unpaid                 Problems
 $5,390.00              2
@@ -255,4 +255,5 @@ Enter opens a version · → expands · Ctrl+N new project
 - **No money on project rows.** Value and GM% are version-level only.
 - **Every flag is derived**, never typed.
 - Money carries `$` and two decimals. GM% one decimal, no sign.
+- **Every date carries its year** — `22 Sep 2026`. See `11-date-formatting.md`.
 - Counters are filters.

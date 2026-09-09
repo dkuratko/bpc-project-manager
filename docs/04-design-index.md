@@ -139,6 +139,7 @@ POPUP   ▢ NEW PROJECT       ▢ NEW ADD OPTION     ▢ NEW GROUP
 03d  requirements-zone.md .......... tab 2
 03e  purchasing-zone.md ............ tab 3
 03f  money-formatting.md ........... cross-cutting, applies to every screen
+11   date-formatting.md ............ cross-cutting, applies to every screen
 03g  cost-zone.md .................. tab 4
 03h  cost-revision-1.md ............ collapsible groups
 03i  problems-panel.md ............. the issuability gate (POPUP)
@@ -211,10 +212,13 @@ labelled rows. When a brief asks for a lot of structure, say plainly:
 4. Quantity subtotals reconcile too — every column adds up.
 5. "— not selected —" and "$0.00" are different states and must look different.
 6. One screen per brief. One window. No dialogs unless the brief is the dialog.
-7. Money always carries $ and two decimals. Rates are $ then unit
+7. Every date carries its year — 22 Sep 2026. Never a bare day-month, never
+   a two-digit year. See brief 11. BUILD-TIME change on every rendered
+   screen; date columns widen from 56 px to 80 px.
+8. Money always carries $ and two decimals. Rates are $ then unit
    ($309.94 /CY). Quantities and percentages never carry $.
    Negatives in parentheses: ($590.00). See brief 03f.
-8. Toolbar: Add component / Add service / New one-time… are ENABLED ONLY on
+9. Toolbar: Add component / Add service / New one-time… are ENABLED ONLY on
    tab 1. Greyed on tabs 2, 3 and 4 — they are scope actions.
    Recalculate stays enabled everywhere. Issue estimate follows the gate.
 

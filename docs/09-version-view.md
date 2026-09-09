@@ -1,7 +1,7 @@
 # Design brief — VERSION VIEW
 **MAIN**, an MDI child window — not a popup. Opened by double-clicking a version
 in the Project Browser, and it **stays open** while you work elsewhere.
-Apply `03f-money-formatting.md` and `08-status-colours.md`.
+Apply `03f-money-formatting.md`, `08-status-colours.md` and `11-date-formatting.md`.
 
 ```
 Project Browser (the frame)
@@ -68,10 +68,10 @@ Full width, **tinted with the status colour** — here `#8ECF8E` green for
 `Scheduled` — with a 4 px `#CC0000` lip at the left because there is a problem.
 
 ```
-▌  Scheduled            install 22 Sep          ⚠  No equipment on the lot
+▌  Scheduled            install 22 Sep 2026          ⚠  No equipment on the lot
                                                    Play Structure PS-4400
                                                    outstanding · ship date
-                                                   was 02 Sep
+                                                   was 02 Sep 2026
 ```
 
 Status name in 15 px bold. The alert on the right in `#a00`.
@@ -113,10 +113,10 @@ The lifecycle from `Accepted` onward, one row each, with its date. This is the
 spine of the screen.
 
 ```
-   ✓  Accepted                    02 Sep    PO 4471-B
-   ✓  Awaiting delivery           02 Sep
+   ✓  Accepted                    02 Sep 2026    PO 4471-B
+   ✓  Awaiting delivery           02 Sep 2026
    ⚠  Equipment received             —      1 of 2 shipments
-   ●  Scheduled                   22 Sep    ← current
+   ●  Scheduled                   22 Sep 2026    ← current
       Active
       Invoice sent
       Completed, paid
@@ -134,8 +134,8 @@ spine of the screen.
 ### LEFT · "Shipments"
 
 ```
-Expected ship date              02 Sep      ⚠ 7 days late
-   #1   received 28 Aug   ✓  4 crates · 12 photos
+Expected ship date              02 Sep 2026      ⚠ 7 days late
+   #1   received 28 Aug 2026   ✓  4 crates · 12 photos
         Ramada frame · hardware · fabric
    #2   not received      ⚠  Play Structure PS-4400
 
@@ -147,8 +147,8 @@ Expected ship date              02 Sep      ⚠ 7 days late
 A small table: reference · what · created · sent · state.
 
 ```
-BPCc-26-09A0   Cost breakdown   14 Aug     —          complete
-BPCe-26-09A0   Estimate         20 Aug     20 Aug     accepted 02 Sep
+BPCc-26-09A0   Cost breakdown   14 Aug 2026     —          complete
+BPCe-26-09A0   Estimate         20 Aug 2026     20 Aug 2026     accepted 02 Sep 2026
                Change orders    —          —          none
                Invoice          —          —          not raised
                Post cost        —          —          not started
@@ -178,7 +178,7 @@ The cost line in `#606060` — internal, never on a customer document.
 ### RIGHT · "Schedule"
 
 ```
-Install date                22 Sep
+Install date                22 Sep 2026
 Duration                    3.1 days      24.8 hr · crew 3 × Installer
 Equipment                   Telehandler 9.0 hr · Mixer 2.0 hr
 Mobilization                2 trips · 18 mi · 0.4 hr each way
@@ -204,7 +204,7 @@ Three sunken `var(--t)` segments across the foot, matching the browser and the
 cost breakdown.
 
 ```
-⚠ Next — receive Play Structure PS-4400 · 7 days late   │ Estimate locked 02 Sep │ changed 08 Sep 14:22 · DK
+⚠ Next — receive Play Structure PS-4400 · 7 days late   │ Estimate locked 02 Sep 2026 │ changed 08 Sep 2026 14:22 · DK
                     flex                                          210 px              190 px
 ```
 
@@ -219,13 +219,13 @@ status                      Next reads
 ──────────────────────────────────────────────────────────────────────────
 Draft                       Build the cost breakdown
 Estimate created            Send the estimate
-Sent, awaiting              Awaiting answer — sent 20 Aug, 19 days
+Sent, awaiting              Awaiting answer — sent 20 Aug 2026, 19 days
 Expired                     Quote expired 19 Sep — reissue or close
 Blocked                     Cannot issue — 2 problems in the cost breakdown
-Accepted                    Waiting on equipment — expected 02 Sep
-Awaiting delivery           Waiting on equipment — expected 02 Sep
+Accepted                    Waiting on equipment — expected 02 Sep 2026
+Awaiting delivery           Waiting on equipment — expected 02 Sep 2026
 Equipment received          Set an install date
-Scheduled                   Install 22 Sep
+Scheduled                   Install 22 Sep 2026
 Active                      Raise the invoice when work is complete
 Invoice sent                Awaiting payment — 4 days
 Completed, paid             Post cost not started
@@ -237,19 +237,19 @@ Completed                   —
 problem instead of the ordinary next step, prefixed `⚠` and in `#a00`:
 
 ```
-⚠ Next — receive Play Structure PS-4400 · ship date was 02 Sep, 7 days late
+⚠ Next — receive Play Structure PS-4400 · ship date was 02 Sep 2026, 7 days late
 ```
 
 Which is the case rendered here — the job is `Scheduled`, so it would normally
-read `Install 22 Sep`, but the missing equipment wins.
+read `Install 22 Sep 2026`, but the missing equipment wins.
 
 ### The other two segments
 
 ```
-Estimate locked 02 Sep     the document state. a locked estimate can never
+Estimate locked 02 Sep 2026     the document state. a locked estimate can never
                            be edited, so saying so on every screen is worth
                            the space.
-changed 08 Sep 14:22 · DK  when, and by whom. the schema has users.
+changed 08 Sep 2026 14:22 · DK  when, and by whom. the schema has users.
 ```
 
 ---
@@ -264,7 +264,7 @@ changed 08 Sep 14:22 · DK  when, and by whom. the schema has users.
 - **A document row with no document is not blank** — it names the type in grey
   and says what state it is in, so you can see what has not happened yet.
 - Money carries `$` and two decimals. Cost is `#606060`.
-- Dates are `22 Sep`, with the year only when it is not this one.
+- **Every date carries its year** — `22 Sep 2026`. See `11-date-formatting.md`.
 - **The status bar's `Next` is derived, never typed**, and a problem always
   displaces the ordinary next step.
 - **One well-formed document.** Two columns, both inside one flex row, nothing
