@@ -124,11 +124,41 @@ a ten-hour day leaves six usable hours, so a nine-hour install becomes two days
 and you are staying, where a shorter drive would have kept it a day trip.
 
 ```
-✔ distance threshold ....  a SETTING. value not established yet.
+✔ distance threshold ....  a SETTING. ▢ value not established yet.
 ✔ room rate .............  entered PER VERSION — lodging is location-dependent
-✔ per diem ..............  a PERCENTAGE
-★ percentage of WHAT ....  undecided. room rate? daily labour? a flat uplift?
+✔ per diem ..............  an UPLIFT ON PAY. the same % for every employee,
+                           e.g. 10%. a setting, overtypeable per version.
 ```
+
+### The two costs, when staying
+
+```
+PER DIEM   =  per_diem_pct × ( install labour + mobilization labour )
+LODGING    =  nights × rooms × room_rate
+```
+
+Per diem rides on pay, so it needs no second rate table and it scales with crew
+size and job length automatically. Lodging does not — a room in Tucson and a
+room in Flagstaff are different numbers, which is why the rate is entered on the
+version rather than held as a setting.
+
+Worked, on a job that triggers a stay:
+
+```
+install labour        40.0 man-hr × $68.00 ............  $2,720.00
+mobilization labour   24.0 man-hr × $68.00 ............  $1,632.00
+                                                        ──────────
+                                                         $4,352.00
+per diem              × 10% ...........................    $435.20
+lodging               2 nights × 2 rooms × $145.00 ....    $580.00
+                                                        ──────────
+                                          added by staying  $1,015.20
+```
+
+[?] Assumed: per diem applies to **all** labour on the version once `nights > 0`,
+on the basis that if the job needs a stay, the crew is away for its duration.
+If a long job mixes stay-over days with day trips, it would need to apply only
+to the away days — say so and it becomes a day count rather than a total.
 
 ## The truck's $/mile ✔ — computed, not typed
 

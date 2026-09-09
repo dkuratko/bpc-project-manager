@@ -395,7 +395,9 @@ CREATE TABLE version_mobilization (
   nights_overridden INTEGER NOT NULL DEFAULT 0,
   rooms             INTEGER NOT NULL DEFAULT 0,
   room_rate         REAL,      -- per version: lodging is location-dependent
-  per_diem_pct      REAL       -- ★ percentage of WHAT — undecided
+  per_diem_pct      REAL       -- an uplift on PAY. same % for every employee.
+                               -- defaults from app_settings, overtypeable here.
+                               -- applies only when nights > 0.
 );
 
 CREATE TABLE version_design_numbers (
@@ -973,7 +975,7 @@ CREATE TABLE alerts (
 -- Global settings. Key/value so a new one is data entry, not a migration —
 -- the same principle as component specifications and procurement fees.
 --   mobilization.distance_threshold_mi ... ▢ value not established yet
---   mobilization.per_diem_pct ............ ★ percentage of WHAT — undecided
+--   mobilization.per_diem_pct ............ uplift on employee pay, e.g. 10%
 --   mobilization.workday_hours ........... 10
 --   vehicle.rate_method .................. 'computed' | 'tracked'
 --        Tier 1 today. The setting exists so it can be switched to actuals
