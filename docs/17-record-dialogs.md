@@ -366,8 +366,8 @@ Less J.O1 Security fence                          ($4,850.00)
 REV1 price                                        $38,410.00
       unit prices hold · the customer sees the same rates
 
-⚠ Cost does not fall by the same shape — margin is re-checked
-  when REV1 opens.
+Cost is recomputed when REV1 opens — pooled rates move when
+quantities do.
 ```
 
 **Estimate lines are unit priced, so the price subtracts cleanly and REV1 says
@@ -382,42 +382,65 @@ changed the ramada.
 `45,560.00 − 2,300.00 − 4,850.00 = 38,410.00`, and against the as-quoted
 approved scope of `$40,710.00` the difference is exactly the two benches.
 
-#### What cannot be subtracted is COST — and that is where the margin goes
-
-This is the pitfall, and it is not in the number above:
+#### What cannot be subtracted is COST
 
 ```
 PRICE   subtracts. unit rates are a promise to the customer and they hold.
 COST    does not. it is pooled, and pooling does not respect line boundaries.
 ```
 
-Two fewer benches is roughly **1 CY less concrete.** That concrete is pooled
-with the ramada's footings into one purchase, so a smaller pour can fall under
-a minimum load:
+An effective rate is `total ÷ REQUIRED`, and everything drawing on that pool
+pays it. So the ramada's concrete gets cheaper or dearer when the benches
+change, because they buy from the same truck.
+
+#### How much does that actually matter — honestly
+
+**Almost never much.** Fixed fees are the mechanism that fires on *every*
+quantity change, and it is small:
 
 ```
-before   8.00 CY × $185 + $85 delivery ............... $1,565.00   $195.63/CY
-after    7.00 CY × $185 + $85 delivery + short load ..    ↑ rate    ↑ per yard
+8.00 CY × $185 + $85 delivery ....... $195.6250 /CY
+7.00 CY × $185 + $85 delivery ....... $197.1429 /CY
+
+the ramada's 5 CY:  $978.12 → $985.71
+drift on work nobody touched:  $7.59  —  0.02% of a $38,410 job
 ```
 
-**The ramada's footings now cost more per yard, and the ramada's price did not
-change.** You are still charging the old rate for work that got more expensive.
-Margin eroded on a line nobody edited.
+`$7.59` is noise. **A warning that fired on that every time would train you to
+ignore the one that matters**, which is why the footer line is neutral rather
+than alarmed.
 
-That is the entire reason this application exists rather than a spreadsheet: a
-spreadsheet would show `$38,410.00` and stop, and the margin would quietly go
-missing.
+#### The cases that DO matter — thresholds, not drift
 
-#### So what does the dialog do about it
+The rate curve is smooth until it is not. What hurts is crossing a threshold:
 
-**Nothing here — it warns and hands off.** Re-running procurement is a real
-`calculation_run` and it may need a human: at a lower quantity a different
-method can be the right one, bag mix instead of ready-mix, a smaller delivery.
-That judgment belongs on REV1's Purchasing tab, with the numbers in front of
-you.
+```
+minimum / short load    4.00 CY + $150 short load ..... $243.75 /CY
+                        against $195.63 — a 25% jump
+price break             falling under a tier's quantity
+purchase rounding       required falls, purchased does not, and the rate
+                        is over REQUIRED
+a whole unit dropping   one less truck, one less trip, one less rental day
+```
 
-So the footer states the price exactly, flags that cost is a separate question,
-and REV1 opens on the cost breakdown where the answer lives.
+These are not rare *in kind* — a threshold sits under most pooled materials —
+but a given revision usually misses them. **You cannot tell which from this
+screen**, and that is the honest position: the popup says the price exactly,
+and REV1's recompute is what knows whether a threshold was crossed.
+
+#### It runs the other way too
+
+Add scope and everyone gets slightly **cheaper** — the same fixed fee over more
+required quantity. Change orders and add options quietly improve the margin on
+work already sold. The model is not pessimistic, it is just not linear.
+
+#### So: is the setup an issue?
+
+**No — the setup is what makes the issue visible.** Unit pricing is right for
+the customer and the arithmetic is right for the price. The only thing that
+would be an issue is believing the price reconciling means the job is
+unchanged. It usually is. Occasionally it is not, and REV1 is where you find
+out, quantified, instead of at post-cost.
 
 #### The PO's own number — on the parent dialog
 
