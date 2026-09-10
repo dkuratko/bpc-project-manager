@@ -118,7 +118,8 @@ docs/design/component-wizard.final.dc.html` | — |
 | # | Screen | Kind | Status | File | Brief |
 |---|---|---|---|---|---|
 | — | New Project | POPUP | **✔ FINAL v2** | `docs/design/new-project.v2.dc.html` | `12` |
-| — | New Version | POPUP | briefed, awaiting render | — | `13` |
+| — | New Option | POPUP | briefed, awaiting render | — | `13` |
+| — | New Version | POPUP | briefed, awaiting render | — | `14` |
 
 Its dialog grammar — the `100px 1fr` field grid, read-only values as `#c0c0c0`
 chips, grey explanation lines, and the two callout weights (`#ffffe1` for a

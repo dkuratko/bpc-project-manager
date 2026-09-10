@@ -1,7 +1,8 @@
-# Design brief — NEW VERSION
-**POPUP**, alone on a `rgba(0,0,0,.42)` scrim. Opened by `New version` on the
-browser toolbar, by `New version` on the project browser's right-click menu, or
-from the version view's toolbar.
+# Design brief — NEW OPTION
+**POPUP**, alone on a `rgba(0,0,0,.42)` scrim. Opened by `New option` on the
+browser toolbar, or by `New option` on the project browser's right-click menu.
+**Launched from a PROJECT.** Its sibling, `New version`, is launched from a
+version — see `docs/14-new-version.md`.
 Apply `03f-money-formatting.md` and `11-date-formatting.md`.
 
 **Style reference:** `docs/design/new-project.v2.dc.html` — **FINAL**.
@@ -45,16 +46,16 @@ BUTTONS          fixed width, right aligned. default outlined 1 px black,
                  offset 1 px, bold.
 ```
 
-**One departure:** this dialog has radio groups, which New Project does not.
+**One departure:** this dialog has a radio group, which New Project does not.
 A radio is `◉` / `○` in the text flow at 10 px — no custom control, no bevel.
-Each radio's consequence line sits directly under it in `#404040`, indented to
-clear the glyph. The selected radio's label is plain black; the unselected
-labels are plain black too. **Do not grey out the unselected options** — they
-are equal choices, not a disabled state.
+Any consequence line sits directly under it in `#404040`, indented to clear the
+glyph. Selected and unselected labels are both plain black, and the controls
+belonging to an unselected radio stay live. **Do not grey anything out** — a
+user reaching for the source dropdown is choosing that radio.
 
 ---
 
-## Why this dialog exists
+## Why this dialog exists — and why it is not one dialog
 
 A project already holds `26-10A0`, `26-10A1`, `26-10B0`. The user wants a
 fourth. There are two completely different things they might mean, and
@@ -62,11 +63,22 @@ fourth. There are two completely different things they might mean, and
 
 - a **different answer** to the customer's problem — different equipment,
   different approach. That is a new **option**: letter `C`, and `C0` in it.
+  ← *this dialog*
 - the **same answer**, priced or worded again. That is a new **version** inside
-  an existing option: `B1`.
+  an existing option: `B1`. ← `docs/14-new-version.md`
 
-One command, `New version`, opens one dialog that makes the user choose. Two
-separate menu items would make them choose *before* the dialog could help.
+They are two dialogs because **they have different defaults.** A new option is
+launched from a project, where which version to copy from is a genuine choice —
+`A0`, `A1` and `B0` are all candidates. A new version is launched from a
+version, where the copy source is already answered: the one you are standing
+on. One dialog would have forced a single control to serve two acts whose
+answers are not equally open, and would have made the smaller act carry a
+kind-radio and an option-picker it does not need.
+
+The distinction is taught by **adjacency instead**: the two commands sit next to
+each other in the toolbar and the menu, permanently visible, and each dialog
+carries a one-line pointer to the other. That is stronger than a radio group,
+which you only see once you are already in the right place.
 
 ---
 
@@ -75,52 +87,31 @@ separate menu items would make them choose *before* the dialog could help.
 ### Title bar
 
 ```
-New Version
+New Option
 ```
 
-### Group box 1 · "What kind"
-
-```
-Kind        ◉ A different answer — new option
-              creates option C, and version C0 inside it
-            ○ The same answer, priced or scoped again
-              creates B1, inside option [ B ▼ ]
-
-            An option is a letter and nothing else. Both choices create
-            exactly one thing — a version. The only difference is
-            whether the letter is new.
-```
-
-Render with **the first radio selected**.
-
-The `[ B ▼ ]` picker is a dropdown listing the project's existing letters
-(`A`, `B`). It belongs to the second radio and sits inline in its consequence
-line. It is **not** greyed even though the second radio is unselected — a user
-reaching for the picker is choosing the radio.
-
-The explanation line under both is the load-bearing sentence in this dialog. It
-is literally true of the schema: there is no options table. `C` exists because
-`C0` exists.
-
-### Group box 2 · "Identify it"
+### Group box 1 · "Identify it"
 
 ```
 Project     [ 26-10  San Tan Shade Installation ]      read-only chip
 Reference   [ 26-10C0 ]  read-only chip                assigned on save
-Name        [ Value engineered — surface mount, no ramada ]   ★
+Name        [ Shade sails — two 20 ft sails, drilled footings ]   ★
 Why         [ Customer asked for a cheaper option 04 Sep 2026 ]
 Created     [ 09 Sep 2026 ]  read-only chip            today · not editable
 ```
 
-`Name` is required. This dialog only ever creates a **second or later** version
-— the first, `A0`, comes from New Project's `Create & start version A0`, where
-no name is needed because there is nothing yet to tell it apart from. Here
-there always is.
+`Name` is required, and it names the **version** `C0`, not the option. There is
+no such thing as an option name — `C` is a letter and nothing else. What the
+name is for is telling `C0` apart from `A0` and `B0` in a list.
+
+`Name` is required here and not on New Project because New Project's
+`Create & start version A0` makes the *first* version, where there is nothing
+yet to tell it apart from. From the second on, there always is.
 
 `Why` gets an explanation line:
 
 > Not paperwork. Writing the reason is what catches a new option being
-> created when a version was meant.
+> started when a new version was meant.
 
 `Reference` gets `assigned on save`, in grey, beside the chip — same treatment
 and same reason as New Project's project number. **The letter is not reserved
@@ -128,7 +119,7 @@ when the dialog opens.** Two estimators with this dialog open would both be
 shown `C`; only the one who saves first gets it. This is 9b's third note,
 fixed.
 
-### Group box 3 · "Scope"
+### Group box 2 · "Scope"
 
 ```
 Start from  ○ Empty — build it up from the catalog
@@ -144,13 +135,26 @@ Start from  ○ Empty — build it up from the catalog
 
 Render with **Copy selected**, source `26-10B0`.
 
-Copy is the default because copy is the truth — almost every version starts as
-a variation of one that exists. Empty is offered first in the list because it
-is the simpler idea, not because it is expected.
+Copy is the default even here, where the whole point of a new option is that it
+is a *different* answer — because different answers still share most of their
+scope. Surface mount and drilled footings are the same shade assembly; only the
+footing work differs. Starting empty means retyping everything the two have in
+common.
+
+**The source is a real choice in this dialog** — `A0`, `A1` and `B0` are all
+candidates and none of them is obviously right. That is exactly what makes this
+a different dialog from New Version, where the source is already answered.
 
 The dropdown lists every version in the project with its name, `A0` first.
 A version being copied from is never "used up" and never dies — `A0` can be the
 source for `C0` today and still be approved next month.
+
+### Pointer line
+
+Under the buttons, or immediately above them, in `#404040`:
+
+> Repricing or rewording something you already quoted? That is
+> **New version**, not a new option.
 
 ### Tip block · `#ffffe1`
 
@@ -212,10 +216,12 @@ Copying one version then hand-editing is the answer for now. Logged in
 
 ## Failure modes — do not reproduce
 
-- **Greying the unselected radio's controls.** The option picker and the copy
-  source dropdown stay live. Both radio groups are choices, not toggles that
-  disable each other's fields.
-- **Two dialogs.** One command, one dialog, one choice made inside it.
+- **Greying the unselected radio's controls.** The copy source dropdown stays
+  live. A radio group is a choice, not a switch that disables its neighbours'
+  fields.
+- **A kind-radio asking option-or-version.** That choice was made by which
+  command you picked. This dialog makes options, full stop.
+- **Naming the option.** `C` has no name. The name belongs to `C0`.
 - **Reserving the letter on open.** `assigned on save`, always.
 - **Version numbering starting at 1.** A new option's first version is `C0`,
   not `C1`. `version_number` is 0-based inside its option.

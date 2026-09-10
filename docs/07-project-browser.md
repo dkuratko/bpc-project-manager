@@ -43,7 +43,7 @@ accelerator underlines.
 ```
 title bar .... Build Play Contracting — Project Manager
 menu ......... File Edit View Project Version Catalog Reports Window Help
-toolbar ...... New project · New version ‖ Open · Duplicate…
+toolbar ...... New project · New option · New version ‖ Open · Duplicate…
                ‖ Catalog ▸ · Contacts · Vehicles     right: Estimator [ ▼ ]
                no Print list, no Rates & Resources
 filter band .. Find [ ] Customer [ ▼ ] Status [ ▼ ]
@@ -159,10 +159,13 @@ where one ends.
 
 **Between versions inside an option: a 1 px `#d4d4d4` rule.**
 
-Actions live on a **right-click menu**:
+Actions live on a **right-click menu**. `New option` and `New version` sit
+adjacent on purpose — the pairing is what teaches the difference between a new
+letter and a reprice, so they are never separated or given different homes:
 
 ```
    Open version
+   New option
    New version
    Record approval…
    ─────────────────
