@@ -32,6 +32,7 @@ title bar     New Option                   New Version
 box 1         Option is a NEW LETTER       Option is a PICKER
               chip · C · assigned on save  A ▼ B  ·  pre-set from launch
               → creates C0                 → creates B1
+              Name defaults "… Opt. C"     Name defaults "… Opt. B"
 ─────────────────────────────────────────────────────────────────
 box 2         IDENTICAL — Start from / Copy / Empty
 tip block     IDENTICAL
@@ -126,8 +127,8 @@ Role A: `New Option`   ·   Role B: `New Version`
 Project     [ 26-10  San Tan Shade Installation ]      read-only chip
 Option      [ C ]  read-only chip            new letter · assigned on save
 Reference   [ 26-10C0 ]  read-only chip
-Name        [ Shade sails — two 20 ft sails, drilled footings ]   ★
-Why         [ Customer asked for a cheaper approach 04 Sep 2026 ]
+Name        [ San Tan Shade Installation Opt. C ]      ← defaulted, editable
+Note        [ Customer asked for a cheaper approach 04 Sep 2026 ]
 Created     [ 09 Sep 2026 ]  read-only chip            today · not editable
 ```
 
@@ -137,8 +138,8 @@ Created     [ 09 Sep 2026 ]  read-only chip            today · not editable
 Project     [ 26-10  San Tan Shade Installation ]      read-only chip
 Option      [ B                                    ▼ ]   ← a real dropdown
 Reference   [ 26-10B1 ]  read-only chip                assigned on save
-Name        [ Repriced — Sep 2026 steel ]   ★
-Why         [ Quote expired 04 Sep 2026, mill prices moved ]
+Name        [ San Tan Shade Installation Opt. B ]      ← defaulted, editable
+Note        [ Quote expired 04 Sep 2026, mill prices moved ]
 Created     [ 09 Sep 2026 ]  read-only chip            today · not editable
 ```
 
@@ -152,23 +153,49 @@ were on `A0` or `A1`. The version you were on matters only as the **copy
 source**, which is the box below. Offering versions here would be the same
 confusion the dialog exists to prevent.
 
-**Changing the dropdown re-points two things:** `Reference` recomputes to the
-next number in that letter, and the Scope box's copy default follows to that
-letter's newest version. That is what makes the picker feel consequential
-instead of decorative.
+**Changing the dropdown re-points three things:** `Reference` recomputes to the
+next number in that letter, the Scope box's copy default follows to that
+letter's newest version, and the `Name` default re-suffixes — `Opt. B` becomes
+`Opt. A`. That is what makes the picker feel consequential instead of
+decorative.
 
-`Name` is required in both roles, and it names the **version** — `C0` or `B1`.
-There is no such thing as an option name. `Name` is required here and not on
-New Project because New Project's `Create & start version A0` makes the *first*
-version, where there is nothing yet to tell it apart from. From the second on,
-there always is.
+The `Name` default follows the dropdown **only until the user types in it.**
+Once the field is dirty it stops following, and changing the dropdown never
+overwrites what someone has typed. This is the single most likely thing to be
+built wrong.
 
-`Why` gets an explanation line, worded per role:
+#### `Name` — defaulted, editable, never required
 
-- Role A: *Not paperwork. Writing the reason is what catches a new option being
-  started when a new version was meant.*
-- Role B: *Not paperwork. Writing the reason is what catches a reprice being
-  filed as a different approach.*
+```
+default  <project title> + " Opt. " + <letter>
+         "San Tan Shade Installation" + " Opt. C"
+```
+
+**The name belongs to the version, never to the option.** An option is a letter
+and holds nothing at all — there is no option name, no option record, no
+options table. `C` exists only because `C0` exists.
+
+So why does the default describe the *option*? Because "which approach is this"
+is option-level meaning that the option cannot hold, so it is carried on the
+version instead. `B0` and `B1` defaulting to the same name is correct and not a
+collision: they are the same approach, priced twice. What tells them apart is
+the reference and the note.
+
+The field stays editable precisely so a version-specific name can override it
+— `San Tan Shade Installation Opt. B — repriced Sep 2026`.
+
+**No `★`.** A field that arrives with a value cannot be required. The red star
+belongs on New Project's `Title` and `Customer`, which arrive empty.
+
+#### `Note` — free text, optional, not an interrogation
+
+Free text. No prompt, no forced justification, no explanation line beneath it.
+
+An earlier draft called this `Why` and leaned on it to force the
+option-versus-version distinction. That was always weak — anything can be typed
+into a `Why` box, so it forced nothing — and it made the software interrogate
+its user on every single version. **The adjacency of the two commands and the
+pointer line carry that weight instead**, which is where it belonged.
 
 `Reference` gets `assigned on save`, in grey. **Nothing is reserved when the
 dialog opens** — two estimators would both be shown `C`, or both be shown `B1`;
@@ -299,7 +326,13 @@ Copying one version then hand-editing is the answer for now. Logged in
 - **Divergent bottoms.** Box 2, both callout blocks and the buttons are the
   same in both roles, pixel for pixel. If they drift, the design is lost.
 - **Greying the unselected radio's controls.** The source dropdown stays live.
-- **Naming the option.** `C` has no name. The name belongs to `C0`.
+- **Naming the option.** `C` has no name and no record. The name belongs to
+  `C0`. Any label reading "Option name" is wrong.
+- **A `★` on `Name`.** It is defaulted, so it is never empty, so it cannot be
+  required.
+- **The `Name` default overwriting typed text** when the Option dropdown
+  changes. It follows only until the field is dirty.
+- **A `Why` field, or a prompt beneath `Note`.** It is a note. It asks nothing.
 - **Numbering from 1 inside an option.** `version_number` is 0-based: a new
   option's first version is `C0`, never `C1`; `B`'s second version is `B1`.
 - **A `BPC` prefix or a type letter on a version reference.** A bare version is
