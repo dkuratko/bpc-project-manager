@@ -56,10 +56,17 @@ Parent rows (customers) and child rows (people) carry **different** columns in
 the same grid. This is what the Project Browser already does and it works:
 
 ```
-gutter  NAME                       TITLE / KIND        PHONE          EMAIL                  AUTO  PROJECTS
-  8px   ──────────────────────     ──────────────      ────────────   ────────────────────   ────  ────────
-        300px                      148px               108px          200px                  36px  64px, right
+gutter  ±   NAME                   TITLE / KIND        PHONE          EMAIL                  AUTO  PROJECTS
+ 14px  20px ──────────────────     ──────────────      ────────────   ────────────────────   ────  ────────
+            minmax(0,1fr)          148px               108px          200px                  36px  64px, right
+
+grid-template-columns: 14px 20px minmax(0,1fr) 148px 108px 200px 36px 64px
 ```
+
+**Both leading columns are unlabelled** and come straight from the Project
+Browser — the 14 px gutter holds the spine and `▶`, the 20 px expand column
+holds `−` / `+`. **v2 used an 8 px gutter, which is why its spine vanished:
+there was no room for a 3 px bar and an arrow side by side.**
 
 - **Customer row** — `NAME` is the company, bold. `TITLE / KIND` shows the kind
   (`rep/dealer` · `GC` · `school` · `owner`). `PHONE` and `EMAIL` are blank —
@@ -92,9 +99,14 @@ person.
     Tom Baptiste                Inspector            (520) 555-0137 tbaptiste@tucsonaz.gov    1
   Haydon Building Corp          GC                                                             4
     Kyle Nunez                  Superintendent       (602) 555-0173 knunez@haydonbc.com       4
-  Chandler Unified School Dist. school                                                   cc    6
-    ▸ collapsed — 2 people
++ Chandler Unified School Dist. school                                                   cc    6
 ```
+
+Every company collapses. `−` on the four expanded companies, `+` on Chandler,
+and **Chandler renders no child rows whatsoever** — no placeholder, no
+"2 people" stand-in. The `+` is the whole indication. A placeholder row is a
+row you can select, which would need a selection rule, a right-click menu and
+a keyboard behaviour, for something that is not data.
 
 **The cursor is on `Ashley Doran`** — `▶` in the gutter and a 3 px black spine
 down the whole Exerplay group, company row and all four of its people, because
@@ -231,6 +243,11 @@ customer row is selected, that company; if a person is selected, their company.
   One marker, `cc`. The screen strip is what distinguishes them.
 - **An `AUTO` marker that looks clickable.** It is a flag, not a button. The
   rule is edited in Contact properties.
-- **A `position:relative` group wrapper with no spine inside it.** v1's miss.
+- **A `position:relative` group wrapper with no spine inside it.** v2's miss,
+  caused by an 8 px gutter. It is 14 px.
+- **A "collapsed — N people" placeholder row.** A collapsed group shows no
+  children at all. The `+` says everything.
+- **An expand control anywhere but its own 20 px column.** Not inside the name
+  cell, not in the gutter beside the arrow.
 - **`cc` on Exerplay's company row.** Its rule is Ashley's, and Ashley is a
   person.

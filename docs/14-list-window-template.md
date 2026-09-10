@@ -54,6 +54,12 @@ components, trucks over trailers — uses `docs/07-project-browser.md`'s
 vocabulary without re-deciding a single value:
 
 ```
+GUTTER       14 px, unlabelled, the FIRST column. wide enough to hold the
+             3 px spine AND the ▶ beside it. never 8 px — the spine has
+             nowhere to go and quietly disappears.
+EXPAND       20 px, the SECOND column, unlabelled. a monospace − on an
+             expanded parent, + on a collapsed one, centred. blank on
+             every child row.
 CURSOR       ▶ in the gutter on the parent row, plus a 3 px black spine
              down the whole selected group. NOTHING ELSE.
              NO shading, NO wash, NO fill, NO colour chip.
@@ -65,6 +71,13 @@ PROBLEM      never a row tint. a 4 px #CC0000 lip in the left gutter,
 TYPE         10 px Tahoma, letter-spacing .05em. not 11 px.
 DATES        every date carries its year. see docs/11.
 ```
+
+**A collapsed group renders NO child rows.** Not one summary row, not a
+"— 2 items" placeholder, nothing. The `+` in the expand column is the entire
+indication that something is inside, exactly as the Project Browser does it.
+A placeholder child row is a row the user can select, which means it needs a
+selection behaviour, a right-click menu and a keyboard rule — all for a thing
+that is not data.
 
 **The selection colour was decided once, after four rounds, and is closed.**
 Arrow and spine only. Do not re-open it per screen.
