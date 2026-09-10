@@ -119,13 +119,33 @@ docs/design/component-wizard.final.dc.html` | — |
 |---|---|---|---|---|---|
 | — | New Project | POPUP | **✔ FINAL v2** | `docs/design/new-project.v2.dc.html` | `12` |
 | — | New Option / New Version | POPUP · two roles | brief approved, awaiting render | — | `13` |
-| — | Customer / Contact dialogs | POPUP · 2 × 2 modes | v1 — layout approved, one fix | `docs/design/customer-contact-dialogs.v1.dc.html` | `16` |
-| — | Contacts | MAIN · list | v2 — two fixes pending | `docs/design/contacts.v2.dc.html` | `14` + `15` |
+| — | Customer / Contact dialogs | POPUP · 2 × 2 modes | **✔ FINAL v1** | `docs/design/customer-contact-dialogs.v1.dc.html` | `16` |
+| — | Contacts | MAIN · list | **✔ FINAL v2** | `docs/design/contacts.v2.dc.html` | `14` + `15` |
 
 Its dialog grammar — the `100px 1fr` field grid, read-only values as `#c0c0c0`
 chips, grey explanation lines, and the two callout weights (`#ffffe1` for a
 rule, `#ffffc0` 📋 for what the action records) — is the template for **every
 popup that follows.**
+
+### Build-time fixes — approved, do NOT re-render
+
+**Contacts v2** — four mechanical corrections, all in `docs/15`:
+
+1. Gutter `8px` → **`14px`**. The 3 px selection spine had nowhere to sit,
+   which is why v2 shows the `▶` with no spine beside it.
+2. Add the **20 px expand column** as column two: monospace `−` on an expanded
+   company, `+` on a collapsed one, blank on people.
+3. Chandler renders **no child rows** — delete the `collapsed — 2 people`
+   placeholder. The `+` is the whole indication.
+4. Exerplay's company row `AUTO` cell is **blank**. Its rule belongs to Ashley,
+   who is a person; Chandler is the company-rule example.
+
+Grid becomes `14px 20px minmax(0,1fr) 148px 108px 200px 36px 64px`.
+
+**Customer / Contact dialogs v1** — one:
+
+1. Ashley's `Notes` box reads **`Sends POs on Fridays.`**, matching the note the
+   Contacts screen strip shows for her. One person, two documents, one note.
 
 ## Not yet designed
 

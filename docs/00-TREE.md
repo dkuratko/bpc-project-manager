@@ -545,8 +545,8 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
      thing. COUNTERS ARE EARNED, not decoration: only when the counts
      are a to-do list. grouped lists reuse the project browser's cursor,
      banding and row rules verbatim.
-◐ CONTACTS — v2 rendered, two fixes pending. docs/15. grouped, no counters.
-◐ CUSTOMER + CONTACT DIALOGS — v1 layout approved. docs/16.
+✔ CONTACTS — FINAL v2 (MAIN, list). docs/15. grouped, no counters.
+✔ CUSTOMER + CONTACT DIALOGS — FINAL v1 (POPUP, 2 dialogs × 2 modes).
      TWO popups, each with a NEW and a PROPERTIES mode — one dialog
      reopened, exactly as new project settled it.
      EVERY POPUP IS 600 px. fewer fields makes a dialog SHORTER, never
@@ -683,6 +683,9 @@ hold anything you would want to keep looking at.
 CARRIED INTO THE BUILD, no re-render needed:
   estimate editor .... ＋ Add option footer in the Optional add-ons box
   cost breakdown ..... MAIN template chrome on all four tabs
+  contacts ........... 14px gutter · 20px expand column · no placeholder
+                       row on a collapsed group · blank AUTO on Exerplay
+  contact dialog ..... Ashley's note reads "Sends POs on Fridays."
   everywhere .......... every date carries its year
 
 OUT OF SCOPE, decided:
