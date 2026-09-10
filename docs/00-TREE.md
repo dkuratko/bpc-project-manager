@@ -537,6 +537,15 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
      100px/1fr field grid · read-only values as #c0c0c0 chips · grey
      explanation lines in the value column · #ffffe1 tip for a rule ·
      #ffffc0 📋 block for what the action permanently records.
+✔ LIST WINDOW TEMPLATE — adopted. see docs/14.
+     the SECOND template, for screens showing MANY things: contacts ·
+     catalog · vehicles · shipments · active versions.
+     filter band · [counters] · list · [screen strip] · status bar.
+     no identity strip, no status strip — a list is not looking at one
+     thing. COUNTERS ARE EARNED, not decoration: only when the counts
+     are a to-do list. grouped lists reuse the project browser's cursor,
+     banding and row rules verbatim.
+◐ CONTACTS — briefed in docs/15, awaiting render. grouped, no counters.
 ✔ MAIN WINDOW TEMPLATE — adopted. see docs/10.
      identity strip · tinted status strip · body · optional screen strip ·
      derived status bar whose "Next" says what has to happen for the job
@@ -561,7 +570,7 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
      they follow NEW PROJECT's dialog grammar.
 ▢ CATALOG BROWSER ............ finding one component among many is a real problem
 ▢ INVOICE · POST COST ........ both documents. follow estimate v12's box grammar.
-▢ CONTACTS · VEHICLES · CALENDAR · SHIPMENTS · ACTIVE VERSIONS LIST
+▢ VEHICLES · CALENDAR · SHIPMENTS · ACTIVE VERSIONS LIST
 ```
 
 ---
