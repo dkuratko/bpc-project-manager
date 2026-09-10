@@ -34,7 +34,8 @@ box 1         Option is a NEW LETTER       Option is a PICKER
               → creates C0                 → creates B1
               Name defaults "… Opt. C"     Name defaults "… Opt. B"
 ─────────────────────────────────────────────────────────────────
-box 2         IDENTICAL — Start from / Copy / Empty
+box 2         SAME BOX, different default
+              ◉ Empty                      ◉ Copy · that letter's last
 tip block     IDENTICAL
 record block  IDENTICAL
 buttons       IDENTICAL
@@ -55,6 +56,9 @@ thirds are identical, and a single dialog cannot show that.
   `NEW OPTION — mints a letter`
 - Right: **Role B · New version.** Caption: `NEW VERSION — joins a letter`
 - Both 600 px wide, top-aligned, 18 px apart.
+- Box 2 is the **same box** in both, with a **different radio filled**. Same
+  three radios, same order, same controls, same explanation, same position.
+  A different default is not a different box.
 - **No notes panel. No third state. Nothing after `</x-dc>`.**
 - One well-formed document.
 
@@ -86,8 +90,9 @@ BUTTONS          fixed width, right aligned. default outlined 1 px black,
 **One departure:** this dialog has a radio group, which New Project does not.
 A radio is `◉` / `○` in the text flow at 10 px — no custom control, no bevel.
 Selected and unselected labels are both plain black, and the controls belonging
-to an unselected radio stay live. **Do not grey anything out** — a user
-reaching for the source dropdown is choosing that radio.
+to an unselected radio stay live. **Never grey a control because its radio is
+unselected** — a user reaching for the source dropdown is choosing that radio.
+The one exception is a control with nothing behind it; see "The A0 case".
 
 ---
 
@@ -154,9 +159,9 @@ source**, which is the box below. Offering versions here would be the same
 confusion the dialog exists to prevent.
 
 **Changing the dropdown re-points three things:** `Reference` recomputes to the
-next number in that letter, the Scope box's copy default follows to that
-letter's newest version, and the `Name` default re-suffixes — `Opt. B` becomes
-`Opt. A`. That is what makes the picker feel consequential instead of
+next number in that letter, the Scope box's copy source follows to that
+letter's **last** version, and the `Name` default re-suffixes — `Opt. B`
+becomes `Opt. A`. That is what makes the picker feel consequential instead of
 decorative.
 
 The `Name` default follows the dropdown **only until the user types in it.**
@@ -201,12 +206,12 @@ pointer line carry that weight instead**, which is where it belonged.
 dialog opens** — two estimators would both be shown `C`, or both be shown `B1`;
 only the one who saves first gets it.
 
-### Group box 2 · "Scope" — identical in both roles
+### Group box 2 · "Scope" — the same box, a different default
 
 ```
-Start from  ◉ Copy  [ 26-10B0  Surface mount — no ramada  ▼ ]
+Start from  ○ Empty — build it up from the catalog
+            ◉ Copy  [ 26-10B0  Surface mount — no ramada  ▼ ]
             ○ Copy from another project…
-            ○ Empty — build it up from the catalog
 
             Copies every scope row and direct service, the scope groups,
             markup and contingency, the mobilization facts, and every
@@ -215,23 +220,54 @@ Start from  ◉ Copy  [ 26-10B0  Surface mount — no ramada  ▼ ]
             the schedule, shipments, invoices or actuals.
 ```
 
-Render **Copy selected in both dialogs**, source `26-10B0` in both.
+**The order is fixed** — Empty, Copy, Copy from another project — simplest to
+most involved. It does not reorder to put the default first. Which radio is
+*filled* is what changes between roles:
 
-**In this example the two roles happen to show the same source.** Role A
-pre-sets to the project's newest version (`B0`); role B pre-sets to the chosen
-letter's newest version (`B`'s newest is also `B0`). That coincidence is what
-lets the render prove the box is shared — but it is a coincidence of the
-example, not a rule. Do not build it as a rule.
+```
+ROLE A · new option    ◉ Empty — build it up from the catalog
+ROLE B · new version   ◉ Copy, source = the last version in that letter
+```
 
-Copy is the default in **both** roles, including the new-option role where the
-whole point is a *different* answer — because different answers still share
-most of their scope. Surface mount and drilled footings are the same shade
-assembly; only the footing work differs. Starting empty means retyping
-everything the two have in common.
+Render role A (left) with **Empty** selected and role B (right) with **Copy**
+selected, source `26-10B0`.
 
-The dropdown lists every version in the project with its name, `A0` first. A
-version copied from is never "used up" and never dies — `A0` can be the source
-for `C0` today and still be approved next month.
+**Why the defaults are opposite.** A new option is a genuinely different
+approach — shade sails instead of a ramada. Copying a scope built for one and
+deleting it down to the other is more work than building from the catalog, and
+it leaves debris behind. A new version is the same approach priced or worded
+again, so nearly all of its scope is already right; copying is not just the
+convenient default there, it is the correct one.
+
+**Role B's source is that option's own last version, not the project's
+newest.** Option `B` holding `B0` copies `B0`. Switch the dropdown to `A`, which
+holds `A0` and `A1`, and the source becomes `A1`. A version being copied from
+is never "used up" and never dies — `A0` can be the source today and still be
+approved next month.
+
+Both defaults are **only defaults.** Every radio stays reachable in both roles:
+a new option can copy, a new version can start empty.
+
+#### The A0 case — nothing to copy from
+
+New Project has two buttons, and the plain `Create` one leaves a project with
+**no versions at all**. Pressing `New option` on such a project mints `A0`, and
+the project holds nothing to copy.
+
+```
+Start from  ◉ Empty — build it up from the catalog
+            ○ Copy  [ — no other version in this project — ]   greyed
+            ○ Copy from another project…                       still live
+```
+
+`Empty` is selected and the `Copy` radio is genuinely unavailable — not styled
+as unavailable, actually unavailable, because there is nothing behind it.
+`Copy from another project…` stays live: a project just like an old one is a
+real thing, and it is the only copy that means anything here.
+
+**This is the one place greying is correct**, and it does not contradict the
+grammar rule below. Never grey a control because *its radio is unselected*.
+Do grey a control that has *nothing to offer*. The two are not the same.
 
 ### Tip block · `#ffffe1` — identical in both roles
 
@@ -325,7 +361,13 @@ Copying one version then hand-editing is the answer for now. Logged in
   belongs to the copy source below.
 - **Divergent bottoms.** Box 2, both callout blocks and the buttons are the
   same in both roles, pixel for pixel. If they drift, the design is lost.
-- **Greying the unselected radio's controls.** The source dropdown stays live.
+- **Greying the unselected radio's controls.** The source dropdown stays live
+  in both roles. The sole exception is the A0 case, where the project holds no
+  other version and `Copy` therefore has nothing to offer.
+- **Reordering the radios to put the default first.** The order is fixed;
+  only the filled radio changes.
+- **Copy as role A's default, or Empty as role B's.** They are opposite, and
+  role B copies *that letter's* last version, not the project's newest.
 - **Naming the option.** `C` has no name and no record. The name belongs to
   `C0`. Any label reading "Option name" is wrong.
 - **A `★` on `Name`.** It is defaulted, so it is never empty, so it cannot be
