@@ -545,7 +545,15 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
      thing. COUNTERS ARE EARNED, not decoration: only when the counts
      are a to-do list. grouped lists reuse the project browser's cursor,
      banding and row rules verbatim.
-◐ CONTACTS — briefed in docs/15, awaiting render. grouped, no counters.
+◐ CONTACTS — v2 rendered, two fixes pending. docs/15. grouped, no counters.
+◐ CUSTOMER + CONTACT DIALOGS — briefed in docs/16, awaiting render.
+     TWO popups, each with a NEW and a PROPERTIES mode — one dialog
+     reopened, exactly as new project settled it.
+     EVERY POPUP IS 600 px. fewer fields makes a dialog SHORTER, never
+     narrower, so the 100px field grid lines up across all of them.
+     automatic-recipient rules are authored on the PERSON WHO GETS
+     ADDED, one place only, via a single dropdown whose chosen option
+     is itself the scope (a colleague, or the whole company).
      AUTOMATIC RECIPIENTS: "wherever Grant goes, cc Ashley" is a standing
      fact about PEOPLE, so contact_defaults attaches a rule to either a
      person or a company. it SUGGESTS — adding Grant to a project writes
