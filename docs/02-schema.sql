@@ -373,7 +373,11 @@ CREATE TABLE versions (
   project_id      TEXT NOT NULL REFERENCES projects(id),
   option_letter   TEXT NOT NULL,            -- A · B · C — a divider only
   version_number  INTEGER NOT NULL,         -- 0, 1, 2 within its option
-  name            TEXT,
+  name            TEXT,                     -- required from the 2nd version on
+  reason          TEXT,                     -- "why is this one different" —
+                                            -- the field that catches a new
+                                            -- option created when a version
+                                            -- was meant. See docs/13.
   markup_pct      REAL NOT NULL DEFAULT 0,
   contingency_pct REAL NOT NULL DEFAULT 0,  -- added flat, NEVER marked up
   copied_from_id  TEXT REFERENCES versions(id),
