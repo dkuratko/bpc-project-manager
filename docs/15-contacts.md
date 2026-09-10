@@ -82,7 +82,7 @@ person.
 ## Render exactly this
 
 ```
-▶ Exerplay, Inc.                rep/dealer                                            cc    26
+▶ Exerplay, Inc.                rep/dealer                                                  26
     Grant Smith                 Regional Sales Mgr   (505) 555-0142 grant@exerplay.com        12
     Ashley Doran                Sales Assistant      (505) 555-0151 adoran@exerplay.com  cc    12
     Maria Villanueva            Project Coordinator  (505) 555-0188 maria@exerplay.com        8
@@ -100,6 +100,14 @@ person.
 down the whole Exerplay group, company row and all four of its people, because
 the spine marks the group not the row. **No shading whatsoever.** The last
 group renders collapsed to prove the control exists.
+
+The spine is an absolutely-positioned 3 px `#000` bar on the left edge of the
+group wrapper, running its full height. A `position:relative` wrapper with no
+bar in it is the failure to watch for — v1 shipped exactly that.
+
+**Exerplay's company row has no `AUTO` marker.** Its rule belongs to Ashley,
+who is a person. Chandler is the company-rule example. One company carrying
+both would blur the only place the two kinds are told apart.
 
 Ashley carries `cc` because she is pulled in wherever Grant is. Chandler
 carries `cc` on the **company** row, which is the other kind of rule — someone
@@ -223,3 +231,6 @@ customer row is selected, that company; if a person is selected, their company.
   One marker, `cc`. The screen strip is what distinguishes them.
 - **An `AUTO` marker that looks clickable.** It is a flag, not a button. The
   rule is edited in Contact properties.
+- **A `position:relative` group wrapper with no spine inside it.** v1's miss.
+- **`cc` on Exerplay's company row.** Its rule is Ashley's, and Ashley is a
+  person.

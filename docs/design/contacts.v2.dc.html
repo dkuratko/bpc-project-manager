@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><style>
+body{margin:0;background:#008080;font:10px Tahoma,Verdana,Geneva,sans-serif;letter-spacing:.05em;color:#000;
+--r:inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+--s:inset 1px 1px #808080, inset -1px -1px #fff, inset 2px 2px #0a0a0a, inset -2px -2px #dfdfdf;
+--t:inset 1px 1px #808080, inset -1px -1px #fff}
+*{box-sizing:border-box}
+a{color:#000080}
+a:hover{color:#1084d0}
+</style></helmet>
+<div style="min-height:100vh;background:#008080;padding:16px;display:flex;justify-content:flex-start;align-items:flex-start;overflow-x:auto;font:10px Tahoma,Verdana,Geneva,sans-serif;letter-spacing:.05em">
+<div style="width:1000px;height:640px;flex:none;background:#c0c0c0;box-shadow:var(--r);padding:3px;display:flex;flex-direction:column;gap:3px">
+
+<div style="height:20px;background:linear-gradient(90deg,#000080,#1084d0);display:flex;align-items:center;padding:0 3px 0 4px;gap:6px;flex:none">
+<span style="color:#fff;font-weight:bold;flex:1;white-space:nowrap">Contacts</span>
+<div style="display:flex;gap:2px">
+<div style="width:16px;height:14px;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:flex-end;justify-content:center;padding-bottom:3px;cursor:default"><span style="display:block;width:7px;height:2px;background:#000"></span></div>
+<div style="width:16px;height:14px;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;cursor:default"><span style="display:block;width:8px;height:7px;border:1px solid #000;border-top-width:2px"></span></div>
+<div style="width:16px;height:14px;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;cursor:default;position:relative"><span style="position:absolute;width:9px;height:1px;background:#000;transform:rotate(45deg)"></span><span style="position:absolute;width:9px;height:1px;background:#000;transform:rotate(-45deg)"></span></div>
+</div>
+</div>
+
+<div style="display:flex;gap:2px;padding:1px 2px;flex:none">
+<div style="padding:2px 7px;cursor:default;white-space:nowrap" style-hover="background:#000080;color:#fff"><span style="text-decoration:underline">F</span>ile</div><div style="padding:2px 7px;cursor:default;white-space:nowrap" style-hover="background:#000080;color:#fff"><span style="text-decoration:underline">E</span>dit</div><div style="padding:2px 7px;cursor:default;white-space:nowrap" style-hover="background:#000080;color:#fff"><span style="text-decoration:underline">V</span>iew</div><div style="padding:2px 7px;cursor:default;white-space:nowrap" style-hover="background:#000080;color:#fff"><span style="text-decoration:underline">C</span>ontact</div><div style="padding:2px 7px;cursor:default;white-space:nowrap" style-hover="background:#000080;color:#fff"><span style="text-decoration:underline">W</span>indow</div><div style="padding:2px 7px;cursor:default;white-space:nowrap" style-hover="background:#000080;color:#fff"><span style="text-decoration:underline">H</span>elp</div>
+</div>
+
+<div style="display:flex;align-items:center;gap:3px;padding:4px 5px;box-shadow:var(--t);flex:none">
+<span style="padding:0 9px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center" style-active="box-shadow:var(--s);padding:1px 8px 0 10px">New customer</span><span style="padding:0 9px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center" style-active="box-shadow:var(--s);padding:1px 8px 0 10px">New contact</span>
+<span style="width:2px;height:19px;box-shadow:var(--t);flex:none;margin:0 5px"></span>
+<span style="padding:0 9px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center" style-active="box-shadow:var(--s);padding:1px 8px 0 10px">Properties</span><span style="padding:0 9px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center" style-active="box-shadow:var(--s);padding:1px 8px 0 10px">Deactivate</span>
+</div>
+
+<div style="box-shadow:var(--t);padding:5px 8px;display:flex;align-items:center;gap:7px;flex:none;flex-wrap:wrap">
+<span style="color:#808080;white-space:nowrap">Find</span><span style="box-shadow:var(--s);background:#fff;padding:0 5px;width:180px;height:19px;display:inline-flex;align-items:center"><span style="display:block;width:1px;height:12px;background:#000"></span></span>
+<span style="width:2px;height:19px;box-shadow:var(--t);flex:none;margin:0 4px"></span>
+<span style="color:#808080;white-space:nowrap">Kind</span><span style="box-shadow:var(--s);background:#fff;padding:0 0 0 4px;height:19px;display:inline-flex;align-items:center;gap:4px;width:130px"><span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">All</span><span style="width:17px;height:17px;flex:none;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;margin:1px"><span style="display:block;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid #000"></span></span></span>
+<span style="width:2px;height:19px;box-shadow:var(--t);flex:none;margin:0 4px"></span>
+<span style="display:flex;align-items:center;gap:6px;white-space:nowrap;cursor:default"><span style="width:13px;height:13px;flex:none;background:#fff;box-shadow:inset 1px 1px #808080, inset -1px -1px #fff, inset 2px 2px #0a0a0a, inset -2px -2px #dfdfdf;display:flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;font-size:10px">✓</span>Show people</span>
+<span style="display:flex;align-items:center;gap:6px;white-space:nowrap;cursor:default"><span style="width:13px;height:13px;flex:none;background:#fff;box-shadow:inset 1px 1px #808080, inset -1px -1px #fff, inset 2px 2px #0a0a0a, inset -2px -2px #dfdfdf;display:flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;font-size:10px"></span>Show inactive</span>
+</div>
+
+<div style="flex:1;min-height:0;box-shadow:var(--s);background:#fff;padding:3px;display:flex;flex-direction:column">
+<div style="display:grid;grid-template-columns:8px minmax(0,1fr) 148px 108px 200px 36px 64px;align-items:center;background:#c0c0c0;box-shadow:var(--r);flex:none">
+<span></span><span style="padding:3px 6px;text-align:left;white-space:nowrap;overflow:hidden;color:#404040;letter-spacing:.11em;border-right:1px solid #ececec;">NAME</span><span style="padding:3px 6px;text-align:left;white-space:nowrap;overflow:hidden;color:#404040;letter-spacing:.11em;border-right:1px solid #ececec;">TITLE / KIND</span><span style="padding:3px 6px;text-align:left;white-space:nowrap;overflow:hidden;color:#404040;letter-spacing:.11em;border-right:1px solid #ececec;">PHONE</span><span style="padding:3px 6px;text-align:left;white-space:nowrap;overflow:hidden;color:#404040;letter-spacing:.11em;border-right:1px solid #ececec;">EMAIL</span><span style="padding:3px 2px;text-align:center;white-space:nowrap;overflow:hidden;color:#404040;letter-spacing:0;border-right:1px solid #ececec;">AUTO</span><span style="padding:3px 6px;text-align:right;white-space:nowrap;overflow:hidden;color:#404040;letter-spacing:.11em;">PROJECTS</span>
+</div>
+<div style="padding-top:3px">
+<div style="position:relative">
+<div style="display:grid;grid-template-columns:8px minmax(0,1fr) 148px 108px 200px 36px 64px;align-items:center;background:#f4f4f4;border-top:1px solid #d4d4d4;cursor:default">
+<span></span>
+<span style="padding:6px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:bold;border-right:1px solid #ececec;">Exerplay, Inc.</span>
+<span style="padding:6px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#606060;border-right:1px solid #ececec;">rep/dealer</span>
+<span style="padding:6px 6px;border-right:1px solid #ececec;"></span>
+<span style="padding:6px 6px;border-right:1px solid #ececec;"></span>
+<span style="padding:6px 4px;text-align:center;white-space:nowrap;color:#404040;border-right:1px solid #ececec;">cc</span>
+<span style="padding:6px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;text-align:right;white-space:nowrap">26</span>
+</div>
+<div style="display:grid;grid-template-columns:8px minmax(0,1fr) 148px 108px 200px 36px 64px;align-items:center;background:#fff;cursor:default">
+<span></span>
+<span style="padding:5px 6px 5px 24px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">Grant Smith</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#404040;border-right:1px solid #ececec;">Regional Sales Mgr</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">(505) 555-0142</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#404040;border-right:1px solid #ececec;">grant@exerplay.com</span>
+<span style="padding:5px 4px;text-align:center;white-space:nowrap;color:#404040;border-right:1px solid #ececec;"></span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;text-align:right;white-space:nowrap">12</span>
+</div>
+<div style="display:grid;grid-template-columns:8px minmax(0,1fr) 148px 108px 200px 36px 64px;align-items:center;background:#fff;cursor:default">
+<span style="display:flex;align-items:center;justify-content:center;height:100%"><span style="display:block;width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:6px solid #000"></span></span>
+<span style="padding:5px 6px 5px 24px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">Ashley Doran</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#404040;border-right:1px solid #ececec;">Sales Assistant</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">(505) 555-0151</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#404040;border-right:1px solid #ececec;">adoran@exerplay.com</span>
+<span style="padding:5px 4px;text-align:center;white-space:nowrap;color:#404040;border-right:1px solid #ececec;">cc</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;text-align:right;white-space:nowrap">12</span>
+</div>
+<div style="display:grid;grid-template-columns:8px minmax(0,1fr) 148px 108px 200px 36px 64px;align-items:center;background:#fff;cursor:default">
+<span></span>
+<span style="padding:5px 6px 5px 24px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">Maria Villanueva</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#404040;border-right:1px solid #ececec;">Project Coordinator</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">(505) 555-0188</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#404040;border-right:1px solid #ececec;">maria@exerplay.com</span>
+<span style="padding:5px 4px;text-align:center;white-space:nowrap;color:#404040;border-right:1px solid #ececec;"></span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;text-align:right;white-space:nowrap">8</span>
+</div>
+<div style="display:grid;grid-template-columns:8px minmax(0,1fr) 148px 108px 200px 36px 64px;align-items:center;background:#fff;cursor:default">
+<span></span>
+<span style="padding:5px 6px 5px 24px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">Dave Ruiz</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#404040;border-right:1px solid #ececec;">Estimator</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">(505) 555-0164</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#404040;border-right:1px solid #ececec;">druiz@exerplay.com</span>
+<span style="padding:5px 4px;text-align:center;white-space:nowrap;color:#404040;border-right:1px solid #ececec;"></span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;text-align:right;white-space:nowrap">2</span>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:8px minmax(0,1fr) 148px 108px 200px 36px 64px;align-items:center;background:#f4f4f4;border-top:1px solid #d4d4d4;cursor:default">
+<span></span>
+<span style="padding:6px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:bold;border-right:1px solid #ececec;">City of Tucson</span>
+<span style="padding:6px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#606060;border-right:1px solid #ececec;">owner</span>
+<span style="padding:6px 6px;border-right:1px solid #ececec;"></span>
+<span style="padding:6px 6px;border-right:1px solid #ececec;"></span>
+<span style="padding:6px 4px;text-align:center;white-space:nowrap;color:#404040;border-right:1px solid #ececec;"></span>
+<span style="padding:6px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;text-align:right;white-space:nowrap">4</span>
+</div>
+<div style="display:grid;grid-template-columns:8px minmax(0,1fr) 148px 108px 200px 36px 64px;align-items:center;background:#fff;cursor:default">
+<span></span>
+<span style="padding:5px 6px 5px 24px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">Angela Reyes</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#404040;border-right:1px solid #ececec;">Parks Project Mgr</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">(520) 555-0119</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#404040;border-right:1px solid #ececec;">areyes@tucsonaz.gov</span>
+<span style="padding:5px 4px;text-align:center;white-space:nowrap;color:#404040;border-right:1px solid #ececec;"></span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;text-align:right;white-space:nowrap">3</span>
+</div>
+<div style="display:grid;grid-template-columns:8px minmax(0,1fr) 148px 108px 200px 36px 64px;align-items:center;background:#fff;cursor:default">
+<span></span>
+<span style="padding:5px 6px 5px 24px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">Tom Baptiste</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#404040;border-right:1px solid #ececec;">Inspector</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">(520) 555-0137</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#404040;border-right:1px solid #ececec;">tbaptiste@tucsonaz.gov</span>
+<span style="padding:5px 4px;text-align:center;white-space:nowrap;color:#404040;border-right:1px solid #ececec;"></span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;text-align:right;white-space:nowrap">1</span>
+</div>
+<div style="display:grid;grid-template-columns:8px minmax(0,1fr) 148px 108px 200px 36px 64px;align-items:center;background:#f4f4f4;border-top:1px solid #d4d4d4;cursor:default">
+<span></span>
+<span style="padding:6px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:bold;border-right:1px solid #ececec;">Haydon Building Corp</span>
+<span style="padding:6px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#606060;border-right:1px solid #ececec;">GC</span>
+<span style="padding:6px 6px;border-right:1px solid #ececec;"></span>
+<span style="padding:6px 6px;border-right:1px solid #ececec;"></span>
+<span style="padding:6px 4px;text-align:center;white-space:nowrap;color:#404040;border-right:1px solid #ececec;"></span>
+<span style="padding:6px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;text-align:right;white-space:nowrap">4</span>
+</div>
+<div style="display:grid;grid-template-columns:8px minmax(0,1fr) 148px 108px 200px 36px 64px;align-items:center;background:#fff;cursor:default">
+<span></span>
+<span style="padding:5px 6px 5px 24px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">Kyle Nunez</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#404040;border-right:1px solid #ececec;">Superintendent</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">(602) 555-0173</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#404040;border-right:1px solid #ececec;">knunez@haydonbc.com</span>
+<span style="padding:5px 4px;text-align:center;white-space:nowrap;color:#404040;border-right:1px solid #ececec;"></span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;text-align:right;white-space:nowrap">4</span>
+</div>
+<div style="display:grid;grid-template-columns:8px minmax(0,1fr) 148px 108px 200px 36px 64px;align-items:center;background:#f4f4f4;border-top:1px solid #d4d4d4;cursor:default">
+<span></span>
+<span style="padding:6px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:bold;border-right:1px solid #ececec;">Chandler Unified School Dist.</span>
+<span style="padding:6px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#606060;border-right:1px solid #ececec;">school</span>
+<span style="padding:6px 6px;border-right:1px solid #ececec;"></span>
+<span style="padding:6px 6px;border-right:1px solid #ececec;"></span>
+<span style="padding:6px 4px;text-align:center;white-space:nowrap;color:#404040;border-right:1px solid #ececec;">cc</span>
+<span style="padding:6px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;text-align:right;white-space:nowrap">6</span>
+</div>
+<div style="display:grid;grid-template-columns:8px minmax(0,1fr) 148px 108px 200px 36px 64px;align-items:center;background:#fff;cursor:default">
+<span></span>
+<span style="padding:5px 6px 5px 24px;white-space:nowrap;color:#808080;border-right:1px solid #ececec;"><span style="display:inline-block;width:0;height:0;border-top:3px solid transparent;border-bottom:3px solid transparent;border-left:5px solid #000;margin-right:5px;vertical-align:middle"></span>collapsed — 2 people</span>
+<span style="padding:5px 6px;border-right:1px solid #ececec;"></span><span style="padding:5px 6px;border-right:1px solid #ececec;"></span><span style="padding:5px 6px;border-right:1px solid #ececec;"></span><span style="padding:5px 4px;border-right:1px solid #ececec;"></span><span style="padding:5px 6px"></span>
+</div>
+</div>
+</div>
+
+<div style="box-shadow:var(--t);padding:3px 8px;display:flex;align-items:center;gap:10px;flex:none">
+<span style="color:#808080;white-space:nowrap">Always</span><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">cc — wherever Grant Smith goes</span>
+<span style="width:2px;height:14px;box-shadow:var(--t);flex:none;margin:0 6px"></span>
+<span style="color:#808080;white-space:nowrap">Note</span><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Sends POs on Fridays.</span>
+</div>
+
+<div style="display:flex;gap:3px;flex:none">
+<div style="box-shadow:var(--t);padding:3px 8px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">double-click to edit · a contact on a project cannot be deleted</div>
+<div style="box-shadow:var(--t);padding:3px 8px;width:200px;flex:none;white-space:nowrap">4 customers · 9 people</div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1040,&quot;height&quot;:680}}">
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
