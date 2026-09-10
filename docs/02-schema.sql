@@ -30,6 +30,28 @@ CREATE TABLE contacts (
   active        INTEGER NOT NULL DEFAULT 1
 );
 
+-- "Whenever Grant is on something, copy Ashley."
+-- A standing fact about PEOPLE, so it cannot live on a project. It attaches to
+-- either a person or a company — the same either/or shape scope_deltas uses —
+-- so one table covers both "Ashley works with Grant" and "always copy the
+-- Exerplay office", and the data decides which one Ashley is.
+--
+-- It SUGGESTS, it does not bind. Adding Grant to a project writes ordinary
+-- project_contacts rows for whoever this pulls in, and those rows are then
+-- editable and deletable like any other. It is never re-evaluated at send
+-- time, or removing Ashley from one job would keep putting her back.
+CREATE TABLE contact_defaults (
+  id             TEXT PRIMARY KEY,
+  scope_kind     TEXT NOT NULL CHECK(scope_kind IN ('customer','contact')),
+  customer_id    TEXT REFERENCES customers(id),  -- the trigger, when 'customer'
+  contact_id     TEXT REFERENCES contacts(id),   -- the trigger, when 'contact'
+  add_contact_id TEXT NOT NULL REFERENCES contacts(id),   -- who gets pulled in
+  role           TEXT NOT NULL DEFAULT 'cc',
+  CHECK((scope_kind='customer' AND customer_id IS NOT NULL AND contact_id IS NULL)
+     OR (scope_kind='contact'  AND contact_id  IS NOT NULL AND customer_id IS NULL)),
+  UNIQUE(scope_kind, customer_id, contact_id, add_contact_id)
+);
+
 
 -- ═══════════════════════════════════════════════════════ 2 · CATALOG ══
 -- Reusable, job-independent. TEMPLATE values only — nothing committed.
@@ -343,7 +365,10 @@ CREATE TABLE project_contacts (
   id          TEXT PRIMARY KEY,
   project_id  TEXT NOT NULL REFERENCES projects(id),
   contact_id  TEXT NOT NULL REFERENCES contacts(id),
-  role        TEXT NOT NULL DEFAULT 'primary',   -- primary · site · billing · …
+  role        TEXT NOT NULL DEFAULT 'primary',   -- primary · cc · site · billing
+                                                 -- 'cc' rows are often seeded
+                                                 -- by contact_defaults, then
+                                                 -- edited like any other
   sequence_no INTEGER NOT NULL DEFAULT 0,
   UNIQUE(project_id, contact_id, role)
 );

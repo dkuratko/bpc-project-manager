@@ -546,6 +546,11 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
      are a to-do list. grouped lists reuse the project browser's cursor,
      banding and row rules verbatim.
 ◐ CONTACTS — briefed in docs/15, awaiting render. grouped, no counters.
+     AUTOMATIC RECIPIENTS: "wherever Grant goes, cc Ashley" is a standing
+     fact about PEOPLE, so contact_defaults attaches a rule to either a
+     person or a company. it SUGGESTS — adding Grant to a project writes
+     an ordinary cc row that is then editable, deletable and never
+     re-evaluated. never a live lookup at send time.
 ✔ MAIN WINDOW TEMPLATE — adopted. see docs/10.
      identity strip · tinted status strip · body · optional screen strip ·
      derived status bar whose "Next" says what has to happen for the job
@@ -649,6 +654,8 @@ hold anything you would want to keep looking at.
     with no post cost. the loop that keeps rate tables honest is the easiest
     thing to skip, and nothing else will remind you. NOTED, not taken.
 [?] is an unpaid warranty callback recorded against the version?
+[?] does the app ever SEND anything itself, or only address documents and
+    track that you sent them? contact_defaults assumes the latter.
 [?] no way to create a version by copying TWO others — "A's site work with
     B's equipment" is a real request. copy one and hand-edit for now.
     (carried over from 9b's notes. see docs/13.)
