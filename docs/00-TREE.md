@@ -545,11 +545,13 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
 ✔ SHELL IS MDI — child windows in one Project Manager frame,
      Window menu, Cascade, Ctrl+Tab. the teal desk is the client area.
      ★ menu/toolbar placement (frame vs child) still undecided
-▢ NEW PROJECT · PROJECT LIST · PROJECT VIEW · VERSION VIEW ★
-▢ COST BREAKDOWN EDITOR ★ .... the four zones
-▢ ESTIMATE EDITOR ★ .......... autofill + override + live effective markup
+▢ RECORD DIALOGS (POPUP family) — one brief, four dialogs
+     Record approval · Record shipment · Schedule · Invoice.
+     the version view's toolbar buttons currently go nowhere.
+     they follow NEW PROJECT's dialog grammar.
 ▢ CATALOG BROWSER ............ finding one component among many is a real problem
-▢ CONTACTS · ACTIVE VERSIONS LIST
+▢ INVOICE · POST COST ........ both documents. follow estimate v12's box grammar.
+▢ CONTACTS · VEHICLES · CALENDAR · SHIPMENTS · ACTIVE VERSIONS LIST
 ```
 
 ---
@@ -633,13 +635,18 @@ hold anything you would want to keep looking at.
 ## 11 · NEXT
 
 ```
-▶ MOBILIZATION formula, then it becomes an ordinary standalone service and
-  nothing downstream needs a special case
-  then ─ estimate editor v10 render
-  then ─ remaining screens: PROJECT LIST · VERSION VIEW · NEW PROJECT ·
-         CATALOG BROWSER · CONTACTS · ACTIVE VERSIONS · CALENDAR ·
-         SHIPMENTS · POST COST
+▶ RECORD DIALOGS — approval · shipment · schedule · invoice. one brief,
+  four popups. these are the four facts that drive every derived status,
+  so the dialogs are where the status model finally gets exercised.
+  then ─ CATALOG BROWSER
+  then ─ INVOICE · POST COST documents
+  then ─ CONTACTS · VEHICLES · CALENDAR · SHIPMENTS
   then ─ BUILD
+
+CARRIED INTO THE BUILD, no re-render needed:
+  estimate editor .... ＋ Add option footer in the Optional add-ons box
+  cost breakdown ..... MAIN template chrome on all four tabs
+  everywhere .......... every date carries its year
 
 OUT OF SCOPE, decided:
   payment / receivables / aging ....... QuickBooks
