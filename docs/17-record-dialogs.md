@@ -88,8 +88,9 @@ correcting a fact fixes everything downstream.
 Render **exactly two dialogs, side by side** on a `rgba(0,0,0,.42)` scrim —
 the two carrying the most design weight:
 
-- Left: **`Record approval — 26-12A0`**, an event, showing the add-options
-  checklist.
+- Left: **`Record approval — 26-12A0`**, an event, showing a PO that does
+  **not** match: 4 benches of 6, the security fence declined, the footings
+  taken under their line. Button reads `Record & create REV1`.
 - Right: **`Schedule — 26-09A0`**, a living record, showing the equipment
   alert and a red-lipped status chip.
 
@@ -142,41 +143,84 @@ Evidence    [ PO-4501182.pdf ]  [ Browse… ]
 can be approved against an older estimate — **nothing is ever off the table**,
 and a customer sitting on a quote for five weeks then sending a PO is ordinary.
 
-### Group box · "What they took" ★ the important one
+### Group box · "What the PO says" ★ the important one
+
+**Every priced row on the estimate**, tickable and re-quantifiable. This is not
+a list of add options — it is the estimate itself, checked off against the
+paper in your hand.
 
 ```
-Base        ☑ BPCe-26-12A0                              $38,420.00
-              always taken · cannot be unticked
-
-Add options ☑ 1 · Security fence, 120 LF                  $4,850.00
-            ☐ 2 · Footing installation, 4 posts           $2,190.00
-
-            ───────────────────────────────────────────────────────
-            Approved job scope                           $43,270.00
+                                              quoted   ordered      amount
+☑  01     Ramada — 20 ft × 20 ft hip           1 ea     [ 1 ]   $22,480.00
+   ☑  01.O1  Drilled footings, 4 posts         add option        $2,190.00
+☑  02     Site work — grading and base         1 ls     [ 1 ]    $9,140.00
+☑  03     Benches                              6 ea     [ 4 ]    $6,800.00
+             ⚠ 4 of 6 — price recomputes in REV1
+☐  J.O1   Security fence, 120 LF               job option        $4,850.00
 ```
 
-**Approved scope is the base plus the add options they took**, and that is the
-number the job now runs on. `38,420.00 + 4,850.00 = 43,270.00`.
+#### The reference number says what an add option attaches to
 
-The base row is ticked and disabled — approving a version without its base is
-not a thing. Add options are ticked as the PO shows them.
-
-### Tip block · `#ffffe1`
+This is the editor numbering from `document_lines`, and it is doing real work
+here:
 
 ```
-A PO that does not match the estimate is a REVISION, not an approval.
-
-Four benches quoted, three ordered — do not untick your way to it here.
-Close this and issue BPCe-26-12A0 REV1, which recomputes the cost against
-the scope that is actually happening. Cost does not scale: dropping half a
-concrete order makes the rest more expensive per yard.
+01        a line
+01.1      a sub-item of line 01 — a partial breakdown, not tickable
+01.O1     ADD OPTION 1 ON LINE 01     ← specific. the footings for the ramada.
+J.O1      ADD OPTION 1 AT JOB LEVEL   ← general. the security fence.
 ```
 
-This is the most likely misuse of this dialog and the tip exists for it.
-Unticking an add option means *they did not take it*; changing the base means
-*the job changed*, which is a different document.
+Line options are **indented under their line**; job options sit at the bottom,
+after a rule, in their own group. You never have to wonder which is which — the
+indent shows it and the reference proves it.
+
+#### Line options depend on their line
+
+**Untick `01` and `01.O1` unticks with it, greyed, with the reason beside it:**
+
+```
+☐  01     Ramada — 20 ft × 20 ft hip           1 ea     [ 0 ]   $22,480.00
+   ☐  01.O1  Drilled footings, 4 posts    — needs 01, which was not ordered
+```
+
+Footings for a ramada you are not supplying is not a thing anyone can order.
+A job option (`J.O1`) has no such dependency — a security fence stands on its
+own.
+
+#### Quantities, not just ticks
+
+*"Five benches quoted, four ordered"* is the common case and a tick cannot say
+it. `ordered` defaults to `quoted` and is editable. Setting it below quoted —
+or unticking a line outright — is what makes this **an approval AND a
+revision.**
+
+#### The footer, when the PO matches
+
+```
+────────────────────────────────────────────────────────────
+Approved job scope                                $43,270.00
+```
+
+#### The footer, when it does not — the render shows this
+
+```
+────────────────────────────────────────────────────────────
+⚠ The PO does not match the estimate.
+
+  BPCe-26-12A0 REV1 will be issued carrying the scope above, and the
+  cost recomputes against it. This dialog does not price it — dropping
+  2 of 6 benches does not subtract 2 × $1,133.33.
+```
+
+**No total is shown in the revision case, and that is deliberate.** The new
+price cannot be arrived at by arithmetic on this screen; it is a marginal
+recompute against the scope that is actually happening. A dialog that guessed
+would be lying in the one place it matters most.
 
 ### Status preview
+
+When the PO matches:
 
 ```
 📋 26-12A0 becomes
@@ -185,7 +229,19 @@ Unticking an add option means *they did not take it*; changing the base means
    Approved scope $43,270.00. Next: awaiting delivery.
 ```
 
-Chip ground `#9CC3E2`. No lip — nothing is wrong.
+**When it does not — the render shows this:**
+
+```
+📋 26-12A0 becomes
+   ACCEPTED   09 Sep 2026
+   ─────────
+   And BPCe-26-12A0 REV1 is created, carrying 4 benches instead of 6
+   and no security fence. Its cost recomputes on open.
+   REV1 is what the job runs on. The original stays on file, unchanged.
+```
+
+Chip ground `#9CC3E2` in both. **No lip** — a revision is not a problem, it is
+Tuesday.
 
 ---
 
@@ -370,6 +426,11 @@ Chip ground `#F0B778`.
   not refuse — the customer sets that date and reality does not care what the
   app thinks.
 - **Wizards.** Living records reopen with every field editable, always.
-- **Unticking the base** in Record approval to fake a revision.
+- **Pricing the revision** in Record approval. It names what changed and
+  hands off; the recompute happens when REV1 opens.
+- **A total in the revision case.** There is no honest one to show.
+- **Add options listed flat**, without their line and without the indent. A
+  line option that looks job-level is an add option nobody can place.
+- **A tickable line option whose line is unticked.**
 - **A "completed, payment required" state** appearing anywhere.
 - **56 px date fields.** 80 px, and every date carries its year.

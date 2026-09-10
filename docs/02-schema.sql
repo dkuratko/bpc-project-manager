@@ -850,7 +850,33 @@ CREATE TABLE approvals (
   reference    TEXT,                        -- PO number
   received_at  TEXT NOT NULL,
   evidence_path TEXT,
-  notes        TEXT
+  notes        TEXT,
+  -- Set when the PO did not match the estimate and the approval therefore
+  -- issued a revision. See docs/17 — the approval dialog is where revisions
+  -- are born, because nobody reads the same PO twice.
+  revision_document_id TEXT REFERENCES documents(id)
+);
+
+-- WHAT THE PO ACTUALLY ORDERED, line by line. One row per priced row on the
+-- approved estimate — base lines, line-level add options and job-level add
+-- options alike.
+--
+-- Two things it records that a tick cannot:
+--   · ordered_quantity below quoted_quantity  ("5 benches quoted, 4 ordered")
+--   · a line declined outright                 (taken = 0)
+-- Either makes the approval a REVISION as well, and the price is NEVER
+-- derived by arithmetic here: cost does not scale, so REV1 recomputes.
+--
+-- A line-level add option (01.O1) is only takeable if its parent line is
+-- taken. Footings for a ramada nobody ordered is not an orderable thing.
+CREATE TABLE approval_lines (
+  id                TEXT PRIMARY KEY,
+  approval_id       TEXT NOT NULL REFERENCES approvals(id),
+  document_line_id  TEXT NOT NULL REFERENCES document_lines(id),
+  taken             INTEGER NOT NULL DEFAULT 1,
+  quoted_quantity   REAL,
+  ordered_quantity  REAL,
+  UNIQUE(approval_id, document_line_id)
 );
 
 -- Default: one invoice at completion (90% of jobs).
