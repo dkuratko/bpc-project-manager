@@ -198,15 +198,43 @@ parted company, which is the whole reason the field exists.
 #### Its status preview
 
 ```
+📋 This records two things
+
+   26-12A0            becomes   ACCEPTED   09 Sep 2026
+   BPCe-26-12A0 REV1  created   4 benches, not 6 · $38,410.00
+   ──────────────────────────────────────────────────────────
+   REV1 is what the job runs on. Its cost recomputes when it opens.
+   The original BPCe-26-12A0 stays on file, unchanged.
+```
+
+**Two subjects, two rows**, because two things genuinely happen and the second
+one was buried in prose before. A revision creates a document; burying that
+under "And…" makes it read like a footnote to the approval when it is half of
+what the button does.
+
+#### Why it is not "REV1 becomes ACCEPTED"
+
+**A status belongs to a version, never to a document.** `26-12A0` is the job
+and it is what becomes `ACCEPTED`; `BPCe-26-12A0 REV1` is a piece of paper on
+that job. There is no status column anywhere, and the derivation runs off
+`version_facts`, which is keyed by version.
+
+Saying `REV1 becomes ACCEPTED` would put a lifecycle on a document, which is
+the same mistake as giving a project a status of its own.
+
+Chip ground `#9CC3E2`, **no lip** — a revision is not a problem, it is Tuesday.
+
+#### The as-quoted state keeps one subject
+
+```
 📋 26-12A0 becomes
    ACCEPTED   09 Sep 2026
    ─────────
-   And BPCe-26-12A0 REV1 is created, carrying 4 benches instead of 6.
-   Its cost recomputes on open. REV1 is what the job runs on; the
-   original stays on file, unchanged.
+   Approved scope $40,710.00. Next: awaiting delivery.
 ```
 
-Chip ground `#9CC3E2`, **no lip** — a revision is not a problem, it is Tuesday.
+One thing happened, so one row. The two-row form appears only when a revision
+is actually created.
 
 #### Render it on its own
 
