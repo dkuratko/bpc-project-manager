@@ -577,10 +577,17 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
      the option/version distinction is taught by ADJACENCY — the two
      commands sit next to each other in the toolbar and the menu and are
      never separated — plus a pointer line in each role to the other.
-▢ RECORD DIALOGS (POPUP family) — one brief, four dialogs
+◐ RECORD DIALOGS (POPUP family) — briefed in docs/17, awaiting render.
      Record approval · Record shipment · Schedule · Invoice.
-     the version view's toolbar buttons currently go nowhere.
-     they follow NEW PROJECT's dialog grammar.
+     THE ONLY FOUR PLACES STATUS CHANGES. everything else in the app is
+     derived from what gets typed here, so every one of them ends with a
+     STATUS PREVIEW: the version view's status strip in miniature,
+     wearing the ramp colour the job is about to take, with the 4px red
+     lip when the fact causes a problem. it updates live as you type.
+     TWO SHAPES: events recorded once (approval, shipment) and living
+     records reopened over time (schedule: install→started→completed,
+     invoice: sent→paid). living records are NOT wizards — every field
+     stays editable, because correcting a fact is what fixes status.
 ▢ CATALOG BROWSER ............ finding one component among many is a real problem
 ▢ INVOICE · POST COST ........ both documents. follow estimate v12's box grammar.
 ▢ VEHICLES · CALENDAR · SHIPMENTS · ACTIVE VERSIONS LIST
@@ -672,15 +679,10 @@ hold anything you would want to keep looking at.
 ## 11 · NEXT
 
 ```
-══ PAUSED 09 Sep 2026 — nothing is awaiting a render. everything briefed
-   is FINAL. the queue below is all new work.
-
-▶ RECORD DIALOGS — approval · shipment · schedule · invoice. one brief,
-  four popups. these are the four facts that drive every derived status,
-  so the dialogs are where the status model finally gets exercised.
-  ── or start with VEHICLES: small, flat, and the last piece of the
-     mobilization formula with no screen. it also tests whether the
-     LIST WINDOW template holds for a list with no grouping.
+▶ RECORD DIALOGS — briefed 10 Sep 2026, docs/17. awaiting render.
+  then ─ VEHICLES: small, flat, the last piece of the mobilization
+         formula with no screen. tests the LIST WINDOW template on a
+         list with no grouping.
   then ─ CATALOG BROWSER
   then ─ INVOICE · POST COST documents
   then ─ CONTACTS · VEHICLES · CALENDAR · SHIPMENTS

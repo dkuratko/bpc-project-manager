@@ -994,7 +994,10 @@ CREATE TABLE warranties (
 --   complete     no date         EQUIPMENT RECEIVED
 --   complete     date set        SCHEDULED
 --   —            started         ACTIVE
---   —            completed       COMPLETED, PAYMENT REQUIRED
+--   —            completed       ACTIVE  ← still. completion IS the invoice.
+--                                "completed, payment required" was REMOVED;
+--                                it had no trigger of its own. ACTIVE covers
+--                                the gap after the crew leaves. See docs/17.
 --   invoice sent                 INVOICE SENT, PAYMENT REQUIRED
 --   paid, in warranty            WARRANTY
 --   warranty expired             COMPLETED
