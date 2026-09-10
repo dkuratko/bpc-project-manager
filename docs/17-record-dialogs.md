@@ -158,12 +158,18 @@ and a customer sitting on a quote for five weeks then sending a PO is ordinary.
 Base         ☑  BPCe-26-12A0                              $38,420.00
              ☐  Create revision — the PO does not take every line
 
+
 Add options     01     Ramada — 20 ft × 20 ft hip
                 ☑  01.O1   Drilled footings, 4 posts        $2,190.00
                 ☐  J.O1    Security fence, 120 LF           $4,850.00
                 ──────────────────────────────────────────────────────
                    Approved job scope                      $40,610.00
 ```
+
+**The `Add options` row carries an extra `10 px` above it** — a clear break
+from the base block, not just another grid row. They are two different
+questions: *did they take the estimate*, and then *what else did they add*.
+Everything else keeps the standard `4px 8px` grid gaps.
 
 `38,420.00 + 2,190.00 = 40,610.00`. The fence was not taken.
 
@@ -291,15 +297,36 @@ record**, and it holds **every priced row on the estimate**:
 ☑  01     Ramada — 20 ft × 20 ft hip           1 ea     [ 1 ]   $22,480.00
    ☑  01.1    Hip frame, 4 posts                                $14,200.00
    ☑  01.2    Fabric — Sunbrella, forest green                   $5,900.00
-   ☑  01.O1   Drilled footings, 4 posts        add option        $2,190.00
+   ☑  01.O1   Drilled footings, 4 posts        [opt]             $2,190.00
 ☑  02     Site work — grading and base         1 ls     [ 1 ]    $9,140.00
 ☑  03     Benches                              6 ea     [ 4 ]    $6,800.00
              ⚠ 4 of 6 — price recomputes in REV1
-☑  J.O1   Security fence, 120 LF               job option        $4,850.00
+☑  J.O1   Security fence, 120 LF               [opt]             $4,850.00
 ```
 
 **Add options are here too**, nested exactly as they are on the parent — which
 is why the parent's add options section goes away. One PO, one list.
+
+#### `[opt]` marks an add option
+
+A small tag in the `quoted` column — an add option has no quoted quantity, so
+the column is free. `'Lucida Console'` monospace, `#404040`, in square
+brackets, not a bevelled chip.
+
+It gives the list a clean binary:
+
+```
+[opt] present    an add option — 01.O1 nested, or J.O1 at top level
+indented, none   a sub-item — a partial breakdown of the line above it
+top level, none  a line
+```
+
+**Line-specific versus general is already carried** by the indent and the
+reference — `01.O1` sits under `01`, `J.O1` sits where a line would. `[opt]`
+does not need to say it twice, so there is no `[opt·job]` variant.
+
+**No `[opt]` tag on the parent dialog's add options section**, where every row
+is an option already and the tag would be noise.
 
 #### Sub-items do not sum to their line, and that is not a bug
 
@@ -541,6 +568,10 @@ Chip ground `#F0B778`.
   only; the revision decides them in the popup.
 - **A checkbox on an add option's context line.** That row is context.
 - **Sub-items made to sum to their line.** They are a partial breakdown.
+- **`[opt]` on the parent dialog.** Every row in that section is an option.
+- **An `[opt]` variant that encodes job-versus-line.** The indent and the
+  reference already do.
+- **Base and add options as adjacent grid rows.** 10 px between them.
 - **The popup writing anything.** It hands back; `Record` commits.
 - **A total in the revision case.** There is no honest one to show.
 - **Add options listed flat**, without their line and without the indent. A
