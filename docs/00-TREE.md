@@ -546,7 +546,7 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
      are a to-do list. grouped lists reuse the project browser's cursor,
      banding and row rules verbatim.
 ◐ CONTACTS — v2 rendered, two fixes pending. docs/15. grouped, no counters.
-◐ CUSTOMER + CONTACT DIALOGS — briefed in docs/16, awaiting render.
+◐ CUSTOMER + CONTACT DIALOGS — v1 layout approved. docs/16.
      TWO popups, each with a NEW and a PROPERTIES mode — one dialog
      reopened, exactly as new project settled it.
      EVERY POPUP IS 600 px. fewer fields makes a dialog SHORTER, never

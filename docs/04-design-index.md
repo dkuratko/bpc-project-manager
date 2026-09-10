@@ -119,7 +119,7 @@ docs/design/component-wizard.final.dc.html` | — |
 |---|---|---|---|---|---|
 | — | New Project | POPUP | **✔ FINAL v2** | `docs/design/new-project.v2.dc.html` | `12` |
 | — | New Option / New Version | POPUP · two roles | brief approved, awaiting render | — | `13` |
-| — | Customer / Contact dialogs | POPUP · 2 × 2 modes | briefed, awaiting render | — | `16` |
+| — | Customer / Contact dialogs | POPUP · 2 × 2 modes | v1 — layout approved, one fix | `docs/design/customer-contact-dialogs.v1.dc.html` | `16` |
 | — | Contacts | MAIN · list | v2 — two fixes pending | `docs/design/contacts.v2.dc.html` | `14` + `15` |
 
 Its dialog grammar — the `100px 1fr` field grid, read-only values as `#c0c0c0`

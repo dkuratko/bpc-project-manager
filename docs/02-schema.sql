@@ -40,6 +40,17 @@ CREATE TABLE contacts (
 -- project_contacts rows for whoever this pulls in, and those rows are then
 -- editable and deletable like any other. It is never re-evaluated at send
 -- time, or removing Ashley from one job would keep putting her back.
+--
+-- SIX MECHANICS, all in docs/16:
+--   1 no cascade — only a HAND-ADDED contact fires rules, or Grant->Ashley
+--     plus Ashley->Grant loops forever
+--   2 one person, one row — already on the project in any role means the
+--     rule does nothing
+--   3 person rule beats company rule when the roles disagree
+--   4 fires in the DIALOG, visible and removable before save
+--   5 never retroactive, never reversed by removing the trigger
+--   6 the trigger list excludes self, and includes anyone an existing rule
+--     names even after they leave the company
 CREATE TABLE contact_defaults (
   id             TEXT PRIMARY KEY,
   scope_kind     TEXT NOT NULL CHECK(scope_kind IN ('customer','contact')),
@@ -370,7 +381,10 @@ CREATE TABLE project_contacts (
                                                  -- by contact_defaults, then
                                                  -- edited like any other
   sequence_no INTEGER NOT NULL DEFAULT 0,
-  UNIQUE(project_id, contact_id, role)
+  -- ONE PERSON, ONE ROW, ONE ROLE. Keying on role as well would permit the
+  -- same person twice under two roles, which is what happens when a person
+  -- rule and a company rule both fire for them. See docs/16 §2.
+  UNIQUE(project_id, contact_id)
 );
 
 CREATE TABLE project_conditions (

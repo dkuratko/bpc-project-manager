@@ -199,7 +199,8 @@ would silently undo itself.
 
 ### Group box · "Notes"
 
-36 px, as above.
+36 px, as above. Ashley's reads **`Sends POs on Fridays.`** — the same text the
+Contacts screen strip shows for her. **One person, two documents, one note.**
 
 ### Properties mode only
 
@@ -210,6 +211,78 @@ Projects    [ 12 ]  read-only chip              ·  Cannot be deleted
 
 `Projects` is why `Delete` is missing from the toolbar. When the count is `0`
 the trailing text reads `Can be deleted` in `#404040` instead.
+
+---
+
+## Will the rules actually work — the six that make them safe
+
+The principle (*a rule suggests, it does not bind*) is not enough on its own.
+Six mechanics have to be nailed down or the feature misbehaves in ways that are
+very hard to debug from the outside.
+
+### 1 · Rules never cascade
+
+**Only a contact added BY HAND fires rules. A contact added BY a rule fires
+nothing.**
+
+Without this, "cc Ashley wherever Grant goes" plus "cc Grant wherever Ashley
+goes" is an **infinite loop**, and even a well-meant three-deep chain
+(Grant → Ashley → the front office → …) is impossible for anyone to predict
+from the dialog they are looking at.
+
+One pass. The person you picked fires their rules, and that is the end of it.
+
+### 2 · A person appears on a project exactly once
+
+If they are already on the project **in any role**, the rule does nothing. It
+never adds a second row, and it never changes the role they already hold.
+
+Ashley being on a job as `primary` must not be quietly demoted to `cc` because
+a rule fired — nor must she appear twice.
+
+> **Schema fix.** `project_contacts` was `UNIQUE(project_id, contact_id, role)`,
+> which *permits* the same person twice under two roles. It becomes
+> `UNIQUE(project_id, contact_id)`. One person, one row, one role.
+
+### 3 · Specific beats general
+
+If a person rule and a company rule both fire for the same person and disagree
+about the role, **the person rule wins.** "Ashley goes wherever Grant goes"
+is a more deliberate statement than "copy the office on everything."
+
+### 4 · Rules fire in the DIALOG, not on save
+
+Picking Grant in New Project makes Ashley appear in the contact list **there
+and then**, as an ordinary row with a `✕` beside her. She can be removed before
+anything is written.
+
+A rule that fired invisibly on save would be exactly the thing this
+application does not do. Nothing silently assumed.
+
+### 5 · Not retroactive, and not reversible
+
+- Creating a rule today does **not** reach back into yesterday's projects.
+- Removing Grant from a project tomorrow does **not** remove Ashley — her row
+  stopped being a rule the moment it was written and became an ordinary row.
+
+Both follow from *suggests, does not bind*. The second one is the one to say
+out loud, because "Grant left, why is Ashley still copied" is a question that
+will be asked, and the answer is that she was never attached to Grant — she was
+attached to the project.
+
+### 6 · The trigger dropdown
+
+Lists **current colleagues at this company, plus anyone an existing rule
+already names, minus this person themselves.**
+
+- *Minus themselves*, because "cc Ashley whenever Ashley is on a project" is
+  nonsense and the list should not offer it.
+- *Plus anyone already named*, because Grant may leave Exerplay. If the list
+  only ever showed current colleagues, reopening Ashley's properties would
+  silently blank a rule that still exists in the database.
+
+A deactivated person stays visible in a rule that names them, and the rule
+simply never fires — inert, not deleted.
 
 ---
 
@@ -238,6 +311,10 @@ entering Ashley, and you know Ashley goes wherever Grant goes.
 - **An `Active` checkbox.** Deactivating is a toolbar verb; `Status` here is
   read-only text.
 - **A `Delete` button.** Neither dialog deletes. The Contacts window does.
+- **A rule firing on save instead of in the dialog.** It must be visible and
+  removable before anything is committed.
+- **Cascading rules.** One pass, hand-added contacts only.
+- **The same person twice on one project.** Once, in one role.
 - **`★` on anything with a default.** Only `Name`, `Kind`'s customer, and the
   contact's `Customer` and `Name` are required — and only `Name` fields arrive
   empty.
