@@ -145,12 +145,52 @@ Received    [ 09 Sep 2026 ]   ★
 How         ◉ Purchase order    PO # [ 4501182 ]
             ○ Signed estimate
             ○ Email approval
+PO amount   [ $40,710.00 ]       optional — see below
 Evidence    [ PO-4501182.pdf ]  [ Browse… ]
 ```
 
 `Against` lists the estimates issued for this version, newest first. A version
 can be approved against an older estimate — **nothing is ever off the table**,
 and a customer sitting on a quote for five weeks then sending a PO is ordinary.
+
+### The `PO amount` field
+
+```
+PO amount    [ $40,710.00 ]      optional · what the PO says it will pay
+```
+
+**The only exact figure on the screen** — transcribed off the paper, not
+derived from anything. Worth typing whenever the PO states a total.
+
+It is checked against **whichever total this dialog is currently showing**:
+
+```
+as quoted         Approved job scope      $40,710.00
+create revision   REV1 price              $38,410.00
+```
+
+When they disagree, a line appears beneath it in `#a00`:
+
+```
+             ⚠ PO is $290.00 below your approved job scope of $40,710.00
+```
+
+**Say it in full.** `$290.00 under` reads as jargon and leaves the direction
+ambiguous; the long form names who is low, by how much, and against what. If
+the PO is the higher number it reads `above` — that happens too, and is worth
+seeing for the opposite reason.
+
+A gap here is an **invoice dispute three weeks early.** Bill `$40,710.00`
+against a PO authorising `$40,420.00` and it gets short-paid or bounced. The
+usual causes are the customer's own arithmetic, rounding, a stale price, or a
+line they dropped that was not caught while ticking.
+
+It is not necessarily your error — it is a disagreement that is cheap to settle
+now and expensive to settle at invoicing. **The dialog never blocks on it.** It
+says so and lets you record the approval.
+
+**In the render the PO matches**, so no variance line is drawn. The ordinary
+case should look ordinary.
 
 ### Group box · "What they took" — two modes, one checkbox
 
@@ -521,34 +561,6 @@ the customer and the arithmetic is right for the price. The only thing that
 would be an issue is believing the price reconciling means the job is
 unchanged. It usually is. Occasionally it is not, and REV1 is where you find
 out, quantified, instead of at post-cost.
-
-#### The PO's own number — on the parent dialog
-
-```
-PO amount    [ $38,120.00 ]     what the customer says they are paying
-```
-
-Optional, and worth typing when the PO states a total. **It is the only exact
-figure that is transcribed rather than derived**, and when it disagrees with
-the computed price the parent says so in `#a00`:
-
-```
-             ⚠ PO is $290.00 below your REV1 price of $38,410.00
-```
-
-**Say it in full.** `$290.00 under REV1 price` reads as jargon and leaves the
-direction ambiguous; the long form names who is low, by how much, and against
-what. If the PO is the higher number it reads `above` — that happens too, and
-is worth seeing for the opposite reason.
-
-A gap here is an **invoice dispute three weeks early.** Bill `$38,410.00`
-against a PO authorising `$38,120.00` and it gets short-paid or bounced. The
-usual causes are the customer's own arithmetic, rounding, a stale price, or a
-line they dropped that was not caught while ticking.
-
-It is not necessarily your error — it is a disagreement that is cheap to settle
-now and expensive to settle at invoicing. **The dialog never blocks on it.** It
-says so and lets you record the approval.
 
 #### Buttons
 
