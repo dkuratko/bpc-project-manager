@@ -153,6 +153,74 @@ Evidence    [ PO-4501182.pdf ]  [ Browse… ]
 can be approved against an older estimate — **nothing is ever off the table**,
 and a customer sitting on a quote for five weeks then sending a PO is ordinary.
 
+### Group box · "What they took" — the REVISION state  ★ render this
+
+The third state, and the one no render has shown yet. **Tick `Create revision`
+and this box becomes:**
+
+```
+Base         ☑  BPCe-26-12A0                              $38,520.00
+             ☑  Create revision — 4 of 5 lines · 4 of 6 benches   [ Edit… ]
+
+                ──────────────────────────────────────────────────
+                REV1 price                                $38,410.00
+                      from Line items · unit prices hold
+```
+
+**The add options section is gone entirely** — not greyed, not empty, absent.
+The footings option is still taken; it was decided in the popup and is already
+inside the `$38,410.00`.
+
+Everything else about the dialog is unchanged: same boxes above, same tip
+block, same three-button footer geometry.
+
+#### What else moves in this state
+
+```
+PO amount        compares against REV1 price now, not approved job scope
+status preview   gains the REV1 sentence
+button           Record  →  Record & create REV1   (184 px, default)
+```
+
+#### The PO variance, drawn
+
+This state is also where the variance line should finally be **shown** rather
+than described. Render the PO at `$38,120.00`:
+
+```
+PO amount    [ $38,120.00 ]      optional · what the PO says it will pay
+             ⚠ PO is $290.00 below your REV1 price of $38,410.00
+```
+
+`38,410.00 − 38,120.00 = 290.00`. The customer's paperwork and your number have
+parted company, which is the whole reason the field exists.
+
+#### Its status preview
+
+```
+📋 26-12A0 becomes
+   ACCEPTED   09 Sep 2026
+   ─────────
+   And BPCe-26-12A0 REV1 is created, carrying 4 benches instead of 6.
+   Its cost recomputes on open. REV1 is what the job runs on; the
+   original stays on file, unchanged.
+```
+
+Chip ground `#9CC3E2`, **no lip** — a revision is not a problem, it is Tuesday.
+
+#### Render it on its own
+
+**One dialog, 600 px, alone on the scrim.** Caption in `#fff` bold 11 px:
+
+```
+RECORD APPROVAL — after ticking Create revision
+```
+
+Three 600 px panels side by side would be 1,870 px of canvas, and this is a
+state demonstration rather than a comparison. Alone is clearer and safer.
+
+---
+
 ### The `PO amount` field
 
 ```
@@ -296,9 +364,9 @@ Open Line items and record what was actually ordered. Any line dropped or
 re-quantified makes this an approval AND a revision — REV1 is issued
 carrying that scope, and REV1 is what the job runs on from then on.
 
-The new price is not the old price minus the missing lines. Dropping half a
-concrete order leaves the rest more expensive per yard, and the recompute is
-the only thing that knows that.
+The price subtracts cleanly — unit rates are a promise and they hold. What
+does not subtract is your cost, because materials are pooled. REV1
+recomputes that, and Line items can show you the damage before you accept.
 ```
 
 **Revisions are born here, not on another screen.** Nobody reads the same PO

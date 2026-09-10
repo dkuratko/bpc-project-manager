@@ -118,7 +118,7 @@ docs/design/component-wizard.final.dc.html` | — |
 | # | Screen | Kind | Status | File | Brief |
 |---|---|---|---|---|---|
 | — | New Project | POPUP | **✔ FINAL v2** | `docs/design/new-project.v2.dc.html` | `12` |
-| — | Record dialogs (4) | POPUP · family | briefed, awaiting render | — | `17` |
+| — | Record dialogs (4) | POPUP · family | v13 — approval + line items done | `docs/design/record-dialogs.v13.dc.html` | `17` |
 | — | New Option / New Version | POPUP · two roles | **✔ FINAL v3** | `docs/design/new-option-version.v3.dc.html` | `13` |
 | — | Customer / Contact dialogs | POPUP · 2 × 2 modes | **✔ FINAL v1** | `docs/design/customer-contact-dialogs.v1.dc.html` | `16` |
 | — | Contacts | MAIN · list | **✔ FINAL v2** | `docs/design/contacts.v2.dc.html` | `14` + `15` |
