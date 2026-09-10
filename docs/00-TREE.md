@@ -545,7 +545,7 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
 ✔ SHELL IS MDI — child windows in one Project Manager frame,
      Window menu, Cascade, Ctrl+Tab. the teal desk is the client area.
      ★ menu/toolbar placement (frame vs child) still undecided
-◐ NEW OPTION / NEW VERSION (POPUP) — briefed in docs/13, awaiting render.
+◐ NEW OPTION / NEW VERSION (POPUP) — docs/13 APPROVED, awaiting render.
      ONE popup, TWO roles. the role is set by which command was pressed,
      never by a control inside the dialog.
      both commands create exactly one thing — a VERSION row — so only
