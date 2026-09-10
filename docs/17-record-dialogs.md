@@ -189,8 +189,27 @@ It is not necessarily your error — it is a disagreement that is cheap to settl
 now and expensive to settle at invoicing. **The dialog never blocks on it.** It
 says so and lets you record the approval.
 
-**In the render the PO matches**, so no variance line is drawn. The ordinary
-case should look ordinary.
+#### Any difference at all, no tolerance
+
+**The warning fires on any non-zero gap — a cent counts.** There is no rounding
+band and no "close enough".
+
+That is deliberately unlike the margin metric a few paragraphs down, and the
+two are different kinds of question:
+
+```
+MARGIN     a judgment. how bad is bad is a business call, so it has
+           severity bands and a configurable threshold.
+PO AMOUNT  a fact. two documents either say the same number or they do
+           not, and one that is $0.43 out will still bounce.
+```
+
+A penny mismatch is not a small version of a big problem — it is a typo
+somewhere, and finding it now costs nothing.
+
+**In the render the PO matches, so no variance line is drawn.** The ordinary
+case should look ordinary; the warning is a conditional line that appears
+beneath the field whenever the numbers part company.
 
 ### Group box · "What they took" — two modes, one checkbox
 
