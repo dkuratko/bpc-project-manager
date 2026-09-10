@@ -533,11 +533,22 @@ figure that is transcribed rather than derived**, and when it disagrees with
 the computed price the parent says so in `#a00`:
 
 ```
-             ⚠ $290.00 under REV1 price
+             ⚠ PO is $290.00 below your REV1 price of $38,410.00
 ```
 
-A gap between what you calculated and what the customer thinks they are buying
-is a problem worth meeting three weeks early rather than at invoicing.
+**Say it in full.** `$290.00 under REV1 price` reads as jargon and leaves the
+direction ambiguous; the long form names who is low, by how much, and against
+what. If the PO is the higher number it reads `above` — that happens too, and
+is worth seeing for the opposite reason.
+
+A gap here is an **invoice dispute three weeks early.** Bill `$38,410.00`
+against a PO authorising `$38,120.00` and it gets short-paid or bounced. The
+usual causes are the customer's own arithmetic, rounding, a stale price, or a
+line they dropped that was not caught while ticking.
+
+It is not necessarily your error — it is a disagreement that is cheap to settle
+now and expensive to settle at invoicing. **The dialog never blocks on it.** It
+says so and lets you record the approval.
 
 #### Buttons
 
