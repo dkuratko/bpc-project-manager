@@ -672,9 +672,15 @@ hold anything you would want to keep looking at.
 ## 11 · NEXT
 
 ```
+══ PAUSED 09 Sep 2026 — nothing is awaiting a render. everything briefed
+   is FINAL. the queue below is all new work.
+
 ▶ RECORD DIALOGS — approval · shipment · schedule · invoice. one brief,
   four popups. these are the four facts that drive every derived status,
   so the dialogs are where the status model finally gets exercised.
+  ── or start with VEHICLES: small, flat, and the last piece of the
+     mobilization formula with no screen. it also tests whether the
+     LIST WINDOW template holds for a list with no grouping.
   then ─ CATALOG BROWSER
   then ─ INVOICE · POST COST documents
   then ─ CONTACTS · VEHICLES · CALENDAR · SHIPMENTS
