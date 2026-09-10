@@ -582,7 +582,10 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
      the option/version distinction is taught by ADJACENCY — the two
      commands sit next to each other in the toolbar and the menu and are
      never separated — plus a pointer line in each role to the other.
-◐ RECORD DIALOGS (POPUP family) — briefed in docs/17, awaiting render.
+✔ RECORD DIALOGS — FINAL v13 (POPUP family). docs/17.
+     approval + line items rendered. the REVISION STATE of the approval
+     dialog is spec'd and not yet rendered; schedule, shipment and
+     invoice are fully specified and not yet rendered.
      Record approval · Record shipment · Schedule · Invoice.
      THE ONLY FOUR PLACES STATUS CHANGES. everything else in the app is
      derived from what gets typed here, so every one of them ends with a

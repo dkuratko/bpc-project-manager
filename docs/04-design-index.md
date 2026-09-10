@@ -118,7 +118,7 @@ docs/design/component-wizard.final.dc.html` | — |
 | # | Screen | Kind | Status | File | Brief |
 |---|---|---|---|---|---|
 | — | New Project | POPUP | **✔ FINAL v2** | `docs/design/new-project.v2.dc.html` | `12` |
-| — | Record dialogs (4) | POPUP · family | v13 — approval + line items done | `docs/design/record-dialogs.v13.dc.html` | `17` |
+| — | Record dialogs (4) | POPUP · family | **✔ FINAL v13** · revision state unrendered | `docs/design/record-dialogs.v13.dc.html` | `17` |
 | — | New Option / New Version | POPUP · two roles | **✔ FINAL v3** | `docs/design/new-option-version.v3.dc.html` | `13` |
 | — | Customer / Contact dialogs | POPUP · 2 × 2 modes | **✔ FINAL v1** | `docs/design/customer-contact-dialogs.v1.dc.html` | `16` |
 | — | Contacts | MAIN · list | **✔ FINAL v2** | `docs/design/contacts.v2.dc.html` | `14` + `15` |
@@ -148,6 +148,23 @@ Grid becomes `14px 20px minmax(0,1fr) 148px 108px 200px 36px 64px`.
 1. The **New Option** dialog (left) has `Empty` selected, so it must show **no
    record block**. Delete it there. The block follows the Copy radio in both
    roles — a promise about a copy that is not happening is a false promise.
+
+**Record dialogs v13** — five, all mechanical:
+
+1. The base pair is a **radio**, not two checkboxes:
+   `◉ Taken as quoted — BPCe-26-12A0` / `○ Create revision — …`
+2. Identity is **two rows**, on both panels and all four dialogs:
+   `Project [ 26-12  Verrado Elementary — Ramada Add ]` then
+   `Version [ 26-12A0 ]  Option A · version 0`
+3. `Against` becomes **`Estimate`**, and is a **read-only chip carrying the
+   sent date**, not a dropdown. A version has exactly one estimate.
+4. The approval tip block's last line is wrong and reverses the model. Replace
+   with: *"The price subtracts cleanly — unit rates are a promise and they
+   hold. What does not subtract is your cost, because materials are pooled.
+   REV1 recomputes that, and Line items can show you the damage before you
+   accept."*
+5. In Line items, the declined `J.O1`'s `$4,850.00` is **greyed**, matching how
+   the same declined option renders on the parent.
 
 **Customer / Contact dialogs v1** — one:
 
