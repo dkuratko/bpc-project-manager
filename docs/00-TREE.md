@@ -545,14 +545,16 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
 ✔ SHELL IS MDI — child windows in one Project Manager frame,
      Window menu, Cascade, Ctrl+Tab. the teal desk is the client area.
      ★ menu/toolbar placement (frame vs child) still undecided
-◐ NEW OPTION (POPUP) — briefed in docs/13, awaiting render.
-◐ NEW VERSION (POPUP) — briefed in docs/14, awaiting render. 480 px.
-     TWO dialogs, not one, because they have different defaults: a new
-     option is launched from a PROJECT and the copy source is a real
-     choice; a new version is launched from a VERSION and the source is
-     already answered. the distinction is taught by ADJACENCY — the two
-     commands sit next to each other in the toolbar and the menu, and
-     each dialog points at the other.
+◐ NEW OPTION / NEW VERSION (POPUP) — briefed in docs/13, awaiting render.
+     ONE popup, TWO roles. the role is set by which command was pressed,
+     never by a control inside the dialog.
+     both commands create exactly one thing — a VERSION row — so only
+     the row that says WHERE IT GOES differs: a chip minting a new
+     letter, or a dropdown of existing letters. box 2 (scope), both
+     callout blocks and the buttons are identical in both roles.
+     the option/version distinction is taught by ADJACENCY — the two
+     commands sit next to each other in the toolbar and the menu and are
+     never separated — plus a pointer line in each role to the other.
 ▢ RECORD DIALOGS (POPUP family) — one brief, four dialogs
      Record approval · Record shipment · Schedule · Invoice.
      the version view's toolbar buttons currently go nowhere.
