@@ -25,6 +25,33 @@ shows you the status you are about to cause.**
 
 ---
 
+## THE IDENTITY ROWS — the same two, on all four
+
+Every record dialog opens with the same pair, in the same order, matching the
+Version View's identity strip exactly:
+
+```
+Project     [ 26-12  Verrado Elementary — Ramada Add ]     read-only chip
+Version     [ 26-12A0 ]  Option A · version 0              read-only chip
+```
+
+**Two rows, not one.** The title belongs to the **project** — squashing
+`26-12A0` and the project's title into a single chip labelled `Version` puts
+the project's name on the version's row. The version's own contribution is the
+letter and the number, spelled out in words beside its reference, exactly as
+`docs/09-version-view.md` does it.
+
+**Neither is ever a picker, and neither needs greying.** A record dialog can
+only be opened from a version — the Version View's toolbar, or the browser's
+right-click on a version row — so both facts are already settled before it
+appears. A read-only chip is the grammar for that throughout this application;
+greying is for a control that could have been live and is not.
+
+If a launch path ever existed that did not know the version, the dialog would
+have nothing to record against and could not open at all.
+
+---
+
 ## THE STATUS PREVIEW — the shared invention
 
 Every one of the four ends with a record block that is **a preview of the
@@ -139,8 +166,9 @@ BUTTONS          Record 110 px (default, outlined bold) · Cancel 78 px
 ### Group box · "What came back"
 
 ```
-Version     [ 26-12A0  Verrado Elementary — Ramada Add ]   read-only chip
-Against     [ BPCe-26-12A0   sent 28 Aug 2026            ▼ ]
+Project     [ 26-12  Verrado Elementary — Ramada Add ]     read-only chip
+Version     [ 26-12A0 ]  Option A · version 0              read-only chip
+Estimate    [ BPCe-26-12A0   sent 28 Aug 2026            ▼ ]
 Received    [ 09 Sep 2026 ]   ★
 How         ◉ Purchase order    PO # [ 4501182 ]
             ○ Signed estimate
@@ -149,9 +177,14 @@ PO amount   [ $40,710.00 ]       optional — see below
 Evidence    [ PO-4501182.pdf ]  [ Browse… ]
 ```
 
-`Against` lists the estimates issued for this version, newest first. A version
-can be approved against an older estimate — **nothing is ever off the table**,
-and a customer sitting on a quote for five weeks then sending a PO is ordinary.
+`Estimate` lists the documents issued for this version, newest first, `REV`s
+included. A version can be approved against an **older** estimate — nothing is
+ever off the table, and a customer sitting on a quote for five weeks then
+sending a PO is ordinary.
+
+It was labelled `Against` in v13. That reads as jargon and made the row hard to
+tell apart from `Version` above it; the row is choosing a **document**, so it
+says so.
 
 ### Group box · "What they took" — the REVISION state  ★ render this
 
@@ -720,8 +753,9 @@ One dialog **per truck.**
 ### Group box · "The truck"
 
 ```
-Version     [ 26-09A0  Dobson Park Ramadas ]   read-only chip
-Shipment    [ 2 ] of 3 expected              sequence, editable
+Project     [ 26-09  Dobson Park Ramadas ]     read-only chip
+Version     [ 26-09A0 ]  Option A · version 0   read-only chip
+Shipment    [ 2 ] of 3 expected                sequence, editable
 Received    [ 10 Sep 2026 ]   ★
 Where       ◉ Lot    ○ Site
 Truck log   [ EXP-88214 ]
@@ -775,7 +809,8 @@ A **living record** — one row per version, reopened as the job moves.
 ### Group box · "The dates"
 
 ```
-Version     [ 26-09A0  Dobson Park Ramadas ]   read-only chip
+Project     [ 26-09  Dobson Park Ramadas ]     read-only chip
+Version     [ 26-09A0 ]  Option A · version 0   read-only chip
 Install     [ 22 Sep 2026 ]   ★    set by the customer
 Buffer      [ 1 ] days             how long you are holding either side
 Started     [            ]         when the crew is on site
@@ -837,8 +872,9 @@ The other **living record** — `sent`, then later `paid`.
 ### Group box · "The invoice"
 
 ```
-Version     [ 26-09A0  Dobson Park Ramadas ]   read-only chip
-Reference   [ BPCi-26-09A0 ]  read-only chip   assigned on save
+Project     [ 26-09  Dobson Park Ramadas ]     read-only chip
+Version     [ 26-09A0 ]  Option A · version 0   read-only chip
+Reference   [ BPCi-26-09A0 ]  read-only chip     assigned on save
 Sent        [ 10 Sep 2026 ]   ★
 Amount      [ $43,270.00 ]                     approved scope + change orders
 Paid        [            ]                     set by hand
