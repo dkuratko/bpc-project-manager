@@ -359,16 +359,31 @@ orphan REV1 on the version forever.
 #### The footer — the price IS the arithmetic
 
 ```
-Quoted, all rows as submitted                     $45,560.00
+Quoted, base as submitted                         $38,520.00
 Less 2 benches at $1,150.00                       ($2,300.00)
-Less J.O1 Security fence                          ($4,850.00)
+Plus 01.O1 Drilled footings                        $2,190.00
 ──────────────────────────────────────────────────────────────
 REV1 price                                        $38,410.00
       unit prices hold · the customer sees the same rates
-
-Cost is recomputed when REV1 opens — pooled rates move when
-quantities do.
 ```
+
+#### An add option is never subtracted
+
+**It was never in the quoted total to begin with.** The estimate's number is
+the base; add options are *offered* beside it. So the footer only ever moves in
+two directions:
+
+```
+base lines      SUBTRACT when the PO takes less of them
+add options     ADD when the PO takes them
+                and simply do not appear when it does not
+```
+
+The security fence is absent from the footer above, not shown as a credit. A
+line reading `Less J.O1 Security fence ($4,850.00)` would be claiming the
+customer gave back something they never bought.
+
+`38,520.00 − 2,300.00 + 2,190.00 = 38,410.00`.
 
 **Estimate lines are unit priced, so the price subtracts cleanly and REV1 says
 so.** Six benches at `$1,150.00` is `$6,900.00`; they took four, the line is
@@ -379,8 +394,8 @@ It also has to work this way. A revision where the **ramada's** price moved
 because of benches is a revision a customer would reject, and rightly — nobody
 changed the ramada.
 
-`45,560.00 − 2,300.00 − 4,850.00 = 38,410.00`, and against the as-quoted
-approved scope of `$40,710.00` the difference is exactly the two benches.
+Against the as-quoted approved scope of `$40,710.00`, the difference is exactly
+the two benches — `40,710.00 − 2,300.00 = 38,410.00`.
 
 #### What cannot be subtracted is COST
 
@@ -433,6 +448,71 @@ and REV1's recompute is what knows whether a threshold was crossed.
 Add scope and everyone gets slightly **cheaper** — the same fixed fee over more
 required quantity. Change orders and add options quietly improve the margin on
 work already sold. The model is not pessimistic, it is just not linear.
+
+#### The margin metric — `[ Check margin ]`  ★
+
+**Price is arithmetic and needs no button. Margin is not, and gets one.**
+
+```
+Margin impact                                    [ Check margin ]
+
+  Quoted                              32.4%
+  REV1                                29.8%
+  ────────────────────────────────────────────────────────────
+  Change                           −2.6 pts        ($998.66)
+
+  ▌ Material — worth raising with the customer before you accept.
+
+  What moved
+    Concrete      $195.63 → $243.75 /CY    short load under 5.00 CY
+    Mobilization  3 trips → 3 trips        unchanged
+```
+
+**The percentage is the honest headline.** Margin *dollars* always fall when
+scope shrinks, so a dollar figure on its own says nothing. Percentage points
+are scope-independent: `−2.6 pts` means every surviving dollar earns less than
+it was quoted to.
+
+**The dollar figure is those points priced on the work that survived** —
+`$38,410.00 × 2.6% = $998.66`. That is what the erosion is worth on the job you
+are actually about to do, and it is the number to take to a customer.
+
+#### Severity bands
+
+```
+< 1.0 pt        no material change            plain grey
+1.0 – 3.0 pts   worth knowing                 plain black
+> 3.0 pts       ▌ material                    4 px #CC0000 lip + #a00 text
+```
+
+The threshold is `revision.margin_alert_pts` in `app_settings`, default `3.0` —
+a setting because what counts as material is a business judgment, and a new
+one should be data entry rather than a migration.
+
+#### `What moved` is the part you can act on
+
+A number alone tells you there is a problem. **The named cause is what lets you
+do something about it** — *"the concrete goes short-load under 5 yards"* is a
+sentence you can say to a customer, and it points at the fix: take one more
+bench, or accept the rate.
+
+Only pooled inputs whose effective rate actually moved are listed, worst first.
+An unchanged one appears as `unchanged` so you can see it was checked.
+
+#### Why a button, and why it is not automatic
+
+`[ Check margin ]` is a real `calculation_run` — requirements expansion, pooled
+procurement, effective rates, allocation. Not something to fire on every
+checkbox tick.
+
+It is **also not required.** Record the approval without pressing it and
+nothing is lost; REV1 computes the same figures when it opens. The button
+exists for exactly the reason you would want it — **finding out while the
+customer is still on the phone, not three weeks later.**
+
+Nothing new is stored. `scope_deltas` already keeps `base_run_id` and
+`with_run_id`, so both margins are derivable from what the revision records
+anyway.
 
 #### So: is the setup an issue?
 

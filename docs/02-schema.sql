@@ -1077,6 +1077,9 @@ CREATE TABLE alerts (
 --   mobilization.distance_threshold_mi ... ▢ value not established yet
 --   mobilization.per_diem_pct ............ uplift on employee pay, e.g. 10%
 --   mobilization.workday_hours ........... 10
+--   revision.margin_alert_pts ............ 3.0 — margin points lost before a
+--        revision is flagged material. What counts as material is a business
+--        judgment, so it is a setting. See docs/17.
 --   vehicle.rate_method .................. 'computed' | 'tracked'
 --        Tier 1 today. The setting exists so it can be switched to actuals
 --        later without touching anything else.
