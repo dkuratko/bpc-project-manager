@@ -91,7 +91,7 @@ the two carrying the most design weight:
 - Left: **`Record approval — 26-12A0`** with `Create revision` **unticked** —
   the as-quoted mode, so the add options section IS shown, with `01.O1` nested
   under its context row and `J.O1` at top level. `Approved job scope
-  $40,610.00`, clean `ACCEPTED` preview, button reads `Record`.
+  $40,710.00`, clean `ACCEPTED` preview, button reads `Record`.
 - Right: **`Line items — BPCe-26-12A0`**, what the checkbox opens — every
   priced row, sub-items and add options included, 4 benches of 6, the no-total
   footer, button reads `Use this & create REV1`.
@@ -155,7 +155,7 @@ and a customer sitting on a quote for five weeks then sending a PO is ordinary.
 ### Group box · "What they took" — two modes, one checkbox
 
 ```
-Base         ☑  BPCe-26-12A0                              $38,420.00
+Base         ☑  BPCe-26-12A0                              $38,520.00
              ☐  Create revision — the PO does not take every line
 
 
@@ -163,7 +163,7 @@ Add options     01     Ramada — 20 ft × 20 ft hip
                 ☑  01.O1   Drilled footings, 4 posts        $2,190.00
                 ☐  J.O1    Security fence, 120 LF           $4,850.00
                 ──────────────────────────────────────────────────────
-                   Approved job scope                      $40,610.00
+                   Approved job scope                      $40,710.00
 ```
 
 **The `Add options` row carries an extra `10 px` above it** — a clear break
@@ -171,7 +171,7 @@ from the base block, not just another grid row. They are two different
 questions: *did they take the estimate*, and then *what else did they add*.
 Everything else keeps the standard `4px 8px` grid gaps.
 
-`38,420.00 + 2,190.00 = 40,610.00`. The fence was not taken.
+`38,520.00 + 2,190.00 = 40,710.00`. The fence was not taken.
 
 #### `☐ Create revision` is a checkbox, not a button
 
@@ -253,7 +253,7 @@ twice, and re-keying it somewhere else is how scope and paper drift apart.
 📋 26-12A0 becomes
    ACCEPTED   09 Sep 2026
    ─────────
-   Approved scope $40,610.00. Next: awaiting delivery.
+   Approved scope $40,710.00. Next: awaiting delivery.
 ```
 
 When Line items has been used:
@@ -299,9 +299,9 @@ record**, and it holds **every priced row on the estimate**:
    ☑  01.2   Fabric — Sunbrella, forest green                       $5,900.00
    ☑  01.O1  [opt] Drilled footings, 4 posts                        $2,190.00
 ☑  02      Site work — grading and base           1 ls     [ 1 ]    $9,140.00
-☑  03      Benches                                6 ea     [ 4 ]    $6,800.00
-              ⚠ 4 of 6 — price recomputes in REV1
-☑  J.O1    [opt] Security fence, 120 LF                             $4,850.00
+☑  03      Benches                                6 ea     [ 4 ]    $6,900.00
+              ⚠ 4 of 6 — REV1 line becomes $4,600.00
+☐  J.O1    [opt] Security fence, 120 LF                             $4,850.00
 ```
 
 **Add options are here too**, nested exactly as they are on the parent — which
@@ -356,65 +356,85 @@ and REV1 exists only once `Record` is pressed there. Cancel the approval and
 the revision was never real — otherwise an abandoned approval would leave an
 orphan REV1 on the version forever.
 
-#### The footer — a computed figure, never a summed one
+#### The footer — the price IS the arithmetic
 
 ```
-────────────────────────────────────────────────────────────
-Quoted, as submitted                              $38,420.00
-Not ordered            2 of 6 benches · security fence
+Quoted, all rows as submitted                     $45,560.00
+Less 2 benches at $1,150.00                       ($2,300.00)
+Less J.O1 Security fence                          ($4,850.00)
+──────────────────────────────────────────────────────────────
+REV1 price                                        $38,410.00
+      unit prices hold · the customer sees the same rates
 
-REV1, provisional                          [ Price it ]
-                                                  $35,890.00
-      computed, not subtracted · procurement not yet reviewed
+⚠ Cost does not fall by the same shape — margin is re-checked
+  when REV1 opens.
 ```
 
-**The figure is computed by the engine, not summed from the rows above.**
-Those are different things and the distinction is the whole point:
+**Estimate lines are unit priced, so the price subtracts cleanly and REV1 says
+so.** Six benches at `$1,150.00` is `$6,900.00`; they took four, the line is
+`$4,600.00`. That is the whole calculation and there is nothing clever about
+it.
+
+It also has to work this way. A revision where the **ramada's** price moved
+because of benches is a revision a customer would reject, and rightly — nobody
+changed the ramada.
+
+`45,560.00 − 2,300.00 − 4,850.00 = 38,410.00`, and against the as-quoted
+approved scope of `$40,710.00` the difference is exactly the two benches.
+
+#### What cannot be subtracted is COST — and that is where the margin goes
+
+This is the pitfall, and it is not in the number above:
 
 ```
-WRONG   $38,420.00 − 2 × $1,133.33 = $36,153.34
-RIGHT   re-run the scope without those two benches and price the result
+PRICE   subtracts. unit rates are a promise to the customer and they hold.
+COST    does not. it is pooled, and pooling does not respect line boundaries.
 ```
 
-Arithmetic on line amounts fails because of **pooling.** Concrete for the
-benches and concrete for the ramada are one purchase. Drop two benches and the
-pooled quantity falls, which can change the purchase decision, which changes
-the effective rate for **everything in the pool** — including the ramada, which
-nobody touched. The subtraction is wrong for the benches *and* wrong for lines
-that did not change.
-
-The engine has no such problem. Every estimate line maps to cost objects
-through `document_line_objects`, and every object belongs to exactly one line,
-so *"the version without line 03"* is a fully specified scope. Pricing it is
-the same marginal recompute that already prices add options and change orders.
-
-#### Why `[ Price it ]` is a button, and why the answer is provisional
-
-**A button, because this is a real `calculation_run`** — requirements
-expansion, pooled procurement, effective rates, allocation, markup. Not
-something to fire on every checkbox tick.
-
-**Provisional, because procurement may want a human.** At a lower quantity a
-different method can be the right one — bag mix instead of ready-mix, a smaller
-delivery, a short-load fee that was not there before. The engine will pick up
-the method already chosen; whether that method is still the sensible one is a
-judgment made on REV1's Purchasing tab.
-
-So the number is honest about what it is: `computed, not subtracted ·
-procurement not yet reviewed`. It is a good enough figure to talk to a customer
-about, and it is not the final price until REV1 has been opened.
-
-#### The PO's own number
+Two fewer benches is roughly **1 CY less concrete.** That concrete is pooled
+with the ramada's footings into one purchase, so a smaller pour can fall under
+a minimum load:
 
 ```
-PO amount    [ $35,600.00 ]     what the customer says they are paying
-             ⚠ $290.00 under REV1 provisional
+before   8.00 CY × $185 + $85 delivery ............... $1,565.00   $195.63/CY
+after    7.00 CY × $185 + $85 delivery + short load ..    ↑ rate    ↑ per yard
 ```
 
-Optional, and worth typing when the PO states a total. **This is the only exact
-number on the screen** — it is transcribed, not derived — and the gap between
-it and the recompute is a real problem you want to see now rather than at
-invoicing. It sits on the parent dialog with the rest of the PO's facts.
+**The ramada's footings now cost more per yard, and the ramada's price did not
+change.** You are still charging the old rate for work that got more expensive.
+Margin eroded on a line nobody edited.
+
+That is the entire reason this application exists rather than a spreadsheet: a
+spreadsheet would show `$38,410.00` and stop, and the margin would quietly go
+missing.
+
+#### So what does the dialog do about it
+
+**Nothing here — it warns and hands off.** Re-running procurement is a real
+`calculation_run` and it may need a human: at a lower quantity a different
+method can be the right one, bag mix instead of ready-mix, a smaller delivery.
+That judgment belongs on REV1's Purchasing tab, with the numbers in front of
+you.
+
+So the footer states the price exactly, flags that cost is a separate question,
+and REV1 opens on the cost breakdown where the answer lives.
+
+#### The PO's own number — on the parent dialog
+
+```
+PO amount    [ $38,120.00 ]     what the customer says they are paying
+```
+
+Optional, and worth typing when the PO states a total. **It is the only exact
+figure that is transcribed rather than derived**, and when it disagrees with
+the computed price the parent says so in `#a00`:
+
+```
+             ⚠ $290.00 under REV1 price
+```
+
+A gap between what you calculated and what the customer thinks they are buying
+is a problem worth meeting three weeks early rather than at invoicing.
 
 #### Buttons
 
