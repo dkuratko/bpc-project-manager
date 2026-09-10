@@ -867,12 +867,14 @@ CREATE TABLE approvals (
 -- Either makes the approval a REVISION as well, and the price is NEVER
 -- derived by arithmetic here: cost does not scale, so REV1 recomputes.
 --
--- A line-level add option (01.O1) is only takeable if its parent line is
--- taken. Footings for a ramada nobody ordered is not an orderable thing.
+-- Rows exist only when Create revision was ticked. A clean PO writes an
+-- approval plus one row per add option taken, and nothing else — "as quoted"
+-- is the absence of exceptions, not a full transcript of the estimate.
 --
--- Rows exist only when the Line items popup was used and something differed.
--- A clean PO writes an approval and no approval_lines at all — "as quoted" is
--- the absence of exceptions, not a full transcript of the estimate.
+-- In the revision mode this table carries EVERY priced row, sub-items and add
+-- options included, because the PO is one document and is read once. In the
+-- as-quoted mode it carries only the add options, because the base was taken
+-- with a single tick. See docs/17.
 CREATE TABLE approval_lines (
   id                TEXT PRIMARY KEY,
   approval_id       TEXT NOT NULL REFERENCES approvals(id),

@@ -88,15 +88,20 @@ correcting a fact fixes everything downstream.
 Render **exactly two dialogs, side by side** on a `rgba(0,0,0,.42)` scrim —
 the two carrying the most design weight:
 
-- Left: **`Record approval — 26-12A0`**, the ordinary case — base taken as
-  quoted, footings option taken, fence declined, `Approved job scope
-  $40,610.00`, a clean `ACCEPTED` status preview, button reads `Record`.
-- Right: **`Line items — BPCe-26-12A0`**, the popup it opens, showing the
-  messy case — 4 benches of 6, the no-total footer, button reads
-  `Use this & create REV1`.
+- Left: **`Record approval — 26-12A0`** with `Create revision` **unticked** —
+  the as-quoted mode, so the add options section IS shown, with `01.O1` nested
+  under its context row and `J.O1` at top level. `Approved job scope
+  $40,610.00`, clean `ACCEPTED` preview, button reads `Record`.
+- Right: **`Line items — BPCe-26-12A0`**, what the checkbox opens — every
+  priced row, sub-items and add options included, 4 benches of 6, the no-total
+  footer, button reads `Use this & create REV1`.
 
 Captions above each in `#fff` bold 11 px:
-`RECORD APPROVAL — the ordinary case` and `LINE ITEMS — its popup, when the PO differs`
+`RECORD APPROVAL — as quoted, the default` and `LINE ITEMS — after ticking Create revision`
+
+**These are two different moments, not one screen with a popup over it.** The
+left dialog is showing the mode where the add options section exists; tick the
+box and that section is gone. Render them as two independent panels.
 
 Both **600 px**, top-aligned, 18 px apart. **The right one is a child of the
 left**, so render it slightly lower — 22 px — the way a modal opened from a
@@ -147,51 +152,75 @@ Evidence    [ PO-4501182.pdf ]  [ Browse… ]
 can be approved against an older estimate — **nothing is ever off the table**,
 and a customer sitting on a quote for five weeks then sending a PO is ordinary.
 
-### Group box · "What they took"
+### Group box · "What they took" — two modes, one checkbox
 
 ```
 Base         ☑  BPCe-26-12A0                              $38,420.00
-                all lines as quoted        [ Line items… ]
+             ☐  Create revision — the PO does not take every line
 
-Add options  ☑  01.O1   Drilled footings, 4 posts          $2,190.00
-                        on 01 · Ramada — 20 ft × 20 ft hip
-             ☐  J.O1    Security fence, 120 LF             $4,850.00
-                        job-wide
-             ───────────────────────────────────────────────────────
-                Approved job scope                        $40,610.00
+Add options     01     Ramada — 20 ft × 20 ft hip
+                ☑  01.O1   Drilled footings, 4 posts        $2,190.00
+                ☐  J.O1    Security fence, 120 LF           $4,850.00
+                ──────────────────────────────────────────────────────
+                   Approved job scope                      $40,610.00
 ```
 
 `38,420.00 + 2,190.00 = 40,610.00`. The fence was not taken.
 
-#### The reference number says what an add option attaches to
+#### `☐ Create revision` is a checkbox, not a button
 
-The editor numbering from `document_lines` is doing real work here:
+Ticking it **opens the Line items popup immediately** and switches the whole
+box into its other mode. Untick it and the revision is discarded.
 
-```
-01.O1     ADD OPTION 1 ON LINE 01     ← specific. the footings for the ramada.
-J.O1      ADD OPTION 1 AT JOB LEVEL   ← general. the security fence.
-```
-
-Each option carries a grey second line naming what it belongs to — `on 01 ·
-Ramada — 20 ft × 20 ft hip`, or `job-wide`. **You never have to work out which
-kind you are looking at**, which was the whole problem with listing them flat.
-
-#### The base row and its button
-
-The base is one row because the common case is that the PO takes the estimate
-as written. Its grey text is a **state**, and the button opens the detail:
+Once ticked, the row carries a summary and a way back in:
 
 ```
-all lines as quoted            ← nothing to look at. the ordinary case.
-4 of 5 lines · REV1            ← after the popup has been used
+☑  Create revision — 4 of 5 lines · 4 of 6 benches        [ Edit… ]
 ```
 
-**`[ Line items… ]` opens the popup below**, which is where a PO that does not
-match gets recorded. Beside it, in grey:
+#### The add options section only exists in the as-quoted mode
 
-> PO does not take every line? Approve line by line — creates REV1.
+**Tick `Create revision` and the add options section disappears entirely.**
+Not greyed — gone.
 
----
+That is not a shortcut, it is the only coherent arrangement. In the revision
+mode every priced row on the estimate — base lines, sub-items, line options and
+job options alike — is decided **inside the popup**, because the PO is one
+document and reading it should mean filling in one list. Leaving add options
+behind on the parent would split one decision across two windows and require
+them to stay in sync.
+
+```
+as quoted        base is a single tick · add options decided HERE
+create revision  everything decided in the popup · this section is gone
+```
+
+#### How add options show what they attach to
+
+The editor numbering from `document_lines` is doing real work:
+
+```
+01        a line
+01.O1     ADD OPTION 1 ON LINE 01   ← specific. the footings for the ramada.
+J.O1      ADD OPTION 1 AT JOB LEVEL ← general. the security fence.
+```
+
+A **line-specific** option is nested under its line, and the line above it is
+**context only — no checkbox.** The line itself is not being decided here; the
+whole base was taken with one tick. It is there so you can see what the option
+belongs to.
+
+A **general** option sits at the top level, where a line would, with nothing
+above it.
+
+```
+   01     Ramada — 20 ft × 20 ft hip          ← context row, NO checkbox
+   ☑  01.O1   Drilled footings, 4 posts       ← nested. belongs to 01.
+   ☐  J.O1    Security fence, 120 LF          ← top level. belongs to the job.
+```
+
+Indentation shows it, the reference proves it, and a line with no options of
+its own never appears at all.
 
 ### Tip block · `#ffffe1`
 
@@ -250,28 +279,45 @@ rejection here, and an approval of nothing is not one.
 
 ---
 
-## DIALOG 1b · Line items  ★ rendered — the child of Record approval
+## DIALOG 1b · Line items  ★ rendered — opened by the checkbox
 
 **Title bar:** `Line items — BPCe-26-12A0`
 
-Opened only from `[ Line items… ]`. It is a **detail sheet, not a record.**
+Opened when `Create revision` is ticked. It is a **detail sheet, not a
+record**, and it holds **every priced row on the estimate**:
 
 ```
                                               quoted   ordered      amount
 ☑  01     Ramada — 20 ft × 20 ft hip           1 ea     [ 1 ]   $22,480.00
+   ☑  01.1    Hip frame, 4 posts                                $14,200.00
+   ☑  01.2    Fabric — Sunbrella, forest green                   $5,900.00
+   ☑  01.O1   Drilled footings, 4 posts        add option        $2,190.00
 ☑  02     Site work — grading and base         1 ls     [ 1 ]    $9,140.00
 ☑  03     Benches                              6 ea     [ 4 ]    $6,800.00
              ⚠ 4 of 6 — price recomputes in REV1
+☑  J.O1   Security fence, 120 LF               job option        $4,850.00
 ```
 
-Base lines only. Add options stay on the parent dialog, because taking an add
-option is a different question from whether the PO bought what was quoted.
+**Add options are here too**, nested exactly as they are on the parent — which
+is why the parent's add options section goes away. One PO, one list.
+
+#### Sub-items do not sum to their line, and that is not a bug
+
+`14,200.00 + 5,900.00 = 20,100.00`, against a line of `$22,480.00`. **Do not
+"fix" this.** A sub-item list is a *partial* breakdown — a line may also hold
+cost directly — which was settled when the estimate editor was designed. A
+renderer or a build that made these add up would be inventing a rule the
+business does not have.
+
+Sub-items are tickable, because "they took the line but not that part of it"
+is a real thing a PO can say. Unticking one **does not subtract its amount** —
+nothing on this screen subtracts anything.
 
 #### Quantities, not just ticks
 
 *"Five benches quoted, four ordered"* is the common shape of a partial PO, and
 a tick cannot say it. `ordered` defaults to `quoted` and is editable. Setting
-it below quoted — or unticking a line outright — is what creates the revision.
+it below quoted — or unticking any row — is what the revision will carry.
 
 #### It creates nothing
 
@@ -279,18 +325,6 @@ it below quoted — or unticking a line outright — is what creates the revisio
 and REV1 exists only once `Record` is pressed there. Cancel the approval and
 the revision was never real — otherwise an abandoned approval would leave an
 orphan REV1 on the version forever.
-
-#### Unticking a line reaches back to the parent
-
-Untick `01` here and the ramada's footings option — `01.O1` — unticks and greys
-on the approval dialog behind, with the reason beside it:
-
-```
-☐  01.O1   Drilled footings, 4 posts    — needs 01, which was not ordered
-```
-
-Footings for a ramada you are not supplying is not a thing anyone can order.
-`J.O1` has no such dependency; a security fence stands on its own.
 
 #### The footer — no total
 
@@ -315,6 +349,8 @@ nothing changed   [    OK    ]                   [ Cancel ]
 something changed [ Use this & create REV1 ]     [ Cancel ]
                          184 px, default
 ```
+
+---
 
 ## DIALOG 2 · Record shipment  — specified, not rendered
 
@@ -499,8 +535,12 @@ Chip ground `#F0B778`.
 - **Wizards.** Living records reopen with every field editable, always.
 - **Pricing the revision** anywhere in this family. Line items names what
   changed; the recompute happens when REV1 opens.
-- **A line-item table on the Record approval dialog.** One base row and a
-  button. The table lives in the popup.
+- **A line-item table on the Record approval dialog.** One base row plus a
+  checkbox. The table lives in the popup.
+- **Add options showing in both modes.** They belong to the as-quoted mode
+  only; the revision decides them in the popup.
+- **A checkbox on an add option's context line.** That row is context.
+- **Sub-items made to sum to their line.** They are a partial breakdown.
 - **The popup writing anything.** It hands back; `Record` commits.
 - **A total in the revision case.** There is no honest one to show.
 - **Add options listed flat**, without their line and without the indent. A
