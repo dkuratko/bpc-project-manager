@@ -168,7 +168,7 @@ BUTTONS          Record 110 px (default, outlined bold) · Cancel 78 px
 ```
 Project     [ 26-12  Verrado Elementary — Ramada Add ]     read-only chip
 Version     [ 26-12A0 ]  Option A · version 0              read-only chip
-Estimate    [ BPCe-26-12A0   sent 28 Aug 2026            ▼ ]
+Estimate    [ BPCe-26-12A0 ]  sent 28 Aug 2026            read-only chip
 Received    [ 09 Sep 2026 ]   ★
 How         ◉ Purchase order    PO # [ 4501182 ]
             ○ Signed estimate
@@ -177,14 +177,41 @@ PO amount   [ $40,710.00 ]       optional — see below
 Evidence    [ PO-4501182.pdf ]  [ Browse… ]
 ```
 
-`Estimate` lists the documents issued for this version, newest first, `REV`s
-included. A version can be approved against an **older** estimate — nothing is
-ever off the table, and a customer sitting on a quote for five weeks then
-sending a PO is ordinary.
+#### `Estimate` is a chip, not a dropdown — there is only ever one
 
-It was labelled `Against` in v13. That reads as jargon and made the row hard to
-tell apart from `Version` above it; the row is choosing a **document**, so it
-says so.
+**A version has exactly one estimate.** Price the job again and that is a new
+version, not a second estimate: `A1` exists precisely so `A0` never needs two.
+There is nothing to choose between, and a `▼` would teach the wrong model to
+anyone learning the app from its dialogs.
+
+```
+26-12A0   →   BPCe-26-12A0            one version, one estimate
+26-12A1   →   BPCe-26-12A1            a second price is a second VERSION
+```
+
+The only other estimate document `A0` can ever hold is `BPCe-26-12A0 REV1` —
+and a REV is **created by** an approval, so it cannot exist while you are
+recording the first one. In the rare second approval (the `REV2` path, which
+means the first was a mistake) the chip shows whichever document currently
+governs.
+
+v13 labelled this row `Against` and drew it as a picker. Both were wrong: it is
+naming a document, and it is a fact.
+
+#### The estimate's age belongs here
+
+The chip carries `sent 28 Aug 2026` because a quote has a **30-day expiry**,
+and this is the one screen where that matters. Past it, a line appears beneath
+in `#a00`:
+
+```
+Estimate    [ BPCe-26-12A0 ]  sent 22 Jul 2026
+            ⚠ quoted 49 days ago — past the 30-day expiry
+```
+
+**It never blocks.** Nothing is ever off the table: a customer sitting on a
+quote for seven weeks and then sending a PO is ordinary, and the note is there
+so you decide knowingly rather than discovering it at post-cost.
 
 ### Group box · "What they took" — the REVISION state  ★ render this
 

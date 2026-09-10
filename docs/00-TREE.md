@@ -47,6 +47,11 @@ PROJECT ─── BPC-26-10 ─── "San Tan Shade Installation"
 ├── OPTION A ── ✔ A LETTER AND NOTHING ELSE. no name, no data, no scope.
 │   ├── A0 ── ✔ THE VERSION IS THE JOB. holds the scope.
 │   ├── A1     ✔ own estimate · invoice · schedule · everything
+│   │          ✔ EXACTLY ONE ESTIMATE PER VERSION. pricing the job again
+│   │            makes A1 — that is what A1 IS FOR. the only second
+│   │            estimate document A0 can hold is BPCe-…A0 REV1, and a
+│   │            REV is created BY an approval. so nothing ever picks
+│   │            among a version's estimates: there is one.
 │   └── A2     ✔ never dies. you can be on A5 and they approve A2.
 │               ✔ 30-day expiry — nothing is ever off the table
 └── OPTION B …
