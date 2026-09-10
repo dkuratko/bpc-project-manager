@@ -531,7 +531,12 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
 ✔ COST BREAKDOWN · problems panel — FINAL v1 (POPUP)
 ✔ ESTIMATE EDITOR — FINAL v12 (MAIN)
 ✔ PROJECT BROWSER — FINAL v14 (MAIN, the frame)
-✔ VERSION VIEW — FINAL (MAIN)
+✔ VERSION VIEW — FINAL v3 (MAIN)
+✔ NEW PROJECT — FINAL v2 (POPUP)
+     its dialog grammar is the template for every popup that follows:
+     100px/1fr field grid · read-only values as #c0c0c0 chips · grey
+     explanation lines in the value column · #ffffe1 tip for a rule ·
+     #ffffc0 📋 block for what the action permanently records.
 ✔ MAIN WINDOW TEMPLATE — adopted. see docs/10.
      identity strip · tinted status strip · body · optional screen strip ·
      derived status bar whose "Next" says what has to happen for the job

@@ -113,6 +113,17 @@ docs/design/component-wizard.final.dc.html` | — |
 
 ---
 
+## Popups
+
+| # | Screen | Kind | Status | File | Brief |
+|---|---|---|---|---|---|
+| — | New Project | POPUP | **✔ FINAL v2** | `docs/design/new-project.v2.dc.html` | `12` |
+
+Its dialog grammar — the `100px 1fr` field grid, read-only values as `#c0c0c0`
+chips, grey explanation lines, and the two callout weights (`#ffffe1` for a
+rule, `#ffffc0` 📋 for what the action records) — is the template for **every
+popup that follows.**
+
 ## Not yet designed
 
 ```

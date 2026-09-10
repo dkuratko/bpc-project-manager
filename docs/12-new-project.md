@@ -22,10 +22,14 @@ This is the part to copy exactly.
 
 ```
 WIDTH            600 px
+SPACING          tight. dialog padding 10px 9px 9px · 10 px between group
+                 boxes · group box padding 13px 9px 8px. these dialogs are
+                 dense on purpose — a popup that fills the screen to hold
+                 nine fields reads as heavier than the job it is doing.
 
 FIELD ROWS       a CSS grid inside each group box:
-                    grid-template-columns: 104px 1fr
-                    gap: 6px 8px, align-items: center
+                    grid-template-columns: 100px 1fr
+                    gap: 4px 8px, align-items: center
                  label left in plain text, field right. not flex rows with
                  fixed-width label spans — the grid is what makes every
                  group box align down one edge.
@@ -70,7 +74,11 @@ Reopened to edit, the title reads `Project properties` and `Create` reads `OK`.
 Project number   [ 26-15 ]  ← read-only chip     assigned on save
 Title            [ San Tan Shade Installation                      ]  ★
 Estimator        [ DK — Damian Kuratko                            ▼]
+Created          [ 09 Sep 2026 ]  ← read-only chip   today · not editable
 ```
+
+`Created` is grey-labelled and never editable. It is `projects.created_at`,
+and it carries its year like every date in the app.
 
 Under the number, an explanation line:
 
