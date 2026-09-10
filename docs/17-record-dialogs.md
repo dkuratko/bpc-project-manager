@@ -159,13 +159,17 @@ The third state, and the one no render has shown yet. **Tick `Create revision`
 and this box becomes:**
 
 ```
-Base         ☑  BPCe-26-12A0                              $38,520.00
-             ☑  Create revision — 4 of 5 lines · 4 of 6 benches   [ Edit… ]
+Base         ○  Taken as quoted — BPCe-26-12A0             $38,520.00
+             ◉  Create revision — 4 of 5 lines · 4 of 6 benches   [ Edit… ]
 
                 ──────────────────────────────────────────────────
                 REV1 price                                $38,410.00
                       from Line items · unit prices hold
 ```
+
+**The first radio is now unselected, not co-selected.** `$38,520.00` stays
+visible beside it in plain black — it is still a true fact about the estimate,
+and it is what you would go back to by picking that row again.
 
 **The add options section is gone entirely** — not greyed, not empty, absent.
 The footings option is still taken; it was decided in the popup and is already
@@ -307,11 +311,11 @@ somewhere, and finding it now costs nothing.
 case should look ordinary; the warning is a conditional line that appears
 beneath the field whenever the numbers part company.
 
-### Group box · "What they took" — two modes, one checkbox
+### Group box · "What they took" — two modes, one radio pair
 
 ```
-Base         ☑  BPCe-26-12A0                              $38,520.00
-             ☐  Create revision — the PO does not take every line
+Base         ◉  Taken as quoted — BPCe-26-12A0             $38,520.00
+             ○  Create revision — the PO does not take every line
 
 
 Add options     01     Ramada — 20 ft × 20 ft hip
@@ -321,6 +325,25 @@ Add options     01     Ramada — 20 ft × 20 ft hip
                    Approved job scope                      $40,710.00
 ```
 
+#### The base is a RADIO PAIR, not two checkboxes
+
+**They are mutually exclusive and a checkbox cannot say that.** Either the PO
+took the estimate as written or it did not — there is no state where both are
+true, and two ticked boxes would be claiming the customer accepted the estimate
+*and* did not accept it.
+
+```
+◉ Taken as quoted     no revision. add options decided below.
+○ Create revision     opens Line items. the add options section goes away.
+```
+
+The add options section keys off this pair: present under the first, absent
+under the second.
+
+**Neither row greys the other.** A radio glyph is the only state indicator —
+same rule as everywhere else in this family, because someone reaching for the
+second option is choosing it.
+
 **The `Add options` row carries an extra `10 px` above it** — a clear break
 from the base block, not just another grid row. They are two different
 questions: *did they take the estimate*, and then *what else did they add*.
@@ -328,20 +351,23 @@ Everything else keeps the standard `4px 8px` grid gaps.
 
 `38,520.00 + 2,190.00 = 40,710.00`. The fence was not taken.
 
-#### `☐ Create revision` is a checkbox, not a button
+#### Selecting `Create revision` opens the popup
 
-Ticking it **opens the Line items popup immediately** and switches the whole
-box into its other mode. Untick it and the revision is discarded.
+Choosing that radio **opens Line items immediately** and switches the box into
+its other mode. Choose `Taken as quoted` again and the revision is discarded.
 
-Once ticked, the row carries a summary and a way back in:
+Once selected, the row carries a summary and a way back in:
 
 ```
-☑  Create revision — 4 of 5 lines · 4 of 6 benches        [ Edit… ]
+◉  Create revision — 4 of 5 lines · 4 of 6 benches        [ Edit… ]
 ```
+
+`[ Edit… ]` exists because a radio cannot be re-clicked to reopen anything —
+it is already selected. Without it there is no route back into the popup.
 
 #### The add options section only exists in the as-quoted mode
 
-**Tick `Create revision` and the add options section disappears entirely.**
+**Select `Create revision` and the add options section disappears entirely.**
 Not greyed — gone.
 
 That is not a shortcut, it is the only coherent arrangement. In the revision
