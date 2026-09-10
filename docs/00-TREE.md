@@ -598,7 +598,12 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
      stays editable, because correcting a fact is what fixes status.
 ▢ CATALOG BROWSER ............ finding one component among many is a real problem
 ▢ INVOICE · POST COST ........ both documents. follow estimate v12's box grammar.
-▢ VEHICLES · CALENDAR · SHIPMENTS · ACTIVE VERSIONS LIST
+◐ VEHICLES — briefed in docs/18, awaiting render. grouped: a VEHICLE is
+     an ordinary equipment row, its SOURCING METHODS carry the rates.
+     the owned per-mile rate is COMPUTED from fuel, maintenance, tyres,
+     depreciation and fixed costs, shown at 4 decimals in the build-up
+     and 2 in the column, and stamped with the date it was computed.
+▢ CALENDAR · SHIPMENTS · ACTIVE VERSIONS LIST
 ```
 
 ---
@@ -688,9 +693,6 @@ hold anything you would want to keep looking at.
 
 ```
 ▶ RECORD DIALOGS — briefed 10 Sep 2026, docs/17. awaiting render.
-  then ─ VEHICLES: small, flat, the last piece of the mobilization
-         formula with no screen. tests the LIST WINDOW template on a
-         list with no grouping.
   then ─ CATALOG BROWSER
   then ─ INVOICE · POST COST documents
   then ─ CONTACTS · VEHICLES · CALENDAR · SHIPMENTS
