@@ -88,18 +88,22 @@ correcting a fact fixes everything downstream.
 Render **exactly two dialogs, side by side** on a `rgba(0,0,0,.42)` scrim —
 the two carrying the most design weight:
 
-- Left: **`Record approval — 26-12A0`**, an event, showing a PO that does
-  **not** match: 4 benches of 6, the security fence declined, the footings
-  taken under their line. Button reads `Record & create REV1`.
-- Right: **`Schedule — 26-09A0`**, a living record, showing the equipment
-  alert and a red-lipped status chip.
+- Left: **`Record approval — 26-12A0`**, the ordinary case — base taken as
+  quoted, footings option taken, fence declined, `Approved job scope
+  $40,610.00`, a clean `ACCEPTED` status preview, button reads `Record`.
+- Right: **`Line items — BPCe-26-12A0`**, the popup it opens, showing the
+  messy case — 4 benches of 6, the no-total footer, button reads
+  `Use this & create REV1`.
 
 Captions above each in `#fff` bold 11 px:
-`EVENT — recorded once` and `LIVING RECORD — reopened and added to`
+`RECORD APPROVAL — the ordinary case` and `LINE ITEMS — its popup, when the PO differs`
 
-Both **600 px**, top-aligned, 18 px apart.
-`Record shipment…` and `Invoice…` are **fully specified below but not
-rendered** — they are the same grammar and can follow later.
+Both **600 px**, top-aligned, 18 px apart. **The right one is a child of the
+left**, so render it slightly lower — 22 px — the way a modal opened from a
+modal sits.
+
+`Schedule…`, `Record shipment…` and `Invoice…` are **fully specified below but
+not rendered** — same grammar, and they can follow in their own pass.
 Nothing after `</x-dc>`. One well-formed document.
 
 ---
@@ -143,66 +147,152 @@ Evidence    [ PO-4501182.pdf ]  [ Browse… ]
 can be approved against an older estimate — **nothing is ever off the table**,
 and a customer sitting on a quote for five weeks then sending a PO is ordinary.
 
-### Group box · "What the PO says" ★ the important one
-
-**Every priced row on the estimate**, tickable and re-quantifiable. This is not
-a list of add options — it is the estimate itself, checked off against the
-paper in your hand.
+### Group box · "What they took"
 
 ```
-                                              quoted   ordered      amount
-☑  01     Ramada — 20 ft × 20 ft hip           1 ea     [ 1 ]   $22,480.00
-   ☑  01.O1  Drilled footings, 4 posts         add option        $2,190.00
-☑  02     Site work — grading and base         1 ls     [ 1 ]    $9,140.00
-☑  03     Benches                              6 ea     [ 4 ]    $6,800.00
-             ⚠ 4 of 6 — price recomputes in REV1
-☐  J.O1   Security fence, 120 LF               job option        $4,850.00
+Base         ☑  BPCe-26-12A0                              $38,420.00
+                all lines as quoted        [ Line items… ]
+
+Add options  ☑  01.O1   Drilled footings, 4 posts          $2,190.00
+                        on 01 · Ramada — 20 ft × 20 ft hip
+             ☐  J.O1    Security fence, 120 LF             $4,850.00
+                        job-wide
+             ───────────────────────────────────────────────────────
+                Approved job scope                        $40,610.00
 ```
+
+`38,420.00 + 2,190.00 = 40,610.00`. The fence was not taken.
 
 #### The reference number says what an add option attaches to
 
-This is the editor numbering from `document_lines`, and it is doing real work
-here:
+The editor numbering from `document_lines` is doing real work here:
 
 ```
-01        a line
-01.1      a sub-item of line 01 — a partial breakdown, not tickable
 01.O1     ADD OPTION 1 ON LINE 01     ← specific. the footings for the ramada.
 J.O1      ADD OPTION 1 AT JOB LEVEL   ← general. the security fence.
 ```
 
-Line options are **indented under their line**; job options sit at the bottom,
-after a rule, in their own group. You never have to wonder which is which — the
-indent shows it and the reference proves it.
+Each option carries a grey second line naming what it belongs to — `on 01 ·
+Ramada — 20 ft × 20 ft hip`, or `job-wide`. **You never have to work out which
+kind you are looking at**, which was the whole problem with listing them flat.
 
-#### Line options depend on their line
+#### The base row and its button
 
-**Untick `01` and `01.O1` unticks with it, greyed, with the reason beside it:**
+The base is one row because the common case is that the PO takes the estimate
+as written. Its grey text is a **state**, and the button opens the detail:
 
 ```
-☐  01     Ramada — 20 ft × 20 ft hip           1 ea     [ 0 ]   $22,480.00
-   ☐  01.O1  Drilled footings, 4 posts    — needs 01, which was not ordered
+all lines as quoted            ← nothing to look at. the ordinary case.
+4 of 5 lines · REV1            ← after the popup has been used
 ```
 
-Footings for a ramada you are not supplying is not a thing anyone can order.
-A job option (`J.O1`) has no such dependency — a security fence stands on its
-own.
+**`[ Line items… ]` opens the popup below**, which is where a PO that does not
+match gets recorded. Beside it, in grey:
+
+> PO does not take every line? Approve line by line — creates REV1.
+
+---
+
+### Tip block · `#ffffe1`
+
+```
+A PO that does not match the estimate creates REV1.
+
+Open Line items and record what was actually ordered. Any line dropped or
+re-quantified makes this an approval AND a revision — REV1 is issued
+carrying that scope, and REV1 is what the job runs on from then on.
+
+The new price is not the old price minus the missing lines. Dropping half a
+concrete order leaves the rest more expensive per yard, and the recompute is
+the only thing that knows that.
+```
+
+**Revisions are born here, not on another screen.** Nobody reads the same PO
+twice, and re-keying it somewhere else is how scope and paper drift apart.
+
+### Status preview
+
+**When the PO matches — the render shows this:**
+
+```
+📋 26-12A0 becomes
+   ACCEPTED   09 Sep 2026
+   ─────────
+   Approved scope $40,610.00. Next: awaiting delivery.
+```
+
+When Line items has been used:
+
+```
+📋 26-12A0 becomes
+   ACCEPTED   09 Sep 2026
+   ─────────
+   And BPCe-26-12A0 REV1 is created, carrying 4 benches instead of 6.
+   Its cost recomputes on open. REV1 is what the job runs on; the
+   original stays on file, unchanged.
+```
+
+Chip ground `#9CC3E2` in both. **No lip** — a revision is not a problem, it is
+Tuesday.
+
+### Buttons — they change with the PO
+
+```
+PO matches       [  Record  ]                    [ Cancel ]
+PO differs       [ Record & create REV1 ]        [ Cancel ]
+                        184 px, default
+```
+
+The button says what will happen. No hidden second document.
+
+`Record` is disabled while **nothing** is ticked — there is no such thing as a
+rejection here, and an approval of nothing is not one.
+
+---
+
+## DIALOG 1b · Line items  ★ rendered — the child of Record approval
+
+**Title bar:** `Line items — BPCe-26-12A0`
+
+Opened only from `[ Line items… ]`. It is a **detail sheet, not a record.**
+
+```
+                                              quoted   ordered      amount
+☑  01     Ramada — 20 ft × 20 ft hip           1 ea     [ 1 ]   $22,480.00
+☑  02     Site work — grading and base         1 ls     [ 1 ]    $9,140.00
+☑  03     Benches                              6 ea     [ 4 ]    $6,800.00
+             ⚠ 4 of 6 — price recomputes in REV1
+```
+
+Base lines only. Add options stay on the parent dialog, because taking an add
+option is a different question from whether the PO bought what was quoted.
 
 #### Quantities, not just ticks
 
-*"Five benches quoted, four ordered"* is the common case and a tick cannot say
-it. `ordered` defaults to `quoted` and is editable. Setting it below quoted —
-or unticking a line outright — is what makes this **an approval AND a
-revision.**
+*"Five benches quoted, four ordered"* is the common shape of a partial PO, and
+a tick cannot say it. `ordered` defaults to `quoted` and is editable. Setting
+it below quoted — or unticking a line outright — is what creates the revision.
 
-#### The footer, when the PO matches
+#### It creates nothing
+
+**This popup writes nothing.** It hands its result back to `Record approval`,
+and REV1 exists only once `Record` is pressed there. Cancel the approval and
+the revision was never real — otherwise an abandoned approval would leave an
+orphan REV1 on the version forever.
+
+#### Unticking a line reaches back to the parent
+
+Untick `01` here and the ramada's footings option — `01.O1` — unticks and greys
+on the approval dialog behind, with the reason beside it:
 
 ```
-────────────────────────────────────────────────────────────
-Approved job scope                                $43,270.00
+☐  01.O1   Drilled footings, 4 posts    — needs 01, which was not ordered
 ```
 
-#### The footer, when it does not — the render shows this
+Footings for a ramada you are not supplying is not a thing anyone can order.
+`J.O1` has no such dependency; a security fence stands on its own.
+
+#### The footer — no total
 
 ```
 ────────────────────────────────────────────────────────────
@@ -213,37 +303,18 @@ Approved job scope                                $43,270.00
   2 of 6 benches does not subtract 2 × $1,133.33.
 ```
 
-**No total is shown in the revision case, and that is deliberate.** The new
-price cannot be arrived at by arithmetic on this screen; it is a marginal
-recompute against the scope that is actually happening. A dialog that guessed
-would be lying in the one place it matters most.
+**No total is shown, and that is deliberate.** The new price cannot be reached
+by arithmetic on this screen; it is a marginal recompute against the scope that
+is actually happening. A dialog that guessed would be lying in the one place it
+matters most.
 
-### Status preview
-
-When the PO matches:
+#### Buttons
 
 ```
-📋 26-12A0 becomes
-   ACCEPTED   09 Sep 2026
-   ─────────
-   Approved scope $43,270.00. Next: awaiting delivery.
+nothing changed   [    OK    ]                   [ Cancel ]
+something changed [ Use this & create REV1 ]     [ Cancel ]
+                         184 px, default
 ```
-
-**When it does not — the render shows this:**
-
-```
-📋 26-12A0 becomes
-   ACCEPTED   09 Sep 2026
-   ─────────
-   And BPCe-26-12A0 REV1 is created, carrying 4 benches instead of 6
-   and no security fence. Its cost recomputes on open.
-   REV1 is what the job runs on. The original stays on file, unchanged.
-```
-
-Chip ground `#9CC3E2` in both. **No lip** — a revision is not a problem, it is
-Tuesday.
-
----
 
 ## DIALOG 2 · Record shipment  — specified, not rendered
 
@@ -300,7 +371,7 @@ all received, install date set        SCHEDULED            #8ECF8E
 
 ---
 
-## DIALOG 3 · Schedule  ★ rendered
+## DIALOG 3 · Schedule  — specified, not rendered
 
 A **living record** — one row per version, reopened as the job moves.
 
@@ -341,7 +412,7 @@ the invoice goes out, because completion IS the invoice — there is no
 This is genuinely counterintuitive and it is the single removed status
 reasserting itself. Say it in the dialog, not just in the docs.
 
-### Status preview — with the lip
+### Status preview — with the lip  ★ the family's signature case
 
 ```
 📋 26-09A0 becomes
@@ -426,8 +497,11 @@ Chip ground `#F0B778`.
   not refuse — the customer sets that date and reality does not care what the
   app thinks.
 - **Wizards.** Living records reopen with every field editable, always.
-- **Pricing the revision** in Record approval. It names what changed and
-  hands off; the recompute happens when REV1 opens.
+- **Pricing the revision** anywhere in this family. Line items names what
+  changed; the recompute happens when REV1 opens.
+- **A line-item table on the Record approval dialog.** One base row and a
+  button. The table lives in the popup.
+- **The popup writing anything.** It hands back; `Record` commits.
 - **A total in the revision case.** There is no honest one to show.
 - **Add options listed flat**, without their line and without the indent. A
   line option that looks job-level is an add option nobody can place.
