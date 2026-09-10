@@ -850,6 +850,12 @@ CREATE TABLE approvals (
   reference    TEXT,                        -- PO number
   received_at  TEXT NOT NULL,
   evidence_path TEXT,
+  po_amount    REAL,                        -- what the PO says it will pay.
+                                            -- TRANSCRIBED, never derived — the
+                                            -- only exact figure on the approval
+                                            -- screen. Compared against the
+                                            -- recomputed price so the gap
+                                            -- surfaces now, not at invoicing.
   notes        TEXT,
   -- Set when the PO did not match the estimate and the approval therefore
   -- issued a revision. See docs/17 — the approval dialog is where revisions

@@ -356,21 +356,65 @@ and REV1 exists only once `Record` is pressed there. Cancel the approval and
 the revision was never real — otherwise an abandoned approval would leave an
 orphan REV1 on the version forever.
 
-#### The footer — no total
+#### The footer — a computed figure, never a summed one
 
 ```
 ────────────────────────────────────────────────────────────
-⚠ The PO does not match the estimate.
+Quoted, as submitted                              $38,420.00
+Not ordered            2 of 6 benches · security fence
 
-  BPCe-26-12A0 REV1 will be issued carrying the scope above, and the
-  cost recomputes against it. This dialog does not price it — dropping
-  2 of 6 benches does not subtract 2 × $1,133.33.
+REV1, provisional                          [ Price it ]
+                                                  $35,890.00
+      computed, not subtracted · procurement not yet reviewed
 ```
 
-**No total is shown, and that is deliberate.** The new price cannot be reached
-by arithmetic on this screen; it is a marginal recompute against the scope that
-is actually happening. A dialog that guessed would be lying in the one place it
-matters most.
+**The figure is computed by the engine, not summed from the rows above.**
+Those are different things and the distinction is the whole point:
+
+```
+WRONG   $38,420.00 − 2 × $1,133.33 = $36,153.34
+RIGHT   re-run the scope without those two benches and price the result
+```
+
+Arithmetic on line amounts fails because of **pooling.** Concrete for the
+benches and concrete for the ramada are one purchase. Drop two benches and the
+pooled quantity falls, which can change the purchase decision, which changes
+the effective rate for **everything in the pool** — including the ramada, which
+nobody touched. The subtraction is wrong for the benches *and* wrong for lines
+that did not change.
+
+The engine has no such problem. Every estimate line maps to cost objects
+through `document_line_objects`, and every object belongs to exactly one line,
+so *"the version without line 03"* is a fully specified scope. Pricing it is
+the same marginal recompute that already prices add options and change orders.
+
+#### Why `[ Price it ]` is a button, and why the answer is provisional
+
+**A button, because this is a real `calculation_run`** — requirements
+expansion, pooled procurement, effective rates, allocation, markup. Not
+something to fire on every checkbox tick.
+
+**Provisional, because procurement may want a human.** At a lower quantity a
+different method can be the right one — bag mix instead of ready-mix, a smaller
+delivery, a short-load fee that was not there before. The engine will pick up
+the method already chosen; whether that method is still the sensible one is a
+judgment made on REV1's Purchasing tab.
+
+So the number is honest about what it is: `computed, not subtracted ·
+procurement not yet reviewed`. It is a good enough figure to talk to a customer
+about, and it is not the final price until REV1 has been opened.
+
+#### The PO's own number
+
+```
+PO amount    [ $35,600.00 ]     what the customer says they are paying
+             ⚠ $290.00 under REV1 provisional
+```
+
+Optional, and worth typing when the PO states a total. **This is the only exact
+number on the screen** — it is transcribed, not derived — and the gap between
+it and the recompute is a real problem you want to see now rather than at
+invoicing. It sits on the parent dialog with the rest of the PO's facts.
 
 #### Buttons
 
