@@ -567,7 +567,7 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
 ✔ SHELL IS MDI — child windows in one Project Manager frame,
      Window menu, Cascade, Ctrl+Tab. the teal desk is the client area.
      ★ menu/toolbar placement (frame vs child) still undecided
-◐ NEW OPTION / NEW VERSION (POPUP) — docs/13 APPROVED, awaiting render.
+✔ NEW OPTION / NEW VERSION — FINAL v3 (POPUP). docs/13.
      ONE popup, TWO roles. the role is set by which command was pressed,
      never by a control inside the dialog.
      both commands create exactly one thing — a VERSION row — so only
@@ -686,6 +686,7 @@ CARRIED INTO THE BUILD, no re-render needed:
   contacts ........... 14px gutter · 20px expand column · no placeholder
                        row on a collapsed group · blank AUTO on Exerplay
   contact dialog ..... Ashley's note reads "Sends POs on Fridays."
+  new option ......... no record block while Empty is selected
   everywhere .......... every date carries its year
 
 OUT OF SCOPE, decided:

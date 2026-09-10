@@ -36,6 +36,9 @@ box 1         Option is a NEW LETTER       Option is a PICKER
 ─────────────────────────────────────────────────────────────────
 box 2         SAME BOX, different default
               ◉ Empty                      ◉ Copy · that letter's last
+tip block     IDENTICAL — always shown
+record block  hidden (Empty)               shown (Copy)
+              ↑ one rule, not a difference: it follows the radio
 tip block     IDENTICAL
 record block  IDENTICAL
 buttons       IDENTICAL
@@ -269,7 +272,29 @@ real thing, and it is the only copy that means anything here.
 grammar rule below. Never grey a control because *its radio is unselected*.
 Do grey a control that has *nothing to offer*. The two are not the same.
 
-### Tip block · `#ffffe1` — identical in both roles
+### The two blocks are not the same kind of statement
+
+The tip **explains a choice**. The record block **promises a future fact**. That
+difference decides when each one shows:
+
+```
+TIP BLOCK      always visible, in both roles, whatever radio is selected.
+               It describes what Copy would do, which is exactly what
+               someone deciding whether to Copy needs to read.
+
+RECORD BLOCK   visible ONLY while a Copy radio is selected.
+               "C0 will carry: Copied from 26-10B0" is a promise. With
+               Empty selected nothing is copied, so the promise is false
+               and the block must not be on screen.
+```
+
+**This is one rule applied identically in both roles**, not a difference
+between them — pick `Empty` in the New Version role and its record block goes
+too. It only *looks* like a difference because the defaults are opposite.
+
+The block appears and disappears live as the radio changes.
+
+### Tip block · `#ffffe1` — always visible
 
 ```
 Every number recomputes. One does not.
@@ -290,9 +315,12 @@ hand-typed product quote is the one place a stale number could reach a
 calculation silently, so it is the one place that gets flagged. Nothing
 silently assumed.
 
-### Record block · `#ffffc0`, prefixed 📋 — identical in both roles
+### Record block · `#ffffc0`, prefixed 📋 — only while Copy is selected
 
-Role A:
+**In the render, role A has `Empty` selected, so role A has NO record block.**
+Only the New Version dialog on the right shows one.
+
+Role A *would* show, were Copy selected:
 
 ```
 📋 C0 will carry: "Copied from 26-10B0 on 09 Sep 2026"
@@ -359,8 +387,11 @@ Copying one version then hand-editing is the answer for now. Logged in
   command was pressed. The dialog never asks it.
 - **A version list in the `Option` dropdown.** It lists letters. The version
   belongs to the copy source below.
-- **Divergent bottoms.** Box 2, both callout blocks and the buttons are the
-  same in both roles, pixel for pixel. If they drift, the design is lost.
+- **Divergent bottoms.** Box 2, the tip block, the pointer line and the buttons
+  are the same in both roles. The record block follows the Copy radio in both,
+  which is one rule, not a divergence.
+- **A record block while `Empty` is selected.** v3's miss. Nothing is copied,
+  so there is no provenance to promise.
 - **Greying the unselected radio's controls.** The source dropdown stays live
   in both roles. The sole exception is the A0 case, where the project holds no
   other version and `Copy` therefore has nothing to offer.

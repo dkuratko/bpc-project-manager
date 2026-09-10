@@ -118,7 +118,7 @@ docs/design/component-wizard.final.dc.html` | — |
 | # | Screen | Kind | Status | File | Brief |
 |---|---|---|---|---|---|
 | — | New Project | POPUP | **✔ FINAL v2** | `docs/design/new-project.v2.dc.html` | `12` |
-| — | New Option / New Version | POPUP · two roles | brief approved, awaiting render | — | `13` |
+| — | New Option / New Version | POPUP · two roles | **✔ FINAL v3** | `docs/design/new-option-version.v3.dc.html` | `13` |
 | — | Customer / Contact dialogs | POPUP · 2 × 2 modes | **✔ FINAL v1** | `docs/design/customer-contact-dialogs.v1.dc.html` | `16` |
 | — | Contacts | MAIN · list | **✔ FINAL v2** | `docs/design/contacts.v2.dc.html` | `14` + `15` |
 
@@ -141,6 +141,12 @@ popup that follows.**
    who is a person; Chandler is the company-rule example.
 
 Grid becomes `14px 20px minmax(0,1fr) 148px 108px 200px 36px 64px`.
+
+**New Option / New Version v3** — one:
+
+1. The **New Option** dialog (left) has `Empty` selected, so it must show **no
+   record block**. Delete it there. The block follows the Copy radio in both
+   roles — a promise about a copy that is not happening is a false promise.
 
 **Customer / Contact dialogs v1** — one:
 
