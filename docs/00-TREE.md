@@ -545,6 +545,9 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
 ✔ SHELL IS MDI — child windows in one Project Manager frame,
      Window menu, Cascade, Ctrl+Tab. the teal desk is the client area.
      ★ menu/toolbar placement (frame vs child) still undecided
+◐ NEW VERSION (POPUP) — briefed in docs/13, awaiting render.
+     one command, one dialog, and the choice it forces: a new OPTION
+     letter, or a new VERSION inside one.
 ▢ RECORD DIALOGS (POPUP family) — one brief, four dialogs
      Record approval · Record shipment · Schedule · Invoice.
      the version view's toolbar buttons currently go nowhere.
@@ -630,6 +633,9 @@ hold anything you would want to keep looking at.
     with no post cost. the loop that keeps rate tables honest is the easiest
     thing to skip, and nothing else will remind you. NOTED, not taken.
 [?] is an unpaid warranty callback recorded against the version?
+[?] no way to create a version by copying TWO others — "A's site work with
+    B's equipment" is a real request. copy one and hand-edit for now.
+    (carried over from 9b's notes. see docs/13.)
 ```
 
 ## 11 · NEXT
