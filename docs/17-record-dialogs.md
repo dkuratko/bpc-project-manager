@@ -293,34 +293,28 @@ Opened when `Create revision` is ticked. It is a **detail sheet, not a
 record**, and it holds **every priced row on the estimate**:
 
 ```
-                                                    quoted   ordered      amount
-☑  01           Ramada — 20 ft × 20 ft hip           1 ea     [ 1 ]   $22,480.00
-   ☑  01.1      Hip frame, 4 posts                                    $14,200.00
-   ☑  01.2      Fabric — Sunbrella, forest green                       $5,900.00
-   ☑  01.O1  [opt] Drilled footings, 4 posts                           $2,190.00
-☑  02           Site work — grading and base         1 ls     [ 1 ]    $9,140.00
-☑  03           Benches                              6 ea     [ 4 ]    $6,800.00
-                   ⚠ 4 of 6 — price recomputes in REV1
-☑  J.O1      [opt] Security fence, 120 LF                              $4,850.00
+                                                 quoted   ordered      amount
+☑  01      Ramada — 20 ft × 20 ft hip             1 ea     [ 1 ]   $22,480.00
+   ☑  01.1   Hip frame, 4 posts                                    $14,200.00
+   ☑  01.2   Fabric — Sunbrella, forest green                       $5,900.00
+   ☑  01.O1  [opt] Drilled footings, 4 posts                        $2,190.00
+☑  02      Site work — grading and base           1 ls     [ 1 ]    $9,140.00
+☑  03      Benches                                6 ea     [ 4 ]    $6,800.00
+              ⚠ 4 of 6 — price recomputes in REV1
+☑  J.O1    [opt] Security fence, 120 LF                             $4,850.00
 ```
 
 **Add options are here too**, nested exactly as they are on the parent — which
 is why the parent's add options section goes away. One PO, one list.
 
-#### `[opt]` marks an add option — before the name
+#### `[opt]` marks an add option — it starts the name
 
-The tag sits **between the reference and the description**, so you read it as
-you read the row rather than hunting to a far column.
-
-**It gets its own 34 px slot**, blank on lines and sub-items, so that every
-description still starts on the same x — a tag inlined into the name column
-would knock the tagged rows out of alignment with everything else.
-
-```
-checkbox │ reference │ [opt] 34px │ description │ quoted │ ordered │ amount
-```
+**Display only.** No column, no slot, no alignment of its own — the description
+cell simply begins with `[opt] ` on an add option row. Tagged descriptions
+start with the tag; untagged ones start with their text.
 
 `'Lucida Console'` monospace, `#404040`, square brackets, not a bevelled chip.
+It is never stored — it is drawn from the row's own kind.
 
 It gives the list a clean binary:
 
