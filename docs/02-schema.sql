@@ -144,6 +144,12 @@ CREATE TABLE equipment_sourcing_methods (
   kind                TEXT NOT NULL CHECK(kind IN ('owned','rented')),
   serial              TEXT,                 -- OWNED only. VIN or serial.
   in_service_at       TEXT,                 -- OWNED only
+  registration_expires_at TEXT,             -- OWNED vehicles. A TYPED column
+                                            -- rather than a spec row because
+                                            -- the Equipment window's
+                                            -- Maintenance facet counts it —
+                                            -- a lapsed truck cannot legally
+                                            -- leave the yard. See docs/18.
   supplier_id         TEXT REFERENCES suppliers(id),   -- RENTED only
   rate                REAL NOT NULL,
   rate_basis          TEXT NOT NULL CHECK(rate_basis IN ('hour','day','week','month','mile')),

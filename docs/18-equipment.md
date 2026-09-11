@@ -1,11 +1,15 @@
 # Design brief — EQUIPMENT
 **MAIN** window, MDI child. Opened by `Equipment` on the Project Browser toolbar
 — **renamed from `Vehicles`**, because a boom lift is not a vehicle.
-Follows `docs/14-list-window-template.md`. **Two tabs: `Owned` and `Rented`.**
+Follows `docs/14-list-window-template.md`, **FACET + LIST + DETAIL variant**.
+**Two tabs: `Owned` and `Rented`.**
 
-⚠ **A style reference for this screen is outstanding** — an older catalog
-render Damian wants it to follow. Do not render until it arrives; it may
-replace the navigation described below.
+**Style reference:** `docs/design/reference/ideas-6b-catalog.dc.html`.
+Take its **shape** — tab strip, sunken inset panel, three panes at
+`214px / 1fr / 330px`, facet groups with counts, bevelled sortable table,
+detail card, two-segment status bar.
+**Do not take** its navy selection, its 11 px type, its notes panel, or its
+content. See `docs/14` for the full do-not-take list.
 Apply `03f-money-formatting.md` and `11-date-formatting.md`.
 
 **Style reference:** `docs/design/contacts.v2.dc.html` for the list pane,
@@ -13,12 +17,17 @@ Apply `03f-money-formatting.md` and `11-date-formatting.md`.
 
 ---
 
-## ⛔ SCOPE
+## ⛔ SCOPE — two renders, in this order
 
-One window on the teal desk. **Two panes inside it** — a tree on the left, a
-list on the right, split by a draggable bar. No dialogs, no menu rendered.
-One well-formed document, nothing after `</x-dc>`.
-Window **1000 × 640**.
+**Render 1 · the window.** One MDI child on the teal desk, `Owned` tab active.
+Three panes inside one sunken inset panel. No dialogs open, no menu open.
+Window **1180 × 640**.
+
+**Render 2 · the properties sheet**, once the window is approved. Two 600 px
+dialogs side by side, the same sheet on its `General` and `Specifications`
+tabs.
+
+Each is its own file. One well-formed document, nothing after `</x-dc>`.
 
 ---
 
@@ -48,53 +57,32 @@ from**.
 
 ---
 
-## OWNED and RENTED are TABS  ★ pending a style reference
-
-The window carries two tabs, and **that is a structural decision, not a
-cosmetic one**:
+## Two tabs, three panes
 
 ```
-┌ Owned ┐ Rented ─────────────────────────────────────────────┐
+┌ Owned ┐ Rented ────────────────────────────────────────────────────┐
+│ ┌ facets ──────┬ list ──────────────────────┬ detail ────────────┐ │
+│ │ Search…      │  the units, sortable       │  the selected unit │ │
+│ │ ▾ By category│                            │  in full           │ │
+│ │ ▾ Maintenance│                            │                    │ │
+│ └──────────────┴────────────────────────────┴────────────────────┘ │
 ```
 
-It removes the top level of the hierarchy and takes a whole problem with it:
+### Why tabs, and why facets instead of a tree
 
-```
-BEFORE   tree: Owned → category → unit
-               Rentals → supplier → category → offering
-         one list whose COLUMNS SILENTLY CHANGE as you click around
+**Tabs, because the columns differ.** An owned unit has a VIN, capacity, deck
+and a computed `$/mi`; a rental has a rate, a minimum and delivery fees. In one
+list those headers would change under you depending on what you clicked. **A
+tab is a promise about what the columns are.**
 
-AFTER    tab Owned    category → unit              2 levels
-         tab Rented   supplier → category → offering   3 levels
-         each tab has ONE column set, fixed, visible in its header
-```
+**Facets, because a tree forces one order of nesting.** Rentals are naturally
+`supplier → category → offering` — but you just as often want to ask *"who
+rents me lifts"*, which is `category → supplier`. A tree makes you pick one.
+Facet groups let both exist at once, each filtering one flat list, and the
+four-level depth problem disappears because **there is no nesting left.**
 
-**The columns were the real problem.** An owned unit has a VIN, capacity, deck
-and a computed `$/mi`; a rental has a rate, a minimum and delivery fees. With
-one list those headers had to change under you depending on what the tree
-selection happened to be — which is exactly the kind of thing that makes a
-screen feel unpredictable. A tab is a promise about what the columns are.
-
-### What each tab needs
-
-```
-OWNED    two levels — a plain GROUPED LIST. category bands, units beneath.
-         no tree at all. this is Contacts' grammar, unchanged.
-
-RENTED   three levels — TREE + LIST. suppliers in the tree, their offerings
-         in the list, grouped by category.
-```
-
-So the tree survives on one tab only. `docs/14`'s tree + list variant still
-earns its place — the Catalog Browser will need it — but the owned side gets
-simpler than the previous draft had it.
-
-### Still needed: the style reference
-
-Damian has an older reference render for the **catalog** that he wants this to
-follow. **It has not arrived yet** — ask before rendering. The tab structure
-above is settled; the navigation idiom inside each tab is not, and the
-reference may well replace the tree.
+An earlier draft of this brief used a tree. The reference is better and it is
+replacing it.
 
 ---
 
@@ -116,102 +104,155 @@ status bar   left:  equipment on a version cannot be deleted
 
 ---
 
-## LEFT PANE · the tree — 230 px
+## TAB · Owned  ★ rendered
+
+### Facets — 214 px
 
 ```
-⊟ Owned
-    Trucks (2)
-    Trailers (1)
-    Lifts (1)
-⊟ Rentals
-  ⊟ United Rentals
-      Lifts (2)
-      Trailers (1)
-  ⊞ Sunstate Equipment
+[ Search equipment…                    ]
+
+▾ By category
+    Trucks                            2
+    Trailers                          1
+    Lifts                             1
+▾ By status
+    Active                            4
+    Inactive                          0
+▾ Maintenance
+    Rate over 12 months old           1     ← #a00
+    Registration expiring < 60 days   1     ← #a00
+    Unused 12 months                  0
 ```
 
-- Sunken white panel, `var(--s)` bevel, full height of the body.
-- **Win2000 tree control:** `⊞` / `⊟` boxes — 9 px, 1 px `#808080` border,
-  white ground, a black `+` or `−` — joined by **1 px dotted `#808080`
-  connector lines.** No folder icons.
-- Categories carry their count in `#808080`. Suppliers do not — a supplier
-  with nothing under it is still a supplier.
-- `Sunstate Equipment` renders **collapsed** to prove the control.
+Counts in `#808080`, **red `#a00` when the count is a problem** and grey when
+it is zero. Selected facet: **`▶` and a bold label, no fill** — the reference's
+navy bar is not used.
 
-### Selection in the tree
+Render with **`By category ▸ Trucks`** selected.
 
-**`▶` before the selected node's label, bold label. No fill.**
+#### The maintenance group is a standing audit
 
-This is the one place the settled cursor rule — *arrow and spine, no shading* —
-has to adapt: a spine marks a group of rows, and a tree node is not a group of
-rows. The arrow survives, the spine does not. **Win2000's navy selection bar is
-not used**; it was tried and rejected for the list cursor, and the tree follows
-the list.
+`Rate over 12 months old` reads `vehicle_rate_inputs.computed_at`. It exists
+because **a rate nobody has recomputed since fuel was $2.90 is still a number
+on a bid**, and nothing else in the app would ever mention it.
 
-**Render with `Owned` selected** — the top node.
+#### Registration expiry earned a typed column, right here
+
+The specs tab puts tow rating and odometer in a list because **nothing reads
+them**. `Registration expiring < 60 days` reads registration expiry — so by
+that same rule it is now a typed field, `equipment_sourcing_methods
+.registration_expires_at`, not a spec row.
+
+**The facet is what promoted it.** That is the rule working, not an exception
+to it: a truck whose registration lapsed cannot legally leave the yard, which
+is worth a column and an audit line.
+
+### List — the middle pane
+
+```
+NAME ▲                     VIN / SERIAL         CATEGORY   CAPACITY   DECK L × W      RATE
+──────────────────────     ──────────────────   ────────   ────────   ────────────    ──────────
+minmax(0,1fr)              150px                80px       76px, R    100px           90px, R
+
+▶ Ford F-450               1FDUF4HT5NEC00001    Trucks     4,800 lb    9.0 × 7.0 ft    $0.91 /mi
+  Ford F-350 — ¾ ton       1FT8W3BT2MEC00002    Trucks     3,200 lb    8.0 × 6.5 ft    $0.79 /mi
+        ⚠ rate computed 14 Aug 2025 — 13 months old
+  Genie S-45 boom lift     S45-0000-0004        Lifts         —            —         $210.00 /day
+  20 ft equipment trailer  5JW1C2027M1000003    Trailers   7,000 lb   20.0 × 8.5 ft    $0.31 /mi
+```
+
+Flat and sortable — `NAME ▲` carries the sort arrow, and any header sorts.
+**No grouping and no expand column**, because the facets do that job now.
+
+- **The F-350 row is `#a00`**, with its reason beneath it. This is a catalog,
+  not a job list, so there is no status ramp to conflict with — `#a00` text
+  means *this row has a problem*, exactly as the reference uses it.
+- **The lift has `—` for capacity and deck.** Those exist to choose the trailer
+  for mobilization; a lift is cargo, not a carrier.
+- **The cursor is on the Ford F-450** — `▶` in the gutter. **No spine** on this
+  tab: a spine marks a group, and a flat list has none.
+
+All VINs and serials are **invented** and end in `0000N`.
+
+### Detail — 330 px, the selected unit in full
+
+`#c0c0c0` ground, raised bevel. 12 px bold title, `#404040` subtitle, then
+labelled sections in white sunken boxes.
+
+```
+Ford F-450
+Trucks · owned · in service 14 Mar 2024
+
+FIT
+  Capacity 4,800 lb   ·   Deck 9.0 × 7.0 ft
+
+RATE  $0.9054 /mi                    computed 08 Sep 2026
+  Fuel           $3.85 ÷ 12 mpg                       0.3208
+  Maintenance    $2,520 ÷ 18,000 mi                   0.1400
+  Tyres          $1,600 ÷ 50,000 mi                   0.0320
+  Depreciation   ($78,000 − $20,000) ÷ 250,000 mi     0.2320
+  Fixed          ($2,600 + $650) ÷ 18,000 mi          0.1806
+                                                     ───────
+                                                      0.9054
+
+SPECIFICATIONS
+  Make Ford · Model F-450 Super Duty · Year 2022 · Fuel Diesel
+  Tow rating 16,000 lb · GVWR 14,000 lb · Bed 8.0 ft
+
+THIS UNIT
+  VIN 1FDUF4HT5NEC00001
+  Plate AZ CG-84102 · Odometer 41,280 mi
+  Registration expires 31 Jan 2027
+
+USED ON
+  12 versions · last 26-09A0, 22 Aug 2026
+
+[ Edit equipment… ]        [ Recompute rate ]
+```
+
+`$0.9054` here, `$0.91 /mi` in the column — **four decimals where the
+components have to visibly sum, two where it is a price.** The detail pane is
+where that is checked.
+
+**The detail pane replaces the screen strip.** They answer the same question at
+different sizes, so this window has no strip.
+
+### Status bar
+
+```
+left:   4 owned · 1 rate over 12 months old · 1 registration expiring
+right:  Equipment · 4 owned · 4 rented
+```
 
 ---
 
-## RIGHT PANE · the list — its columns follow the tree
+## TAB · Rented — specified, not rendered
 
-The divider between panes is a 4 px `#c0c0c0` bar with a raised bevel —
-Win2000's splitter.
-
-### When an OWNED node is selected — the render shows this
-
-Selecting `Owned` itself shows **every owned unit, grouped by category**, using
-Contacts' grouped-list grammar exactly. Selecting one category shows just its
-units, ungrouped.
+Same three panes, different facets and columns.
 
 ```
-gutter ±   NAME                     VIN / SERIAL         CAPACITY  DECK L × W     RATE
- 14px 20px ───────────────────────  ───────────────────  ────────  ─────────────  ──────────
-           minmax(0,1fr)            150px                76px, R   96px           86px, R
-
-−  Trucks
- ▶   Ford F-450                     1FDUF4HT5NEC00001    4,800 lb   9.0 × 7.0 ft    $0.91 /mi   ◄
-     Ford F-350 — ¾ ton             1FT8W3BT2MEC00002    3,200 lb   8.0 × 6.5 ft    $0.79 /mi
-−  Trailers
-     20 ft equipment trailer        5JW1C2027M1000003    7,000 lb  20.0 × 8.5 ft    $0.31 /mi   ◄
-−  Lifts
-     Genie S-45 boom lift           S45-0000-0004                                 $210.00 /day
+▾ By supplier              ▾ By category           ▾ Maintenance
+    United Rentals    3        Lifts        2          No rate set        0
+    Sunstate          1        Trailers     1          Rate not confirmed
+                               Trucks       1            in 6 months      2
 ```
 
-**The cursor is on the Ford F-450** — `▶` and a 3 px spine down the whole
-Trucks group, band row included. No shading.
-
-- **`VIN / SERIAL`** in `'Lucida Console'` monospace. A road vehicle has a VIN,
-  a lift has a serial; one column, because both answer *"which one is it"*.
-- **The lift has no capacity or deck.** Those exist to choose the trailer for
-  mobilization. They are blank, not zero.
-- **The lift's rate is per day, not per mile.** A lift does not accrue cost by
-  driving. See *rates* below.
-- `◄` marks the default unit for its type, `#404040`, not a chip.
-
-All VINs and serials here are **invented** — they end in `0000N` so nobody
-mistakes them for real vehicles.
-
-### When a RENTAL node is selected — specified, not rendered
-
-Selecting a supplier shows its offerings grouped by category; selecting one of
-its categories shows just those.
+**Both facet groups at once** is the whole argument for facets over a tree:
+*"what do United rent me"* and *"who rents me lifts"* are both one click.
 
 ```
-NAME                  RATE            MINIMUM    FEES
-64' boom lift         $485.00 /day    1 day      Delivery $150.00 · Pickup $150.00
-45' boom lift         $365.00 /day    1 day      Delivery $150.00 · Pickup $150.00
+NAME ▲              SUPPLIER          CATEGORY   RATE           MINIMUM   FEES
+64' boom lift       United Rentals    Lifts      $485.00 /day   1 day     Delivery $150.00 · Pickup $150.00
+45' boom lift       United Rentals    Lifts      $365.00 /day   1 day     Delivery $150.00 · Pickup $150.00
+20 ft trailer       United Rentals    Trailers    $85.00 /day   3 days    —
+¾ ton pickup        Sunstate Equip.   Trucks     $145.00 /day   1 day     —
 ```
 
-**No serial column.** You rent *a* 64' boom, not a specific one — that is the
-entire difference between owned and rented, and the missing column says it.
+**No VIN column.** You rent *a* 64' boom, not a specific one — the missing
+column is the entire difference between the two tabs.
 
-`FEES` comes from `fees` rows owned by the sourcing method, which the schema
-already supports (`owner_type = 'equipment_sourcing_method'`). Delivery and
-pickup on a boom lift are real money and routinely forgotten, so they are on
-the row rather than behind a popup.
-
-Selecting `Rentals` itself shows the **suppliers** as rows — name, phone,
-number of offerings.
+Detail pane: the offering, its fees itemised, the supplier's phone and account
+reference, and `USED ON`.
 
 ---
 
@@ -239,24 +280,6 @@ single version when a supplier gives you a deal on one job.
 
 ---
 
-## Screen strip — the selected row's detail
-
-```
-owned, per-mile   Rate  computed 08 Sep 2026 · fuel $0.3208 · maint $0.1400
-                        · tyres $0.0320 · dep $0.2320 · fixed $0.1806
-owned, per-day    Rate  typed · $210.00/day · Genie S-45
-rental            Terms  United Rentals · 1 day minimum · delivery + pickup $300.00
-```
-
-The render shows the F-450's line.
-`0.3208 + 0.1400 + 0.0320 + 0.2320 + 0.1806 = 0.9054`, shown as `$0.91 /mi`.
-**Four decimals in the strip, two in the column** — the components are
-fractions of a cent and stop visibly summing at two.
-
-Never collapses. Empty reads `—`.
-
----
-
 ## Rates — computed for vehicles, typed for everything else
 
 ```
@@ -274,7 +297,7 @@ mistaken for a computed one.
 
 ---
 
-## POPUP · Equipment properties  ★ RENDER THIS
+## POPUP · Equipment properties  — render 2
 
 **A Win2000 tabbed property sheet.** 600 px, three tabs, `OK` / `Cancel`.
 
@@ -310,7 +333,7 @@ fits the trailer, not that the truck can pull it. **A spec earns a typed field
 the day the engine reads it, and not before.** If the fit check later gains a
 tow check, tow rating is promoted then.
 
-### Tab 1 · General — rendered
+### Tab 1 · General — render 2
 
 ```
 ┌ Identify it ─────────────────────────────────────────────┐
@@ -319,6 +342,9 @@ tow check, tow rating is promoted then.
   Label       [ Truck 2 ]                optional nickname
   VIN         [ 1FDUF4HT5NEC00001 ]  ★
   In service  [ 14 Mar 2024 ]        ·  Status  Active
+  Registration expires  [ 31 Jan 2027 ]
+             counted by the Maintenance facet — that is why it is a
+             field and not a spec row
 
 ┌ Fit — the only specs the engine reads ───────────────────┐
   Capacity    [ 4,800 ] lb
@@ -335,7 +361,7 @@ in two different categories.
 The `Fit` box carries a grey note: **these three belong to the type**, so
 editing them changes every unit of it.
 
-### Tab 2 · Specifications — rendered
+### Tab 2 · Specifications — render 2
 
 **Two boxes, because scope matters.** Editing `Year` changes it for every
 F-450; editing `Licence plate` does not.
@@ -367,7 +393,7 @@ New Project's contacts list. **Copy those verbatim.**
 reason as tow rating: **nothing reads them yet.** The day something alerts on
 an expiring registration, it earns a typed column and a date picker.
 
-### Tab 3 · Rate — specified, not rendered
+### Tab 3 · Rate — not rendered
 
 The per-mile build-up, unchanged:
 
@@ -385,7 +411,7 @@ Fixed         ([ $2,600 ] + [ $650 ]) ÷ [ 18,000 ] mi/yr ...  $0.1806
 Shown in the list as `$0.91 /mi`. For a non-vehicle the tab holds a single
 typed rate and its basis instead.
 
-### Render — two panels
+### Render 2 — two panels
 
 Two 600 px dialogs side by side on a `rgba(0,0,0,.42)` scrim, **the same
 dialog on two different tabs**, 18 px apart, top-aligned. Captions in `#fff`
@@ -421,9 +447,13 @@ Fees        Delivery   [ $150.00 ]  flat                       ✕
 ## Failure modes — do not reproduce
 
 - **Calling it Vehicles.** A lift is not a vehicle.
-- **One deep indented list.**
+- **A tree.** Facets, two groups at once, one flat list.
 - **Owned and rented in one list.** They are tabs, and each tab's column
   header is a promise about what the columns are.
+- **The reference's navy selection.** `▶` and bold on a facet, `▶` on a row.
+- **A screen strip.** The detail pane replaces it.
+- **A spine on the owned list.** It is flat; a spine marks a group.
+- **An expand column.** The facets do that job.
 - **Win2000's navy tree selection bar.** `▶` and bold, no fill.
 - **A serial column on rentals.** You rent a class, not a unit.
 - **Capacity or deck on a non-vehicle.** Blank, not zero.

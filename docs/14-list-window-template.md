@@ -82,41 +82,91 @@ that is not data.
 **The selection colour was decided once, after four rounds, and is closed.**
 Arrow and spine only. Do not re-open it per screen.
 
-## The TREE + LIST variant — when the hierarchy is deeper than two
+## The FACET + LIST + DETAIL variant — for a catalog
 
-The grouped list handles **two levels**: a parent band and its children. When a
-hierarchy goes deeper, or when different branches need **different columns**,
-the window splits into Windows Explorer's two panes:
+**Reference:** `docs/design/reference/ideas-6b-catalog.dc.html`.
 
-```
-┌─ tree ──────┬─ list ─────────────────────────────────────────┐
-│ ⊟ Owned     │  the children of whatever is selected on the   │
-│     Trucks  │  left, in the grouped-list grammar above, with │
-│     Lifts   │  COLUMNS THAT FOLLOW THE SELECTION             │
-│ ⊟ Rentals   │                                                │
-│   ⊟ United  │                                                │
-└─────────────┴────────────────────────────────────────────────┘
-```
+When a list is long and has several independent ways of being sliced, it stops
+being a hierarchy and becomes a **catalog**: three panes inside a sunken inset
+panel, under a tab strip.
 
 ```
-TREE PANE    230 px, sunken white. ⊞ / ⊟ boxes 9 px with a 1 px #808080
-             border, joined by 1 px dotted #808080 connector lines. no
-             folder icons. counts in #808080 where they are meaningful.
-SELECTION    ▶ before the label, label bold. NO FILL. Win2000's navy bar
-             is not used — the arrow survives from the list cursor, the
-             spine does not, because a tree node is not a group of rows.
-SPLITTER     4 px #c0c0c0, raised bevel, draggable.
-LIST PANE    the grouped-list grammar, unchanged. selecting a node that
-             has sub-nodes shows its descendants GROUPED; selecting a
-             leaf shows its rows ungrouped. never more than two levels
-             in the list — the tree carries the rest.
+┌ tabs ───────────────────────────────────────────────────────────────┐
+│ ┌ facets 214px ┬ list  1fr ─────────────────┬ detail 330px ────────┐ │
+│ │ Search…      │ bevelled sortable header   │ the selected row,    │ │
+│ │              │                            │ in full              │ │
+│ │ ▾ By x       │ rows                       │  · title + subtitle  │ │
+│ │     a    12  │                            │  · labelled sections │ │
+│ │     b     9  │                            │    in white sunken   │ │
+│ │ ▾ By y       │                            │    boxes             │ │
+│ │     c    48  │                            │  · buttons at foot   │ │
+│ │ ▾ Maintenance│                            │                      │ │
+│ │     stale 11 │  ← red counts              │                      │ │
+│ └──────────────┴────────────────────────────┴──────────────────────┘ │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
-**The rule that makes it work: the list never shows more than two levels.**
-The tree carries all the depth. If a list pane ever needs a third level of
-indent, the tree is missing a node.
+### Facets beat a tree, and this is the reason
 
-## Deleting from a list window
+A tree forces **one** order of nesting. Rentals are naturally
+`supplier → category → offering`, but you just as often want
+`category → supplier`. A tree makes you pick; **facet groups let both exist at
+once, each filtering one flat list.** The four-level depth problem disappears
+because there is no nesting left.
+
+```
+▾ By supplier          ▾ By category
+    United Rentals 3       Lifts      2
+    Sunstate       1       Trailers   1
+```
+
+### Maintenance facets — the part worth stealing
+
+The reference's third group is not navigation, it is a **standing audit**:
+
+```
+▾ Maintenance
+    No production rate              3     ← #a00
+    Rate never validated           11     ← #a00
+    Unused 12 months                6
+```
+
+Red counts for things that are wrong, grey for things that are merely
+interesting. **A catalog rots quietly** — a rate nobody has checked since 2023
+is still a number on a bid — and this is where the rot is visible without
+anyone going looking. Every catalog screen gets a maintenance group.
+
+**A maintenance facet can only count what the schema stores.** If a facet is
+worth having and the data is a free-text spec row, that is the signal to
+promote it to a typed column — see `docs/18`, where registration expiry earned
+one exactly this way.
+
+### The detail pane replaces the screen strip
+
+A one-line strip cannot hold a rate build-up or a spec list. Where a screen has
+a detail pane, **it has no screen strip** — they answer the same question at
+different sizes.
+
+```
+GROUND       #c0c0c0, raised bevel — a panel, not a sunken well
+TITLE        12 px bold, then a #404040 subtitle line
+SECTIONS     a bold caps label, then a white sunken box
+FOOT         one or two buttons, full width, the primary one bold
+```
+
+### What NOT to take from the reference
+
+```
+✘ NAVY SELECTION   #000080 with white text, in both the facet list and the
+                   table. Rejected for the project browser after four rounds
+                   and rejected here: ▶ plus a bold label on a facet, ▶ plus
+                   the 3 px spine on a list row. No fill anywhere.
+✘ 11 px Tahoma     10 px with letter-spacing .05em, like every other screen.
+✘ THE NOTES PANEL  a design-review artifact, never part of the app.
+✘ ITS CONTENT      it is a services catalog. Take the shape, not the columns.
+```
+
+## Deleting from a list window## Deleting from a list window
 
 Anything a job references **never dies** — the same rule as a version. A list
 window's `Delete` is only ever available on a row nothing points at. Everything
@@ -128,8 +178,8 @@ else **deactivates**, and comes back with `☑ Show inactive`.
 ✔ PROJECT BROWSER    where it came from. FINAL v14. has counters, and
                      earns them.
 ◐ CONTACTS           docs/15. grouped, no counters.
-▢ CATALOG BROWSER    TREE + LIST. the dense one.
-◐ EQUIPMENT          docs/18. TREE + LIST — where the variant was settled.
+▢ CATALOG BROWSER    FACET + LIST + DETAIL. what the variant came from.
+◐ EQUIPMENT          docs/18. FACET + LIST + DETAIL — where it was settled.
 ▢ SHIPMENTS          flat, dated, probably earns counters.
 ▢ ACTIVE VERSIONS    flat. earns counters.
 ```

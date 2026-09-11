@@ -605,6 +605,10 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
        RENTED  → supplier → category → offering   a CLASS, never serial
      both are sourcing methods of an equipment TYPE, which is what the
      work requires — the requirement-first catalog, unbent.
+     TWO TABS (owned · rented) because their COLUMNS differ, and inside
+     each, FACETS not a tree: a tree forces one order of nesting, facets
+     let "what do United rent me" and "who rents me lifts" both be one
+     click. from ideas-6b-catalog. the catalog browser uses the same.
      vehicle units get a COMPUTED $/mile; everything else is typed for now.
 ▢ CALENDAR · SHIPMENTS · ACTIVE VERSIONS LIST
 ```
