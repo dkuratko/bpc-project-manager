@@ -188,6 +188,30 @@ number of offerings.
 
 ---
 
+## Where these rates go
+
+**This list is the price list. The job's cost is worked out elsewhere.** The
+cost breakdown's Purchasing tab asks, per version, *which* unit or offering
+satisfies each required type, and prices it there — periods, minimums, fees and
+the effective rate over required hours:
+
+```
+Telehandler   14.2 hr   United Rentals ▼   3 days   $650.00 /day   $500.00   $2,450.00   $172.54 /hr
+```
+
+That `Sourcing ▼` **is this list**, filtered to what can satisfy the type.
+
+```
+truck · trailer    → MOBILIZATION        per mile, computed
+everything else    → Purchasing tab      per hour or day, minimums, fees
+```
+
+**Templates, not commitments.** A rate edited here reaches the next
+calculation, never an estimate already sent, and any rate can be overtyped on a
+single version when a supplier gives you a deal on one job.
+
+---
+
 ## Screen strip — the selected row's detail
 
 ```

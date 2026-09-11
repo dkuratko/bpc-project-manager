@@ -150,6 +150,13 @@ Grid becomes `14px 20px minmax(0,1fr) 148px 108px 200px 36px 64px`.
    record block**. Delete it there. The block follows the Copy radio in both
    roles — a promise about a copy that is not happening is a false promise.
 
+**Cost breakdown · tab 3 Purchasing v1** — one, from the Equipment register:
+
+1. The equipment `Sourcing ▼` no longer offers a bare `Owned`. Owned
+   equipment is now **individual units** with their own serial and their own
+   rate, so the dropdown names the unit: `Ford F-450 · Truck 2`. Rentals read
+   as before, by supplier. See `docs/18`.
+
 **Record dialogs v13** — five, all mechanical:
 
 1. The base pair is a **radio**, not two checkboxes:
