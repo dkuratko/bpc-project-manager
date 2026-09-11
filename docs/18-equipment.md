@@ -23,10 +23,18 @@ Apply `03f-money-formatting.md` and `11-date-formatting.md`.
 Three panes inside one sunken inset panel. No dialogs open, no menu open.
 Window **1180 × 640**.
 
-**Render 2 · the properties sheet.** Two 600 px dialogs side by side, the same
-sheet on its `General` and `Maintenance` tabs.
+**Render 2 · everything together, in TWO ROWS on one canvas.**
 
-**Render 3 · the `Fuel prices…` dialog.** One 480 px dialog alone on the scrim.
+```
+row 1   Equipment window            1180 × 640
+row 2   Equipment properties  600   +   Fuel prices  480      18 px apart
+```
+
+Two rows, not one, because three panels side by side is 2,300 px of canvas and
+this renderer has produced malformed output on wide layouts before. Nothing
+wider than 1,180 px on either row.
+
+Row 2 sits on a `rgba(0,0,0,.42)` scrim strip; row 1 sits on the teal desk.
 
 Each is its own file. One well-formed document, nothing after `</x-dc>`.
 
@@ -93,7 +101,7 @@ replacing it.
 title bar    Equipment
 menu         File  Edit  View  Equipment  Window  Help
 toolbar      New type · New unit · New offering · New supplier
-             ‖ Properties · Deactivate
+             ‖ Properties · Deactivate  ‖ Fuel prices…
 filter band  Find [                    ]   ☐ Show inactive
 status bar   left:  equipment on a version cannot be deleted
              right: 4 owned · 2 suppliers · 4 offerings · rates: computed
@@ -225,7 +233,7 @@ right:  Equipment · 4 owned · 4 rented
 
 ---
 
-## TOOLBAR · `Fuel prices…`  — render 3
+## TOOLBAR · `Fuel prices…`  — render 2, row 2
 
 **One place to change fuel, and every computed rate follows.**
 
@@ -239,21 +247,27 @@ A diesel F-450 and a gasoline pickup do not move together. One global number
 would be wrong the moment the fleet is mixed, so the setting is **one price per
 fuel type**, and a unit's `Fuel` specification says which one it uses.
 
-### The dialog — 480 px
+### The dialog — 480 px, the window's grammar
+
+Caps section labels over white sunken boxes, exactly like the properties
+sheet. No group boxes.
 
 ```
-┌ Prices ──────────────────────────────────────────────────┐
-  Diesel      current  $3.85 /gal      new  [ $4.12 ]
-  Gasoline    current  $3.40 /gal      new  [ $3.58 ]
-              set 12 Jun 2026
+PRICES
+┌──────────────────────────────────────────────────────────┐
+│ Diesel     current $3.85 /gal      new  [ $4.12 ]        │
+│ Gasoline   current $3.40 /gal      new  [ $3.58 ]        │
+│                                    set 12 Jun 2026       │
+└──────────────────────────────────────────────────────────┘
 
-┌ What this recomputes ────────────────────────────────────┐
-  Ford F-450               $0.9054 → $0.9279 /mi    +$0.0225
-  Ford F-350 — ¾ ton       $0.7897 → $0.8090 /mi    +$0.0193
-  20 ft equipment trailer  $0.3100 → $0.3100 /mi     unchanged
-                                                     no engine
-
-  3 of 4 units · 2 rates change
+WHAT THIS RECOMPUTES
+┌──────────────────────────────────────────────────────────┐
+│ Ford F-450              $0.9054 → $0.9279 /mi   +$0.0225 │
+│ Ford F-350 — ¾ ton      $0.7897 → $0.8090 /mi   +$0.0193 │
+│ 20 ft equipment trailer $0.3100 → $0.3100 /mi  unchanged │
+│                                                no engine │
+└──────────────────────────────────────────────────────────┘
+                                  3 of 4 units · 2 rates change
 ```
 
 ```
@@ -351,15 +365,43 @@ mistaken for a computed one.
 
 ---
 
-## POPUP · Equipment properties  — render 2
+## POPUP · Equipment properties  — render 2, row 2
 
-**A Win2000 tabbed property sheet.** 600 px, three tabs, `OK` / `Cancel`.
+**A Win2000 tabbed property sheet.** 600 px, four tabs, `OK` / `Cancel`.
 
-Take the tab strip **verbatim** from the cost breakdown's four tabs —
-`docs/design/cost-breakdown-01-scope.v4.dc.html`. Do not re-invent it.
+### ★ It uses the EQUIPMENT WINDOW's grammar, not New Project's
+
+**This popup is the detail pane with its values made editable.** Same sections
+in the same order, same look — only the text becomes fields. That is the whole
+design, and it is why the earlier draft was wrong: it used New Project's
+group-box-and-field-grid grammar, which belongs to short form dialogs and made
+a property sheet full of tables feel like a different application.
 
 ```
-General   │  Maintenance  │  Specifications  │  Rate
+✔ TAKE FROM THE WINDOW
+  tab strip        active tab #dfdfdf, raised, flush with the panel below;
+                   inactive #c0c0c0, sitting 1 px lower. exactly the
+                   Owned/Rented strip.
+  section label    #404040 caps, letter-spacing .11em, 3 px above its box
+  section body     a WHITE SUNKEN BOX — var(--s), #fff, padding 5px 7px
+  tables           bevelled #c0c0c0 header, var(--r), the list's own header
+  numbers          'Lucida Console' monospace, right-aligned
+
+✘ DO NOT USE
+  group boxes with a floating legend        ← New Project's grammar
+  the 100px / 1fr field grid                ← New Project's grammar
+```
+
+Fields inside a white box are ordinary `var(--s)` inputs; read-only values are
+plain text, not `#c0c0c0` chips — the detail pane shows plain text and this is
+its twin.
+
+**Buttons stay dialog-style**: right-aligned `OK` 110 px (default, outlined
+bold) and `Cancel` 78 px. The detail pane's full-width buttons belong to a
+pane, not a dialog.
+
+```
+┌ General ┐ Maintenance │ Specifications │ Rate ─────────────┐
 ```
 
 `Maintenance` sits second because it is the tab you open most often — a rate is
@@ -390,27 +432,29 @@ fits the trailer, not that the truck can pull it. **A spec earns a typed field
 the day the engine reads it, and not before.** If the fit check later gains a
 tow check, tow rating is promoted then.
 
-### Tab 1 · General — render 2
+### Tab 1 · General — not rendered
 
 ```
-┌ Identify it ─────────────────────────────────────────────┐
-  Type        [ Ford F-450                         ▼ ]  ★
-  Category    [ Trucks ]  read-only chip — from the type
-  Label       [ Truck 2 ]                optional nickname
-  VIN         [ 1FDUF4HT5NEC00001 ]  ★
-  In service  [ 14 Mar 2024 ]        ·  Status  Active
-  Registration expires  [ 31 Jan 2027 ]
-             counted by the Maintenance facet — that is why it is a
-             field and not a spec row
+IDENTITY
+┌──────────────────────────────────────────────────────────┐
+│ Type          [ Ford F-450                        ▼ ]  ★ │
+│ Category        Trucks                from the type      │
+│ Label         [ Truck 2 ]             optional nickname  │
+│ VIN           [ 1FDUF4HT5NEC00001 ]                   ★  │
+│ In service    [ 14 Mar 2024 ]        Status  Active      │
+│ Registration  [ 31 Jan 2027 ]        expires             │
+└──────────────────────────────────────────────────────────┘
 
-┌ Fit — the only specs the engine reads ───────────────────┐
-  Capacity    [ 4,800 ] lb
-  Deck        [ 9.0 ] × [ 7.0 ] ft
-
-  Mobilization checks weight, length and width independently:
-  a 22 ft post bundle needs a long deck whatever it weighs.
-  Blank on anything that is not a vehicle.
+FIT — THE ONLY SPECS THE ENGINE READS
+┌──────────────────────────────────────────────────────────┐
+│ Capacity  [ 4,800 ] lb     Deck  [ 9.0 ] × [ 7.0 ] ft    │
+│ these three belong to the TYPE — editing them changes    │
+│ every unit of it                                          │
+└──────────────────────────────────────────────────────────┘
 ```
+
+Mobilization checks weight, length and width independently: a 22 ft post bundle
+needs a long deck whatever it weighs. Blank on anything that is not a vehicle.
 
 `Category` is a chip because it belongs to the **type** — two F-450s cannot sit
 in two different categories.
@@ -418,25 +462,33 @@ in two different categories.
 The `Fit` box carries a grey note: **these three belong to the type**, so
 editing them changes every unit of it.
 
-### Tab 2 · Maintenance — render 2  ★
+### Tab 2 · Maintenance — ★ RENDER THIS TAB
 
 ```
-┌ Due ─────────────────────────────────────────────────────┐
-  Odometer      [ 41,280 ] mi   as of  [ 08 Sep 2026 ]
-  Next service  at [ 45,000 ] mi                3,720 mi away
-  Registration  expires 31 Jan 2027                142 days
-                                     ← from the General tab, read-only here
+DUE
+┌──────────────────────────────────────────────────────────┐
+│ Odometer      [ 41,280 ] mi    as of  [ 08 Sep 2026 ]    │
+│ Next service  [ 45,000 ] mi              3,720 mi away   │
+│ Registration    31 Jan 2027                 142 days     │
+│                                  from the General tab    │
+└──────────────────────────────────────────────────────────┘
 
-┌ Log ─────────────────────────────────────────────────────┐
-  DATE          ODOMETER    KIND       WORK                     COST
-  02 Aug 2026   38,940 mi   service    Oil, filters, rotate    $184.00   ✕
-  28 May 2026   35,110 mi   tyres      Front pair              $684.00   ✕
-  14 Mar 2026   31,220 mi   repair     Front brakes            $612.00   ✕
-  09 Nov 2025   24,610 mi   service    Oil and filters         $142.00   ✕
-  ＋ Add an entry
-
-  Last 12 months · service + repair                           $938.00
+LOG                                          [ ＋ Add an entry ]
+┌ DATE ──────── ODOMETER ─ KIND ──── WORK ──────── COST ───┐  ← bevelled header
+│ 02 Aug 2026   38,940 mi  service   Oil, filters   $184.00 ✕│
+│ 28 May 2026   35,110 mi  tyres     Front pair     $684.00 ✕│
+│ 14 Mar 2026   31,220 mi  repair    Front brakes   $612.00 ✕│
+│ 09 Nov 2025   24,610 mi  service   Oil, filters   $142.00 ✕│
+└──────────────────────────────────────────────────────────┘
+              Last 12 months · service + repair      $938.00
 ```
+
+The `LOG` table uses the **equipment list's own header** — `#c0c0c0` ground,
+`var(--r)` bevel, `#404040` caps at `letter-spacing .11em` — so the sheet and
+the window read as one thing.
+
+Columns `84px 76px 62px minmax(0,1fr) 70px 19px`. `KIND` is a dropdown on each
+row; `✕` removes it.
 
 `KIND` is `service · tyres · repair` — a dropdown on each row.
 
@@ -470,7 +522,7 @@ log always looks cheap.
 This is the same loop post cost runs on the catalog's rate tables, which is
 what makes it feel like the rest of the application rather than a bolt-on.
 
-### Tab 3 · Specifications — render 2
+### Tab 3 · Specifications — not rendered
 
 **Two boxes, because scope matters.** Editing `Year` changes it for every
 F-450; editing `Licence plate` does not.
@@ -520,19 +572,14 @@ Fixed         ([ $2,600 ] + [ $650 ]) ÷ [ 18,000 ] mi/yr ...  $0.1806
 Shown in the list as `$0.91 /mi`. For a non-vehicle the tab holds a single
 typed rate and its basis instead.
 
-### Render 2 — two panels
+### What to render
 
-Two 600 px dialogs side by side on a `rgba(0,0,0,.42)` scrim, **the same
-dialog on two different tabs**, 18 px apart, top-aligned. Captions in `#fff`
-bold 11 px:
+**One instance, on the `Maintenance` tab.** Title bar
+`Equipment properties — Ford F-450`. The other three tabs are visible in the
+strip but inactive.
 
-```
-GENERAL — identity, and the three specs the engine reads
-MAINTENANCE — what was done, and what it suggests
-```
-
-Title bar on both: `Equipment properties — Ford F-450`.
-Nothing after `</x-dc>`. One well-formed document.
+Caption above it in `#fff` bold 11 px:
+`EQUIPMENT PROPERTIES — the detail pane, made editable`
 
 ---
 
@@ -569,6 +616,10 @@ Fees        Delivery   [ $150.00 ]  flat                       ✕
 - **Tyres counted as maintenance.** The rate has a tyres line already; it
   would be charged twice.
 - **The maintenance log writing into the rate.** It suggests. You press it.
+- **New Project's group boxes or field grid on this sheet.** It wears the
+  window's grammar: caps section labels over white sunken boxes.
+- **`#c0c0c0` chips for read-only values here.** Plain text, like the pane.
+- **Three panels in one row.** Two rows; nothing wider than 1,180 px.
 - **Win2000's navy tree selection bar.** `▶` and bold, no fill.
 - **A serial column on rentals.** You rent a class, not a unit.
 - **Capacity or deck on a non-vehicle.** Blank, not zero.
