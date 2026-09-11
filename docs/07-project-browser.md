@@ -44,7 +44,7 @@ accelerator underlines.
 title bar .... Build Play Contracting — Project Manager
 menu ......... File Edit View Project Version Catalog Reports Window Help
 toolbar ...... New project · New option · New version ‖ Open · Duplicate…
-               ‖ Catalog ▸ · Contacts · Vehicles     right: Estimator [ ▼ ]
+               ‖ Catalog ▸ · Contacts · Equipment    right: Estimator [ ▼ ]
                no Print list, no Rates & Resources
 filter band .. Find [ ] Customer [ ▼ ] Status [ ▼ ]
                ☑ Show versions  ☐ Show completed     right: Saved views ▼

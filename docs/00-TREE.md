@@ -598,11 +598,14 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
      stays editable, because correcting a fact is what fixes status.
 ▢ CATALOG BROWSER ............ finding one component among many is a real problem
 ▢ INVOICE · POST COST ........ both documents. follow estimate v12's box grammar.
-◐ VEHICLES — briefed in docs/18, awaiting render. grouped: a VEHICLE is
-     an ordinary equipment row, its SOURCING METHODS carry the rates.
-     the owned per-mile rate is COMPUTED from fuel, maintenance, tyres,
-     depreciation and fixed costs, shown at 4 decimals in the build-up
-     and 2 in the column, and stamped with the date it was computed.
+◐ EQUIPMENT — briefed in docs/18, awaiting render. (was "Vehicles" —
+     a boom lift is not a vehicle.) TREE + LIST, the first screen to use
+     that variant; the catalog browser will reuse it.
+       OWNED   → category → unit       a unit is ONE ASSET, by serial/VIN
+       RENTED  → supplier → category → offering   a CLASS, never serial
+     both are sourcing methods of an equipment TYPE, which is what the
+     work requires — the requirement-first catalog, unbent.
+     vehicle units get a COMPUTED $/mile; everything else is typed for now.
 ▢ CALENDAR · SHIPMENTS · ACTIVE VERSIONS LIST
 ```
 
@@ -684,6 +687,11 @@ hold anything you would want to keep looking at.
 [?] is an unpaid warranty callback recorded against the version?
 [?] does the app ever SEND anything itself, or only address documents and
     track that you sent them? contact_defaults assumes the latter.
+[?] a per-DAY cost build-up for owned non-vehicles (a lift: depreciation,
+    maintenance, insurance over working days). typed until then, and
+    labelled `typed` so it is never mistaken for a computed rate.
+[?] do procurement vendors (concrete, aggregate) belong in `suppliers`?
+    rental companies do. procurement still uses free-text `vendor`.
 [?] no way to create a version by copying TWO others — "A's site work with
     B's equipment" is a real request. copy one and hand-edit for now.
     (carried over from 9b's notes. see docs/13.)

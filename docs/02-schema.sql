@@ -88,8 +88,33 @@ CREATE TABLE labor_roles (
   hourly_rate REAL NOT NULL, active INTEGER NOT NULL DEFAULT 1
 );
 
+-- Trucks · Trailers · Lifts. Belongs to the TYPE, so "Lifts" under Owned and
+-- "Lifts" under United Rentals are the same category. See docs/18.
+CREATE TABLE equipment_categories (
+  id          TEXT PRIMARY KEY,
+  name        TEXT NOT NULL,
+  sequence_no INTEGER NOT NULL DEFAULT 0,
+  active      INTEGER NOT NULL DEFAULT 1
+);
+
+-- Rental companies. A real entity, not the free-text `vendor` column used in
+-- procurement, because the Equipment window GROUPS by supplier — and free text
+-- cannot be grouped reliably ("United Rentals" / "United Rentals, Inc.").
+-- [?] procurement vendors (concrete, aggregate) may belong here too. Not
+--     migrated; see 00-TREE §10.
+CREATE TABLE suppliers (
+  id          TEXT PRIMARY KEY,
+  name        TEXT NOT NULL,
+  phone       TEXT, email TEXT, account_ref TEXT, notes TEXT,
+  active      INTEGER NOT NULL DEFAULT 1
+);
+
+-- An equipment row is a TYPE — "Ford F-450", "64' boom lift". It is what the
+-- work requires; equipment_requirements points here. It has no owner and no
+-- price. Owned units and rental offerings are both sourcing methods of a type.
 CREATE TABLE equipment (
   id TEXT PRIMARY KEY, name TEXT NOT NULL,
+  category_id      TEXT REFERENCES equipment_categories(id),
   active INTEGER NOT NULL DEFAULT 1,
   -- NO rate here. Equipment is SOURCED, not rated — see equipment_sourcing.
   -- A truck and a trailer are ordinary equipment. These columns are NULL on
@@ -102,11 +127,23 @@ CREATE TABLE equipment (
 
 -- Owned or rented. Same shape as material procurement: a rate, a basis,
 -- minimums, and a fee list. Pools across the job.
+-- A sourcing method is ONE WAY OF SATISFYING A TYPE, and there are two kinds:
+--
+--   OWNED   one physical asset. identified by its SERIAL (VIN for a road
+--           vehicle). two F-450s are two rows. its own costs — for a vehicle,
+--           a computed $/mile from vehicle_rate_inputs.
+--   RENTED  a supplier's CLASS. identified by its SUPPLIER. never
+--           serial-specific — you rent "a 64' boom", not that one.
+--
+-- The CHECK enforces the asymmetry: an owned row must have a serial and no
+-- supplier; a rented row must have a supplier and no serial.
 CREATE TABLE equipment_sourcing_methods (
   id                  TEXT PRIMARY KEY,
   equipment_id        TEXT NOT NULL REFERENCES equipment(id),
-  name                TEXT NOT NULL,        -- "Owned" · "United Rentals"
+  name                TEXT,                 -- optional label: "Truck 2"
   kind                TEXT NOT NULL CHECK(kind IN ('owned','rented')),
+  serial              TEXT,                 -- OWNED only. VIN or serial.
+  supplier_id         TEXT REFERENCES suppliers(id),   -- RENTED only
   rate                REAL NOT NULL,
   rate_basis          TEXT NOT NULL CHECK(rate_basis IN ('hour','day','week','month','mile')),
                       -- 'mile' is how an OWNED vehicle is costed: fuel, tyres,
@@ -114,7 +151,10 @@ CREATE TABLE equipment_sourcing_methods (
                       -- not time. A RENTED vehicle stays on 'day'.
   minimum_periods     REAL,                 -- 3-day minimum
   is_default          INTEGER NOT NULL DEFAULT 0,
-  active              INTEGER NOT NULL DEFAULT 1
+  active              INTEGER NOT NULL DEFAULT 1,
+  CHECK((kind='owned'  AND serial IS NOT NULL AND supplier_id IS NULL)
+     OR (kind='rented' AND supplier_id IS NOT NULL AND serial IS NULL)),
+  CHECK(NOT (kind='rented' AND rate_basis='mile'))
 );
 
 -- Pure geometry. NO post displacement — dropped. concrete = excavation = spoils.

@@ -1,6 +1,6 @@
 # LIST WINDOW TEMPLATE
 **From the Project Browser.** Applies to every MAIN screen that shows **many
-things instead of one**: Contacts · Catalog · Vehicles · Shipments · Active
+things instead of one**: Contacts · Catalog · Equipment · Shipments · Active
 versions.
 
 `docs/10-main-window-template.md` calls the Project Browser "the exception."
@@ -82,6 +82,40 @@ that is not data.
 **The selection colour was decided once, after four rounds, and is closed.**
 Arrow and spine only. Do not re-open it per screen.
 
+## The TREE + LIST variant — when the hierarchy is deeper than two
+
+The grouped list handles **two levels**: a parent band and its children. When a
+hierarchy goes deeper, or when different branches need **different columns**,
+the window splits into Windows Explorer's two panes:
+
+```
+┌─ tree ──────┬─ list ─────────────────────────────────────────┐
+│ ⊟ Owned     │  the children of whatever is selected on the   │
+│     Trucks  │  left, in the grouped-list grammar above, with │
+│     Lifts   │  COLUMNS THAT FOLLOW THE SELECTION             │
+│ ⊟ Rentals   │                                                │
+│   ⊟ United  │                                                │
+└─────────────┴────────────────────────────────────────────────┘
+```
+
+```
+TREE PANE    230 px, sunken white. ⊞ / ⊟ boxes 9 px with a 1 px #808080
+             border, joined by 1 px dotted #808080 connector lines. no
+             folder icons. counts in #808080 where they are meaningful.
+SELECTION    ▶ before the label, label bold. NO FILL. Win2000's navy bar
+             is not used — the arrow survives from the list cursor, the
+             spine does not, because a tree node is not a group of rows.
+SPLITTER     4 px #c0c0c0, raised bevel, draggable.
+LIST PANE    the grouped-list grammar, unchanged. selecting a node that
+             has sub-nodes shows its descendants GROUPED; selecting a
+             leaf shows its rows ungrouped. never more than two levels
+             in the list — the tree carries the rest.
+```
+
+**The rule that makes it work: the list never shows more than two levels.**
+The tree carries all the depth. If a list pane ever needs a third level of
+indent, the tree is missing a node.
+
 ## Deleting from a list window
 
 Anything a job references **never dies** — the same rule as a version. A list
@@ -94,8 +128,8 @@ else **deactivates**, and comes back with `☑ Show inactive`.
 ✔ PROJECT BROWSER    where it came from. FINAL v14. has counters, and
                      earns them.
 ◐ CONTACTS           docs/15. grouped, no counters.
-▢ CATALOG BROWSER    grouped. the dense one.
-▢ VEHICLES           small and flat.
+▢ CATALOG BROWSER    TREE + LIST. the dense one.
+◐ EQUIPMENT          docs/18. TREE + LIST — where the variant was settled.
 ▢ SHIPMENTS          flat, dated, probably earns counters.
 ▢ ACTIVE VERSIONS    flat. earns counters.
 ```
