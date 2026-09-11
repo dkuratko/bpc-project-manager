@@ -23,9 +23,10 @@ Apply `03f-money-formatting.md` and `11-date-formatting.md`.
 Three panes inside one sunken inset panel. No dialogs open, no menu open.
 Window **1180 × 640**.
 
-**Render 2 · the properties sheet**, once the window is approved. Two 600 px
-dialogs side by side, the same sheet on its `General` and `Specifications`
-tabs.
+**Render 2 · the properties sheet.** Two 600 px dialogs side by side, the same
+sheet on its `General` and `Maintenance` tabs.
+
+**Render 3 · the `Fuel prices…` dialog.** One 480 px dialog alone on the scrim.
 
 Each is its own file. One well-formed document, nothing after `</x-dc>`.
 
@@ -106,29 +107,27 @@ status bar   left:  equipment on a version cannot be deleted
 
 ## TAB · Owned  ★ rendered
 
-### Facets — 214 px
+### v2 folded the facet rail away — accepted
+
+The render replaced the 214 px facet column with **three dropdowns in the
+filter band** (`Category` · `Status` · `Sort`) and moved the maintenance
+counters into the **status bar**. That is better and it stands: it buys ~220 px
+for the list, and two dropdowns filter simultaneously exactly as two facet
+groups did. The list is grouped by category again, with `±` bands.
+
+**One correction:** the selected row gets `▶` **and the 3 px black spine down
+its category group**. The list is grouped again, and every other grouped list
+in this application carries the spine. v2 has the arrow alone.
+
+### Maintenance counters — now in the status bar
 
 ```
-[ Search equipment…                    ]
-
-▾ By category
-    Trucks                            2
-    Trailers                          1
-    Lifts                             1
-▾ By status
-    Active                            4
-    Inactive                          0
-▾ Maintenance
-    Rate over 12 months old           1     ← #a00
-    Registration expiring < 60 days   1     ← #a00
-    Unused 12 months                  0
+Maintenance   ⚠ Rate over 12 months old 1   ⚠ Registration expiring < 60 days 1
+              Unused 12 months 0
 ```
 
-Counts in `#808080`, **red `#a00` when the count is a problem** and grey when
-it is zero. Selected facet: **`▶` and a bold label, no fill** — the reference's
-navy bar is not used.
-
-Render with **`By category ▸ Trucks`** selected.
+Red `#a00` when the count is non-zero, `#808080` when it is zero. Each is
+clickable and filters the list.
 
 #### The maintenance group is a standing audit
 
@@ -226,6 +225,61 @@ right:  Equipment · 4 owned · 4 rented
 
 ---
 
+## TOOLBAR · `Fuel prices…`  — render 3
+
+**One place to change fuel, and every computed rate follows.**
+
+Today `vehicle_rate_inputs.fuel_price` is typed per unit, so a fuel rise means
+editing every truck and remembering which ones you did. It becomes a **global
+setting with a per-unit override**.
+
+### The wrinkle: fuel price is per fuel type, not per fleet
+
+A diesel F-450 and a gasoline pickup do not move together. One global number
+would be wrong the moment the fleet is mixed, so the setting is **one price per
+fuel type**, and a unit's `Fuel` specification says which one it uses.
+
+### The dialog — 480 px
+
+```
+┌ Prices ──────────────────────────────────────────────────┐
+  Diesel      current  $3.85 /gal      new  [ $4.12 ]
+  Gasoline    current  $3.40 /gal      new  [ $3.58 ]
+              set 12 Jun 2026
+
+┌ What this recomputes ────────────────────────────────────┐
+  Ford F-450               $0.9054 → $0.9279 /mi    +$0.0225
+  Ford F-350 — ¾ ton       $0.7897 → $0.8090 /mi    +$0.0193
+  20 ft equipment trailer  $0.3100 → $0.3100 /mi     unchanged
+                                                     no engine
+
+  3 of 4 units · 2 rates change
+```
+
+```
+ tip   Rates already on a sent estimate do not move.
+       A recompute reaches the next calculation, never a document you
+       have issued — the same rule as every other template in the app.
+```
+
+```
+[ Update & recompute ]   [ Cancel ]
+       160 px, default       78 px
+```
+
+**The preview is the point.** A button that silently rewrote every rate would
+be the kind of thing you stop trusting; showing the two rates that move, and
+the one that does not, makes it a decision rather than a leap.
+
+**The trailer is the honest detail.** Its `$0.31 /mi` is tyres, depreciation
+and maintenance — it has no engine, so fuel cannot touch it. A dialog that
+listed it as changing would be wrong in a way nobody would notice.
+
+`Update & recompute` stamps `computed_at` on every unit it touches, which is
+what clears the `Rate over 12 months old` counter.
+
+---
+
 ## TAB · Rented — specified, not rendered
 
 Same three panes, different facets and columns.
@@ -305,8 +359,11 @@ Take the tab strip **verbatim** from the cost breakdown's four tabs —
 `docs/design/cost-breakdown-01-scope.v4.dc.html`. Do not re-invent it.
 
 ```
-General   │  Specifications  │  Rate
+General   │  Maintenance  │  Specifications  │  Rate
 ```
+
+`Maintenance` sits second because it is the tab you open most often — a rate is
+set once a year, a service happens every few months.
 
 Tabs because there are three unrelated jobs here and one scrolling column would
 bury all of them. The cost breakdown already established tabs in this
@@ -361,7 +418,59 @@ in two different categories.
 The `Fit` box carries a grey note: **these three belong to the type**, so
 editing them changes every unit of it.
 
-### Tab 2 · Specifications — render 2
+### Tab 2 · Maintenance — render 2  ★
+
+```
+┌ Due ─────────────────────────────────────────────────────┐
+  Odometer      [ 41,280 ] mi   as of  [ 08 Sep 2026 ]
+  Next service  at [ 45,000 ] mi                3,720 mi away
+  Registration  expires 31 Jan 2027                142 days
+                                     ← from the General tab, read-only here
+
+┌ Log ─────────────────────────────────────────────────────┐
+  DATE          ODOMETER    KIND       WORK                     COST
+  02 Aug 2026   38,940 mi   service    Oil, filters, rotate    $184.00   ✕
+  28 May 2026   35,110 mi   tyres      Front pair              $684.00   ✕
+  14 Mar 2026   31,220 mi   repair     Front brakes            $612.00   ✕
+  09 Nov 2025   24,610 mi   service    Oil and filters         $142.00   ✕
+  ＋ Add an entry
+
+  Last 12 months · service + repair                           $938.00
+```
+
+`KIND` is `service · tyres · repair` — a dropdown on each row.
+
+#### Why `KIND` exists, and why tyres are separate
+
+**The rate build-up already has a tyres line of its own.** If a tyre purchase
+counted toward maintenance it would be charged twice, in two different rows of
+the same rate. So the log tags it, and the 12-month total sums
+`service + repair` only.
+
+`$184.00 + $612.00 + $142.00 = $938.00`. The $684.00 of tyres is deliberately
+excluded.
+
+#### The log is a suggestion, never a value
+
+The Rate tab assumes `$2,520 /yr` maintenance. The log says `$938.00`. The tab
+says so and **does nothing about it**:
+
+```
+ tip   Rate tab assumes $2,520 /yr. The log shows $938.00 over 12 months,
+       from entries starting 09 Nov 2025 — less than a full year, so it
+       under-reports. Review it before you change anything.
+                                                   [ Use $938.00 ]
+```
+
+**Interpolation is a suggestion offered to a person, never a value inside a
+calculation** — the design principle, applied. The button exists; it is never
+pressed for you. And the caveat about the log's age is the honest part: a young
+log always looks cheap.
+
+This is the same loop post cost runs on the catalog's rate tables, which is
+what makes it feel like the rest of the application rather than a bolt-on.
+
+### Tab 3 · Specifications — render 2
 
 **Two boxes, because scope matters.** Editing `Year` changes it for every
 F-450; editing `Licence plate` does not.
@@ -393,7 +502,7 @@ New Project's contacts list. **Copy those verbatim.**
 reason as tow rating: **nothing reads them yet.** The day something alerts on
 an expiring registration, it earns a typed column and a date picker.
 
-### Tab 3 · Rate — not rendered
+### Tab 4 · Rate — not rendered
 
 The per-mile build-up, unchanged:
 
@@ -419,7 +528,7 @@ bold 11 px:
 
 ```
 GENERAL — identity, and the three specs the engine reads
-SPECIFICATIONS — everything else, a list not columns
+MAINTENANCE — what was done, and what it suggests
 ```
 
 Title bar on both: `Equipment properties — Ford F-450`.
@@ -453,7 +562,13 @@ Fees        Delivery   [ $150.00 ]  flat                       ✕
 - **The reference's navy selection.** `▶` and bold on a facet, `▶` on a row.
 - **A screen strip.** The detail pane replaces it.
 - **A spine on the owned list.** It is flat; a spine marks a group.
-- **An expand column.** The facets do that job.
+- **No spine on the selected row.** The list is grouped; it gets one.
+- **One global fuel price.** Diesel and gasoline do not move together.
+- **A fuel update with no preview**, or one that lists the trailer as
+  changing. It has no engine.
+- **Tyres counted as maintenance.** The rate has a tyres line already; it
+  would be charged twice.
+- **The maintenance log writing into the rate.** It suggests. You press it.
 - **Win2000's navy tree selection bar.** `▶` and bold, no fill.
 - **A serial column on rentals.** You rent a class, not a unit.
 - **Capacity or deck on a non-vehicle.** Blank, not zero.

@@ -144,6 +144,9 @@ CREATE TABLE equipment_sourcing_methods (
   kind                TEXT NOT NULL CHECK(kind IN ('owned','rented')),
   serial              TEXT,                 -- OWNED only. VIN or serial.
   in_service_at       TEXT,                 -- OWNED only
+  odometer_mi         REAL,                 -- OWNED. as of odometer_at.
+  odometer_at         TEXT,
+  next_service_mi     REAL,                 -- OWNED
   registration_expires_at TEXT,             -- OWNED vehicles. A TYPED column
                                             -- rather than a spec row because
                                             -- the Equipment window's
@@ -177,10 +180,14 @@ CREATE TABLE equipment_sourcing_methods (
 --
 -- Fuel alone is roughly a third of it; the rest is what decides whether the
 -- job is paying for wear or only for diesel.
+-- NOTE ON fuel_price: NULL means "use the global price for this unit's fuel
+-- type" — app_settings vehicle.fuel_price.diesel / .gasoline. One number per
+-- FUEL TYPE, not one per fleet: a diesel F-450 and a gasoline pickup do not
+-- move together. Set a value here only to override. See docs/18.
 CREATE TABLE vehicle_rate_inputs (
   sourcing_method_id   TEXT PRIMARY KEY REFERENCES equipment_sourcing_methods(id),
   mpg                  REAL,
-  fuel_price           REAL,
+  fuel_price           REAL,                -- NULL = inherit the global
   annual_maintenance   REAL,
   annual_miles         REAL,
   tyre_set_cost        REAL,
@@ -192,6 +199,24 @@ CREATE TABLE vehicle_rate_inputs (
   registration_annual  REAL,
   computed_rate        REAL,          -- the sum, for display and audit
   computed_at          TEXT
+);
+
+-- What was actually done to an owned unit. Feeds a SUGGESTION for the rate's
+-- annual_maintenance input — never a value; the user presses the button.
+--
+-- `kind` exists to stop double counting: the rate build-up already has a tyres
+-- line of its own, so a tyre purchase logged here must not also land in
+-- maintenance. The 12-month total sums 'service' + 'repair' only.
+CREATE TABLE equipment_maintenance_log (
+  id                  TEXT PRIMARY KEY,
+  sourcing_method_id  TEXT NOT NULL REFERENCES equipment_sourcing_methods(id),
+  performed_at        TEXT NOT NULL,
+  odometer_mi         REAL,
+  kind                TEXT NOT NULL CHECK(kind IN ('service','tyres','repair')),
+  description         TEXT NOT NULL,
+  cost                REAL,
+  vendor              TEXT,
+  notes               TEXT
 );
 
 CREATE TABLE footing_specs (
@@ -1148,6 +1173,10 @@ CREATE TABLE alerts (
 --   revision.margin_alert_pts ............ 3.0 — margin points lost before a
 --        revision is flagged material. What counts as material is a business
 --        judgment, so it is a setting. See docs/17.
+--   vehicle.fuel_price.diesel ............ $/gal, fleet-wide default
+--   vehicle.fuel_price.gasoline .......... $/gal, fleet-wide default
+--        Changed from the Equipment window's `Fuel prices…` button, which
+--        PREVIEWS every rate that moves before committing. See docs/18.
 --   vehicle.rate_method .................. 'computed' | 'tracked'
 --        Tier 1 today. The setting exists so it can be switched to actuals
 --        later without touching anything else.
