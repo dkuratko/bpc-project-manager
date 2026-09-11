@@ -1,7 +1,11 @@
 # Design brief — EQUIPMENT
 **MAIN** window, MDI child. Opened by `Equipment` on the Project Browser toolbar
 — **renamed from `Vehicles`**, because a boom lift is not a vehicle.
-Follows `docs/14-list-window-template.md`, **TREE + LIST variant**.
+Follows `docs/14-list-window-template.md`. **Two tabs: `Owned` and `Rented`.**
+
+⚠ **A style reference for this screen is outstanding** — an older catalog
+render Damian wants it to follow. Do not render until it arrives; it may
+replace the navigation described below.
 Apply `03f-money-formatting.md` and `11-date-formatting.md`.
 
 **Style reference:** `docs/design/contacts.v2.dc.html` for the list pane,
@@ -44,30 +48,53 @@ from**.
 
 ---
 
-## Why a tree and a list, not one indented list
+## OWNED and RENTED are TABS  ★ pending a style reference
 
-Your hierarchy is:
+The window carries two tabs, and **that is a structural decision, not a
+cosmetic one**:
 
 ```
-OWNED   → category → unit                          3 levels
-RENTED  → supplier → category → offering           4 levels
+┌ Owned ┐ Rented ─────────────────────────────────────────────┐
 ```
 
-Three reasons that forces the Windows Explorer layout — tree left, list right:
+It removes the top level of the hierarchy and takes a whole problem with it:
 
-1. **Depth.** The Project Browser and Contacts handle two levels, parent and
-   child. Four levels of indented rows in one list is unreadable, and every
-   level adds another `±` column.
-2. **Owned and rented need different columns.** An owned unit has a VIN,
-   capacity, deck and a computed `$/mi`. A rental has a rate, a minimum and
-   delivery fees. One list would need every column for both, half of them
-   empty on every row. Two panes let the **list's columns follow the tree's
-   selection.**
-3. **The Catalog Browser will need exactly this.** Categories of components
-   are deep too. Equipment is the smaller, simpler place to settle the pattern
-   first.
+```
+BEFORE   tree: Owned → category → unit
+               Rentals → supplier → category → offering
+         one list whose COLUMNS SILENTLY CHANGE as you click around
 
-This is added to `docs/14` as the **tree + list variant** of the list window.
+AFTER    tab Owned    category → unit              2 levels
+         tab Rented   supplier → category → offering   3 levels
+         each tab has ONE column set, fixed, visible in its header
+```
+
+**The columns were the real problem.** An owned unit has a VIN, capacity, deck
+and a computed `$/mi`; a rental has a rate, a minimum and delivery fees. With
+one list those headers had to change under you depending on what the tree
+selection happened to be — which is exactly the kind of thing that makes a
+screen feel unpredictable. A tab is a promise about what the columns are.
+
+### What each tab needs
+
+```
+OWNED    two levels — a plain GROUPED LIST. category bands, units beneath.
+         no tree at all. this is Contacts' grammar, unchanged.
+
+RENTED   three levels — TREE + LIST. suppliers in the tree, their offerings
+         in the list, grouped by category.
+```
+
+So the tree survives on one tab only. `docs/14`'s tree + list variant still
+earns its place — the Catalog Browser will need it — but the owned side gets
+simpler than the previous draft had it.
+
+### Still needed: the style reference
+
+Damian has an older reference render for the **catalog** that he wants this to
+follow. **It has not arrived yet** — ask before rendering. The tab structure
+above is settled; the navigation idiom inside each tab is not, and the
+reference may well replace the tree.
 
 ---
 
@@ -394,7 +421,9 @@ Fees        Delivery   [ $150.00 ]  flat                       ✕
 ## Failure modes — do not reproduce
 
 - **Calling it Vehicles.** A lift is not a vehicle.
-- **One deep indented list.** Tree left, list right.
+- **One deep indented list.**
+- **Owned and rented in one list.** They are tabs, and each tab's column
+  header is a promise about what the columns are.
 - **Win2000's navy tree selection bar.** `▶` and bold, no fill.
 - **A serial column on rentals.** You rent a class, not a unit.
 - **Capacity or deck on a non-vehicle.** Blank, not zero.
