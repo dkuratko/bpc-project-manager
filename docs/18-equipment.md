@@ -247,22 +247,132 @@ mistaken for a computed one.
 
 ---
 
-## POPUP · Owned unit properties — specified, not rendered
+## POPUP · Equipment properties  ★ RENDER THIS
 
-600 px, New Project's dialog grammar.
+**A Win2000 tabbed property sheet.** 600 px, three tabs, `OK` / `Cancel`.
+
+Take the tab strip **verbatim** from the cost breakdown's four tabs —
+`docs/design/cost-breakdown-01-scope.v4.dc.html`. Do not re-invent it.
 
 ```
-Type        [ Ford F-450                              ▼ ]   ★
-Category    [ Trucks ]  read-only chip — from the type
-Label       [ Truck 2 ]                optional nickname
-VIN/Serial  [ 1FDUF4HT5NEC00001 ]   ★
+General   │  Specifications  │  Rate
 ```
 
-`Category` is a chip because it belongs to the **type**, not the unit — two
-F-450s cannot be in two different categories.
+Tabs because there are three unrelated jobs here and one scrolling column would
+bury all of them. The cost breakdown already established tabs in this
+application, so nothing new is being introduced.
 
-Then the per-mile build-up from the previous brief, unchanged, when the type is
-a vehicle; a single typed rate with its basis when it is not.
+### Which specs are typed fields, and which are list rows
+
+**The engine reads three numbers about a vehicle and no others**, so exactly
+three get typed fields. Everything else — make, model, year, plate, tow rating
+— lives in an editable list of `name · value · unit` rows.
+
+```
+TYPED FIELD    the engine reads it. capacity_lb · deck_length_ft ·
+               deck_width_ft — the mobilization fit check, docs/06.
+LIST ROW       everything else. adding one is data entry, never a migration.
+```
+
+This is `component_specifications` applied to equipment, and the same design
+principle: **extensible lists, not fixed columns.**
+
+**Tow rating is a list row, not a field — deliberately.** It looks like it
+belongs beside capacity, but nothing checks it: `docs/06` verifies the load
+fits the trailer, not that the truck can pull it. **A spec earns a typed field
+the day the engine reads it, and not before.** If the fit check later gains a
+tow check, tow rating is promoted then.
+
+### Tab 1 · General — rendered
+
+```
+┌ Identify it ─────────────────────────────────────────────┐
+  Type        [ Ford F-450                         ▼ ]  ★
+  Category    [ Trucks ]  read-only chip — from the type
+  Label       [ Truck 2 ]                optional nickname
+  VIN         [ 1FDUF4HT5NEC00001 ]  ★
+  In service  [ 14 Mar 2024 ]        ·  Status  Active
+
+┌ Fit — the only specs the engine reads ───────────────────┐
+  Capacity    [ 4,800 ] lb
+  Deck        [ 9.0 ] × [ 7.0 ] ft
+
+  Mobilization checks weight, length and width independently:
+  a 22 ft post bundle needs a long deck whatever it weighs.
+  Blank on anything that is not a vehicle.
+```
+
+`Category` is a chip because it belongs to the **type** — two F-450s cannot sit
+in two different categories.
+
+The `Fit` box carries a grey note: **these three belong to the type**, so
+editing them changes every unit of it.
+
+### Tab 2 · Specifications — rendered
+
+**Two boxes, because scope matters.** Editing `Year` changes it for every
+F-450; editing `Licence plate` does not.
+
+```
+┌ All Ford F-450s ─────────────────────────────────────────┐
+  NAME                  VALUE                    UNIT
+  Make                  Ford                                  ✕
+  Model                 F-450 Super Duty                      ✕
+  Year                  2022                                  ✕
+  Fuel                  Diesel                                ✕
+  Tow rating            16,000                   lb           ✕
+  GVWR                  14,000                   lb           ✕
+  Bed length            8.0                      ft           ✕
+  ＋ Add a specification
+
+┌ This unit only ──────────────────────────────────────────┐
+  Licence plate         AZ CG-84102                           ✕
+  Odometer              41,280                   mi           ✕
+  Registration expires  31 Jan 2027                           ✕
+  ＋ Add a specification
+```
+
+Columns `minmax(0,1fr) 150px 60px 19px`. `NAME` and `VALUE` are plain white
+fields, `UNIT` is a short one, `✕` removes the row — the same row controls as
+New Project's contacts list. **Copy those verbatim.**
+
+`Odometer` and `Registration expires` are list rows and not fields for the same
+reason as tow rating: **nothing reads them yet.** The day something alerts on
+an expiring registration, it earns a typed column and a date picker.
+
+### Tab 3 · Rate — specified, not rendered
+
+The per-mile build-up, unchanged:
+
+```
+Fuel          [ $3.85 ] /gal  ÷  [ 12 ] mpg ................  $0.3208
+Maintenance   [ $2,520 ] /yr  ÷  [ 18,000 ] mi/yr ..........  $0.1400
+Tyres         [ $1,600 ] /set ÷  [ 50,000 ] mi .............  $0.0320
+Depreciation  ([ $78,000 ] − [ $20,000 ]) ÷ [ 250,000 ] mi .  $0.2320
+Fixed         ([ $2,600 ] + [ $650 ]) ÷ [ 18,000 ] mi/yr ...  $0.1806
+              ─────────────────────────────────────────────────────────
+              Computed rate                                   $0.9054 /mi
+              last computed 08 Sep 2026            [ Recompute ]
+```
+
+Shown in the list as `$0.91 /mi`. For a non-vehicle the tab holds a single
+typed rate and its basis instead.
+
+### Render — two panels
+
+Two 600 px dialogs side by side on a `rgba(0,0,0,.42)` scrim, **the same
+dialog on two different tabs**, 18 px apart, top-aligned. Captions in `#fff`
+bold 11 px:
+
+```
+GENERAL — identity, and the three specs the engine reads
+SPECIFICATIONS — everything else, a list not columns
+```
+
+Title bar on both: `Equipment properties — Ford F-450`.
+Nothing after `</x-dc>`. One well-formed document.
+
+---
 
 ## POPUP · Rental offering properties — specified, not rendered
 
@@ -292,4 +402,9 @@ Fees        Delivery   [ $150.00 ]  flat                       ✕
 - **A typed rate presented as computed.** The strip says `typed`.
 - **Category editable on a unit.** It comes from the type.
 - **Real-looking VINs.** They end in `0000N`.
+- **A typed field for a spec nothing reads.** Tow rating, GVWR, odometer and
+  registration are list rows until the engine reads them.
+- **One spec list.** Two boxes — type-level and unit-level — because editing
+  `Year` changes every F-450 and editing `Licence plate` does not.
+- **A new tab strip.** Take the cost breakdown's verbatim.
 - **Shading the selected row.** `▶` and the spine.

@@ -143,6 +143,7 @@ CREATE TABLE equipment_sourcing_methods (
   name                TEXT,                 -- optional label: "Truck 2"
   kind                TEXT NOT NULL CHECK(kind IN ('owned','rented')),
   serial              TEXT,                 -- OWNED only. VIN or serial.
+  in_service_at       TEXT,                 -- OWNED only
   supplier_id         TEXT REFERENCES suppliers(id),   -- RENTED only
   rate                REAL NOT NULL,
   rate_basis          TEXT NOT NULL CHECK(rate_basis IN ('hour','day','week','month','mile')),
@@ -291,6 +292,27 @@ CREATE TABLE components (
 
 -- Free-form name/value/unit. A new product category needs no schema change.
 -- "Post count" is the one that matters downstream: it defaults footing count.
+-- Equipment specs. name/value/unit, exactly like component_specifications —
+-- extensible lists, not fixed columns. The engine reads only capacity_lb,
+-- deck_length_ft and deck_width_ft (the mobilization fit check), so those are
+-- typed columns on `equipment` and EVERYTHING ELSE lives here: make, model,
+-- year, fuel, tow rating, GVWR, licence plate, odometer, registration expiry.
+--
+-- A spec earns a typed column the day the ENGINE reads it, and not before.
+-- Tow rating looks structural but nothing checks it: docs/06 verifies the load
+-- fits the trailer, not that the truck can pull it.
+--
+-- owner_type follows the `fees` pattern, because scope differs:
+--   'equipment'        shared by every unit of the type — make, model, year
+--   'sourcing_method'  this one physical asset — plate, odometer, registration
+CREATE TABLE equipment_specifications (
+  id           TEXT PRIMARY KEY,
+  owner_type   TEXT NOT NULL CHECK(owner_type IN ('equipment','sourcing_method')),
+  owner_id     TEXT NOT NULL,
+  name         TEXT NOT NULL, value TEXT, unit TEXT,
+  sequence_no  INTEGER NOT NULL DEFAULT 0
+);
+
 CREATE TABLE component_specifications (
   id           TEXT PRIMARY KEY,
   component_id TEXT NOT NULL REFERENCES components(id),
