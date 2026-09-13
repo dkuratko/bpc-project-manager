@@ -91,9 +91,39 @@ DECK FIT   load weight ≤ trailer capacity
 TOW FIT    trailer tare + load weight ≤ truck tow capacity
 ```
 
-That needs one more number than the render shows: **a trailer's tare weight**,
-its own empty weight, which counts against the truck's rating alongside the
-load. `equipment.tare_weight_lb`.
+### Both carry — and the tow rating caps rather than checks
+
+The Bobcat rides the trailer because it cannot do anything else. **The
+components ride in the bed**, and a model treating the trailer as the only
+carrier understates the rig by a whole truck bed.
+
+So the truck needs `payload_lb` as a fit field too, and the tow rating turns
+out not to be a per-job check at all:
+
+```
+usable trailer payload = MIN( trailer capacity , tow capacity − trailer tare )
+combined capacity      = truck payload + usable trailer payload
+
+FITS IF   total weight ≤ combined capacity
+          AND longest ≤ deck length   AND   widest ≤ deck width
+```
+
+**It is a PAIRING fact, not a job fact.** If the F-450 cannot pull the flatbed
+fully loaded, the flatbed's usable payload is whatever the F-450 can pull — on
+every job, forever. Asking it once, in the window where both machines live,
+beats asking per job and getting the same answer every time.
+
+**The `FIT` box therefore needs a fifth field on trucks:**
+
+```
+Capacity      [ ...... ] lb    what the BED carries          ← payload_lb
+Tow capacity  [ ...... ] lb    what it pulls behind it
+Deck          [ .. ] × [ .. ] ft
+```
+
+and on the trailer, `Tare weight` beside its capacity. The render's `Capacity /
+Tow capacity / Deck` labelling is right; `Capacity` on a truck row means the
+bed, and it should say so.
 
 ---
 

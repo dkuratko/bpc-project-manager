@@ -62,23 +62,38 @@ VERSION totals              weight = Σ(component ship_weight × qty)
                             longest = MAX(ship_length) across BOTH
                             widest  = MAX(ship_width) across BOTH
 
-TRUCK (vehicles only)       tow_capacity_lb
+TRUCK                       payload_lb (what the BED carries)
+                            tow_capacity_lb (what it pulls behind it)
 TRAILER                     capacity_lb (payload) · tare_weight_lb (its own)
+                            deck_length_ft · deck_width_ft
 
-DECK FIT   load weight ≤ trailer capacity
-           AND longest ≤ deck length  AND  widest ≤ deck width
+★ BOTH CARRY. The Bobcat rides the trailer because it cannot do anything
+  else, but the shade fabric, hardware and small components ride in the bed.
+  A model that treats the trailer as the only carrier understates what the
+  rig can take by a whole truck bed.
 
-TOW FIT    trailer tare + load weight ≤ truck tow capacity
-           ★ THE CHECK THAT ACTUALLY BITES. A Bobcat T66 on a 20 ft flatbed
-             behind an F-450 is a real question with a real answer, and the
-             deck check alone never asks it.
+TOW RATING CAPS THE TRAILER — and it is a PAIRING fact, not a job fact:
+
+     usable trailer payload = MIN( trailer capacity_lb ,
+                                   truck tow_capacity_lb − trailer tare_lb )
+
+  If the F-450 cannot pull the flatbed fully loaded, the flatbed's usable
+  payload is whatever the F-450 CAN pull, on every job, forever. Asking that
+  question once — in the Equipment window, where both machines live — beats
+  asking it per job and getting the same answer every time.
+
+COMBINED CAPACITY = truck payload_lb + usable trailer payload
+
+FITS IF   total weight ≤ combined capacity
+          AND longest ≤ deck_length_ft
+          AND widest  ≤ deck_width_ft
 
 RENTED EQUIPMENT DOES NOT COUNT. The supplier delivers it — that is what the
 delivery and pickup fees on a rental offering ARE. Only what you haul yourself
 loads your trailer, which is also the honest trade-off when you compare owning
 a machine against renting one.
 
-TRIPS     computed = max(1, ceil(weight ÷ capacity))
+TRIPS     computed = max(1, ceil(weight ÷ COMBINED CAPACITY))
           ★ always overtypeable — trips also depend on customer demand and
             on what will physically nest on a deck, which no formula knows.
 ```

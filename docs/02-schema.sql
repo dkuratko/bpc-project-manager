@@ -130,16 +130,27 @@ CREATE TABLE equipment (
   -- A truck and a trailer are ordinary equipment. These columns are NULL on
   -- anything that is not a vehicle.
   is_vehicle       INTEGER NOT NULL DEFAULT 0,
-  capacity_lb      REAL,                   -- a CARRIER's payload
+  payload_lb       REAL,                   -- a TRUCK's BED. it carries load
+                                           -- too — components ride in the bed
+                                           -- while the machine rides the
+                                           -- trailer, and ignoring it
+                                           -- understates the rig by a whole
+                                           -- truck bed. A field, not a spec
+                                           -- row: the fit check reads it.
+  capacity_lb      REAL,                   -- a TRAILER's payload
   tare_weight_lb   REAL,                   -- a TRAILER's own weight, which
                                            -- counts against the tow rating
   deck_length_ft   REAL,
   deck_width_ft    REAL,
-  tow_capacity_lb  REAL                    -- a TRUCK's rating. A field, not a
-                                           -- spec row, because the mobilization
-                                           -- TOW FIT check reads it: trailer
-                                           -- tare + load must stay under it.
-                                           -- See docs/06.
+  tow_capacity_lb  REAL                    -- a TRUCK's rating. It CAPS the
+                                           -- trailer rather than being checked
+                                           -- per job:
+                                           --   usable trailer payload =
+                                           --     MIN(capacity_lb,
+                                           --         tow_capacity_lb − tare)
+                                           -- a PAIRING fact, true on every job,
+                                           -- so it is answered once where both
+                                           -- machines live. See docs/06.
 );
 
 -- Owned or rented. Same shape as material procurement: a rate, a basis,
