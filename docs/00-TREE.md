@@ -707,8 +707,12 @@ hold anything you would want to keep looking at.
 [?] a per-DAY cost build-up for owned non-vehicles (a lift: depreciation,
     maintenance, insurance over working days). typed until then, and
     labelled `typed` so it is never mistaken for a computed rate.
-[?] do procurement vendors (concrete, aggregate) belong in `suppliers`?
-    rental companies do. procurement still uses free-text `vendor`.
+✔ suppliers is ONE LIST — anyone you pay, flagged is_rental / is_materials.
+    some yards rent AND sell, and free text cannot be grouped. procurement
+    and disposition gain supplier_id; their `vendor` text is retained only
+    until the catalog screens are built. decided 12 Sep 2026.
+[?] collecting a rental adds miles mobilization does not price — it charges
+    the site distance only, not the detour to the yard and back.
 [?] no way to create a version by copying TWO others — "A's site work with
     B's equipment" is a real request. copy one and hand-edit for now.
     (carried over from 9b's notes. see docs/13.)

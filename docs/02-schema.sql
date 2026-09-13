@@ -97,16 +97,30 @@ CREATE TABLE equipment_categories (
   active      INTEGER NOT NULL DEFAULT 1
 );
 
--- Rental companies. A real entity, not the free-text `vendor` column used in
--- procurement, because the Equipment window GROUPS by supplier — and free text
--- cannot be grouped reliably ("United Rentals" / "United Rentals, Inc.").
--- [?] procurement vendors (concrete, aggregate) may belong here too. Not
---     migrated; see 00-TREE §10.
+-- ANYONE YOU PAY. One list, flagged by what you use them for — some yards
+-- rent AND sell, and free text cannot be grouped reliably ("United Rentals" /
+-- "United Rentals, Inc."). Replaces the free-text `vendor` columns in
+-- procurement and disposition; those are retained only until the catalog
+-- screens are built. Decided 12 Sep 2026, closing a 00-TREE §10 question.
+--
+-- No contact PEOPLE: at a rental yard you deal with the branch, so one phone
+-- and one email live here. If that changes, suppliers grow a contact list the
+-- way customers have one.
 CREATE TABLE suppliers (
   id          TEXT PRIMARY KEY,
   name        TEXT NOT NULL,
+  is_rental   INTEGER NOT NULL DEFAULT 0,
+  is_materials INTEGER NOT NULL DEFAULT 0,
   phone       TEXT, email TEXT, account_ref TEXT, notes TEXT,
-  active      INTEGER NOT NULL DEFAULT 1
+  address     TEXT, city TEXT, state TEXT, zip TEXT,   -- where you COLLECT from
+  -- Seeds a new offering and stops there — it never reaches one that exists,
+  -- the same rule as contact_defaults. See docs/18.
+  default_move         TEXT CHECK(default_move IN ('delivered','collected',NULL)),
+  default_delivery_fee REAL,
+  default_pickup_fee   REAL,
+  active      INTEGER NOT NULL DEFAULT 1,
+  -- A supplier used for nothing appears in no picker and is not a supplier.
+  CHECK(is_rental = 1 OR is_materials = 1)
 );
 
 -- An equipment row is a TYPE — "Ford F-450", "64' boom lift". It is what the
@@ -478,7 +492,8 @@ CREATE TABLE procurement_methods (
   id                  TEXT PRIMARY KEY,
   material_id         TEXT NOT NULL REFERENCES materials(id),
   name                TEXT NOT NULL,        -- "Ready-mix, ABC Concrete"
-  vendor              TEXT,
+  vendor              TEXT,          -- superseded by supplier_id
+  supplier_id         TEXT REFERENCES suppliers(id),
   purchase_unit       TEXT NOT NULL,        -- "bag"
   units_per_purchase  REAL NOT NULL DEFAULT 1,  -- 1 bag = 0.0222 CY
                                             -- ← the gap in the old schema
@@ -495,7 +510,8 @@ CREATE TABLE disposition_methods (
   id                 TEXT PRIMARY KEY,
   material_id        TEXT NOT NULL REFERENCES materials(id),
   name               TEXT NOT NULL,         -- "Haul off, Miller Pit"
-  vendor             TEXT,
+  vendor             TEXT,           -- superseded by supplier_id
+  supplier_id        TEXT REFERENCES suppliers(id),
   billing_basis      TEXT NOT NULL CHECK(billing_basis IN ('per_load','per_ton','free')),
   rate               REAL NOT NULL DEFAULT 0,
   truck_capacity_cy  REAL,
@@ -847,7 +863,9 @@ CREATE TABLE product_procurement (
   id             TEXT PRIMARY KEY,
   run_id         TEXT NOT NULL REFERENCES calculation_runs(id),
   cost_object_id TEXT NOT NULL REFERENCES cost_objects(id),
-  vendor         TEXT, quote_number TEXT, quote_date TEXT, quote_valid_until TEXT,
+  vendor         TEXT,                    -- superseded by supplier_id
+  supplier_id    TEXT REFERENCES suppliers(id),
+  quote_number TEXT, quote_date TEXT, quote_valid_until TEXT,
   unit_price     REAL NOT NULL, quantity REAL NOT NULL DEFAULT 1,
   freight        REAL NOT NULL DEFAULT 0, crating REAL NOT NULL DEFAULT 0,
   total_cost     REAL NOT NULL,

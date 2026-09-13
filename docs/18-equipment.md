@@ -996,6 +996,119 @@ Nothing after `</x-dc>`. One well-formed document.
 
 ---
 
+## POPUP · Supplier  ★ RENDER 6, both states
+
+**One dialog, two modes** — `New supplier` / `Supplier properties — United
+Rentals`. Short form, so **New Project's dialog grammar**: 600 px, group boxes,
+the `100px 1fr` field grid.
+
+### A supplier is anyone you pay
+
+**One list, not two.** Some yards rent *and* sell, so a supplier carries flags
+for what you use them for rather than living in a separate table per use:
+
+```
+☑ Equipment rental    appears on the Rented tab and in offering pickers
+☑ Materials           appears in procurement's vendor pickers
+```
+
+**At least one must be ticked.** A supplier used for nothing appears in no
+picker and is not a supplier — a completeness rule, not an approval workflow.
+
+This replaces procurement's free-text `vendor`. Typing a company name into
+three screens is how `United Rentals` and `United Rentals, Inc.` become two
+companies that cannot be grouped or totalled.
+
+### Group box · "Identify it"
+
+```
+Name        [ United Rentals ]   ★
+Used for    ☑ Equipment rental    ☐ Materials   ★
+Account     [ BPC-4471 ]          your account number with them
+```
+
+### Group box · "Reach them"
+
+```
+Phone       [ (602) 555-0181 ]
+Email       [ phoenix@unitedrentals.com ]
+```
+
+**No contact people.** At a rental yard you deal with the branch, so one phone
+and one email is the whole of it. If that ever changes, suppliers grow a
+contact list the way customers have one — and that is a change to the Contacts
+window, not this dialog.
+
+### Group box · "Where"
+
+```
+Address     [ 2450 W Broadway Rd ]
+City        [ Mesa ]  State [ AZ ]  Zip [ 85202 ]
+            where you collect from
+```
+
+Only meaningful for `collected` offerings, and it carries a caveat — see the
+tip block.
+
+### Group box · "Defaults for new offerings"
+
+```
+Move        ◉ Delivered    ○ Collected
+Delivery    [ $150.00 ]    Pickup   [ $150.00 ]
+```
+
+**These seed a new offering and stop there.** Editing them never reaches an
+offering that already exists — the same rule as `contact_defaults`, and for the
+same reason: a default that reaches backwards silently rewrites decisions you
+already made.
+
+### Group box · "Notes"
+
+36 px, as everywhere.
+
+### Tip block · `#ffffe1`
+
+```
+Collecting a rental is not free, and this app does not yet price it.
+
+Mobilization charges the distance to the SITE. Fetching a compactor from
+Mesa on the way to Tucson is real miles and real hours that no line
+currently carries. The address is here so the gap is visible.
+```
+
+**An honest gap stated where it would otherwise mislead**, exactly like
+`Days down are recorded, not priced`. Logged in `00-TREE.md` §10.
+
+### Properties mode only
+
+```
+Added       [ 14 Mar 2024 ]  read-only chip   ·  Status  Active
+Offerings   [ 3 ]  read-only chip             ·  Cannot be deleted
+```
+
+`Offerings` is why `Delete` is absent from the toolbar — a supplier with rows
+under it cannot go without taking its history. At `0` the trailing text reads
+`Can be deleted`.
+
+### Render 6 — two panels
+
+Two 600 px dialogs side by side on a `rgba(0,0,0,.42)` scrim, 18 px apart,
+top-aligned. Captions in `#fff` bold 11 px:
+
+```
+NEW — a blank form
+PROPERTIES — the same dialog, reopened
+```
+
+Left: `New supplier`, empty with `#a0a0a0` placeholders, `Used for` both
+unticked, `Move` on `Delivered`, buttons `Create` 110 px · `Cancel` 78 px.
+Right: `Supplier properties — United Rentals`, filled as above, buttons `OK`
+110 px · `Cancel` 78 px.
+
+Nothing after `</x-dc>`. One well-formed document.
+
+---
+
 ## POPUP · Rental offering properties — specified, not rendered
 
 ```

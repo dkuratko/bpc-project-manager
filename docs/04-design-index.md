@@ -123,12 +123,12 @@ docs/design/component-wizard.final.dc.html` | — |
 | — | Customer / Contact dialogs | POPUP · 2 × 2 modes | **✔ FINAL v1** | `docs/design/customer-contact-dialogs.v1.dc.html` | `16` |
 | — | Mobilization panel | POPUP | briefed, awaiting render | — | `19` |
 | — | Equipment · Owned tab | MAIN · list + detail | v6 accepted | `docs/design/equipment-render2.v6.dc.html` | `18` |
-| — | Equipment · Rented tab | MAIN · list + detail | design approved, awaiting render | — | `18` |
+| — | Equipment · Rented tab | MAIN · list + detail | v1 accepted · one fix | `docs/design/equipment-rented.v1.dc.html` | `18` |
 | — | Equipment properties · 4 tabs | POPUP | v2 + v6 accepted | `docs/design/equipment-properties-tabs.v2.dc.html` | `18` |
 | — | Add a specification | POPUP | v2 accepted | same file | `18` |
 | — | Log entry · add + edit | POPUP | v1 accepted | `docs/design/equipment-log-entry.v1.dc.html` | `18` |
 | — | Fuel prices | POPUP | v6 accepted | `docs/design/equipment-render2.v6.dc.html` | `18` |
-| — | New supplier | POPUP | **not designed** | — | `18` |
+| — | Supplier · new + properties | POPUP | briefed, awaiting render | — | `18` |
 | — | New type / categories | POPUP | **not designed** | — | `18` |
 | — | Rental offering properties | POPUP | outlined only | — | `18` |
 | — | Contacts | MAIN · list | **✔ FINAL v2** | `docs/design/contacts.v2.dc.html` | `14` + `15` |
@@ -165,6 +165,11 @@ Grid becomes `14px 20px minmax(0,1fr) 148px 108px 200px 36px 64px`.
    equipment is now **individual units** with their own serial and their own
    rate, so the dropdown names the unit: `Ford F-450 · Truck 2`. Rentals read
    as before, by supplier. See `docs/18`.
+
+**Equipment Rented v1** — one:
+
+1. `New type` is missing from the toolbar. The Owned tab has it and types are
+   shared across both tabs.
 
 **Equipment v6** — two:
 
