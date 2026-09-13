@@ -26,7 +26,7 @@ Window **1180 × 640**.
 **Render 5 · the RENTED tab.** The whole Equipment window, **1180 × 640**, with
 `Rented` active instead of `Owned`. Everything outside the tab panel is
 unchanged from `equipment-render2.v6` — same title bar, menu, toolbar including
-`Fuel prices…`, same filter band (its `Category` dropdown reading `All`), same
+`Fuel prices…`, same filter band (its `Type` dropdown reading `All`), same
 status-bar geometry with the rental counters. Only the tab strip's active tab,
 the list and the detail pane change.
 
@@ -203,31 +203,50 @@ bed 4,800  +  trailer 10,600  =  15,400 lb
 
 ---
 
-## The idea — three kinds of thing, all already in the catalog## The idea — three kinds of thing, all already in the catalog
+## The idea — three kinds of thing, all already in the catalog
 
 ```
-EQUIPMENT TYPE    "Ford F-450" · "64' boom lift"
-                  what the work REQUIRES. no price, no owner.
-                  equipment_requirements already points here.
+TYPE              "truck" · "trailer" · "boom lift" · "loader"
+                  GENERIC. what the WORK requires — a job needs *a boom
+                  lift*, not United's 64-footer. equipment_requirements
+                  points here. A NAME AND A ROLE, nothing else.
 
-OWNED UNIT        one physical asset — THIS F-450, VIN 1FDUF4HT5NEC00001.
-                  its own costs, its own mileage, its own history.
-                  you can own two of the same type; they are two units.
+OWNED UNIT        the 2012 Ford F-450, VIN 1FDUF4HT5CEC00001.
+                  one physical asset, its own costs and its own history.
 
-RENTAL OFFERING   a supplier's class — United Rentals' 64' boom lift.
-                  NOT serial-specific. you rent "a 64' boom", not that one.
-                  its own rate, minimum and delivery fees.
+RENTAL OFFERING   United Rentals' 64' boom lift.
+                  a class the supplier will send, never serial-specific.
 ```
 
-**Owned units and rental offerings are both sourcing methods** — both are ways
-of satisfying a requirement for a type. That is exactly the shape the catalog
-was designed with: requirement first, sourcing second. Nothing here bends it.
+### ★ A type carries no physical facts
 
-The asymmetry is real and is the whole reason for the layout below: an owned
-unit is identified by a **serial**, a rental is identified by **who you rent it
-from**.
+**"truck" has no payload, no VIN and no make. The F-450 does.** So every
+dimension, weight, rating and specification lives on the **machine** — the
+owned unit or the rental offering — and the type is left holding a name.
 
----
+That is not a compromise, it is the point: a type is the thing a requirement
+can point at without caring whose machine turns up.
+
+```
+ON THE TYPE       name · is_vehicle
+ON THE MACHINE    ship weight and dimensions · payload · capacity · tare
+                  deck · tow capacity · serial · specifications · rate
+```
+
+### There is no category list
+
+An earlier draft had categories — `Trucks`, `Lifts`, `Trailers` — sitting
+above types like `Ford F-450`. **With generic types the two collapse into
+one.** A handful of kinds does not need a grouping above it, and both tabs
+group by type directly:
+
+```
+Owned     type → unit
+Rented    supplier → type → offering
+```
+
+`Lifts` becomes `boom lift`. Adding a layer back is easy if the list ever runs
+to forty kinds; carrying it now for six is not.
 
 ## Two tabs, three panes
 
@@ -560,9 +579,9 @@ gutter  NAME                        CARD RATE          LAST PAID              MI
   answers *"where am I"*.
 - The `64' boom lift` row is `#a00`: its last invoice beat the card.
 
-**Categories come from the type**, so `Lifts` here and `Lifts` on the Owned tab
-are the same category — which is what makes the `Category` dropdown in the
-filter band work across both tabs.
+**The second tier is the TYPE itself** — `boom lift`, `trailer`, `truck` —
+which is the same list the Owned tab groups by, and what makes the filter
+band's `Type` dropdown work across both tabs.
 
 ### Status bar
 
@@ -695,7 +714,7 @@ Two boxes across the top in a `1fr 300px` grid, then compliance full width.
 ```
 ┌ Identity ───────────────────────────┐ ┌ Fit — what mobilization checks ──┐
   Type       [ Ford F-450        ▼ ] ★    Capacity  [ 4,800 ] lb
-  Category     Trucks   from the type     Deck      [ 9.0 ] × [ 7.0 ] ft
+  Type         truck                    Deck      [ 9.0 ] × [ 7.0 ] ft
   Label      [ Truck 2 ]   nickname
   VIN        [ 1FDUF4HT5NEC00001 ]  ★     These three belong to the TYPE.
   In service [ 14 Mar 2024 ]              Editing them changes every unit
@@ -800,26 +819,26 @@ what makes it feel like the rest of the application rather than a bolt-on.
 ### Tab 3 · Specifications — ★ render 4
 
 ```
-┌ All Ford F-450s ─────────────────────────────────────────────────────────┐
+┌ Specifications ──────────────────────────────────────────────────────────┐
   NAME                VALUE                        UNIT
   Make                Ford                                                  ✕
   Model               F-450 Super Duty                                      ✕
-  Year                2022                                                  ✕
+  Year                2012                                                  ✕
   Fuel                Diesel                                                ✕
-  Tow rating          16,000                       lb                       ✕
   GVWR                14,000                       lb                       ✕
   Bed length          8.0                          ft                       ✕
-  ＋ Add a specification
-
-┌ This unit only ──────────────────────────────────────────────────────────┐
   Licence plate       AZ CG-84102                                           ✕
   Colour              Oxford White                                          ✕
   Toll tag            AZ-4471-92                                            ✕
-  ＋ Add a specification
+  ＋ Add a specification…
 ```
 
-**Two boxes because scope differs** — editing `Year` changes every F-450,
-editing `Licence plate` does not.
+**One box, not two.** The earlier draft split type-level specs from unit-level
+ones — but `Make: Ford` is not a property of `truck`, so with generic types
+every specification belongs to the machine and the split disappears.
+
+That also removes the `Applies to ◉ All Ford F-450s / ○ This unit only` choice
+from the `Add a specification…` popup: there is only one scope left.
 
 `Fuel` is `Diesel` here, and that single row is what tells the Rate tab which
 global fuel price to use. **A specification with a consequence**, which is

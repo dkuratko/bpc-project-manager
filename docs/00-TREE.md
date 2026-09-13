@@ -607,8 +607,14 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
 ◐ EQUIPMENT — briefed in docs/18, awaiting render. (was "Vehicles" —
      a boom lift is not a vehicle.) TREE + LIST, the first screen to use
      that variant; the catalog browser will reuse it.
-       OWNED   → category → unit       a unit is ONE ASSET, by serial/VIN
-       RENTED  → supplier → category → offering   a CLASS, never serial
+       OWNED   → type → unit           a unit is ONE ASSET, by serial/VIN
+       RENTED  → supplier → type → offering   a CLASS, never serial
+     A TYPE IS GENERIC — "truck", "boom lift", "trailer", "loader" — and
+     carries NO PHYSICAL FACTS. "truck" has no payload, no VIN, no make;
+     the 2012 F-450 does. every dimension, weight, rating and spec lives
+     on the MACHINE. the type is what a requirement points at without
+     caring whose machine turns up. no category list: with a handful of
+     generic kinds the type IS the grouping.
      both are sourcing methods of an equipment TYPE, which is what the
      work requires — the requirement-first catalog, unbent.
      TWO TABS (owned · rented) because their COLUMNS differ, and inside

@@ -88,15 +88,6 @@ CREATE TABLE labor_roles (
   hourly_rate REAL NOT NULL, active INTEGER NOT NULL DEFAULT 1
 );
 
--- Trucks · Trailers · Lifts. Belongs to the TYPE, so "Lifts" under Owned and
--- "Lifts" under United Rentals are the same category. See docs/18.
-CREATE TABLE equipment_categories (
-  id          TEXT PRIMARY KEY,
-  name        TEXT NOT NULL,
-  sequence_no INTEGER NOT NULL DEFAULT 0,
-  active      INTEGER NOT NULL DEFAULT 1
-);
-
 -- ANYONE YOU PAY. One list, flagged by what you use them for — some yards
 -- rent AND sell, and free text cannot be grouped reliably ("United Rentals" /
 -- "United Rentals, Inc."). Replaces the free-text `vendor` columns in
@@ -121,48 +112,23 @@ CREATE TABLE suppliers (
   CHECK(is_rental = 1 OR is_materials = 1)
 );
 
--- An equipment row is a TYPE — "Ford F-450", "64' boom lift". It is what the
--- work requires; equipment_requirements points here. It has no owner and no
--- price. Owned units and rental offerings are both sourcing methods of a type.
+-- An equipment row is a GENERIC TYPE — "truck", "trailer", "boom lift",
+-- "loader", "plate compactor". It is what the WORK REQUIRES, and
+-- equipment_requirements points here: a job needs *a boom lift*, not
+-- United's 64-footer.
+--
+-- ★ A TYPE CARRIES NO PHYSICAL FACTS. "truck" has no payload, no VIN and no
+--   make — the 2012 F-450 does. Every dimension, weight and rating lives on
+--   the sourcing method, which is an actual machine. A type is a name and a
+--   role, and that is deliberate: it is the thing requirements can point at
+--   without caring whose machine turns up.
+--
+-- There is no category table. With a handful of generic kinds, a grouping
+-- above them buys nothing — the type IS the grouping both tabs use.
 CREATE TABLE equipment (
-  id TEXT PRIMARY KEY, name TEXT NOT NULL,
-  category_id      TEXT REFERENCES equipment_categories(id),
-  active INTEGER NOT NULL DEFAULT 1,
-  -- WHAT IT WEIGHS AS CARGO, when you haul it yourself. A skid steer is both
-  -- a machine that does work AND a load on the flatbed, and the mobilization
-  -- fit check has to see it: on a job where the customer furnishes the play
-  -- equipment, the Bobcat is most of the trailer's load.
-  -- RENTED equipment contributes nothing — the supplier delivers it, which is
-  -- what its delivery and pickup fees are. See docs/06.
-  ship_weight_lb   REAL,
-  ship_length_ft   REAL,
-  ship_width_ft    REAL,
-  ship_height_ft   REAL,
-  -- NO rate here. Equipment is SOURCED, not rated — see equipment_sourcing.
-  -- A truck and a trailer are ordinary equipment. These columns are NULL on
-  -- anything that is not a vehicle.
-  is_vehicle       INTEGER NOT NULL DEFAULT 0,
-  payload_lb       REAL,                   -- a TRUCK's BED. it carries load
-                                           -- too — components ride in the bed
-                                           -- while the machine rides the
-                                           -- trailer, and ignoring it
-                                           -- understates the rig by a whole
-                                           -- truck bed. A field, not a spec
-                                           -- row: the fit check reads it.
-  capacity_lb      REAL,                   -- a TRAILER's payload
-  tare_weight_lb   REAL,                   -- a TRAILER's own weight, which
-                                           -- counts against the tow rating
-  deck_length_ft   REAL,
-  deck_width_ft    REAL,
-  tow_capacity_lb  REAL                    -- a TRUCK's rating. It CAPS the
-                                           -- trailer rather than being checked
-                                           -- per job:
-                                           --   usable trailer payload =
-                                           --     MIN(capacity_lb,
-                                           --         tow_capacity_lb − tare)
-                                           -- a PAIRING fact, true on every job,
-                                           -- so it is answered once where both
-                                           -- machines live. See docs/06.
+  id TEXT PRIMARY KEY, name TEXT NOT NULL,   -- 'truck' · 'boom lift'
+  is_vehicle  INTEGER NOT NULL DEFAULT 0,    -- can it carry or tow
+  active      INTEGER NOT NULL DEFAULT 1
 );
 
 -- Owned or rented. Same shape as material procurement: a rate, a basis,
@@ -182,6 +148,30 @@ CREATE TABLE equipment_sourcing_methods (
   equipment_id        TEXT NOT NULL REFERENCES equipment(id),
   name                TEXT,                 -- optional label: "Truck 2"
   kind                TEXT NOT NULL CHECK(kind IN ('owned','rented')),
+  -- ═══ THE PHYSICAL MACHINE ═══
+  -- All of it lives here rather than on the type, because the type is generic.
+  -- On an OWNED row these describe the asset you have; on a RENTED row, the
+  -- class the supplier will send.
+  --
+  -- CARGO — what it weighs when you haul it. A skid steer is both a machine
+  -- that does work AND a load on the flatbed, and on a job where the customer
+  -- furnishes the play equipment it is most of the trailer's load. See docs/06.
+  ship_weight_lb      REAL,
+  ship_length_ft      REAL,
+  ship_width_ft       REAL,
+  ship_height_ft      REAL,
+  -- CARRIER — NULL on anything that is not a truck or a trailer.
+  payload_lb          REAL,   -- a TRUCK's bed. it carries load too, and
+                              -- ignoring it understates the rig by a bed.
+  capacity_lb         REAL,   -- a TRAILER's payload
+  tare_weight_lb      REAL,   -- a TRAILER's own weight, against the tow rating
+  deck_length_ft      REAL,
+  deck_width_ft       REAL,
+  tow_capacity_lb     REAL,   -- a TRUCK's rating. It CAPS the trailer rather
+                              -- than being checked per job:
+                              --   usable trailer payload =
+                              --     MIN(capacity_lb, tow_capacity_lb − tare)
+                              -- a PAIRING fact, true on every job.
   serial              TEXT,                 -- OWNED only. VIN or serial.
   in_service_at       TEXT,                 -- OWNED only
   odometer_mi         REAL,                 -- OWNED. as of odometer_at.
@@ -442,15 +432,14 @@ CREATE TABLE components (
 -- Tow rating looks structural but nothing checks it: docs/06 verifies the load
 -- fits the trailer, not that the truck can pull it.
 --
--- owner_type follows the `fees` pattern, because scope differs:
---   'equipment'        shared by every unit of the type — make, model, year
---   'sourcing_method'  this one physical asset — plate, odometer, registration
+-- Hangs off the MACHINE, never the type: "Make: Ford" is not a property of
+-- "truck". One list per unit or offering — the earlier type/unit split
+-- disappeared when types became generic.
 CREATE TABLE equipment_specifications (
-  id           TEXT PRIMARY KEY,
-  owner_type   TEXT NOT NULL CHECK(owner_type IN ('equipment','sourcing_method')),
-  owner_id     TEXT NOT NULL,
-  name         TEXT NOT NULL, value TEXT, unit TEXT,
-  sequence_no  INTEGER NOT NULL DEFAULT 0
+  id                 TEXT PRIMARY KEY,
+  sourcing_method_id TEXT NOT NULL REFERENCES equipment_sourcing_methods(id),
+  name               TEXT NOT NULL, value TEXT, unit TEXT,
+  sequence_no        INTEGER NOT NULL DEFAULT 0
 );
 
 CREATE TABLE component_specifications (
