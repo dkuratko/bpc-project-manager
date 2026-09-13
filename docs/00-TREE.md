@@ -72,7 +72,16 @@ PROJECT ─── BPC-26-10 ─── "San Tan Shade Installation"
                                             covers the gap after the crew
                                             leaves — completion IS the invoice.
   ✔       INVOICE SENT, PAYMENT REQUIRED .. ▶ warranty clock starts
-  ✔       COMPLETED, PAID
+  ★       COMPLETED, PAID ................ ▢ NOTHING CAN PRODUCE THIS.
+                                            the warranty clock starts when
+                                            the invoice is SENT, so a job is
+                                            always inside warranty by the
+                                            time it is paid — this status
+                                            would last zero time. IDENTICAL
+                                            argument to the removed
+                                            "completed, payment required".
+                                            proposed for removal; 14 → 13.
+                                            see docs/26.
   ✔       WARRANTY ........................ paid, still covered
   ✔       COMPLETED ....................... terminal, on warranty expiry
 
