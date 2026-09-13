@@ -123,7 +123,7 @@ docs/design/component-wizard.final.dc.html` | — |
 | — | Customer / Contact dialogs | POPUP · 2 × 2 modes | **✔ FINAL v1** | `docs/design/customer-contact-dialogs.v1.dc.html` | `16` |
 | — | Mobilization panel | POPUP | briefed, awaiting render | — | `19` |
 | — | Equipment · Owned tab | MAIN · list + detail | v6 accepted | `docs/design/equipment-render2.v6.dc.html` | `18` |
-| — | Equipment · Rented tab | MAIN · list + detail | v1 accepted · one fix | `docs/design/equipment-rented.v1.dc.html` | `18` |
+| — | Equipment · Rented tab | MAIN · list + detail | **v2 accepted** · 5 fixes | `docs/design/equipment-rented.v2.dc.html` | `18` |
 | — | Equipment properties · 4 tabs | POPUP | v2 + v6 accepted | `docs/design/equipment-properties-tabs.v2.dc.html` | `18` |
 | — | Add a specification | POPUP | v2 accepted | same file | `18` |
 | — | Log entry · add + edit | POPUP | v1 accepted | `docs/design/equipment-log-entry.v1.dc.html` | `18` |
@@ -166,17 +166,27 @@ Grid becomes `14px 20px minmax(0,1fr) 148px 108px 200px 36px 64px`.
    rate, so the dropdown names the unit: `Ford F-450 · Truck 2`. Rentals read
    as before, by supplier. See `docs/18`.
 
-**Equipment properties tabs v2** — one:
+**Equipment Rented v2** — five, all from types becoming generic:
 
-1. The `General` tab's **Compliance** list is a row of inputs. It becomes
-   display only with `＋ Add an item…` opening a 480 px row editor —
-   `docs/12`'s rule. `EXPIRES` and `STATUS` are computed and stay off the
-   popup.
+1. Band labels are the old **category** names. They are the types now:
+   `Lifts` → `boom lift` · `Trailers` → `trailer` · `Compaction` →
+   `compactor` · `Trucks` → `truck` · `Excavators` → `excavator`.
+   Both boom lifts sit under one `boom lift` band.
+2. Status bar reads `5 categories`; it is `5 types`.
+3. Detail subtitle reads `Lifts · United Rentals · delivered`; it is
+   `boom lift · United Rentals · delivered`.
+4. `TYPE FIT` is just `FIT` — the specs live on the machine now, not the type.
+   Its sentence stands unchanged.
+5. `New type` is missing from the toolbar. The Owned tab has it.
 
-**Equipment Rented v1** — one:
+**Equipment properties tabs v2** — three:
 
-1. `New type` is missing from the toolbar. The Owned tab has it and types are
-   shared across both tabs.
+1. The `General` tab's **Compliance** list is a row of inputs. Display only,
+   with `＋ Add an item…` opening a 480 px row editor — `docs/12`'s rule.
+2. `Category  Trucks` becomes `Type  truck`.
+3. **`Add a specification…` loses its `Applies to` radio.** Specs hang off the
+   machine now, so there is only one scope and nothing to choose.
+   The `Specifications` tab drops to **one box**, not two.
 
 **Equipment v6** — two:
 

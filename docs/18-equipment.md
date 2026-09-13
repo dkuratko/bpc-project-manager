@@ -557,14 +557,14 @@ gutter  NAME                        CARD RATE          LAST PAID              MI
         minmax(0,1fr)               130px              160px                  54px    76px
 
   ─ United Rentals
-      ─ Lifts
+      ─ boom lift
         ▶ 64' boom lift             $485.00 /day  +wk  $520.00 · 22 Aug 2026  1 day   delivered
           45' boom lift             $365.00 /day       $365.00 · 11 Jun 2026  1 day   delivered
-      + Trailers  (1)
+      + trailer  (1)
   ─ Sunstate Equipment
-      ─ Compaction
+      ─ compactor
           Plate compactor            $68.00 /day       $68.00 · 04 Sep 2026   1 day   collected
-      ─ Trucks
+      ─ truck
           ¾ ton pickup              $145.00 /day  +wk  $145.00 · 18 Jul 2026  1 day   collected
   + Herc Rentals  (1)
 ```
@@ -586,7 +586,7 @@ band's `Type` dropdown work across both tabs.
 ### Status bar
 
 ```
-left:   6 offerings · 3 suppliers · 5 categories
+left:   6 offerings · 3 suppliers · 5 types
 middle: Maintenance  ⚠ Card differs from last paid 2   ⚠ Card unconfirmed
         12 months 1   Never rented 1
 right:  Equipment · 4 owned
@@ -596,7 +596,7 @@ right:  Equipment · 4 owned
 
 ```
 64' boom lift
-Lifts · United Rentals · delivered
+boom lift · United Rentals · delivered
 
 RATE
   Card        $485.00 /day               confirmed 14 Mar 2026
@@ -837,8 +837,18 @@ what makes it feel like the rest of the application rather than a bolt-on.
 ones — but `Make: Ford` is not a property of `truck`, so with generic types
 every specification belongs to the machine and the split disappears.
 
-That also removes the `Applies to ◉ All Ford F-450s / ○ This unit only` choice
-from the `Add a specification…` popup: there is only one scope left.
+**`Add a specification…` therefore loses its `Applies to` radio.** There is one
+scope left and nothing to choose, so the popup is three fields:
+
+```
+Add a specification — Ford F-450
+  Name      [ — choose or type —          ▼ ]   ★
+  Value     [                              ]    ★
+  Unit      [        ]                          optional — lb, ft, in
+```
+
+`Name` stays a dropdown over names already in use, so `Bed length` does not
+become `bed len` on the next machine.
 
 `Fuel` is `Diesel` here, and that single row is what tells the Rate tab which
 global fuel price to use. **A specification with a consequence**, which is
