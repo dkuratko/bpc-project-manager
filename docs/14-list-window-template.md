@@ -72,6 +72,31 @@ TYPE         10 px Tahoma, letter-spacing .05em. not 11 px.
 DATES        every date carries its year. see docs/11.
 ```
 
+## Two band tiers — when one level of grouping is not enough
+
+A list grouped by **supplier and then by category** has three levels: two bands
+and the rows. That is still a grouped list, not a tree — the depth is fixed and
+known, not arbitrary.
+
+```
+GUTTER        14 px, unchanged. cursor and problem lip only.
+EXPANDERS     MOVE INTO THE NAME CELL, indented with their row. The fixed
+              20 px expand column is dropped — a second tier cannot share
+              one fixed position with the first.
+INDENT        band 1   ± at 0,   label at 14 px
+              band 2   ± at 16,  label at 30 px
+              rows              label at 46 px
+BAND 1        #f4f4f4 fill · bold black · 1 px #d4d4d4 above
+BAND 2        NO FILL · bold #404040 · 1 px #ececec above
+              two heavy fills compete; the indent carries the hierarchy
+SPINE         runs down the OUTERMOST group — the one that answers
+              "where am I", not "what is directly above me"
+COUNTS        on a collapsed band of either tier
+```
+
+**Do not add a third tier.** At that point the screen wants facets, not
+grouping — see the variant above.
+
 **A collapsed group renders NO child rows.** Not one summary row, not a
 "— 2 items" placeholder, nothing. The `+` in the expand column is the entire
 indication that something is inside, exactly as the Project Browser does it.

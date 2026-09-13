@@ -518,29 +518,47 @@ Capacity, tare and deck belong to the **type**, so a rented 20 ft flatbed
 already carries them and a rented boom lift has none. The detail pane shows the
 type's fit beside the offering's rate; the list stays about money.
 
-### List
+### List — grouped by SUPPLIER, then by TYPE
+
+Two band tiers. Expanders move into the `NAME` cell at their row's indent —
+`docs/14`'s two-tier rule — so the fixed 20 px expand column is dropped here.
 
 ```
-±  NAME              CARD RATE            LAST PAID              MIN      MOVE
-─  United Rentals
-     64' boom lift    $485.00 /day  +wk    $520.00 · 22 Aug 2026  1 day    delivered
-     45' boom lift    $365.00 /day         $365.00 · 11 Jun 2026  1 day    delivered
-     20 ft flatbed     $85.00 /day         —                      3 days   collected
-─  Sunstate Equipment
-     Plate compactor   $68.00 /day         $68.00 · 04 Sep 2026   1 day    collected
-     ¾ ton pickup     $145.00 /day  +wk    $145.00 · 18 Jul 2026  1 day    collected
-─  Herc Rentals
-     Mini excavator   $310.00 /day  +wk    $340.00 · 02 Sep 2026  1 day    delivered
+gutter  NAME                        CARD RATE          LAST PAID              MIN     MOVE
+ 14px   ──────────────────────────  ────────────────   ────────────────────   ─────   ──────────
+        minmax(0,1fr)               130px              160px                  54px    76px
+
+  ─ United Rentals
+      ─ Lifts
+        ▶ 64' boom lift             $485.00 /day  +wk  $520.00 · 22 Aug 2026  1 day   delivered
+          45' boom lift             $365.00 /day       $365.00 · 11 Jun 2026  1 day   delivered
+      + Trailers  (1)
+  ─ Sunstate Equipment
+      ─ Compaction
+          Plate compactor            $68.00 /day       $68.00 · 04 Sep 2026   1 day   collected
+      ─ Trucks
+          ¾ ton pickup              $145.00 /day  +wk  $145.00 · 18 Jul 2026  1 day   collected
+  + Herc Rentals  (1)
 ```
 
-The `64' boom lift` and `Mini excavator` rows are **`#a00`** — their last
-invoice exceeded the card. `20 ft flatbed` has never been rented, so `LAST PAID`
-is `—` in `#808080`, not zero.
+- **Band 1, supplier:** `#f4f4f4` fill, bold black, 1 px `#d4d4d4` above.
+- **Band 2, category:** **no fill**, bold `#404040`, 1 px `#ececec` above. Two
+  filled bands compete with each other; the indent carries the hierarchy.
+- `Trailers` and `Herc Rentals` render **collapsed**, one of each tier, with
+  their counts — proof that both levels fold.
+- **The cursor is on `64' boom lift`** — `▶` in the gutter and the spine down
+  the **whole United Rentals group**, the outermost one, because that is what
+  answers *"where am I"*.
+- The `64' boom lift` row is `#a00`: its last invoice beat the card.
+
+**Categories come from the type**, so `Lifts` here and `Lifts` on the Owned tab
+are the same category — which is what makes the `Category` dropdown in the
+filter band work across both tabs.
 
 ### Status bar
 
 ```
-left:   6 offerings · 3 suppliers
+left:   6 offerings · 3 suppliers · 5 categories
 middle: Maintenance  ⚠ Card differs from last paid 2   ⚠ Card unconfirmed
         12 months 1   Never rented 1
 right:  Equipment · 4 owned
