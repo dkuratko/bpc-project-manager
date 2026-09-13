@@ -174,12 +174,25 @@ Grid becomes `14px 20px minmax(0,1fr) 148px 108px 200px 36px 64px`.
    `Fees` correctly shows none. An empty row you cannot type into is a dead
    end — the table should be header plus `＋ Add a rate…` only.
 
-**Schedule v1** — one:
+**Schedule v1** — one, two lines:
 
-1. The `Equipment` box reads `2 of 3 line items · 1 short`. With quantities
-   recorded per truck it is `1 of 4 lines complete · 1 issue open`, matching
-   what `docs/25`'s sample produces. Same job, same moment — the two dialogs
-   should agree.
+The `Equipment` box predates quantities-per-truck and contradicts
+`record-shipment.v2`. **The two dialogs are different moments in one
+sequence** — you book the date, then trucks arrive — so Schedule shows the
+job before any delivery:
+
+```
+✘  Received    2 of 3 line items · 1 short
+               ⚠ Shade sail 20 ft × 20 ft — 1 of 2 received 10 Sep 2026
+
+✔  Received    0 of 4 lines complete · 13 items outstanding
+               ⚠ nothing has arrived
+```
+
+`1 + 2 + 6 + 4 = 13`, the four lines in `docs/25` before any truck.
+`recorded in Record shipment… — read-only here` stays. The status preview's
+`⚠ no equipment received` stays too — it is now literally true rather than
+contradicting the box above it.
 
 **Supplier v3** — one:
 

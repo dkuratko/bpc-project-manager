@@ -92,11 +92,18 @@ schedule follows it. That is why there is no computed end date here.
 ## Group box · "Equipment" — read-only, and the reason this dialog is dangerous
 
 ```
-Received    2 of 3 line items · 1 short
-            ⚠ Shade sail 20 ft × 20 ft — 1 of 2 received 10 Sep 2026
+Received    0 of 4 lines complete · 13 items outstanding
+            ⚠ nothing has arrived
+            recorded in Record shipment… — read-only here
 ```
 
-The count in plain text, the shortfall beneath it in `#a00`.
+The count in plain text, the shortfall beneath it in `#a00`, and the boundary
+in `#808080`.
+
+**This is the job before any truck.** `Record shipment…` (`docs/25`) picks the
+same job up later, at truck 2 — the two dialogs are consecutive moments, not
+the same one, which is why one says *nothing has arrived* and the other says
+*7 still outstanding*.
 
 **It is here so a date cannot be set without seeing it.** Nothing on this box is
 editable — shipments are recorded in `Record shipment…` — and it exists purely
