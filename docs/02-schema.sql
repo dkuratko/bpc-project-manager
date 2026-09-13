@@ -187,6 +187,18 @@ CREATE TABLE equipment_sourcing_methods (
   minimum_periods     REAL,                 -- 3-day minimum
   is_default          INTEGER NOT NULL DEFAULT 0,
   active              INTEGER NOT NULL DEFAULT 1,
+  -- RENTED only, all four. The card rate above is what costing uses; these
+  -- record what you were actually billed, which SUGGESTS updating the card and
+  -- never overwrites it — one invoice is a data point about a price, not a new
+  -- price. The Rented tab counts the rows where they disagree.
+  last_paid_rate      REAL,
+  last_paid_at        TEXT,
+  last_paid_version_id TEXT REFERENCES versions(id),
+  rate_confirmed_at   TEXT,
+  -- RENTED only. 'delivered' means their truck brings it and it never touches
+  -- your trailer; 'collected' means you fetch it and it IS load — weight,
+  -- dimensions and trips. Overtypeable per job. See docs/06.
+  move                TEXT CHECK(move IN ('delivered','collected',NULL)),
   CHECK((kind='owned'  AND serial IS NOT NULL AND supplier_id IS NULL)
      OR (kind='rented' AND supplier_id IS NOT NULL AND serial IS NULL)),
   CHECK(NOT (kind='rented' AND rate_basis='mile'))
@@ -209,6 +221,20 @@ CREATE TABLE equipment_sourcing_methods (
 -- type" — app_settings vehicle.fuel_price.diesel / .gasoline. One number per
 -- FUEL TYPE, not one per fleet: a diesel F-450 and a gasoline pickup do not
 -- move together. Set a value here only to override. See docs/18.
+-- ALTERNATE rate brackets for a rental — "4 days costs a week". Optional and
+-- usually absent: the primary rate lives on equipment_sourcing_methods and
+-- most offerings have only that. The engine picks the cheapest combination
+-- covering the required duration; equipment_selections already records which
+-- basis it used. See docs/18.
+CREATE TABLE rental_rates (
+  id                  TEXT PRIMARY KEY,
+  sourcing_method_id  TEXT NOT NULL REFERENCES equipment_sourcing_methods(id),
+  basis               TEXT NOT NULL CHECK(basis IN ('day','week','month')),
+  rate                REAL NOT NULL,
+  minimum_periods     REAL,
+  UNIQUE(sourcing_method_id, basis)
+);
+
 CREATE TABLE vehicle_rate_inputs (
   sourcing_method_id   TEXT PRIMARY KEY REFERENCES equipment_sourcing_methods(id),
   mpg                  REAL,

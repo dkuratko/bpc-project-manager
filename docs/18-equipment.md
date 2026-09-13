@@ -448,74 +448,130 @@ what clears the `Rate over 12 months old` counter.
 
 ---
 
-## TAB · Rented — specified, not rendered
+## TAB · Rented  ★ — walked through 12 Sep 2026
 
-Same three panes, different facets and columns.
+Same three regions as `Owned` — filter band, grouped list, detail pane — with
+different columns, because a rental is priced by someone else.
 
-```
-▾ By supplier              ▾ By category           ▾ Maintenance
-    United Rentals    3        Lifts        2          No rate set        0
-    Sunstate          1        Trailers     1          Rate not confirmed
-                               Trucks       1            in 6 months      2
-```
+### Grouped by SUPPLIER, not category
 
-**Both facet groups at once** is the whole argument for facets over a tree:
-*"what do United rent me"* and *"who rents me lifts"* are both one click.
+Five to ten suppliers is enough that *"what do United rent me"* is a real
+question, so supplier bands replace the `Owned` tab's category bands. Category
+stays a filter-band dropdown.
 
-```
-NAME ▲              SUPPLIER          CATEGORY   RATE           MINIMUM   FEES
-64' boom lift       United Rentals    Lifts      $485.00 /day   1 day     Delivery $150.00 · Pickup $150.00
-45' boom lift       United Rentals    Lifts      $365.00 /day   1 day     Delivery $150.00 · Pickup $150.00
-20 ft trailer       United Rentals    Trailers    $85.00 /day   3 days    —
-¾ ton pickup        Sunstate Equip.   Trucks     $145.00 /day   1 day     —
-```
+### ★ TWO RATES, and the gap between them is the point
 
-**No VIN column.** You rent *a* 64' boom, not a specific one — the missing
-column is the entire difference between the two tabs.
-
-Detail pane: the offering, its fees itemised, the supplier's phone and account
-reference, and `USED ON`.
-
----
-
-## Where these rates go
-
-**This list is the price list. The job's cost is worked out elsewhere.** The
-cost breakdown's Purchasing tab asks, per version, *which* unit or offering
-satisfies each required type, and prices it there — periods, minimums, fees and
-the effective rate over required hours:
+An owned rate is a fact about your costs. **A rental rate is someone else's
+number and it moves**, so every offering carries both:
 
 ```
-Telehandler   14.2 hr   United Rentals ▼   3 days   $650.00 /day   $500.00   $2,450.00   $172.54 /hr
+CARD        what they charge      confirmed 14 Mar 2026    ← costing uses THIS
+LAST PAID   what you were billed  22 Aug 2026 · 26-09A0    ← evidence
 ```
 
-That `Sourcing ▼` **is this list**, filtered to what can satisfy the type.
+**Last paid suggests updating the card. It never overwrites it.** Identical to
+the maintenance log suggesting `annual_maintenance`, and for the same reason:
+one invoice is not a new price, it is a data point about one.
+
+When they disagree the row says so, and it earns a maintenance counter —
+`Card differs from last paid` is the rental equivalent of
+`Rate over 12 months old`, and it is the thing that stops a fourteen-month-old
+card quietly underpricing a bid.
+
+### Rate brackets — optional, and most rows have none
 
 ```
-truck · trailer    → MOBILIZATION        per mile, computed
-everything else    → Purchasing tab      per hour or day, minimums, fees
+64' boom lift    $485.00 /day       $1,455.00 /week
 ```
 
-**Templates, not commitments.** A rate edited here reaches the next
-calculation, never an estimate already sent, and any rate can be overtyped on a
-single version when a supplier gives you a deal on one job.
+Weekly is roughly three day-rates, so **the break bites at four days**:
+`4 × 485 = $1,940` against `$1,455`. The engine picks the cheapest combination
+covering the required duration and the Purchasing tab reports which it used —
+`periods` and `rate_basis` on `equipment_selections` already record it.
 
----
+Most offerings carry a day rate alone. An offering with a bracket shows `+wk`
+after its card rate in the list; the detail pane spells it out.
 
-## Rates — computed for vehicles, typed for everything else
+### ★ MOVE — and the rule it corrects
 
 ```
-owned vehicle      $/mile, COMPUTED from fuel, maintenance, tyres,
-                   depreciation and fixed costs. stamped with a date.
-owned non-vehicle  $/day or $/hr, TYPED for now.
-rental             whatever the supplier charges. never per mile.
+delivered    their truck brings it. delivery and pickup fees on the row.
+collected    YOU fetch it. it rides your rig.
 ```
 
-**A per-day build-up for owned non-vehicles is deferred, not forgotten.** A
-lift's day rate should come from depreciation, maintenance and insurance over
-working days, the same way a truck's mile rate does. Logged in `00-TREE.md`
-§10. Until then the typed rate is labelled `typed` in the strip, so it is never
-mistaken for a computed one.
+An earlier draft of `docs/06` said rented equipment never enters the haul
+because the supplier delivers it. **That is only true when they do.** A plate
+compactor you collect is load, and it must reach the mobilization panel:
+
+```
+owned                always hauled
+rented · delivered   never hauled
+rented · collected   HAULED — weight, dimensions, trips
+```
+
+`MOVE` is a default on the offering, overtypeable per job, and a collected
+offering needs a shipping weight like anything else you carry.
+
+### Fit specs need no columns here
+
+Capacity, tare and deck belong to the **type**, so a rented 20 ft flatbed
+already carries them and a rented boom lift has none. The detail pane shows the
+type's fit beside the offering's rate; the list stays about money.
+
+### List
+
+```
+±  NAME              CARD RATE            LAST PAID              MIN      MOVE
+─  United Rentals
+     64' boom lift    $485.00 /day  +wk    $520.00 · 22 Aug 2026  1 day    delivered
+     45' boom lift    $365.00 /day         $365.00 · 11 Jun 2026  1 day    delivered
+     20 ft flatbed     $85.00 /day         —                      3 days   collected
+─  Sunstate Equipment
+     Plate compactor   $68.00 /day         $68.00 · 04 Sep 2026   1 day    collected
+     ¾ ton pickup     $145.00 /day  +wk    $145.00 · 18 Jul 2026  1 day    collected
+─  Herc Rentals
+     Mini excavator   $310.00 /day  +wk    $340.00 · 02 Sep 2026  1 day    delivered
+```
+
+The `64' boom lift` and `Mini excavator` rows are **`#a00`** — their last
+invoice exceeded the card. `20 ft flatbed` has never been rented, so `LAST PAID`
+is `—` in `#808080`, not zero.
+
+### Status bar
+
+```
+left:   6 offerings · 3 suppliers
+middle: Maintenance  ⚠ Card differs from last paid 2   ⚠ Card unconfirmed
+        12 months 1   Never rented 1
+right:  Equipment · 4 owned
+```
+
+### Detail pane
+
+```
+64' boom lift
+Lifts · United Rentals · delivered
+
+RATE
+  Card        $485.00 /day               confirmed 14 Mar 2026
+              $1,455.00 /week            cheaper from 4 days
+  Last paid   $520.00 /day               22 Aug 2026 · 26-09A0
+  ⚠ Card is $35.00 under the last invoice
+
+TERMS
+  Minimum 1 day · Delivery $150.00 · Pickup $150.00
+
+SUPPLIER
+  United Rentals · (602) 555-0181 · account BPC-4471
+
+RENTED ON
+  6 versions · last 26-09A0, 22 Aug 2026
+
+[ Edit offering… ]        [ Update card to $520.00 ]
+```
+
+The second button is the suggestion made pressable **where the evidence is**,
+never on the list and never automatic.
 
 ---
 

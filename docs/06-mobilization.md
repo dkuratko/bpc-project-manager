@@ -88,10 +88,17 @@ FITS IF   total weight ≤ combined capacity
           AND longest ≤ deck_length_ft
           AND widest  ≤ deck_width_ft
 
-RENTED EQUIPMENT DOES NOT COUNT. The supplier delivers it — that is what the
-delivery and pickup fees on a rental offering ARE. Only what you haul yourself
-loads your trailer, which is also the honest trade-off when you compare owning
-a machine against renting one.
+RENTED EQUIPMENT COUNTS ONLY WHEN YOU COLLECT IT.
+
+     owned                always hauled
+     rented · delivered   never hauled. their truck brings it, which is what
+                          the delivery and pickup fees on the offering ARE.
+     rented · collected   HAULED. a plate compactor you fetch yourself is
+                          load like anything else.
+
+An earlier draft said rentals never load your trailer. That is only true when
+the supplier delivers, and Damian collects the small stuff. `move` on the
+offering carries the default; the job can override it.
 
 TRIPS     computed = max(1, ceil(weight ÷ COMBINED CAPACITY))
           ★ always overtypeable — trips also depend on customer demand and
