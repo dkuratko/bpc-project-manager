@@ -75,9 +75,13 @@ BEVEL      var(--t), so it reads as a chip and not a highlight
 NAME       11 px bold, the status name, plus its key date after it
 PROBLEM    a 4 px #CC0000 lip on the chip's LEFT edge, plus the alert
            text to the right in #a00. NEVER a red tint.
-NO CHANGE  when the fact does not move the status, the chip shows the
-           CURRENT status and the line beneath reads
-           "Status does not change — <why>."
+NO CHANGE  when the fact does not move the status, the HEADER reads
+           "26-09A0 — status does not change", the chip shows the CURRENT
+           status, and the body says what DID move.
+           ★ This is the common case for Record shipment: a truck does
+             not schedule a job, so it changes the ALARM and not the
+             status. A dialog claiming credit for a status it did not
+             cause teaches the wrong model.
 ```
 
 This is the version view's status strip in miniature, and deliberately so: the

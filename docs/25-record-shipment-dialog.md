@@ -210,38 +210,68 @@ and change ok to short, and the status corrects itself.
 
 ---
 
-## Status preview — one of four
+## Status preview ★ — and why it usually says NOTHING changed
 
-The chip depends on **two independent facts**: whether anything is still
-outstanding, and whether an install date exists.
+**Recording a truck does not schedule a job.** The install date did that, in
+the `Schedule…` dialog. What a truck changes is whether the equipment is
+there — which moves the **alarm**, not the status.
 
-```
-still outstanding, no install date    AWAITING DELIVERY    #9CC3E2
-still outstanding, install date set   SCHEDULED ⚠ + lip    #8ECF8E
-all received, no install date         EQUIPMENT RECEIVED   #B5E3B5
-all received, install date set        SCHEDULED            #8ECF8E
-```
+That distinction is the whole point of deriving status from independent facts,
+and this is the dialog where it is most visible.
 
-**Render the second**, because it is what this sample causes:
+### The four outcomes
 
 ```
-📋 26-09A0 becomes
+BEFORE                          AFTER THIS TRUCK        STATUS
+awaiting, still incomplete      still incomplete        AWAITING DELIVERY
+                                                        no change
+awaiting, now complete          complete                EQUIPMENT RECEIVED
+                                                        ★ CHANGES
+scheduled, still incomplete     still incomplete        SCHEDULED + lip
+                                                        no change, lip stays
+scheduled, now complete         complete                SCHEDULED
+                                                        no change, LIP CLEARS
+```
+
+**Three of the four do not move the status.** Only a delivery that completes a
+job with no install date actually changes it — and even then it is the
+completeness doing the work, not the act of recording.
+
+### The block's header is conditional
+
+```
+status moves      📋 26-09A0 becomes
+status holds      📋 26-09A0 — status does not change
+```
+
+**Render the second**, because that is what this sample causes:
+
+```
+📋 26-09A0 — status does not change
+
    ▌ SCHEDULED   22 Sep 2026        ⚠ 1 open shipment issue
-   ──────────────
-   7 items still outstanding across 3 lines, and one open issue. The
-   issue stays visible on this job until someone marks it Approved —
-   until then 26-09A0 carries a red lip in the browser and an alert on
-   its version view.
+   ───────────────
+   Already scheduled for 22 Sep; recording a truck does not change that.
+   What this moves: 7 items are still outstanding and one issue is open,
+   so the red lip stays. It clears when every quantity is in and no issue
+   remains.
 ```
 
 `#8ECF8E` ground, `var(--t)` bevel, a 4 px `#CC0000` lip on the chip's **left**
 edge, the alert to its right in `#a00`.
 
-### The same chip the Schedule dialog previewed
+**A dialog that claimed credit for a status it did not cause would teach the
+wrong model** — and this application's whole argument is that status is a
+consequence of facts, not something an action stamps on.
 
-Reached from a different fact. **That is the derived-status model working**:
-nothing stores `SCHEDULED`, so two dialogs recording two different things
-arrive at the same answer without either knowing about the other.
+### The lip and the status come from different places
+
+```
+SCHEDULED   comes from the install date          → Schedule…
+the LIP     comes from the equipment being short → Record shipment…
+```
+
+Two dialogs, two facts, one row in the browser. Neither knows about the other.
 
 ---
 
@@ -269,6 +299,9 @@ arrive at the same answer without either knowing about the other.
 - **A separate resolve dialog.** Reopen the shipment and tick it Approved.
 - **Radios on an unticked row.** It did not come on this truck.
 - **A status dropdown.** Status is derived.
+- **`becomes` when nothing moves.** Three of the four outcomes hold the
+  status; the header says so.
+- **Claiming this dialog schedules anything.** The install date does that.
 - **A red tint** on the chip. 4 px lip, `#a00` text.
 - **Turning the item list into row-editor popups.** It is the dialog's
   primary action, not a reference table.

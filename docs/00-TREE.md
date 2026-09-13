@@ -722,6 +722,12 @@ hold anything you would want to keep looking at.
 [?] a "post cost outstanding" counter on the project browser — jobs finished
     with no post cost. the loop that keeps rate tables honest is the easiest
     thing to skip, and nothing else will remind you. NOTED, not taken.
+✔ THE STATUS AND THE LIP COME FROM DIFFERENT FACTS. SCHEDULED comes from
+    the install date; the red lip comes from the equipment being short.
+    two dialogs, two facts, one row in the browser, neither knowing about
+    the other. RECORDING A TRUCK DOES NOT SCHEDULE A JOB — three of its
+    four outcomes hold the status and only move the alarm, and the record
+    block's header says "status does not change" when it does not.
 ✔ SHIPMENT ITEMS are APPROVED or ISSUE — two outcomes, not three. the old
     ok/damaged/short was never exhaustive and nobody should classify a
     problem before describing it. AN ISSUE IS TRACKED: it keeps the item
