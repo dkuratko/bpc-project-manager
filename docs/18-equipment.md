@@ -1050,18 +1050,6 @@ City        [ Mesa ]  State [ AZ ]  Zip [ 85202 ]
 Only meaningful for `collected` offerings, and it carries a caveat — see the
 tip block.
 
-### Group box · "Defaults for new offerings"
-
-```
-Move        ◉ Delivered    ○ Collected
-Delivery    [ $150.00 ]    Pickup   [ $150.00 ]
-```
-
-**These seed a new offering and stop there.** Editing them never reaches an
-offering that already exists — the same rule as `contact_defaults`, and for the
-same reason: a default that reaches backwards silently rewrites decisions you
-already made.
-
 ### Group box · "Notes"
 
 36 px, as everywhere.
@@ -1101,7 +1089,7 @@ PROPERTIES — the same dialog, reopened
 ```
 
 Left: `New supplier`, empty with `#a0a0a0` placeholders, `Used for` both
-unticked, `Move` on `Delivered`, buttons `Create` 110 px · `Cancel` 78 px.
+unticked, buttons `Create` 110 px · `Cancel` 78 px.
 Right: `Supplier properties — United Rentals`, filled as above, buttons `OK`
 110 px · `Cancel` 78 px.
 

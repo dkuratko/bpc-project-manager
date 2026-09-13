@@ -113,11 +113,9 @@ CREATE TABLE suppliers (
   is_materials INTEGER NOT NULL DEFAULT 0,
   phone       TEXT, email TEXT, account_ref TEXT, notes TEXT,
   address     TEXT, city TEXT, state TEXT, zip TEXT,   -- where you COLLECT from
-  -- Seeds a new offering and stops there — it never reaches one that exists,
-  -- the same rule as contact_defaults. See docs/18.
-  default_move         TEXT CHECK(default_move IN ('delivered','collected',NULL)),
-  default_delivery_fee REAL,
-  default_pickup_fee   REAL,
+  -- NO per-offering defaults here. `move` and the delivery/pickup fees live on
+  -- the offering: with a handful of offerings per supplier, seeding them saves
+  -- less than the columns and the "seeds but never binds" rule would cost.
   active      INTEGER NOT NULL DEFAULT 1,
   -- A supplier used for nothing appears in no picker and is not a supplier.
   CHECK(is_rental = 1 OR is_materials = 1)
