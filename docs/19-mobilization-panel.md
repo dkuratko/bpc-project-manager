@@ -60,20 +60,49 @@ thing standing between that and a wrong bid.
 Same rule as the cost zone: show what is known, alarm what is missing, never
 invent.
 
-### `FROM` says where each row came from
+### Three bands, and the `FROM` column goes with them
+
+The load has three sources and they behave differently, so each gets a band —
+which means no `FROM` column, because the band already says it.
 
 ```
-component   from the version's scope — ship_weight_lb × qty
-equipment   an OWNED machine you are hauling
-rental      a COLLECTED rental. a delivered one never appears — the
-            supplier brings it, which is what its delivery and pickup
-            fees are.
+COMPONENTS          the version's scope — ship_weight_lb × qty
+OWNED EQUIPMENT     machines you are hauling yourself
+COLLECTED RENTALS   a rental whose MOVE is `collected`. a delivered one
+                    never appears at all — the supplier brings it, which
+                    is what its delivery and pickup fees are.
 ```
 
-**`rental` rows are the ones people forget.** A compactor you fetch from
-Sunstate is 220 lb on your trailer and a stop on your route, and it looks
+**`COLLECTED RENTALS` is the band people forget exists.** A compactor you fetch
+from Sunstate is 220 lb on your trailer and a stop on your route, and it looks
 exactly like something the supplier handles until you check the `MOVE` on its
-offering.
+offering. Giving it a band of its own makes the distinction impossible to miss.
+
+An empty band still renders, reading `— none —` in `#808080`. **Absence is
+information**: a job with no collected rentals should say so rather than leave
+you wondering whether the app checked.
+
+### Each band carries its own subtotal
+
+```
+COMPONENTS          4,260 lb +[?]     22.0 ft   3.0 ft
+OWNED EQUIPMENT       8,400 lb        11.8 ft   6.0 ft
+COLLECTED RENTALS       220 lb         2.5 ft   2.0 ft
+```
+
+Weight sums; `LONGEST` and `WIDEST` are **maxima, not sums** — the band shows
+the longest thing in it, and the total row shows the longest thing anywhere.
+`22.0 ft` comes from the posts, `6.0 ft` from the Bobcat.
+
+### ★ Collapsing hides rows. It never subtracts.
+
+`COLLECTED RENTALS` renders **collapsed** with its subtotal and count still
+showing, and the `TOTAL` still includes its `220 lb`.
+
+**This is the rule most likely to be built wrong.** A collapsed band that
+dropped out of the total would be a trip count that changes depending on which
+sections happen to be open — which is worse than no panel at all. The `±` is a
+view control and nothing more.
 
 ### `HAULED` — because not everything rides your rig
 
@@ -187,6 +216,11 @@ and a render has to show it happening.
 - **The tow-cap line when the cap does not bite.**
 - **Filling in the shade fabric's weight.** It is blank on purpose, to show
   the alarm. Every other cell carries a figure.
-- **Omitting the `rental` row**, or showing a delivered rental in the load.
+- **Omitting the `COLLECTED RENTALS` band**, or showing a delivered rental in
+  the load.
+- **A collapsed band dropping out of the total.** `±` is a view control.
+- **An empty band hidden.** It reads `— none —`.
+- **Summing `LONGEST` or `WIDEST`.** They are maxima.
+- **A `FROM` column.** The bands say it.
 - **A trip count with no `from known weights only` caveat** while a row is
   missing a weight.
