@@ -1124,8 +1124,19 @@ CREATE TABLE shipments (
 -- missing hardware fit none of them — and nobody should have to classify a
 -- problem before describing it.
 --
+-- QUANTITY IS A FACT; CONDITION IS A JUDGMENT. They are independent:
+--   4 of 6 approved  = partial and fine, the rest is coming
+--   4 of 6 issue     = partial and WRONG, six were promised on this truck
+--   6 of 6 issue     = all here, damaged or not what was ordered
+-- The app cannot tell the second from the first — the difference is what the
+-- supplier promised for THIS truck, which nobody tracks — so it records the
+-- numbers and the user decides whether it is a problem.
+--
+-- EQUIPMENT RECEIVED requires BOTH gates: every line's outstanding quantity
+-- is 0, AND no issue is open.
+--
 -- AN ISSUE IS TRACKED, NOT NOTED:
---   · it keeps the item OUTSTANDING, so it reappears on the next truck
+--   · it blocks EQUIPMENT RECEIVED independently of the quantities
 --   · it raises an alert on the version for as long as it is open
 --   · it closes only by reopening the shipment and switching to 'approved'
 -- Resolving is correcting the fact, never a separate "resolve" record — the
@@ -1135,8 +1146,12 @@ CREATE TABLE shipment_items (
   shipment_id    TEXT NOT NULL REFERENCES shipments(id),
   cost_object_id TEXT REFERENCES cost_objects(id),
   description    TEXT,
-  quantity       REAL NOT NULL DEFAULT 1,
-  arrived        INTEGER NOT NULL DEFAULT 0,   -- was it on THIS truck
+  quantity_received REAL NOT NULL DEFAULT 0,  -- HOW MANY were on THIS truck.
+                                              -- a line arrives across several
+                                              -- trucks and that is normal; 0
+                                              -- means it did not come, which
+                                              -- is why there is no separate
+                                              -- "arrived" flag.
   condition      TEXT NOT NULL DEFAULT 'approved'
                  CHECK(condition IN ('approved','issue')),
   issue_text     TEXT,          -- REQUIRED when condition = 'issue'

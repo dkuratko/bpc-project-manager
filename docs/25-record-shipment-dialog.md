@@ -73,17 +73,72 @@ already arrived. Completeness is cumulative at component level, so a second
 truck shows only what the first did not bring.
 
 ```
-☑  PlayBooster PB-4400 structure     qty 1    ◉ Approved   ○ Issue
-☑  Shade sail 20 ft × 20 ft          qty 2    ○ Approved   ◉ Issue
-     ⚠  [ 1 of 2 sails on the truck — replacement promised 18 Sep    ]
-☐  Benches, 6 ea                     qty 6    not on this truck
+                        [ Receive all ]
 
-                        2 of 3 line items received · 1 issue open
+ITEM                             OUTSTANDING  RECEIVED   CONDITION
+PlayBooster PB-4400 structure          1       [ 1 ]     ◉ Approved  ○ Issue
+Shade sail 20 ft × 20 ft               2       [ 1 ]     ○ Approved  ◉ Issue
+     ⚠  [ only 1 sail loaded — replacement promised 18 Sep         ]
+Benches, 6 ea                          6       [ 4 ]     ◉ Approved  ○ Issue
+        2 remaining after this truck
+Shade posts, 4 ea                      4       [ 0 ]     —  not on this truck
+
+          1 of 4 lines complete · 7 items outstanding · 1 issue open
 ```
 
-Columns `19px minmax(0,1fr) 54px 150px`. The tick says **whether it came on
-this truck**; the selection says **whether it was any good**. An unticked row
-shows neither selection — it reads `not on this truck` in `#808080`.
+Columns `minmax(0,1fr) 84px 60px 150px`. A bevelled `#c0c0c0` header.
+
+### ★ `RECEIVED` is a quantity, not a tick
+
+**A line arrives across several trucks and that is normal.** Six benches with
+four on this truck and two on the next is a partial delivery, not a fault — so
+the row records **how many came**, and `OUTSTANDING` counts down across
+shipments.
+
+```
+OUTSTANDING   how many are still owed, before this truck
+RECEIVED      how many were on it. 0 means it did not come.
+```
+
+**This replaces the checkbox entirely.** `RECEIVED 0` *is* "not on this truck",
+so a tick beside it would be saying the same thing twice — and a row can then
+be 4-of-6 without anyone inventing a third state to mean "partly ticked".
+
+A row with `RECEIVED 0` shows **no condition selection**: nothing arrived, so
+there is nothing to judge. It reads `— not on this truck` in `#808080`.
+
+A partial row shows its remainder beneath in `#808080`:
+`2 remaining after this truck`.
+
+`[ Receive all ]` above the table fills every `RECEIVED` with its
+`OUTSTANDING`. **Unloading a clean truck should be one click** — that was the
+checkboxes' one virtue and it should not be lost with them.
+
+### Quantity is a fact. Approved or Issue is a judgment.
+
+These are **independent**, and keeping them apart is what makes partial
+deliveries work:
+
+```
+6 of 6 · Approved    complete and fine
+4 of 6 · Approved    partial and fine — the rest is coming
+4 of 6 · Issue       partial and WRONG — six were promised on this truck
+6 of 6 · Issue       all here, but damaged or not what was ordered
+```
+
+**The app cannot tell the third case from the second**, because the difference
+is what the supplier promised for *this* truck — which nobody tracks and
+nobody should. So the numbers are recorded and **you decide whether it is a
+problem.**
+
+### `EQUIPMENT RECEIVED` needs both to be clear
+
+```
+every line's OUTSTANDING is 0     AND     no issue is open
+```
+
+Two independent gates. Six benches all present with an open damage issue is
+not received equipment, and neither is a clean truck that brought four of six.
 
 ### Approved or Issue — two options, not three
 
@@ -93,12 +148,12 @@ never exhaustive anyway — wrong colour, wrong part number, and missing hardwar
 all fit none of them.
 
 ```
-◉ Approved    default. it arrived and it is fine.
+◉ Approved    default. what arrived is fine.
 ○ Issue       something is wrong. say what in the line below.
 ```
 
-`Approved` is selected on every ticked row until someone says otherwise, so
-unloading a clean truck is ticking boxes and nothing else.
+`Approved` is selected on every row that received anything, until someone says
+otherwise.
 
 ### An Issue opens a text line, and it is not optional
 
@@ -114,7 +169,8 @@ This is the part that makes `Issue` more than a comment.
 
 ```
 OPENS      the moment the shipment is recorded
-KEEPS      the item OUTSTANDING — it reappears on the next truck's dialog
+KEEPS      the version from reaching EQUIPMENT RECEIVED, independently of
+           whether every quantity has arrived
 RAISES     an alert on the version, for as long as it is open
 CLOSES     only when someone reopens this shipment and switches the row
            to Approved
@@ -172,9 +228,10 @@ all received, install date set        SCHEDULED            #8ECF8E
 📋 26-09A0 becomes
    ▌ SCHEDULED   22 Sep 2026        ⚠ 1 open shipment issue
    ──────────────
-   1 of 2 shade sails still outstanding. The issue stays open and visible
-   on this job until someone marks it Approved — until then 26-09A0
-   carries a red lip in the browser and an alert on its version view.
+   7 items still outstanding across 3 lines, and one open issue. The
+   issue stays visible on this job until someone marks it Approved —
+   until then 26-09A0 carries a red lip in the browser and an alert on
+   its version view.
 ```
 
 `#8ECF8E` ground, `var(--t)` bevel, a 4 px `#CC0000` lip on the chip's **left**
@@ -203,7 +260,11 @@ arrive at the same answer without either knowing about the other.
 
 - **Listing what has already arrived.** Outstanding only.
 - **A three-way condition.** Approved or Issue.
-- **`Issue` clearing the item.** It stays outstanding until resolved.
+- **A checkbox beside `RECEIVED`.** The quantity says it.
+- **Treating a partial delivery as an issue.** Four of six is normal; only
+  you know whether six were promised on this truck.
+- **A condition selection on a row that received 0.**
+- **`EQUIPMENT RECEIVED` on one gate.** Quantities clear AND no open issue.
 - **An optional issue line.** The dialog will not record without it.
 - **A separate resolve dialog.** Reopen the shipment and tick it Approved.
 - **Radios on an unticked row.** It did not come on this truck.

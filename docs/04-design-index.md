@@ -174,6 +174,13 @@ Grid becomes `14px 20px minmax(0,1fr) 148px 108px 200px 36px 64px`.
    `Fees` correctly shows none. An empty row you cannot type into is a dead
    end — the table should be header plus `＋ Add a rate…` only.
 
+**Schedule v1** — one:
+
+1. The `Equipment` box reads `2 of 3 line items · 1 short`. With quantities
+   recorded per truck it is `1 of 4 lines complete · 1 issue open`, matching
+   what `docs/25`'s sample produces. Same job, same moment — the two dialogs
+   should agree.
+
 **Supplier v3** — one:
 
 1. The `★` glyphs render black. New Project has them `#a00`.
