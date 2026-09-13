@@ -122,7 +122,15 @@ docs/design/component-wizard.final.dc.html` | — |
 | — | New Option / New Version | POPUP · two roles | **✔ FINAL v3** | `docs/design/new-option-version.v3.dc.html` | `13` |
 | — | Customer / Contact dialogs | POPUP · 2 × 2 modes | **✔ FINAL v1** | `docs/design/customer-contact-dialogs.v1.dc.html` | `16` |
 | — | Mobilization panel | POPUP | briefed, needs real weights | — | `19` |
-| — | Equipment | MAIN · list + detail, 2 tabs | v2 — one fix | `docs/design/equipment.v2.dc.html` | `18` |
+| — | Equipment · Owned tab | MAIN · list + detail | v6 accepted | `docs/design/equipment-render2.v6.dc.html` | `18` |
+| — | Equipment · Rented tab | MAIN · list + detail | **not drawn** | — | `18` |
+| — | Equipment properties · 4 tabs | POPUP | v2 + v6 accepted | `docs/design/equipment-properties-tabs.v2.dc.html` | `18` |
+| — | Add a specification | POPUP | v2 accepted | same file | `18` |
+| — | Log entry · add + edit | POPUP | v1 accepted | `docs/design/equipment-log-entry.v1.dc.html` | `18` |
+| — | Fuel prices | POPUP | v6 accepted | `docs/design/equipment-render2.v6.dc.html` | `18` |
+| — | New supplier | POPUP | **not designed** | — | `18` |
+| — | New type / categories | POPUP | **not designed** | — | `18` |
+| — | Rental offering properties | POPUP | outlined only | — | `18` |
 | — | Contacts | MAIN · list | **✔ FINAL v2** | `docs/design/contacts.v2.dc.html` | `14` + `15` |
 
 Its dialog grammar — the `100px 1fr` field grid, read-only values as `#c0c0c0`
@@ -157,6 +165,15 @@ Grid becomes `14px 20px minmax(0,1fr) 148px 108px 200px 36px 64px`.
    equipment is now **individual units** with their own serial and their own
    rate, so the dropdown names the unit: `Ford F-450 · Truck 2`. Rentals read
    as before, by supplier. See `docs/18`.
+
+**Equipment v6** — two:
+
+1. The properties sheet inside render 2 is still `11px Tahoma` /
+   `letter-spacing: normal`. The three-tab render has it right at `10px` /
+   `.05em`. Same sheet, two sizes.
+2. `FIT` needs the two fields added since: a truck's `Capacity` is its **bed
+   payload** and should say so, and a trailer needs `Tare weight` beside its
+   capacity. See `docs/06`.
 
 **Record dialogs v13** — five, all mechanical:
 
