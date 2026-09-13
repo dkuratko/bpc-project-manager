@@ -73,46 +73,47 @@ already arrived. Completeness is cumulative at component level, so a second
 truck shows only what the first did not bring.
 
 ```
-                        [ Receive all ]
-
-ITEM                             OUTSTANDING  RECEIVED   CONDITION
-PlayBooster PB-4400 structure          1       [ 1 ]     ◉ Approved  ○ Issue
-Shade sail 20 ft × 20 ft               2       [ 1 ]     ○ Approved  ◉ Issue
-     ⚠  [ only 1 sail loaded — replacement promised 18 Sep         ]
-Benches, 6 ea                          6       [ 4 ]     ◉ Approved  ○ Issue
-        2 remaining after this truck
-Shade posts, 4 ea                      4       [ 0 ]     —  not on this truck
-
-          1 of 4 lines complete · 7 items outstanding · 1 issue open
+RECEIVED / OWED                                        [ Receive all ]
+──────────────────────────────────────────────────────────────────────
+ [ 1 ] /1   PlayBooster PB-4400 structure       ◉ Approved   ○ Issue
+ [ 1 ] /2   Shade sail 20 ft × 20 ft            ○ Approved   ◉ Issue
+      ⚠  [ only 1 sail loaded — replacement promised 18 Sep         ]
+ [ 4 ] /6   Benches, 6 ea   2 remaining after this truck
+                                                ◉ Approved   ○ Issue
+ [ 0 ] /4   Shade posts, 4 ea                   — not on this truck
+──────────────────────────────────────────────────────────────────────
+        1 of 4 lines complete · 7 items outstanding · 1 issue open
 ```
 
-Columns `minmax(0,1fr) 84px 60px 150px`. A bevelled `#c0c0c0` header.
+Grid `72px minmax(0,1fr) 148px`, gap `0 10px`. A `#404040` caps label row
+carries `RECEIVED / OWED` with `[ Receive all ]` right-aligned in it; a 1 px
+`#f2f2f2` rule sits under every line.
 
-### ★ `RECEIVED` is a quantity, not a tick
-
-**A line arrives across several trucks and that is normal.** Six benches with
-four on this truck and two on the next is a partial delivery, not a fault — so
-the row records **how many came**, and `OUTSTANDING` counts down across
-shipments.
+### ★ One fraction cell, not two columns
 
 ```
-OUTSTANDING   how many are still owed, before this truck
-RECEIVED      how many were on it. 0 means it did not come.
+[ 1 ] /2      the input is what arrived; the grey /2 is what was owed
 ```
 
-**This replaces the checkbox entirely.** `RECEIVED 0` *is* "not on this truck",
-so a tick beside it would be saying the same thing twice — and a row can then
-be 4-of-6 without anyone inventing a third state to mean "partly ticked".
+**Quantity first, at the far left**, because it is the only thing being typed
+on most rows and reading `1 /2` is faster than reading two columns and doing
+the subtraction. `0 /4` says *not on this truck* without a word.
 
-A row with `RECEIVED 0` shows **no condition selection**: nothing arrived, so
-there is nothing to judge. It reads `— not on this truck` in `#808080`.
+The remainder rides **inline beside the item name** in `#808080` —
+`2 remaining after this truck` — rather than on a line of its own. It is a
+consequence, not a second fact.
 
-A partial row shows its remainder beneath in `#808080`:
-`2 remaining after this truck`.
+**This replaces the checkbox entirely.** `RECEIVED 0` already means the line
+did not come, so a tick beside it would say the same thing twice — and a row
+can be 4-of-6 without inventing a third state meaning "partly ticked".
 
-`[ Receive all ]` above the table fills every `RECEIVED` with its
-`OUTSTANDING`. **Unloading a clean truck should be one click** — that was the
-checkboxes' one virtue and it should not be lost with them.
+A row that received nothing shows **no condition selection**: it reads
+`— not on this truck` in `#808080`, because nothing arrived and there is
+nothing to judge.
+
+`[ Receive all ]` fills every `RECEIVED` with its owed figure. **Unloading a
+clean truck should be one click** — that was the checkboxes' one virtue and it
+should not be lost with them.
 
 ### Quantity is a fact. Approved or Issue is a judgment.
 
@@ -290,7 +291,9 @@ Two dialogs, two facts, one row in the browser. Neither knows about the other.
 
 - **Listing what has already arrived.** Outstanding only.
 - **A three-way condition.** Approved or Issue.
-- **A checkbox beside `RECEIVED`.** The quantity says it.
+- **A checkbox beside the quantity.** The fraction says it.
+- **Two columns for received and owed.** One cell, `[ 1 ] /2`.
+- **The remainder on its own line.** Inline beside the name, grey.
 - **Treating a partial delivery as an issue.** Four of six is normal; only
   you know whether six were promised on this truck.
 - **A condition selection on a row that received 0.**

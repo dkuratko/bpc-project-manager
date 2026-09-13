@@ -119,7 +119,7 @@ docs/design/component-wizard.final.dc.html` | — |
 |---|---|---|---|---|---|
 | — | New Project | POPUP | **✔ FINAL v2** | `docs/design/new-project.v2.dc.html` | `12` |
 | — | Schedule… | POPUP | **✔ FINAL v1** | `docs/design/schedule-dialog.v1.dc.html` | `24` |
-| — | Record shipment… | POPUP | briefed, awaiting render | — | `25` |
+| — | Record shipment… | POPUP | **✔ FINAL v2** | `docs/design/record-shipment.v2.dc.html` | `25` |
 | — | Record dialogs (4) | POPUP · family | **✔ FINAL v13** · revision state unrendered | `docs/design/record-dialogs.v13.dc.html` | `17` |
 | — | New Option / New Version | POPUP · two roles | **✔ FINAL v3** | `docs/design/new-option-version.v3.dc.html` | `13` |
 | — | Customer / Contact dialogs | POPUP · 2 × 2 modes | **✔ FINAL v1** | `docs/design/customer-contact-dialogs.v1.dc.html` | `16` |
@@ -245,7 +245,6 @@ Grid becomes `14px 20px minmax(0,1fr) 148px 108px 200px 36px 64px`.
 
 ```
 SPECIFIED, NOT RENDERED          the brief is written; nobody has drawn it
-  ▢ Record shipment…     docs/25   clears the alarm Schedule raises
   ▢ Invoice…             docs/17   sent → paid, and the warranty clock
 
 NOT DESIGNED
