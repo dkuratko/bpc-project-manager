@@ -116,6 +116,16 @@ CREATE TABLE equipment (
   id TEXT PRIMARY KEY, name TEXT NOT NULL,
   category_id      TEXT REFERENCES equipment_categories(id),
   active INTEGER NOT NULL DEFAULT 1,
+  -- WHAT IT WEIGHS AS CARGO, when you haul it yourself. A skid steer is both
+  -- a machine that does work AND a load on the flatbed, and the mobilization
+  -- fit check has to see it: on a job where the customer furnishes the play
+  -- equipment, the Bobcat is most of the trailer's load.
+  -- RENTED equipment contributes nothing — the supplier delivers it, which is
+  -- what its delivery and pickup fees are. See docs/06.
+  ship_weight_lb   REAL,
+  ship_length_ft   REAL,
+  ship_width_ft    REAL,
+  ship_height_ft   REAL,
   -- NO rate here. Equipment is SOURCED, not rated — see equipment_sourcing.
   -- A truck and a trailer are ordinary equipment. These columns are NULL on
   -- anything that is not a vehicle.

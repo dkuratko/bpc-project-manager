@@ -50,11 +50,24 @@ EQUIPMENT (vehicles only)   capacity_lb · deck_length_ft · deck_width_ft
 COMPONENT                   ship_weight_lb · ship_length_ft
                             ship_width_ft · ship_height_ft
 
-VERSION totals              weight = Σ(ship_weight × qty)
-                            longest = MAX(ship_length) across scope
-                            widest  = MAX(ship_width)
+OWNED EQUIPMENT             ship_weight_lb · ship_length_ft
+you haul it yourself        ship_width_ft · ship_height_ft
+                            ★ a Bobcat T66 on the flatbed is usually the
+                              HEAVIEST thing on the trip, and on a job where
+                              the customer furnishes the play equipment it is
+                              most of the load.
+
+VERSION totals              weight = Σ(component ship_weight × qty)
+                                   + Σ(OWNED equipment ship_weight)
+                            longest = MAX(ship_length) across BOTH
+                            widest  = MAX(ship_width) across BOTH
 
 FITS IF   weight ≤ capacity   AND   longest ≤ deck length   AND   widest ≤ deck width
+
+RENTED EQUIPMENT DOES NOT COUNT. The supplier delivers it — that is what the
+delivery and pickup fees on a rental offering ARE. Only what you haul yourself
+loads your trailer, which is also the honest trade-off when you compare owning
+a machine against renting one.
 
 TRIPS     computed = max(1, ceil(weight ÷ capacity))
           ★ always overtypeable — trips also depend on customer demand and

@@ -44,6 +44,57 @@ Each is its own file. One well-formed document, nothing after `</x-dc>`.
 
 ---
 
+## ⚠ THE REAL FLEET — replace every invented unit
+
+Damian owns **three** things. Every render so far used invented equipment;
+these replace it everywhere.
+
+```
+Trucks     2012 Ford F-450
+Trailers   20 ft flatbed trailer
+Loaders    Bobcat T66 skid steer          ← NOT a vehicle
+```
+
+### What this settles: one unit per type
+
+**He owns one of each, so every type has exactly one unit.** The type/unit
+layer stays in the schema — a rental offering is type-level, and
+`equipment_requirements` must point at a type so owned and rented can both
+satisfy it — but **the Equipment window never mentions it.** A row is a unit;
+`Type` appears only as a dropdown inside the properties sheet.
+
+Do not surface the distinction in the list, in a column, or in a group band.
+
+### What this changes: the Bobcat is not a vehicle
+
+```
+capacity · deck     blank. those belong to a CARRIER.
+identifier          a SERIAL, not a VIN.
+rate                per HOUR, typed. the per-mile build-up does not apply —
+                    a skid steer does not accrue cost by driving to site.
+ship weight & dims  IT HAS THEM, because it rides the flatbed. See docs/06.
+```
+
+### Numbers still needed — the render should wait for these
+
+```
+F-450         VIN · plate · odometer · purchase price · salvage · life miles
+              mpg · annual miles · annual maintenance · insurance + registration
+              tow rating · GVWR · bed length
+              ★ it is a 2012, so the depreciation figures are nothing like the
+                new-truck numbers used so far
+20 ft flatbed VIN · capacity lb · deck width · rate inputs
+Bobcat T66    serial · operating weight · length × width × height
+              hourly rate · in-service date
+compliance    registration, DOT and insurance dates for each
+rentals       who you rent from, what, and at what rate
+```
+
+**Nothing invented gets rendered.** Give me the ones you have and the rest can
+carry a visible `[?]` rather than a plausible-looking lie.
+
+---
+
 ## The idea — three kinds of thing, all already in the catalog
 
 ```
