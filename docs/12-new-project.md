@@ -58,6 +58,61 @@ BUTTONS          fixed width, right aligned. the default is outlined
 
 ---
 
+## ⛔ NO ROWS OF INPUTS — a row editor opens a popup
+
+**Applies to every dialog and property sheet in the application.**
+
+```
+THE LIMIT     at most ONE free-text or numeric input per row.
+              pickers and checkboxes do not count against it.
+
+OVER THE LIMIT   the row is DISPLAY ONLY.
+                 double-click a row to edit it
+                 [ ＋ Add a … ] opens a ROW EDITOR POPUP
+```
+
+A row of three heterogeneous fields — a name, a basis, an amount — is a form
+pretending to be a table. It is cramped, it has no room for labels, every
+column fights the next for width, and validation has nowhere to appear.
+
+```
+✘  NAME             BASIS       AMOUNT
+   [ Delivery   ]   [ flat ▼]   [ $150.00 ]    ✕
+
+✔  NAME             BASIS       AMOUNT
+   Delivery         flat        $150.00        ✕      ← double-click to edit
+   ＋ Add a fee…                                      ← opens a popup
+```
+
+### The row editor popup
+
+```
+WIDTH        480 px, always. one width for the whole family.
+GRAMMAR      the ordinary dialog grammar — group box, 100px/1fr grid.
+TITLE        "Add a fee — 64' boom lift"  ·  "Fee — Delivery"
+BUTTONS      Add 110 px / OK 110 px, default · Cancel 78 px
+```
+
+New / edit is **one popup in two modes**, like everything else.
+
+### What this does NOT cover
+
+**A document editor is not a dialog.** The estimate editor and the cost
+breakdown's scope zone exist to edit rows in place; that is the whole job. The
+rule is about dialogs and property sheets, where a table is reference and the
+editing happens somewhere with room for it.
+
+### Rows that already comply
+
+```
+✔ New Project · contacts      two pickers, no text input
+✔ Contact · Copy them rules   two pickers
+✔ Equipment · specifications  display only, ＋ Add a specification… popup
+✔ Equipment · maintenance log display only, Log entry popup
+```
+
+---
+
 ## Content
 
 ### Title bar

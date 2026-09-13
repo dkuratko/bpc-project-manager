@@ -710,7 +710,17 @@ Two boxes across the top in a `1fr 300px` grid, then compliance full width.
   Registration     01 Feb 2026   12 months    31 Jan 2027   142 days        ✕
   DOT inspection   30 Aug 2025   12 months    30 Aug 2026   12 days over    ✕
   Insurance        01 Jan 2026   12 months    31 Dec 2026   111 days        ✕
-  ＋ Add an item
+  ＋ Add an item…
+```
+
+**Display only.** `＋ Add an item…` opens a 480 px row editor; `EXPIRES` and
+`STATUS` are computed and appear on neither:
+
+```
+Add a compliance item — Ford F-450
+  Item      [ DOT inspection ]     ★
+  Last done [ 30 Aug 2025 ]        ★
+  Every     [ 12 ] months              blank for a one-off
 ```
 
 The `DOT inspection` row is **`#a00` throughout**, `STATUS` reading
@@ -1125,12 +1135,23 @@ is cheapest to notice — not when a trip count comes out wrong three weeks late
 
 ```
 BASIS      RATE            MINIMUM
-day        [ $485.00 ]     [ 1 ] day        ✕
-week       [ $1,455.00 ]   [ — ]            ✕
-＋ Add a rate
+day        $485.00         1 day            ✕
+week       $1,455.00       —                ✕
+＋ Add a rate…
                            cheaper from 4 days
 
 Confirmed  [ 14 Mar 2026 ]              [ Confirm today ]
+```
+
+**Display only** — two numeric inputs per row is over the limit set in
+`docs/12`. Double-click a row to edit it; `＋ Add a rate…` opens a 480 px row
+editor:
+
+```
+Add a rate — 64' boom lift
+  Basis     [ week      ▼ ]   ★   day · week · month, one row each at most
+  Rate      [ $1,455.00 ]     ★
+  Minimum   [          ]          periods, optional
 ```
 
 **Most offerings have one row.** `BASIS` is `day · week · month`, one row each
@@ -1147,11 +1168,21 @@ teaches people to fake the data to silence the alarm.
 ### Group box · "Fees"
 
 ```
-NAME             BASIS      AMOUNT
-Delivery         flat       [ $150.00 ]     ✕
-Pickup           flat       [ $150.00 ]     ✕
-Damage waiver    percent    [ 12.0 ] %      ✕
-＋ Add a fee
+NAME             BASIS         AMOUNT
+Delivery         flat          $150.00       ✕
+Pickup           flat          $150.00       ✕
+Damage waiver    percent       12.0%         ✕
+＋ Add a fee…
+```
+
+**Display only**, same rule — a name, a basis and an amount is three fields in
+a row with no room for any of them. `＋ Add a fee…` opens a 480 px row editor:
+
+```
+Add a fee — 64' boom lift
+  Name      [ Damage waiver ]     ★
+  Basis     [ percent      ▼ ]    ★   flat · per period · percent
+  Amount    [ 12.0 ] %                unit follows the basis
 ```
 
 `BASIS` is `flat · per period · percent`. A percent fee is of the **rental
