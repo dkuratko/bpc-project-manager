@@ -610,6 +610,11 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
      let "what do United rent me" and "who rents me lifts" both be one
      click. from ideas-6b-catalog. the catalog browser uses the same.
      vehicle units get a COMPUTED $/mile; everything else is typed for now.
+◐ MOBILIZATION PANEL — briefed in docs/19. where the LOAD becomes
+     visible: every component and owned machine, what each weighs and
+     how long it is, against combined capacity. a missing ship weight
+     ALARMS rather than quietly shrinking the total — otherwise the trip
+     count comes out low and every number on screen still reconciles.
 ▢ CALENDAR · SHIPMENTS · ACTIVE VERSIONS LIST
 ```
 
