@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><style>
+body{margin:0;background:#008080;font:10px Tahoma,Verdana,Geneva,sans-serif;letter-spacing:.05em;color:#000;
+--r:inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+--s:inset 1px 1px #808080, inset -1px -1px #fff, inset 2px 2px #0a0a0a, inset -2px -2px #dfdfdf;
+--t:inset 1px 1px #808080, inset -1px -1px #fff}
+*{box-sizing:border-box}
+a{color:#000080}
+a:hover{color:#1084d0}
+</style></helmet>
+<div style="min-height:100vh;background:#008080;padding:18px 20px;display:flex;justify-content:flex-start;overflow-x:auto;font:10px Tahoma,Verdana,Geneva,sans-serif;letter-spacing:.05em">
+<div style="width:1000px;height:600px;flex:none;background:#c0c0c0;box-shadow:var(--r);padding:3px;display:flex;flex-direction:column">
+<div style="height:20px;background:linear-gradient(90deg,#000080,#1084d0);display:flex;align-items:center;padding:0 3px 0 4px;gap:6px;flex:none">
+<span style="color:#fff;font-weight:bold;flex:1;white-space:nowrap">Trackers</span>
+<div style="display:flex;gap:2px">
+<div style="width:16px;height:14px;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2px;cursor:default"><span style="display:block;width:7px;height:2px;background:#000"></span></div>
+<div style="width:16px;height:14px;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;cursor:default"><span style="display:block;width:8px;height:7px;border:1px solid #000;border-top-width:2px"></span></div>
+<div style="width:16px;height:14px;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;cursor:default;position:relative"><span style="position:absolute;width:9px;height:1px;background:#000;transform:rotate(45deg)"></span><span style="position:absolute;width:9px;height:1px;background:#000;transform:rotate(-45deg)"></span></div>
+</div>
+</div>
+<div style="display:flex;gap:2px;padding:2px 2px 3px;flex:none">
+<div style="padding:2px 7px;cursor:default" style-hover="background:#000080;color:#fff">File</div><div style="padding:2px 7px;cursor:default" style-hover="background:#000080;color:#fff">Edit</div><div style="padding:2px 7px;cursor:default" style-hover="background:#000080;color:#fff">View</div><div style="padding:2px 7px;cursor:default" style-hover="background:#000080;color:#fff">Tracker</div><div style="padding:2px 7px;cursor:default" style-hover="background:#000080;color:#fff">Window</div><div style="padding:2px 7px;cursor:default" style-hover="background:#000080;color:#fff">Help</div>
+</div>
+<div style="display:flex;align-items:center;gap:4px;padding:3px 4px;box-shadow:var(--t);margin:0 1px 3px;flex:none">
+<span style="padding:0 9px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center" style-active="box-shadow:var(--s);padding:1px 8px 0 10px">New tracker</span><span style="padding:0 9px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center" style-active="box-shadow:var(--s);padding:1px 8px 0 10px">Record renewal…</span><span style="width:2px;height:19px;box-shadow:var(--t);flex:none;margin:0 5px"></span><span style="padding:0 9px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center" style-active="box-shadow:var(--s);padding:1px 8px 0 10px">Properties</span><span style="padding:0 9px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center" style-active="box-shadow:var(--s);padding:1px 8px 0 10px">Deactivate</span>
+</div>
+<div style="box-shadow:var(--t);padding:5px 8px;display:flex;align-items:center;gap:9px;margin:0 1px 4px;flex:none;flex-wrap:wrap">
+<span style="display:flex;align-items:center;gap:5px;flex:none"><span style="color:#808080;white-space:nowrap">Find</span><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;width:150px;flex:none;white-space:nowrap;overflow:hidden"></span></span>
+<span style="display:flex;align-items:center;gap:5px;flex:none"><span style="color:#808080;white-space:nowrap">Category</span><span style="box-shadow:var(--s);background:#fff;padding:0 0 0 4px;height:19px;display:inline-flex;align-items:center;gap:4px;width:110px;flex:none"><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">All</span><span style="width:17px;height:17px;flex:none;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;margin:1px"><span style="display:block;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid #000"></span></span></span></span>
+<span style="flex:1"></span>
+<span style="display:flex;align-items:center;gap:6px;flex:none">
+<span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;color:#404040"><span style="width:9px;height:9px;flex:none;background:#E89494;box-shadow:var(--t)"></span>lapsed</span><span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;color:#404040"><span style="width:9px;height:9px;flex:none;background:#F0B778;box-shadow:var(--t)"></span>&lt; 60 d</span><span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;color:#404040"><span style="width:9px;height:9px;flex:none;background:#F5E183;box-shadow:var(--t)"></span>&lt; 120 d</span><span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;color:#404040"><span style="width:9px;height:9px;flex:none;background:#B5E3B5;box-shadow:var(--t)"></span>ok</span>
+</span>
+<span style="width:6px"></span><span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap;flex:none"><span style="width:13px;height:13px;flex:none;box-shadow:var(--s);background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1">✓</span>Show equipment</span><span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap;flex:none"><span style="width:13px;height:13px;flex:none;box-shadow:var(--s);background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1"></span>Show inactive</span>
+</div>
+<div style="flex:1;min-height:0;box-shadow:var(--t);background:#c0c0c0;padding:9px;margin:0 1px;display:flex;gap:9px">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;box-shadow:var(--s);background:#fff">
+<div style="display:grid;grid-template-columns:14px 20px minmax(0,1fr) 124px 100px 92px 64px;background:#c0c0c0;box-shadow:var(--r);flex:none;padding-left:4px">
+<span></span><span></span><span style="padding:5px 6px;text-align:left;color:#404040;letter-spacing:.11em;white-space:nowrap;overflow:hidden;border-right:1px solid #ececec;">NAME ▲</span><span style="padding:5px 6px;text-align:left;color:#404040;letter-spacing:.11em;white-space:nowrap;overflow:hidden;border-right:1px solid #ececec;">ISSUER</span><span style="padding:5px 6px;text-align:left;color:#404040;letter-spacing:.11em;white-space:nowrap;overflow:hidden;border-right:1px solid #ececec;">REFERENCE</span><span style="padding:5px 6px;text-align:left;color:#404040;letter-spacing:.11em;white-space:nowrap;overflow:hidden;border-right:1px solid #ececec;">EXPIRES</span><span style="padding:5px 6px;text-align:right;color:#404040;letter-spacing:.11em;white-space:nowrap;overflow:hidden;">DAYS</span>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding-left:4px">
+<div style="display:grid;grid-template-columns:14px 20px minmax(0,1fr) 124px 100px 92px 64px;background:#dfdfdf;border-top:1px solid #fff;border-bottom:1px solid #c0c0c0;align-items:center">
+<span style="display:flex;align-items:stretch;height:100%"><span style="display:block;width:3px;flex:none;background:#000"></span></span>
+<span style="display:flex;align-items:center;justify-content:center;cursor:default"><span style="width:9px;height:9px;flex:none;border:1px solid #808080;background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1;font-size:9px">−</span></span>
+<span style="padding:4px 6px;font-weight:bold;white-space:nowrap;border-right:1px solid #ececec;">INSURANCE</span>
+<span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span></span>
+</div>
+<div style="display:grid;grid-template-columns:14px 20px minmax(0,1fr) 124px 100px 92px 64px;align-items:center;border-bottom:1px solid #f4f4f4;">
+<span style="display:flex;align-items:stretch;height:100%"><span style="display:block;width:3px;flex:none;background:#000"></span><span style="flex:1;display:flex;align-items:center;padding-left:1px"><span style="display:block;width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:6px solid #000"></span></span></span>
+<span></span>
+<span style="padding:5px 6px 5px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;font-weight:bold;">General liability</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">Acme Mutual</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;border-right:1px solid #ececec;">GL-4471</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;border-right:1px solid #ececec;">14 Nov 2026</span>
+<span style="padding:5px 6px;text-align:right;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;display:flex;justify-content:flex-end"><span style="background:#F5E183;box-shadow:var(--t);color:#000;padding:1px 6px;display:inline-block;white-space:nowrap">62</span></span>
+</div>
+<div style="display:grid;grid-template-columns:14px 20px minmax(0,1fr) 124px 100px 92px 64px;align-items:center;border-bottom:1px solid #f4f4f4;">
+<span style="display:flex;align-items:stretch;height:100%"><span style="display:block;width:3px;flex:none;background:#000"></span></span>
+<span></span>
+<span style="padding:5px 6px 5px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">Workers compensation</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">SCF Arizona</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;border-right:1px solid #ececec;">WC-88120</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;border-right:1px solid #ececec;">01 Jan 2027</span>
+<span style="padding:5px 6px;text-align:right;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;display:flex;justify-content:flex-end"><span style="background:#F5E183;box-shadow:var(--t);color:#000;padding:1px 6px;display:inline-block;white-space:nowrap">110</span></span>
+</div>
+<div style="display:grid;grid-template-columns:14px 20px minmax(0,1fr) 124px 100px 92px 64px;align-items:center;border-bottom:1px solid #f4f4f4;">
+<span style="display:flex;align-items:stretch;height:100%"><span style="display:block;width:3px;flex:none;background:#000"></span></span>
+<span></span>
+<span style="padding:5px 6px 5px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">Commercial auto</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">Acme Mutual</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;border-right:1px solid #ececec;">CA-4472</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;border-right:1px solid #ececec;">14 Nov 2026</span>
+<span style="padding:5px 6px;text-align:right;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;display:flex;justify-content:flex-end"><span style="background:#F5E183;box-shadow:var(--t);color:#000;padding:1px 6px;display:inline-block;white-space:nowrap">62</span></span>
+</div>
+<div style="display:grid;grid-template-columns:14px 20px minmax(0,1fr) 124px 100px 92px 64px;background:#dfdfdf;border-top:1px solid #fff;border-bottom:1px solid #c0c0c0;align-items:center">
+<span></span>
+<span style="display:flex;align-items:center;justify-content:center;cursor:default"><span style="width:9px;height:9px;flex:none;border:1px solid #808080;background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1;font-size:9px">−</span></span>
+<span style="padding:4px 6px;font-weight:bold;white-space:nowrap;border-right:1px solid #ececec;">BONDS</span>
+<span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span></span>
+</div>
+<div style="display:grid;grid-template-columns:14px 20px minmax(0,1fr) 124px 100px 92px 64px;align-items:center;border-bottom:1px solid #f4f4f4;">
+<span></span>
+<span></span>
+<span style="padding:5px 6px 5px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">Contractor licence bond</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">Western Surety</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;border-right:1px solid #ececec;">B-229140</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;border-right:1px solid #ececec;">30 Jun 2027</span>
+<span style="padding:5px 6px;text-align:right;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;display:flex;justify-content:flex-end"><span style="background:#B5E3B5;box-shadow:var(--t);color:#000;padding:1px 6px;display:inline-block;white-space:nowrap">290</span></span>
+</div>
+<div style="display:grid;grid-template-columns:14px 20px minmax(0,1fr) 124px 100px 92px 64px;background:#dfdfdf;border-top:1px solid #fff;border-bottom:1px solid #c0c0c0;align-items:center">
+<span></span>
+<span style="display:flex;align-items:center;justify-content:center;cursor:default"><span style="width:9px;height:9px;flex:none;border:1px solid #808080;background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1;font-size:9px">−</span></span>
+<span style="padding:4px 6px;font-weight:bold;white-space:nowrap;border-right:1px solid #ececec;">LICENCES</span>
+<span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span></span>
+</div>
+<div style="display:grid;grid-template-columns:14px 20px minmax(0,1fr) 124px 100px 92px 64px;align-items:center;border-bottom:1px solid #f4f4f4;">
+<span></span>
+<span></span>
+<span style="padding:5px 6px 5px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">AZ ROC contractor licence</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">AZ ROC</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;border-right:1px solid #ececec;">ROC-334982</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;border-right:1px solid #ececec;">31 Mar 2027</span>
+<span style="padding:5px 6px;text-align:right;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;display:flex;justify-content:flex-end"><span style="background:#B5E3B5;box-shadow:var(--t);color:#000;padding:1px 6px;display:inline-block;white-space:nowrap">199</span></span>
+</div>
+<div style="display:grid;grid-template-columns:14px 20px minmax(0,1fr) 124px 100px 92px 64px;align-items:center;border-bottom:1px solid #f4f4f4;">
+<span></span>
+<span></span>
+<span style="padding:5px 6px 5px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">Mesa business licence</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">City of Mesa</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;border-right:1px solid #ececec;">BL-9921</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;border-right:1px solid #ececec;">31 Dec 2026</span>
+<span style="padding:5px 6px;text-align:right;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;display:flex;justify-content:flex-end"><span style="background:#F5E183;box-shadow:var(--t);color:#000;padding:1px 6px;display:inline-block;white-space:nowrap">109</span></span>
+</div>
+<div style="display:grid;grid-template-columns:14px 20px minmax(0,1fr) 124px 100px 92px 64px;background:#dfdfdf;border-top:1px solid #fff;border-bottom:1px solid #c0c0c0;align-items:center">
+<span></span>
+<span style="display:flex;align-items:center;justify-content:center;cursor:default"><span style="width:9px;height:9px;flex:none;border:1px solid #808080;background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1;font-size:9px">−</span></span>
+<span style="padding:4px 6px;font-weight:bold;white-space:nowrap;border-right:1px solid #ececec;">CLASSIFICATIONS</span>
+<span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span></span>
+</div>
+<div style="display:grid;grid-template-columns:14px 20px minmax(0,1fr) 124px 100px 92px 64px;align-items:center;border-bottom:1px solid #f4f4f4;">
+<span></span>
+<span></span>
+<span style="padding:5px 6px 5px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">ROC A-14 · Fencing</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">AZ ROC</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;border-right:1px solid #ececec;color:#808080;">—</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;border-right:1px solid #ececec;color:#808080;">—</span>
+<span style="padding:5px 6px;text-align:right;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;color:#808080;">—</span>
+</div>
+<div style="display:grid;grid-template-columns:14px 20px minmax(0,1fr) 124px 100px 92px 64px;background:#dfdfdf;border-top:1px solid #fff;border-bottom:1px solid #c0c0c0;align-items:center">
+<span></span>
+<span style="display:flex;align-items:center;justify-content:center;cursor:default"><span style="width:9px;height:9px;flex:none;border:1px solid #808080;background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1;font-size:9px">−</span></span>
+<span style="padding:4px 6px;font-weight:bold;white-space:nowrap;border-right:1px solid #ececec;">EQUIPMENT</span>
+<span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span></span>
+</div>
+<div style="display:grid;grid-template-columns:14px 20px minmax(0,1fr) 124px 100px 92px 64px;align-items:center;border-bottom:1px solid #f4f4f4;">
+<span></span>
+<span></span>
+<span style="padding:5px 6px 5px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">2012 Ford F-450 · registration</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">AZ MVD</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;border-right:1px solid #ececec;color:#808080;">—</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;border-right:1px solid #ececec;">31 Jan 2027</span>
+<span style="padding:5px 6px;text-align:right;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;display:flex;justify-content:flex-end"><span style="background:#B5E3B5;box-shadow:var(--t);color:#000;padding:1px 6px;display:inline-block;white-space:nowrap">140</span></span>
+</div>
+<div style="display:grid;grid-template-columns:14px 20px minmax(0,1fr) 124px 100px 92px 64px;align-items:center;border-bottom:1px solid #f4f4f4;color:#a00;">
+<span></span>
+<span></span>
+<span style="padding:5px 6px 5px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">2012 Ford F-450 · DOT inspection</span>
+<span style="padding:5px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">AZ DPS</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;border-right:1px solid #ececec;color:#808080;">—</span>
+<span style="padding:5px 6px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;border-right:1px solid #ececec;">30 Aug 2026</span>
+<span style="padding:5px 6px;text-align:right;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;display:flex;justify-content:flex-end"><span style="background:#E89494;box-shadow:var(--t);color:#000;padding:1px 6px;display:inline-block;white-space:nowrap"><b>−14</b></span></span>
+</div>
+</div>
+</div>
+<div style="width:330px;flex:none;box-shadow:var(--r);background:#c0c0c0;padding:9px 9px 8px;display:flex;flex-direction:column;gap:9px;min-height:0">
+<div style="flex:none">
+<div style="font-size:12px;font-weight:bold;line-height:1.25">General liability</div>
+<div style="color:#404040;padding-top:2px">Insurance · Acme Mutual · renews annually</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:9px">
+<div style="flex:none">
+<div style="color:#404040;letter-spacing:.11em;padding:0 0 3px;white-space:nowrap">COVER</div>
+<div style="box-shadow:var(--s);background:#fff;padding:5px 7px"><div style="line-height:1.5"><span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;">$2,000,000</span> each occurrence · <span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;">$4,000,000</span> aggregate</div></div>
+</div>
+<div style="flex:none">
+<div style="color:#404040;letter-spacing:.11em;padding:0 0 3px;white-space:nowrap">CURRENT TERM</div>
+<div style="box-shadow:var(--s);background:#fff;padding:5px 7px"><div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap">15 Nov 2025 &nbsp;→ &nbsp;14 Nov 2026</span><span style="flex:1"></span><span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap">62 days left</span></div>
+<div style="padding-top:3px;line-height:1.5">Policy <span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;">GL-4471</span> · <span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;">$4,180.00 /yr</span></div>
+<div style="padding-top:2px;color:#000080;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">certificate-GL-4471.pdf</div></div>
+</div>
+<div style="flex:none">
+<div style="color:#404040;letter-spacing:.11em;padding:0 0 3px;white-space:nowrap">RENEWAL HISTORY</div>
+<div style="box-shadow:var(--s);background:#fff;padding:5px 7px"><div style="display:grid;grid-template-columns:minmax(0,1fr) 84px 60px;gap:0 8px;align-items:baseline;padding:2px 0">
+<span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap">14 Nov 2025</span>
+<span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;text-align:right;white-space:nowrap">$4,180.00</span>
+<span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;text-align:right;white-space:nowrap;color:#404040">+6.1%</span></div>
+<div style="display:grid;grid-template-columns:minmax(0,1fr) 84px 60px;gap:0 8px;align-items:baseline;padding:2px 0">
+<span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap">14 Nov 2024</span>
+<span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;text-align:right;white-space:nowrap">$3,940.00</span>
+<span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;text-align:right;white-space:nowrap;color:#404040">+4.2%</span></div>
+<div style="display:grid;grid-template-columns:minmax(0,1fr) 84px 60px;gap:0 8px;align-items:baseline;padding:2px 0">
+<span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap">14 Nov 2023</span>
+<span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;text-align:right;white-space:nowrap">$3,782.00</span>
+<span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;text-align:right;white-space:nowrap;color:#808080">—</span></div>
+<div style="color:#404040;line-height:1.5;padding-top:4px;border-top:1px solid #ececec;margin-top:4px">A premium rising 6% a year is only visible when the renewals sit in one place.</div></div>
+</div>
+<div style="flex:none">
+<div style="color:#404040;letter-spacing:.11em;padding:0 0 3px;white-space:nowrap">REMINDS</div>
+<div style="box-shadow:var(--s);background:#fff;padding:5px 7px"><div style="white-space:nowrap">60 days before expiry</div></div>
+</div>
+</div>
+<div style="display:flex;gap:5px;flex:none"><span style="flex:1;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center" style-active="box-shadow:var(--s)">Record renewal…</span><span style="flex:1;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center" style-active="box-shadow:var(--s)">Edit tracker…</span></div>
+</div>
+</div>
+<div style="display:flex;gap:3px;flex:none;padding-top:4px;margin:0 1px">
+<div style="box-shadow:var(--t);padding:3px 8px;flex:1;min-width:0;overflow:hidden;display:flex;align-items:center;gap:12px">
+<span style="color:#a00;white-space:nowrap;cursor:default">⚠ Lapsed <span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;">1</span></span>
+<span style="color:#a00;white-space:nowrap;cursor:default">⚠ Expiring &lt; 60 days <span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;">0</span></span>
+<span style="color:#808080;white-space:nowrap;cursor:default"><span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;">8</span> tracked</span>
+</div>
+<div style="box-shadow:var(--t);padding:3px 8px;width:280px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">next renewal — General liability, <span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;">14 Nov 2026</span></div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1060,&quot;height&quot;:660}}">
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

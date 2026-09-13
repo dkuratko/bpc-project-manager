@@ -113,6 +113,22 @@ rule.
 
 ---
 
+## 3b · A tinted CHIP is not a tinted ROW
+
+```
+ROW TINT   reserved for the status ramp — a progression through a job's
+           life, where RED MEANS FINISHED. docs/08.
+CHIP       a tinted chip measures whatever it sits beside, and red is the
+           bad end of THAT scale.
+```
+
+The record dialogs tint a status chip; the Trackers window tints a countdown
+chip where red means *lapsed*. **Neither contradicts the ramp**, because a row
+is never tinted in either case.
+
+**Do not "fix" one to match the other.** If a screen ever wants a tinted row
+for severity, that is the conflict — not this.
+
 ## 4 · Excluded rows stay visible
 
 A row that is deliberately **not** counted renders in `#808080` with `—` in the

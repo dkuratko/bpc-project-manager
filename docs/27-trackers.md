@@ -70,6 +70,7 @@ title bar    Trackers
 menu         File  Edit  View  Tracker  Window  Help
 toolbar      New tracker · Record renewal… ‖ Properties · Deactivate
 filter band  Find [              ]   Category [ All      ▼ ]
+             right: lapsed · within reminder · approaching · ok  — legend
              ☐ Show equipment   ☐ Show inactive
 status bar   left:  ⚠ Lapsed 1 · ⚠ Expiring < 60 days 0 · 8 tracked
              right: next renewal — General liability, 14 Nov 2026
@@ -109,6 +110,40 @@ gutter ±   NAME                        ISSUER              REFERENCE      EXPIR
 
 **The cursor is on `General liability`** — `▶` in the gutter and a 3 px spine
 down the whole `INSURANCE` group.
+
+### ★ The `DAYS` chip — a countdown band
+
+Every countdown sits in a tinted chip, `var(--t)` bevel, so the list is
+scannable without reading a single number:
+
+```
+lapsed             #E89494   past its date
+within reminder    #F0B778   inside this item's own lead time
+approaching        #F5E183   inside twice its lead time
+ok                 #B5E3B5   beyond that
+```
+
+**The bands are relative to each item's `lead_days`, not a fixed 60.** A
+licence that wants 90 days' notice should turn orange at 90, not at 60 — which
+is the only thing that makes `lead_days` do visible work. Every item in the
+render uses the default 60, so the colours come out identically either way.
+
+A legend sits right-aligned in the filter band: `lapsed · within reminder ·
+approaching · ok`. **No numbers in it**, because with per-item lead times there
+is no single number that is true.
+
+#### This does not contradict the status ramp
+
+`docs/08` says a **red row always means finished**. Here red means lapsed, and
+the two do not fight because **the colour is on a chip, not a row**:
+
+```
+ROW TINT   the status ramp. a progression through a job's life.
+CHIP       whatever that chip measures — red is the bad end of its scale.
+```
+
+The record dialogs already tint status chips this way. Keep the distinction:
+a tracker row is never tinted.
 
 ### The DOT inspection row is `#a00` throughout
 
@@ -222,7 +257,11 @@ the rising premium is visible.
 
 - **A second table for equipment compliance.** One `trackers` table.
 - **An empty cell where a thing does not expire.** `—`, never blank.
-- **A negative countdown in ordinary black.** The row is `#a00`.
+- **A negative countdown in ordinary black.** The row is `#a00` and its chip
+  is `#E89494`.
+- **Tinting a tracker ROW.** The chip carries the colour; rows stay white.
+- **Fixed 60/120 day bands.** They key off each item's own `lead_days`.
+- **Numbers in the legend.** Lead times differ per item.
 - **A lapsed tracker lipping project rows.** Company obligations are not
   version problems.
 - **Renewal by editing the expiry date.** It loses the history.

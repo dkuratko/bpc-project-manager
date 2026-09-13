@@ -118,6 +118,7 @@ docs/design/component-wizard.final.dc.html` | — |
 | # | Screen | Kind | Status | File | Brief |
 |---|---|---|---|---|---|
 | — | New Project | POPUP | **✔ FINAL v2** | `docs/design/new-project.v2.dc.html` | `12` |
+| — | Trackers | MAIN · list + detail | **✔ FINAL v1** | `docs/design/trackers.v1.dc.html` | `27` |
 | — | Schedule… | POPUP | **✔ FINAL v1** | `docs/design/schedule-dialog.v1.dc.html` | `24` |
 | — | Invoice… · sent + paid | POPUP | **✔ FINAL v1** | `docs/design/invoice-dialog.v1.dc.html` | `26` |
 | — | Invoice… · progress billing + Add a draw | POPUP | **✔ FINAL v2** | `docs/design/invoice-progress-billing.v2.dc.html` | `26` |
@@ -196,6 +197,14 @@ job before any delivery:
 `⚠ no equipment received` stays too — it is now literally true rather than
 contradicting the box above it.
 
+**Trackers v1** — one, when convenient:
+
+1. The `DAYS` chip bands are fixed at 60/120. They should key off each item's
+   own `lead_days`, so a licence wanting 90 days' notice turns orange at 90.
+   Every sample item uses the default 60, so the render's colours are already
+   correct — only the rule behind them changes. The legend loses its numbers
+   and reads `lapsed · within reminder · approaching · ok`.
+
 **Supplier v3** — one:
 
 1. The `★` glyphs render black. New Project has them `#a00`.
@@ -260,7 +269,6 @@ contradicting the box above it.
 
 ```
 NOT DESIGNED
-  ◐ TRACKERS             docs/27   everything that renews. briefed.
   ▢ CATALOG BROWSER      MAIN      the last dense screen. docs/14's facet
                                    variant was designed for it.
   ▢ INVOICE              document  follows estimate v12's box grammar
