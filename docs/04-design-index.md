@@ -130,7 +130,7 @@ docs/design/component-wizard.final.dc.html` | — |
 | — | Fuel prices | POPUP | v6 accepted | `docs/design/equipment-render2.v6.dc.html` | `18` |
 | — | Supplier · new + properties | POPUP | briefed, awaiting render | — | `18` |
 | — | New type / categories | POPUP | **not designed** | — | `18` |
-| — | Rental offering properties | POPUP | outlined only | — | `18` |
+| — | Rental offering · new + properties | POPUP | briefed, awaiting render | — | `18` |
 | — | Contacts | MAIN · list | **✔ FINAL v2** | `docs/design/contacts.v2.dc.html` | `14` + `15` |
 
 Its dialog grammar — the `100px 1fr` field grid, read-only values as `#c0c0c0`

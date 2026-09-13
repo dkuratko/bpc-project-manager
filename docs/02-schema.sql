@@ -204,9 +204,21 @@ CREATE TABLE equipment_sourcing_methods (
   -- never overwrites it — one invoice is a data point about a price, not a new
   -- price. The Rented tab counts the rows where they disagree.
   last_paid_rate      REAL,
-  last_paid_at        TEXT,
+  last_paid_at        TEXT,                 -- the RENTAL date, not the entry
   last_paid_version_id TEXT REFERENCES versions(id),
-  rate_confirmed_at   TEXT,
+  last_paid_source    TEXT CHECK(last_paid_source IN ('post_cost','typed',NULL)),
+  last_paid_recorded_at TEXT,
+  -- WRITE RULE: the most recent last_paid_at wins, whatever wrote it. Posting
+  -- an August job must not walk over a September figure typed last week, and
+  -- neither source is inherently "better" — they are just differently
+  -- evidenced, which is why the dialog shows which one it was.
+  rate_confirmed_at   TEXT,                 -- stamped by "Confirm today"
+                                            -- WITHOUT changing the rate: the
+                                            -- only other way to clear the
+                                            -- unconfirmed counter is to edit a
+                                            -- correct number, which teaches
+                                            -- people to fake data to silence
+                                            -- an alarm.
   -- RENTED only. 'delivered' means their truck brings it and it never touches
   -- your trailer; 'collected' means you fetch it and it IS load — weight,
   -- dimensions and trips. Overtypeable per job. See docs/06.
@@ -1185,6 +1197,10 @@ CREATE TABLE actual_entries (
   id             TEXT PRIMARY KEY,
   post_cost_id   TEXT NOT NULL REFERENCES post_costs(id),
   cost_object_id TEXT REFERENCES cost_objects(id),  -- NULL = job level
+  sourcing_method_id TEXT REFERENCES equipment_sourcing_methods(id),
+                 -- set on a rental invoice, so closing out a job updates that
+                 -- offering's last_paid. The same feedback loop
+                 -- rate_observations runs on catalog rates. See docs/18.
   cost_type      TEXT NOT NULL CHECK(cost_type IN ('labor','equipment','procurement','product','disposition')),
   description    TEXT NOT NULL,
   source         TEXT,                      -- 'concrete ticket #44821' · 'payroll wk 38'

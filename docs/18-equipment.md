@@ -1097,20 +1097,129 @@ Nothing after `</x-dc>`. One well-formed document.
 
 ---
 
-## POPUP · Rental offering properties — specified, not rendered
+## POPUP · Rental offering  ★ RENDER 7, both states
+
+`New offering` / `Offering properties — 64' boom lift`. Short form,
+**New Project's dialog grammar**, 600 px.
+
+### Group box · "Identify it"
 
 ```
-Supplier    [ United Rentals                          ▼ ]   ★
-Type        [ 64' boom lift                           ▼ ]   ★
-Rate        [ $485.00 ] per [ day ▼ ]
-Minimum     [ 1 ] days
-Fees        Delivery   [ $150.00 ]  flat                       ✕
-            Pickup     [ $150.00 ]  flat                       ✕
-            ＋ Add a fee
+Supplier    [ United Rentals                       ▼ ]   ★
+Type        [ 64' boom lift                        ▼ ]   ★
+Move        ◉ Delivered    ○ Collected
 ```
 
-`per` lists `hour · day · week · month` — **never `mile`**. Fee rows stack with
-`＋` / `✕`, exactly like New Project's contacts rows.
+**Choosing `Collected` when the type has no shipping weight is an alarm:**
+
+```
+            ⚠ 64' boom lift has no shipping weight. A collected rental
+              rides your trailer and the mobilization panel cannot
+              count it.                        [ Set it on the type… ]
+```
+
+A collected rental is load. The moment you choose `Collected` is when that gap
+is cheapest to notice — not when a trip count comes out wrong three weeks later.
+
+### Group box · "Rates"
+
+```
+BASIS      RATE            MINIMUM
+day        [ $485.00 ]     [ 1 ] day        ✕
+week       [ $1,455.00 ]   [ — ]            ✕
+＋ Add a rate
+                           cheaper from 4 days
+
+Confirmed  [ 14 Mar 2026 ]              [ Confirm today ]
+```
+
+**Most offerings have one row.** `BASIS` is `day · week · month`, one row each
+at most. `cheaper from 4 days` is derived and grey: `4 × 485 = $1,940` against
+`$1,455`.
+
+#### `Confirm today` stamps the date without touching the rate
+
+You rang them, the price is still `$485.00`, and
+`Card unconfirmed 12 months` should stop nagging. **Without this the only way
+to clear the counter is to edit a number that is already correct**, which
+teaches people to fake the data to silence the alarm.
+
+### Group box · "Fees"
+
+```
+NAME             BASIS      AMOUNT
+Delivery         flat       [ $150.00 ]     ✕
+Pickup           flat       [ $150.00 ]     ✕
+Damage waiver    percent    [ 12.0 ] %      ✕
+＋ Add a fee
+```
+
+`BASIS` is `flat · per period · percent`. A percent fee is of the **rental
+base** — rate × periods — before other fees, so two percent fees never compound.
+
+An extensible list, not fixed columns: environmental fees, fuel surcharges and
+cleaning charges are all somebody's line item, and the next one should be data
+entry.
+
+### Group box · "Last paid"
+
+```
+Rate        [ $520.00 ] /day
+When        [ 22 Aug 2026 ]      on  26-09A0
+            from post cost · recorded 04 Sep 2026
+⚠ Card is $35.00 under the last invoice
+```
+
+#### It is normally written for you
+
+**Post cost writes it.** Closing out a job records the real rental invoice, and
+that is the same feedback loop `rate_observations` already runs on catalog
+rates — you are not entering a number twice that is already on paper.
+
+It is **typeable here** for the gap in between: the invoice arrives long before
+the job gets posted, and a card you know is stale should not have to wait.
+
+```
+from post cost · recorded 04 Sep 2026     written by closing out 26-09A0
+typed · 12 Sep 2026                       you entered it by hand
+```
+
+**The provenance line is not decoration.** A post-costed figure is tied to a
+job and reconciles against an invoice; a typed one is what you remembered. They
+should not look identical.
+
+#### The most recent rental wins, whatever wrote it
+
+Post-costing an August job must not overwrite a September figure you typed last
+week. **The comparison is on the rental date, never on which source is
+"better"** — otherwise closing out old jobs would quietly walk the evidence
+backwards.
+
+### Properties mode only
+
+```
+Added       [ 11 Feb 2025 ]  read-only chip   ·  Status  Active
+Rented on   [ 6 ]  read-only chip             ·  Cannot be deleted
+```
+
+### Render 7 — two panels
+
+Two 600 px dialogs side by side on a `rgba(0,0,0,.42)` scrim, 18 px apart,
+top-aligned. Captions in `#fff` bold 11 px:
+
+```
+NEW — a blank form, showing the collected-with-no-weight alarm
+PROPERTIES — the same dialog, reopened
+```
+
+Left: `New offering`, `Supplier` and `Type` empty, **`Move` on `Collected`
+with the alarm showing**, one blank rate row, no fees, `Last paid` box absent —
+there is nothing to have paid yet. Buttons `Create` 110 px · `Cancel` 78 px.
+
+Right: `Offering properties — 64' boom lift`, filled exactly as above, `Move`
+on `Delivered` so no alarm. Buttons `OK` 110 px · `Cancel` 78 px.
+
+Nothing after `</x-dc>`. One well-formed document.
 
 ---
 
