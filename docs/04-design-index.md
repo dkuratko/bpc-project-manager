@@ -232,16 +232,27 @@ Grid becomes `14px 20px minmax(0,1fr) 148px 108px 200px 36px 64px`.
 1. Ashley's `Notes` box reads **`Sends POs on Fridays.`**, matching the note the
    Contacts screen strip shows for her. One person, two documents, one note.
 
-## Not yet designed
+## Still to do — as of 12 Sep 2026
 
 ```
-MAIN    ▢ VERSION VIEW
-        ▢ CATALOG BROWSER   ▢ CONTACTS           ▢ ACTIVE VERSIONS LIST
-        ▢ CALENDAR          ▢ SHIPMENTS          ▢ POST COST
+SPECIFIED, NOT RENDERED          the brief is written; nobody has drawn it
+  ▢ Schedule…            docs/17   the status model's signature case:
+                                   green SCHEDULED with a red lip
+  ▢ Record shipment…     docs/17
+  ▢ Invoice…             docs/17   sent → paid, and the warranty clock
+  ▢ New type             docs/18   a name and an is_vehicle checkbox
 
-POPUP   ▢ NEW PROJECT       ▢ NEW ADD OPTION     ▢ NEW GROUP
-        ▢ NEW SERVICE       ▢ NEW ASSEMBLY       ▢ SERVICE RATE TABLE
-        ▢ RECORD APPROVAL   ▢ RECORD SHIPMENT
+NOT DESIGNED
+  ▢ CATALOG BROWSER      MAIN      the last dense screen. docs/14's facet
+                                   variant was designed for it.
+  ▢ INVOICE              document  follows estimate v12's box grammar
+  ▢ POST COST            document  mirrors the cost breakdown
+  ▢ ACTIVE VERSIONS      MAIN · list
+  ▢ SHIPMENTS            MAIN · list
+  ▢ CALENDAR             MAIN
+  ▢ catalog popups                 new service · new assembly ·
+                                   service rate table · new group ·
+                                   new add option
 ```
 
 ---
