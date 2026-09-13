@@ -1089,12 +1089,22 @@ CREATE TABLE approval_lines (
 -- Default: one invoice at completion (90% of jobs).
 -- Optional negotiated draws. Change orders roll into the FINAL invoice, so
 -- the denominator never moves.
+-- A DRAW IS NOT THE INVOICE. A deposit goes out before anyone turns up, so
+-- only the FINAL draw moves the status to INVOICE SENT and starts the warranty
+-- clock — otherwise you would be covering a job you have not built. Every
+-- earlier draw leaves the version exactly where it was. See docs/26.
+--
+-- The scheduled amounts must sum to the job. When they do not, the dialog says
+-- so: a billing schedule that falls short is money nobody will ever invoice.
 CREATE TABLE billing_draws (
   id           TEXT PRIMARY KEY,
   version_id   TEXT NOT NULL REFERENCES versions(id),
   sequence_no  INTEGER NOT NULL,
   label        TEXT NOT NULL,               -- "Deposit" · "Final"
-  percent      REAL, amount REAL,
+  percent      REAL, amount REAL,           -- percent is how it is AGREED;
+                                            -- amount follows, or is typed for
+                                            -- a negotiated figure
+  is_final     INTEGER NOT NULL DEFAULT 0,  -- the one that starts the warranty
   trigger_note TEXT,
   document_id  TEXT REFERENCES documents(id),
   UNIQUE(version_id, sequence_no)

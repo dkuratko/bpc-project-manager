@@ -91,16 +91,7 @@ On the **SENT** panel it is empty. On the **PAID** panel it reads
 **Unticked in both rendered panels.** Most jobs bill once, and an unticked box
 shows nothing beneath it.
 
-Ticked, it reveals:
-
-```
-☑ This is one draw of several
-  Draw    [ 1 ] of [ 3 ]      Label [ Deposit ]
-          Reference becomes  BPCi-26-09A0-1/3
-```
-
-The suffix is the numbering rule already settled: an invoice does not need
-every classifier, so a draw is `-1/3` on the end.
+Ticked, it reveals the schedule — **see the separate section below.**
 
 ---
 
@@ -153,6 +144,110 @@ and a paid job in warranty is finished, which is exactly what the ramp is for.
 
 ---
 
+## PROGRESS BILLING — render 11, its own panel
+
+Ticking the box turns the dialog into one draw of several, and that changes
+more than a reference suffix.
+
+```
+☑ This is one draw of several
+
+  Draw       [ 2 ] of [ 3 ]        Label  [ Progress ]
+             Reference becomes  BPCi-26-09A0-2/3
+
+  DRAW   LABEL       AMOUNT        SENT           PAID
+  1/3    Deposit     $12,981.00    14 Aug 2026    28 Aug 2026
+  2/3    Progress    $17,308.00    25 Sep 2026    —            ← this one
+  3/3    Final       $12,981.00    —              —
+  ＋ Add a draw…
+  ────────────────────────────────────────────────────────────
+         Scheduled                 $43,270.00     matches the job
+```
+
+`12,981 + 17,308 + 12,981 = 43,270.00`, which is the job. **When they do not
+match, the footer says so in `#a00`** — `⚠ draws total $41,000.00 · $2,270.00
+short of the job` — because a billing schedule that does not add up to the work
+is money you will never send an invoice for.
+
+### ★ A DRAW IS NOT THE INVOICE
+
+This is the thing drawing it exposed, and the brief had it wrong.
+
+**The warranty clock starts when the invoice is sent** — but with draws, *which*
+invoice? A deposit goes out before anyone turns up. If it started the warranty,
+you would be covering a job you have not built.
+
+```
+draw 1 of 3    a deposit. the job has not started.
+draw 2 of 3    progress. the crew is on site.
+draw 3 of 3    THE INVOICE. warranty starts here.
+```
+
+**Only the final draw moves the status and starts the clock.** Every earlier
+one leaves the job exactly where it was — the same shape as `Record shipment…`,
+where three of four outcomes hold the status.
+
+### The Warranty box on a non-final draw
+
+```
+Starts      —  not yet
+            the clock starts when draw 3 of 3 is sent
+Length      [ 12 ] months
+Expires     —
+```
+
+`Starts` and `Expires` are `—`, **not `[?]`**. This is not unknown, it is *not
+applicable yet* — `docs/22`'s distinction, and exactly the case it exists for.
+
+### `Amount` is the draw, not the job
+
+```
+Amount      [ $17,308.00 ]
+            draw 2 of 3 · job total $43,270.00
+```
+
+### The schedule is display-only
+
+`docs/12`'s rule. `DRAW`, `SENT` and `PAID` are **derived** — sent and paid come
+from opening each draw's own invoice — so only `LABEL` and `AMOUNT` are ever
+typed, in a 480 px row editor:
+
+```
+Add a draw — 26-09A0
+  Label     [ Progress ]      ★
+  Amount    ◉ Percent  [ 40.0 ] %   →  $17,308.00
+            ○ Fixed    [            ]
+```
+
+**Percent first**, because that is how a billing schedule is agreed — "30 on
+signing, 40 at rough-in, 30 on completion" — and the dollars follow. A fixed
+amount is there for the job where someone negotiated a number.
+
+### Status preview — `status does not change`
+
+```
+📋 26-09A0 — status does not change
+
+   ACTIVE   since 22 Sep 2026
+   ─────────
+   A draw is not the invoice. The job stays ACTIVE and the warranty clock
+   does not start until draw 3 of 3 goes out.
+```
+
+Chip ground `#F5E183`, the ramp's yellow for `ACTIVE`. **No lip** — a
+mid-job draw is not a problem.
+
+### Render 11 — one panel
+
+`Invoice — 26-09A0`, 600 px, alone on a `rgba(0,0,0,.42)` scrim, progress
+billing **ticked**, everything as above. Caption in `#fff` bold 11 px:
+
+```
+PROGRESS BILLING — draw 2 of 3, and the warranty has not started
+```
+
+---
+
 ## ★ A model inconsistency this dialog exposes
 
 `00-TREE` §1 lists **`COMPLETED, PAID`** as a status. **Nothing can ever
@@ -200,6 +295,12 @@ so its button still reads `Record`, not `OK`.
 - **`COMPLETED, PAID` on the PAID panel.** The derivation says `WARRANTY`.
 - **A lip on either chip.** Neither state is a problem.
 - **Progress billing expanded** while its box is unticked.
+- **A non-final draw moving the status** or starting the warranty.
+- **`[?]` in the Warranty box on a non-final draw.** It is `—`: not
+  applicable yet, not unknown.
+- **A draw schedule that does not sum to the job**, shown without an alarm.
+- **Typing `SENT` or `PAID` in the schedule.** They come from each draw's
+  own invoice.
 - **`OK` on the reopened panel.** It records; it does not close a form.
 - **Receivables features** — ageing, reminders, part payments. QuickBooks.
 - **11 px type**, or a date without its year.
