@@ -166,6 +166,13 @@ Grid becomes `14px 20px minmax(0,1fr) 148px 108px 200px 36px 64px`.
    rate, so the dropdown names the unit: `Ford F-450 · Truck 2`. Rentals read
    as before, by supplier. See `docs/18`.
 
+**Equipment properties tabs v2** — one:
+
+1. The `General` tab's **Compliance** list is a row of inputs. It becomes
+   display only with `＋ Add an item…` opening a 480 px row editor —
+   `docs/12`'s rule. `EXPIRES` and `STATUS` are computed and stay off the
+   popup.
+
 **Equipment Rented v1** — one:
 
 1. `New type` is missing from the toolbar. The Owned tab has it and types are

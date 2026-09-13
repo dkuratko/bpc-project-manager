@@ -537,6 +537,12 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
 ✔ ESTIMATE EDITOR — FINAL v12 (MAIN)
 ✔ PROJECT BROWSER — FINAL v14 (MAIN, the frame)
 ✔ VERSION VIEW — FINAL v3 (MAIN)
+✔ NO ROWS OF INPUTS — adopted, see docs/12. at most ONE free-text or
+     numeric input per row in any dialog or property sheet; pickers and
+     checkboxes do not count. over that, the row is DISPLAY ONLY and a
+     480 px ROW EDITOR POPUP does the typing. a row of three
+     heterogeneous fields is a form pretending to be a table.
+     document editors are exempt — editing rows in place is their job.
 ✔ NEW PROJECT — FINAL v2 (POPUP)
      its dialog grammar is the template for every popup that follows:
      100px/1fr field grid · read-only values as #c0c0c0 chips · grey
