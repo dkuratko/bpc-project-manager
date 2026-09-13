@@ -23,6 +23,10 @@ Apply `03f-money-formatting.md` and `11-date-formatting.md`.
 Three panes inside one sunken inset panel. No dialogs open, no menu open.
 Window **1180 × 640**.
 
+**Render 3 · the log entry dialog**, two 600 px panels side by side.
+
+**Render 4 · the sheet's other three tabs**, three 980 px panels stacked.
+
 **Render 2 · everything together, in TWO ROWS on one canvas.**
 
 ```
@@ -432,37 +436,65 @@ fits the trailer, not that the truck can pull it. **A spec earns a typed field
 the day the engine reads it, and not before.** If the fit check later gains a
 tow check, tow rating is promoted then.
 
-### Tab 1 · General — not rendered
+### The sheet's settled grammar — v5, with one correction
+
+v5 rendered at **980 px with group boxes and floating legends**, not the caps
+labels over white boxes this brief first asked for. **That stands.** Group
+boxes *are* the Win2000 property-sheet idiom, tables need the width, and it
+reads correctly beside the 6b reference. The earlier instruction is withdrawn.
+
+**One correction: type is 10 px Tahoma with `letter-spacing: .05em`.** v5 set
+`11px` and `letter-spacing: normal`. Every other window in this application is
+10 px — the project browser, contacts, the equipment window directly above it —
+and a property sheet in a different size reads as a different program. Three
+more tabs at 11 px would cement it, which is why it is worth fixing now.
+
+Everything else from v5 carries: 980 px, group boxes, bevelled table headers,
+`OK` · `Cancel` · `Apply` at 78 px each.
+
+**Today, for every derived day-count on this sheet, is 11 Sep 2026** — the date
+v5's figures were computed against. Keep them.
+
+### Tab 1 · General — ★ render 4
+
+Two boxes across the top in a `1fr 300px` grid, then compliance full width.
 
 ```
-IDENTITY
-┌──────────────────────────────────────────────────────────┐
-│ Type          [ Ford F-450                        ▼ ]  ★ │
-│ Category        Trucks                from the type      │
-│ Label         [ Truck 2 ]             optional nickname  │
-│ VIN           [ 1FDUF4HT5NEC00001 ]                   ★  │
-│ In service    [ 14 Mar 2024 ]        Status  Active      │
-│ Registration  [ 31 Jan 2027 ]        expires             │
-└──────────────────────────────────────────────────────────┘
-
-FIT — THE ONLY SPECS THE ENGINE READS
-┌──────────────────────────────────────────────────────────┐
-│ Capacity  [ 4,800 ] lb     Deck  [ 9.0 ] × [ 7.0 ] ft    │
-│ these three belong to the TYPE — editing them changes    │
-│ every unit of it                                          │
-└──────────────────────────────────────────────────────────┘
+┌ Identity ───────────────────────────┐ ┌ Fit — what mobilization checks ──┐
+  Type       [ Ford F-450        ▼ ] ★    Capacity  [ 4,800 ] lb
+  Category     Trucks   from the type     Deck      [ 9.0 ] × [ 7.0 ] ft
+  Label      [ Truck 2 ]   nickname
+  VIN        [ 1FDUF4HT5NEC00001 ]  ★     These three belong to the TYPE.
+  In service [ 14 Mar 2024 ]              Editing them changes every unit
+  Status       Active                     of it. Blank on anything that is
+                                          not a vehicle.
+                                          ☑ Default unit for Ford F-450
 ```
 
-Mobilization checks weight, length and width independently: a 22 ft post bundle
-needs a long deck whatever it weighs. Blank on anything that is not a vehicle.
+```
+┌ Compliance ──────────────────────────────────────────────────────────────┐
+  ITEM             LAST          EVERY        EXPIRES       STATUS
+  Registration     01 Feb 2026   12 months    31 Jan 2027   142 days        ✕
+  DOT inspection   30 Aug 2025   12 months    30 Aug 2026   12 days over    ✕
+  Insurance        01 Jan 2026   12 months    31 Dec 2026   111 days        ✕
+  ＋ Add an item
+```
 
-`Category` is a chip because it belongs to the **type** — two F-450s cannot sit
-in two different categories.
+The `DOT inspection` row is **`#a00` throughout**, `STATUS` reading
+`12 days over` in bold. It is the row the window's
+`Registration expiring < 60 days` counter and v5's `Current state` table are
+both pointing at.
 
-The `Fit` box carries a grey note: **these three belong to the type**, so
-editing them changes every unit of it.
+**Compliance is a list, not three fields.** Registration, DOT inspection and
+insurance are the ones you have today; the fourth is data entry, not a
+migration. `EXPIRES` is `LAST + EVERY` and is computed, so logging a renewal
+moves it without anyone typing a date twice.
 
-### Tab 2 · Maintenance — ★ RENDER THIS TAB
+**`Plate` is not here.** It is a specification — see below — because nothing
+reads it. VIN is a column because it identifies the unit in a list; a plate
+does not.
+
+### Tab 2 · Maintenance — rendered at v5
 
 ```
 DUE
@@ -522,66 +554,99 @@ log always looks cheap.
 This is the same loop post cost runs on the catalog's rate tables, which is
 what makes it feel like the rest of the application rather than a bolt-on.
 
-### Tab 3 · Specifications — not rendered
-
-**Two boxes, because scope matters.** Editing `Year` changes it for every
-F-450; editing `Licence plate` does not.
+### Tab 3 · Specifications — ★ render 4
 
 ```
-┌ All Ford F-450s ─────────────────────────────────────────┐
-  NAME                  VALUE                    UNIT
-  Make                  Ford                                  ✕
-  Model                 F-450 Super Duty                      ✕
-  Year                  2022                                  ✕
-  Fuel                  Diesel                                ✕
-  Tow rating            16,000                   lb           ✕
-  GVWR                  14,000                   lb           ✕
-  Bed length            8.0                      ft           ✕
+┌ All Ford F-450s ─────────────────────────────────────────────────────────┐
+  NAME                VALUE                        UNIT
+  Make                Ford                                                  ✕
+  Model               F-450 Super Duty                                      ✕
+  Year                2022                                                  ✕
+  Fuel                Diesel                                                ✕
+  Tow rating          16,000                       lb                       ✕
+  GVWR                14,000                       lb                       ✕
+  Bed length          8.0                          ft                       ✕
   ＋ Add a specification
 
-┌ This unit only ──────────────────────────────────────────┐
-  Licence plate         AZ CG-84102                           ✕
-  Odometer              41,280                   mi           ✕
-  Registration expires  31 Jan 2027                           ✕
+┌ This unit only ──────────────────────────────────────────────────────────┐
+  Licence plate       AZ CG-84102                                           ✕
+  Colour              Oxford White                                          ✕
+  Toll tag            AZ-4471-92                                            ✕
   ＋ Add a specification
 ```
 
-Columns `minmax(0,1fr) 150px 60px 19px`. `NAME` and `VALUE` are plain white
-fields, `UNIT` is a short one, `✕` removes the row — the same row controls as
-New Project's contacts list. **Copy those verbatim.**
+**Two boxes because scope differs** — editing `Year` changes every F-450,
+editing `Licence plate` does not.
 
-`Odometer` and `Registration expires` are list rows and not fields for the same
-reason as tow rating: **nothing reads them yet.** The day something alerts on
-an expiring registration, it earns a typed column and a date picker.
+`Fuel` is `Diesel` here, and that single row is what tells the Rate tab which
+global fuel price to use. **A specification with a consequence**, which is
+exactly why the split between fields and rows is by *what reads them* rather
+than by how important they look.
 
-### Tab 4 · Rate — not rendered
+**`Odometer` has left this list.** It is a field on the Maintenance tab now,
+because the log's interval arithmetic reads it — the rule promoting a spec the
+day something reads it, for the third time.
 
-The per-mile build-up, unchanged:
+### Tab 4 · Rate — ★ render 4
 
 ```
-Fuel          [ $3.85 ] /gal  ÷  [ 12 ] mpg ................  $0.3208
-Maintenance   [ $2,520 ] /yr  ÷  [ 18,000 ] mi/yr ..........  $0.1400
-Tyres         [ $1,600 ] /set ÷  [ 50,000 ] mi .............  $0.0320
-Depreciation  ([ $78,000 ] − [ $20,000 ]) ÷ [ 250,000 ] mi .  $0.2320
-Fixed         ([ $2,600 ] + [ $650 ]) ÷ [ 18,000 ] mi/yr ...  $0.1806
-              ─────────────────────────────────────────────────────────
-              Computed rate                                   $0.9054 /mi
-              last computed 08 Sep 2026            [ Recompute ]
+┌ Basis ───────────────────────────────────────────────────────────────────┐
+  Method        ◉ Computed from inputs        ○ Typed
+  Annual miles  [ 18,000 ] mi/yr        used by 3 of the 5 lines below
 ```
 
-Shown in the list as `$0.91 /mi`. For a non-vehicle the tab holds a single
-typed rate and its basis instead.
+```
+┌ Build-up ────────────────────────────────────────────────────────────────┐
+  LINE            INPUTS                                            $/MI
+  Fuel            $3.85 /gal · diesel, from Fuel prices ÷ [ 12 ] mpg  0.3208
+                  ☐ override for this unit
+  Maintenance     [ $2,520 ] /yr ÷ 18,000 mi/yr                       0.1400
+                  log suggests $938.00 — see Maintenance
+  Tyres           [ $1,600 ] /set ÷ [ 50,000 ] mi                     0.0320
+  Depreciation    ([ $78,000 ] − [ $20,000 ]) ÷ [ 250,000 ] mi        0.2320
+  Fixed           ([ $2,600 ] + [ $650 ]) ÷ 18,000 mi/yr              0.1806
+  ────────────────────────────────────────────────────────────────────────
+  Computed rate                                                  0.9054 /mi
+  last computed 08 Sep 2026                              [ Recompute ]
+```
 
-### What to render
+`0.3208 + 0.1400 + 0.0320 + 0.2320 + 0.1806 = 0.9054`, shown in every list as
+`$0.91 /mi`.
 
-**One instance, on the `Maintenance` tab.** Title bar
-`Equipment properties — Ford F-450`. The other three tabs are visible in the
-strip but inactive.
+**`$3.85` is not an input on this tab.** It is the fleet-wide diesel price,
+shown as plain text with its source named, and changed from `Fuel prices…` on
+the toolbar. `☐ override for this unit` turns it into a field — which is what
+`vehicle_rate_inputs.fuel_price` being nullable means.
 
-Caption above it in `#fff` bold 11 px:
-`EQUIPMENT PROPERTIES — the detail pane, made editable`
+**`Annual miles` appears once, at the top.** Three lines divide by it and v5's
+detail pane repeated `18,000` in each of them. One field, referenced by name,
+cannot drift out of step with itself.
 
----
+**`Method ◉ Computed / ○ Typed`** is how an owned lift gets a rate: choose
+`Typed` and the build-up is replaced by a single rate and basis. A non-vehicle
+opens on `Typed` with `Computed` unavailable — there is no mileage to divide by.
+
+The `log suggests $938.00` line is a grey pointer, not a button. **The button
+lives on the Maintenance tab**, next to the evidence for it. A number you can
+accept without seeing where it came from is the thing this application is
+trying not to be.
+
+### Render 4 — three panels, stacked
+
+**Three instances of the sheet, one per row**, 980 px, 22 px apart, on a
+`rgba(0,0,0,.42)` scrim. Three across would be 2,940 px of canvas.
+
+Captions in `#fff` bold 11 px above each:
+
+```
+GENERAL — identity, the fit check, and compliance
+SPECIFICATIONS — two scopes, type and unit
+RATE — computed, with its inputs named
+```
+
+Title bar on all three: `Equipment properties — Ford F-450`, the tab strip
+showing all four with the relevant one active.
+Nothing after `</x-dc>`. One well-formed document.
 
 ## POPUP · Log entry — ★ RENDER 3, both states
 
