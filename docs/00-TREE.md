@@ -691,6 +691,9 @@ hold anything you would want to keep looking at.
 [?] is an unpaid warranty callback recorded against the version?
 [?] does the app ever SEND anything itself, or only address documents and
     track that you sent them? contact_defaults assumes the latter.
+[?] days_down on a maintenance log entry is recorded but never priced —
+    the rate divides annual cost by annual MILES, so time off the road
+    does not move $/mi. is that acceptable, or should annual_miles fall?
 [?] a per-DAY cost build-up for owned non-vehicles (a lift: depreciation,
     maintenance, insurance over working days). typed until then, and
     labelled `typed` so it is never mistaken for a computed rate.

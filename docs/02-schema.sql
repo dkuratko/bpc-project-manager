@@ -147,12 +147,9 @@ CREATE TABLE equipment_sourcing_methods (
   odometer_mi         REAL,                 -- OWNED. as of odometer_at.
   odometer_at         TEXT,
   next_service_mi     REAL,                 -- OWNED
-  registration_expires_at TEXT,             -- OWNED vehicles. A TYPED column
-                                            -- rather than a spec row because
-                                            -- the Equipment window's
-                                            -- Maintenance facet counts it —
-                                            -- a lapsed truck cannot legally
-                                            -- leave the yard. See docs/18.
+  service_interval_mi REAL,                 -- OWNED. "every 6,000 mi"
+  -- Registration and DOT inspection moved to equipment_compliance: one table
+  -- for everything with an expiry, rather than a column per compliance item.
   supplier_id         TEXT REFERENCES suppliers(id),   -- RENTED only
   rate                REAL NOT NULL,
   rate_basis          TEXT NOT NULL CHECK(rate_basis IN ('hour','day','week','month','mile')),
@@ -212,10 +209,44 @@ CREATE TABLE equipment_maintenance_log (
   sourcing_method_id  TEXT NOT NULL REFERENCES equipment_sourcing_methods(id),
   performed_at        TEXT NOT NULL,
   odometer_mi         REAL,
-  kind                TEXT NOT NULL CHECK(kind IN ('service','tyres','repair')),
+  kind                TEXT NOT NULL CHECK(kind IN ('service','repair','tyres','inspection')),
   description         TEXT NOT NULL,
   cost                REAL,
-  vendor              TEXT,
+  supplier_id         TEXT REFERENCES suppliers(id),  -- the fleet shop. SAME
+                                                      -- list as rental
+                                                      -- companies: two vendor
+                                                      -- lists is how they
+                                                      -- start disagreeing.
+  invoice_ref         TEXT,
+  attachment_path     TEXT,
+  days_down           REAL NOT NULL DEFAULT 0,
+  unplanned           INTEGER NOT NULL DEFAULT 0,
+  notes               TEXT
+  -- WHICH RATE LINE AN ENTRY FEEDS IS DERIVED FROM `kind`, never stored:
+  --   service · repair  → the maintenance line
+  --   tyres             → the tyres line (which is amortised over
+  --                       tyre_life_miles, so counting it as maintenance
+  --                       would charge it twice in one rate)
+  --   inspection        → neither. recorded only.
+  --
+  -- [?] days_down is recorded, not priced. The rate divides annual cost by
+  --     annual MILES, so time off the road does not move $/mi. See 00-TREE §10.
+);
+
+-- Registration, DOT inspection, insurance — anything with an expiry that stops
+-- a unit leaving the yard. An extensible LIST rather than a column each,
+-- because the next one is data entry and not a migration; the same principle
+-- as component_specifications and procurement fees.
+--
+-- The Equipment window's Maintenance counters read this table. That is what
+-- earns it typed columns instead of living in equipment_specifications.
+CREATE TABLE equipment_compliance (
+  id                  TEXT PRIMARY KEY,
+  sourcing_method_id  TEXT NOT NULL REFERENCES equipment_sourcing_methods(id),
+  name                TEXT NOT NULL,        -- 'Registration' · 'DOT inspection'
+  last_at             TEXT,
+  interval_months     INTEGER,
+  expires_at          TEXT,
   notes               TEXT
 );
 

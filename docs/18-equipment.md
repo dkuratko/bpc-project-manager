@@ -583,6 +583,121 @@ Caption above it in `#fff` bold 11 px:
 
 ---
 
+## POPUP · Log entry — ★ RENDER 3, both states
+
+**One dialog, two modes** — the pattern used everywhere else in this
+application:
+
+```
+＋ Add an entry        →  Add log entry — Ford F-450      blank,  [ Add ]
+double-click a row     →  Log entry — 02 Aug 2026         filled, [ OK  ]
+```
+
+A separate read-only viewer would be a third dialog showing the same fields
+with nothing to gain. **The edit dialog IS the detail view**, exactly as
+`Customer properties` is `New customer` reopened.
+
+### Grammar — the SHORT FORM one, 600 px
+
+This is a form of nine fields, so it uses **New Project's dialog grammar**:
+group boxes, the `100px 1fr` field grid, `var(--s)` inputs.
+
+That is not a reversal of the properties sheet's styling — it is the line
+between two species:
+
+```
+PROPERTY SHEET   tables and a rate build-up. wide. caps section labels
+                 over white sunken boxes, the Equipment window's grammar.
+SHORT FORM       fields. 600 px. group boxes and the field grid.
+```
+
+`New Project`, `New Option`, the four record dialogs and this one are all the
+second kind. The equipment properties sheet is the first.
+
+### Group box · "When"
+
+```
+Date        [ 02 Aug 2026 ]   ★
+Odometer    [ 38,940 ] mi        3,830 mi since the last entry
+Kind        [ service                              ▼ ]   ★
+            counts toward the rate's MAINTENANCE line
+```
+
+`Kind` is `service · repair · tyres · inspection`, and **the line beneath it
+changes with the selection** — that is the double-charge guard moved to the
+moment of entry:
+
+```
+service · repair     counts toward the rate's MAINTENANCE line
+tyres                counts toward the rate's TYRES line — not maintenance,
+                     or it would be charged twice
+inspection           recorded only · no rate line
+```
+
+**This replaces the `In rate` column as a decision.** The column on the sheet
+still *reports* it; nothing chooses it twice.
+
+`3,830 mi since the last entry` is derived and grey — it is the sheet's
+`Interval` column, computed as you type the odometer, so a typo is visible
+immediately.
+
+### Group box · "Work"
+
+```
+Work        [ Oil, filters, rotate tyres ]   ★
+Notes       [                             ]   36 px
+```
+
+### Group box · "Cost"
+
+```
+Vendor      [ Gilbert Fleet Service                ▼ ]
+Invoice     [ GFS-40118 ]
+Cost        [ $184.00 ]
+Days down   [ 1 ]        ☐ unplanned
+Attachment  [ GFS-40118.pdf ]   [ Browse… ]
+```
+
+`Vendor` is the `suppliers` list — the same one rentals use. A fleet shop and a
+rental company are both people you pay, and two lists of vendors is how they
+start disagreeing.
+
+`☐ unplanned` separates *"in for its service"* from *"broke down"*. The sheet's
+`Current state` table counts the unplanned ones.
+
+### Tip block · `#ffffe1` — on the ADD state only
+
+```
+Days down are recorded, not priced.
+
+The rate divides annual cost by annual MILES, so a week off the road
+neither raises nor lowers $/mi. This number is here to tell you which
+truck keeps stopping, not to feed a calculation.
+```
+
+**An honest gap, stated where it would otherwise mislead.** A reader seeing
+`Days down` in a costing application will assume it reaches a rate. It does
+not.
+
+### Render 3 — two panels
+
+Two 600 px dialogs side by side on a `rgba(0,0,0,.42)` scrim, 18 px apart,
+top-aligned. Captions in `#fff` bold 11 px:
+
+```
+ADD — blank, from ＋ Add an entry
+EDIT — the same dialog, double-clicked from the log
+```
+
+Left: `Add log entry — Ford F-450`, empty fields with `#a0a0a0` placeholders,
+`Kind` unset, buttons `Add` 110 px (default) · `Cancel` 78 px.
+Right: `Log entry — 02 Aug 2026`, filled as above, buttons `OK` 110 px
+(default) · `Cancel` 78 px · **no `Apply`** — this dialog commits once.
+
+Nothing after `</x-dc>`. One well-formed document.
+
+---
+
 ## POPUP · Rental offering properties — specified, not rendered
 
 ```
@@ -620,6 +735,11 @@ Fees        Delivery   [ $150.00 ]  flat                       ✕
   window's grammar: caps section labels over white sunken boxes.
 - **`#c0c0c0` chips for read-only values here.** Plain text, like the pane.
 - **Three panels in one row.** Two rows; nothing wider than 1,180 px.
+- **A separate read-only log viewer.** The edit dialog is the detail view.
+- **An `In rate` choice on the log entry dialog.** It follows `Kind`.
+- **`Days down` feeding a rate.** It is recorded, not priced.
+- **A second vendor list.** Fleet shops live in `suppliers` with the rental
+  companies.
 - **Win2000's navy tree selection bar.** `▶` and bold, no fill.
 - **A serial column on rentals.** You rent a class, not a unit.
 - **Capacity or deck on a non-vehicle.** Blank, not zero.
