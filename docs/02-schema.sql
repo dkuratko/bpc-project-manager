@@ -130,9 +130,16 @@ CREATE TABLE equipment (
   -- A truck and a trailer are ordinary equipment. These columns are NULL on
   -- anything that is not a vehicle.
   is_vehicle       INTEGER NOT NULL DEFAULT 0,
-  capacity_lb      REAL,
+  capacity_lb      REAL,                   -- a CARRIER's payload
+  tare_weight_lb   REAL,                   -- a TRAILER's own weight, which
+                                           -- counts against the tow rating
   deck_length_ft   REAL,
-  deck_width_ft    REAL
+  deck_width_ft    REAL,
+  tow_capacity_lb  REAL                    -- a TRUCK's rating. A field, not a
+                                           -- spec row, because the mobilization
+                                           -- TOW FIT check reads it: trailer
+                                           -- tare + load must stay under it.
+                                           -- See docs/06.
 );
 
 -- Owned or rented. Same shape as material procurement: a rate, a basis,

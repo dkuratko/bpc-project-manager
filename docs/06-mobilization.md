@@ -62,7 +62,16 @@ VERSION totals              weight = Σ(component ship_weight × qty)
                             longest = MAX(ship_length) across BOTH
                             widest  = MAX(ship_width) across BOTH
 
-FITS IF   weight ≤ capacity   AND   longest ≤ deck length   AND   widest ≤ deck width
+TRUCK (vehicles only)       tow_capacity_lb
+TRAILER                     capacity_lb (payload) · tare_weight_lb (its own)
+
+DECK FIT   load weight ≤ trailer capacity
+           AND longest ≤ deck length  AND  widest ≤ deck width
+
+TOW FIT    trailer tare + load weight ≤ truck tow capacity
+           ★ THE CHECK THAT ACTUALLY BITES. A Bobcat T66 on a 20 ft flatbed
+             behind an F-450 is a real question with a real answer, and the
+             deck check alone never asks it.
 
 RENTED EQUIPMENT DOES NOT COUNT. The supplier delivers it — that is what the
 delivery and pickup fees on a rental offering ARE. Only what you haul yourself

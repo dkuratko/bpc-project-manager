@@ -44,6 +44,59 @@ Each is its own file. One well-formed document, nothing after `</x-dc>`.
 
 ---
 
+## Render status
+
+```
+✔ equipment window                 v2 → v6   accepted
+✔ properties · Maintenance         v5 → v6   accepted
+✔ fuel prices dialog               v6        accepted
+✔ properties · General / Specifications / Rate   v2   accepted
+✔ add a specification popup        v2        accepted — not asked for, kept
+✔ log entry · add + edit           v1        accepted, no changes
+▢ RENTED tab                       never drawn
+```
+
+**Two fixes, both small:**
+
+1. `equipment-render2.v6` still sets the properties sheet at `11px Tahoma`
+   with `letter-spacing: normal`. The three-tab render got this right at
+   `10px` / `.05em`; the sheet inside render 2 did not. Same sheet, two sizes.
+2. Every render still uses the invented fleet. See below.
+
+**`＋ Add a specification` was invented by the render and is kept.** Its
+`Applies to ◉ All Ford F-450s / ○ This unit only` puts the scope question where
+the row is created rather than leaving it to which box you happened to click,
+and its `Name` dropdown over names already in use is the right answer to
+`Bed length` becoming `bed len` on the next truck. Fold it into the brief as
+specified.
+
+---
+
+## ★ TOW CAPACITY — the render was ahead of the model
+
+The General tab now carries `Tow capacity` as a fit field, on the grounds that
+*"the mobilization check reads all four."* **It did not.** `docs/06` checked
+the deck only — weight against trailer payload, length and width against the
+deck — and never asked whether the truck could pull the result.
+
+**The real fleet is what makes that indefensible.** A Bobcat T66 on a 20 ft
+flatbed behind an F-450 is precisely the question a tow rating answers, and it
+is the only load Damian routinely hauls.
+
+So the check is added rather than the field demoted:
+
+```
+DECK FIT   load weight ≤ trailer capacity
+           AND longest ≤ deck length  AND  widest ≤ deck width
+TOW FIT    trailer tare + load weight ≤ truck tow capacity
+```
+
+That needs one more number than the render shows: **a trailer's tare weight**,
+its own empty weight, which counts against the truck's rating alongside the
+load. `equipment.tare_weight_lb`.
+
+---
+
 ## ⚠ THE REAL FLEET — replace every invented unit
 
 Damian owns **three** things. Every render so far used invented equipment;
