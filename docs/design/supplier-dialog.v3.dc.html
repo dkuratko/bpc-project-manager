@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><style>
+body{margin:0;background:#008080;font:10px Tahoma,Verdana,Geneva,sans-serif;letter-spacing:.05em;color:#000;
+--r:inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+--s:inset 1px 1px #808080, inset -1px -1px #fff, inset 2px 2px #0a0a0a, inset -2px -2px #dfdfdf;
+--t:inset 1px 1px #808080, inset -1px -1px #fff}
+*{box-sizing:border-box}
+a{color:#000080}
+a:hover{color:#1084d0}
+</style></helmet>
+<div style="min-height:100vh;background:rgba(0,0,0,.42);display:flex;align-items:flex-start;justify-content:flex-start;gap:18px;padding:34px 24px;overflow-x:auto;font:10px Tahoma,Verdana,Geneva,sans-serif;letter-spacing:.05em">
+
+<div style="flex:none">
+<div style="color:#fff;font-weight:bold;font-size:11px;letter-spacing:.06em;padding:0 2px 7px;white-space:nowrap">NEW — a blank form</div>
+<div style="width:600px;flex:none;background:#c0c0c0;box-shadow:var(--r), 4px 4px 14px rgba(0,0,0,.45);padding:3px">
+<div style="height:20px;background:linear-gradient(90deg,#000080,#1084d0);display:flex;align-items:center;padding:0 3px 0 4px;gap:6px;flex:none">
+<span style="color:#fff;font-weight:bold;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">New Supplier</span>
+<div style="width:16px;height:14px;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;cursor:default;position:relative;flex:none"><span style="position:absolute;width:9px;height:1px;background:#000;transform:rotate(45deg)"></span><span style="position:absolute;width:9px;height:1px;background:#000;transform:rotate(-45deg)"></span></div>
+</div>
+<div style="padding:10px 9px 9px;display:flex;flex-direction:column;gap:10px">
+<div style="box-shadow:var(--t);padding:13px 9px 8px;position:relative">
+<div style="position:absolute;top:-6px;left:9px;background:#c0c0c0;padding:0 4px;font-weight:bold;white-space:nowrap">Identify it</div>
+<div style="display:grid;grid-template-columns:100px 1fr;gap:4px 8px;align-items:center">
+<span style="white-space:nowrap">Name</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;flex:1;min-width:0;color:#a0a0a0;white-space:nowrap;overflow:hidden">company name, as you invoice it</span><span style="flex:none">★</span></span>
+<span style="white-space:nowrap">Used for</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap;flex:none"><span style="width:13px;height:13px;flex:none;box-shadow:var(--s);background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1"></span>Equipment rental</span><span style="width:14px"></span><span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap;flex:none"><span style="width:13px;height:13px;flex:none;box-shadow:var(--s);background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1"></span>Materials</span><span style="flex:none">★</span></span>
+<span style="white-space:nowrap">Account</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;width:150px;flex:none;color:#a0a0a0;white-space:nowrap;overflow:hidden">your account number</span><span style="color:#404040;line-height:1.5">your account number with them</span></span>
+</div>
+</div>
+<div style="box-shadow:var(--t);padding:13px 9px 8px;position:relative">
+<div style="position:absolute;top:-6px;left:9px;background:#c0c0c0;padding:0 4px;font-weight:bold;white-space:nowrap">Reach them</div>
+<div style="display:grid;grid-template-columns:100px 1fr;gap:4px 8px;align-items:center">
+<span style="white-space:nowrap">Phone</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;width:150px;flex:none;color:#a0a0a0;white-space:nowrap;overflow:hidden">(000) 000-0000</span></span>
+<span style="white-space:nowrap">Email</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;flex:1;min-width:0;color:#a0a0a0;white-space:nowrap;overflow:hidden">name@company.com</span></span>
+</div>
+</div>
+<div style="box-shadow:var(--t);padding:13px 9px 8px;position:relative">
+<div style="position:absolute;top:-6px;left:9px;background:#c0c0c0;padding:0 4px;font-weight:bold;white-space:nowrap">Where</div>
+<div style="display:grid;grid-template-columns:100px 1fr;gap:4px 8px;align-items:center">
+<span style="white-space:nowrap">Address</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;flex:1;min-width:0;color:#a0a0a0;white-space:nowrap;overflow:hidden">street</span></span>
+<span style="white-space:nowrap">City</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;width:132px;flex:none;color:#a0a0a0;white-space:nowrap;overflow:hidden">city</span><span style="color:#808080;white-space:nowrap">State</span><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;width:38px;flex:none;white-space:nowrap;overflow:hidden"></span><span style="color:#808080;white-space:nowrap">Zip</span><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;width:66px;flex:none;white-space:nowrap;overflow:hidden"></span></span>
+</div>
+</div>
+<div style="box-shadow:var(--t);padding:13px 9px 8px;position:relative">
+<div style="position:absolute;top:-6px;left:9px;background:#c0c0c0;padding:0 4px;font-weight:bold;white-space:nowrap">Notes</div>
+<div style="display:grid;grid-template-columns:100px 1fr;gap:4px 8px;align-items:center">
+<span style="white-space:nowrap">Notes</span><span style="box-shadow:var(--s);background:#fff;padding:3px 4px;height:36px;display:block;width:100%;color:#a0a0a0;line-height:1.45;overflow:hidden"></span>
+</div>
+</div>
+<div style="background:#ffffe1;box-shadow:inset 0 0 0 1px #000;padding:6px 8px;line-height:1.5"><b>Collecting a rental is not free, and this app does not yet price it.</b><br>Mobilization charges the distance to the SITE. Fetching a compactor from Mesa on the way to Tucson is real miles and real hours that no line currently carries. The address is here so the gap is visible.</div>
+<div style="display:flex;justify-content:flex-end;gap:7px;padding-top:1px"><span style="width:110px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;outline:1px solid #000;outline-offset:1px;font-weight:bold;" style-active="box-shadow:var(--s)">Create</span><span style="width:78px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;" style-active="box-shadow:var(--s)">Cancel</span></div>
+</div>
+</div>
+</div>
+
+<div style="flex:none">
+<div style="color:#fff;font-weight:bold;font-size:11px;letter-spacing:.06em;padding:0 2px 7px;white-space:nowrap">PROPERTIES — the same dialog, reopened</div>
+<div style="width:600px;flex:none;background:#c0c0c0;box-shadow:var(--r), 4px 4px 14px rgba(0,0,0,.45);padding:3px">
+<div style="height:20px;background:linear-gradient(90deg,#000080,#1084d0);display:flex;align-items:center;padding:0 3px 0 4px;gap:6px;flex:none">
+<span style="color:#fff;font-weight:bold;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Supplier properties — United Rentals</span>
+<div style="width:16px;height:14px;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;cursor:default;position:relative;flex:none"><span style="position:absolute;width:9px;height:1px;background:#000;transform:rotate(45deg)"></span><span style="position:absolute;width:9px;height:1px;background:#000;transform:rotate(-45deg)"></span></div>
+</div>
+<div style="padding:10px 9px 9px;display:flex;flex-direction:column;gap:10px">
+<div style="box-shadow:var(--t);padding:13px 9px 8px;position:relative">
+<div style="position:absolute;top:-6px;left:9px;background:#c0c0c0;padding:0 4px;font-weight:bold;white-space:nowrap">Identify it</div>
+<div style="display:grid;grid-template-columns:100px 1fr;gap:4px 8px;align-items:center">
+<span style="color:#808080;white-space:nowrap">Added</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="background:#c0c0c0;box-shadow:var(--t);color:#404040;padding:2px 7px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;display:inline-block;white-space:nowrap">14 Mar 2024</span><span style="color:#808080;white-space:nowrap">·</span><span style="color:#808080;white-space:nowrap">Status</span><span style="white-space:nowrap">Active</span></span>
+<span style="color:#808080;white-space:nowrap">Offerings</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="background:#c0c0c0;box-shadow:var(--t);color:#404040;padding:2px 7px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;display:inline-block;white-space:nowrap">3</span><span style="color:#808080;white-space:nowrap">·</span><span style="color:#404040;line-height:1.5">Cannot be deleted</span></span>
+<span style="white-space:nowrap">Name</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;flex:1;min-width:0;white-space:nowrap;overflow:hidden">United Rentals</span><span style="flex:none">★</span></span>
+<span style="white-space:nowrap">Used for</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap;flex:none"><span style="width:13px;height:13px;flex:none;box-shadow:var(--s);background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1">✓</span>Equipment rental</span><span style="width:14px"></span><span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap;flex:none"><span style="width:13px;height:13px;flex:none;box-shadow:var(--s);background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1"></span>Materials</span><span style="flex:none">★</span></span>
+<span style="white-space:nowrap">Account</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;width:150px;flex:none;white-space:nowrap;overflow:hidden">BPC-4471</span><span style="color:#404040;line-height:1.5">your account number with them</span></span>
+</div>
+</div>
+<div style="box-shadow:var(--t);padding:13px 9px 8px;position:relative">
+<div style="position:absolute;top:-6px;left:9px;background:#c0c0c0;padding:0 4px;font-weight:bold;white-space:nowrap">Reach them</div>
+<div style="display:grid;grid-template-columns:100px 1fr;gap:4px 8px;align-items:center">
+<span style="white-space:nowrap">Phone</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;width:150px;flex:none;white-space:nowrap;overflow:hidden">(602) 555-0181</span></span>
+<span style="white-space:nowrap">Email</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;flex:1;min-width:0;white-space:nowrap;overflow:hidden">phoenix@unitedrentals.com</span></span>
+</div>
+</div>
+<div style="box-shadow:var(--t);padding:13px 9px 8px;position:relative">
+<div style="position:absolute;top:-6px;left:9px;background:#c0c0c0;padding:0 4px;font-weight:bold;white-space:nowrap">Where</div>
+<div style="display:grid;grid-template-columns:100px 1fr;gap:4px 8px;align-items:center">
+<span style="white-space:nowrap">Address</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;flex:1;min-width:0;white-space:nowrap;overflow:hidden">2450 W Broadway Rd</span></span>
+<span style="white-space:nowrap">City</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;width:132px;flex:none;white-space:nowrap;overflow:hidden">Mesa</span><span style="color:#808080;white-space:nowrap">State</span><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;width:38px;flex:none;white-space:nowrap;overflow:hidden">AZ</span><span style="color:#808080;white-space:nowrap">Zip</span><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;width:66px;flex:none;white-space:nowrap;overflow:hidden">85202</span></span>
+</div>
+</div>
+<div style="box-shadow:var(--t);padding:13px 9px 8px;position:relative">
+<div style="position:absolute;top:-6px;left:9px;background:#c0c0c0;padding:0 4px;font-weight:bold;white-space:nowrap">Notes</div>
+<div style="display:grid;grid-template-columns:100px 1fr;gap:4px 8px;align-items:center">
+<span style="white-space:nowrap">Notes</span><span style="box-shadow:var(--s);background:#fff;padding:3px 4px;height:36px;display:block;width:100%;line-height:1.45;overflow:hidden">Branch counter opens 06:00. Ask for Ray on the yard.</span>
+</div>
+</div>
+<div style="background:#ffffe1;box-shadow:inset 0 0 0 1px #000;padding:6px 8px;line-height:1.5"><b>Collecting a rental is not free, and this app does not yet price it.</b><br>Mobilization charges the distance to the SITE. Fetching a compactor from Mesa on the way to Tucson is real miles and real hours that no line currently carries. The address is here so the gap is visible.</div>
+<div style="display:flex;justify-content:flex-end;gap:7px;padding-top:1px"><span style="width:110px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;outline:1px solid #000;outline-offset:1px;font-weight:bold;" style-active="box-shadow:var(--s)">OK</span><span style="width:78px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;" style-active="box-shadow:var(--s)">Cancel</span></div>
+</div>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:760}}">
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
