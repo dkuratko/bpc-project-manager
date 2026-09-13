@@ -537,6 +537,18 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
 ✔ ESTIMATE EDITOR — FINAL v12 (MAIN)
 ✔ PROJECT BROWSER — FINAL v14 (MAIN, the frame)
 ✔ VERSION VIEW — FINAL v3 (MAIN)
+✔ UNKNOWNS AND ALARMS — adopted, see docs/22. how the app says "I do
+     not know" and "this is wrong", from the mobilization panel.
+     [?] chip #a00 on #ffffe1 — NEVER an empty cell, a zero or a dash.
+     — means not applicable; 0 means zero; [?] means unknown and it
+     MATTERS. unknowns PROPAGATE: 4,260 lb + [?], and a derived value
+     with an unknown input is itself [?] all the way to the bottom line.
+     but show what IS computable, with the caveat inline in #a00.
+     THREE BLOCK GROUNDS, three meanings: #ffe0e0/#a00 alarm (wrong now)
+     · #ffffe1/#000 tip (a rule) · #ffffc0/#808080 record (what gets
+     written). every alarm names what would fix it. excluded rows stay
+     visible in #808080 — deleting them loses the evidence the app
+     considered them.
 ✔ NO ROWS OF INPUTS — adopted, see docs/12. at most ONE free-text or
      numeric input per row in any dialog or property sheet; pickers and
      checkboxes do not count. over that, the row is DISPLAY ONLY and a

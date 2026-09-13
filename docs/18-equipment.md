@@ -180,7 +180,11 @@ a real second-hand truck's rate actually looks like.
 
 ```
 Capacity   10,600 lb        Tare   3,400 lb        Deck   20.0 × 8.5 ft
+Rate       $0.45 /mi        tyres, maintenance and depreciation. no engine.
 ```
+
+**The rig's combined running rate is `$1.26 /mi`** — the F-450 at `$0.81` plus
+the flatbed at `$0.45` — which is what mobilization charges per mile driven.
 
 **The tow cap does not bite here:** `3,400 + 10,600 = 14,000 ≤ 16,000`, so the
 trailer's own capacity stands and the `capped by tow rating` line is **absent**.

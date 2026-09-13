@@ -121,7 +121,7 @@ docs/design/component-wizard.final.dc.html` | — |
 | — | Record dialogs (4) | POPUP · family | **✔ FINAL v13** · revision state unrendered | `docs/design/record-dialogs.v13.dc.html` | `17` |
 | — | New Option / New Version | POPUP · two roles | **✔ FINAL v3** | `docs/design/new-option-version.v3.dc.html` | `13` |
 | — | Customer / Contact dialogs | POPUP · 2 × 2 modes | **✔ FINAL v1** | `docs/design/customer-contact-dialogs.v1.dc.html` | `16` |
-| — | Mobilization panel | POPUP | briefed, awaiting render | — | `19` |
+| — | Mobilization panel | POPUP | **✔ FINAL v1** | `docs/design/mobilization-panel.v1.dc.html` | `19` |
 | — | Equipment · Owned tab | MAIN · list + detail | v6 accepted | `docs/design/equipment-render2.v6.dc.html` | `18` |
 | — | Equipment · Rented tab | MAIN · list + detail | **v2 accepted** · 5 fixes | `docs/design/equipment-rented.v2.dc.html` | `18` |
 | — | Equipment properties · 4 tabs | POPUP | v2 + v6 accepted | `docs/design/equipment-properties-tabs.v2.dc.html` | `18` |
