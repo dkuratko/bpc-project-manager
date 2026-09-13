@@ -129,7 +129,7 @@ docs/design/component-wizard.final.dc.html` | — |
 | — | Log entry · add + edit | POPUP | v1 accepted | `docs/design/equipment-log-entry.v1.dc.html` | `18` |
 | — | Fuel prices | POPUP | v6 accepted | `docs/design/equipment-render2.v6.dc.html` | `18` |
 | — | Supplier · new + properties | POPUP | **✔ FINAL v3** | `docs/design/supplier-dialog.v3.dc.html` | `20` |
-| — | New type / categories | POPUP | **not designed** | — | `18` |
+| — | Equipment type · new + properties | POPUP | briefed, awaiting render | — | `23` |
 | — | Rental offering + 2 row editors | POPUP | **✔ FINAL v1** | `docs/design/rental-offering.v1.dc.html` | `21` |
 | — | Contacts | MAIN · list | **✔ FINAL v2** | `docs/design/contacts.v2.dc.html` | `14` + `15` |
 
@@ -240,7 +240,7 @@ SPECIFIED, NOT RENDERED          the brief is written; nobody has drawn it
                                    green SCHEDULED with a red lip
   ▢ Record shipment…     docs/17
   ▢ Invoice…             docs/17   sent → paid, and the warranty clock
-  ▢ New type             docs/18   a name and an is_vehicle checkbox
+  ▢ New type             docs/23   a name and an is_vehicle checkbox
 
 NOT DESIGNED
   ▢ CATALOG BROWSER      MAIN      the last dense screen. docs/14's facet
