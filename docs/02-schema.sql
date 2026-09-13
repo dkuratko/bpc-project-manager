@@ -325,7 +325,13 @@ CREATE TABLE trackers (
                                             -- you hold. The list shows —.
   renewal_months      INTEGER,
   cost                REAL,                 -- per term
-  lead_days           INTEGER NOT NULL DEFAULT 60,
+  -- TWO thresholds, per item, because obligations do not renew on one
+  -- timescale: a truck registration is a web form you do in a day, an ROC
+  -- licence takes the state three months. One global pair would nag for
+  -- months about the first or leave the second too late to save.
+  notice_days         INTEGER NOT NULL DEFAULT 120,  -- yellow · start thinking
+  due_days            INTEGER NOT NULL DEFAULT 60,   -- orange · do it now
+                                                     -- and when it reminds
   attachment_path     TEXT,
   notes               TEXT,
   active              INTEGER NOT NULL DEFAULT 1,

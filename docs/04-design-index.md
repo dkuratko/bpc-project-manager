@@ -197,13 +197,15 @@ job before any delivery:
 `⚠ no equipment received` stays too — it is now literally true rather than
 contradicting the box above it.
 
-**Trackers v1** — one, when convenient:
+**Trackers v1** — two, both small:
 
-1. The `DAYS` chip bands are fixed at 60/120. They should key off each item's
-   own `lead_days`, so a licence wanting 90 days' notice turns orange at 90.
-   Every sample item uses the default 60, so the render's colours are already
-   correct — only the rule behind them changes. The legend loses its numbers
-   and reads `lapsed · within reminder · approaching · ok`.
+1. The chip bands are fixed at 60/120. Each item carries its own `notice` and
+   `due` days instead — a registration is a web form, an ROC licence takes the
+   state three months. **Every chip in the render already lands in the right
+   band**, so only the rule changes.
+2. The legend loses its numbers: `lapsed · due · notice · ok`. The status bar's
+   `Expiring < 60 days` becomes `Due`, counting each item against its own
+   window.
 
 **Supplier v3** — one:
 

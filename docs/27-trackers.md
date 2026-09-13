@@ -117,20 +117,51 @@ Every countdown sits in a tinted chip, `var(--t)` bevel, so the list is
 scannable without reading a single number:
 
 ```
-lapsed             #E89494   past its date
-within reminder    #F0B778   inside this item's own lead time
-approaching        #F5E183   inside twice its lead time
-ok                 #B5E3B5   beyond that
+lapsed   #E89494   past its date
+due      #F0B778   inside its DUE days — do it now
+notice   #F5E183   inside its NOTICE days — start thinking about it
+ok       #B5E3B5   beyond that
 ```
 
-**The bands are relative to each item's `lead_days`, not a fixed 60.** A
-licence that wants 90 days' notice should turn orange at 90, not at 60 — which
-is the only thing that makes `lead_days` do visible work. Every item in the
-render uses the default 60, so the colours come out identically either way.
+### ★ Two thresholds, set per item
 
-A legend sits right-aligned in the filter band: `lapsed · within reminder ·
-approaching · ok`. **No numbers in it**, because with per-item lead times there
-is no single number that is true.
+**Obligations do not renew on one timescale.** A truck registration is an
+online form you do in a day; an ROC licence takes the state three months. One
+global pair of numbers would either nag about the registration for four months
+or leave the licence too late to save.
+
+So every tracker carries **its own two numbers**:
+
+```
+NOTICE   start thinking about it   default 120 days
+DUE      do it now                 default  60 days
+```
+
+```
+General liability          notice 120   due  60    shop the renewal
+AZ ROC contractor licence  notice 180   due  90    the state is slow
+F-450 registration         notice  45   due  21    it is a web form
+Mesa business licence      notice 120   due  60
+```
+
+**The render's colours are already correct under this rule** — every chip in it
+lands in the same band whether the thresholds are global or per-item. Only the
+rule behind them changes, plus a second field on the dialog.
+
+A legend sits right-aligned in the filter band: `lapsed · due · notice · ok`.
+**No numbers in it**, because with per-item thresholds no single number is
+true.
+
+### The counter counts DUE, not a fixed 60 days
+
+```
+⚠ Lapsed 1  ·  ⚠ Due 0  ·  8 tracked
+```
+
+**`Due` means "inside its own window"**, which is the only version of that
+count worth having: it answers *what needs doing now* across obligations that
+renew on completely different timescales, instead of asking everything the same
+arbitrary question.
 
 #### This does not contradict the status ramp
 
@@ -230,8 +261,12 @@ decision for when it is built, logged in `00-TREE` §10.
   Document    [ certificate-GL-4471.pdf ]   [ Browse… ]
 
 ┌ Remind me ───────────────────────────────────────────────┐
-  [ 60 ] days before it expires
+  Notice   [ 120 ] days before expiry     yellow · start thinking
+  Due      [  60 ] days before expiry     orange · do it now
 ```
+
+Two fields, because the answer differs per obligation. Blank on a tracker with
+no expiry — a classification has nothing to count down to.
 
 `Expires` blank is how a classification is recorded — **not a missing date, a
 thing that does not expire**, and the list shows `—` for it.
@@ -260,7 +295,9 @@ the rising premium is visible.
 - **A negative countdown in ordinary black.** The row is `#a00` and its chip
   is `#E89494`.
 - **Tinting a tracker ROW.** The chip carries the colour; rows stay white.
-- **Fixed 60/120 day bands.** They key off each item's own `lead_days`.
+- **Fixed 60/120 day bands.** Each item carries its own `notice` and `due`.
+- **A counter that asks everything the same question.** `Due` means inside
+  that item's own window.
 - **Numbers in the legend.** Lead times differ per item.
 - **A lapsed tracker lipping project rows.** Company obligations are not
   version problems.
