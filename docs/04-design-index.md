@@ -260,6 +260,7 @@ contradicting the box above it.
 
 ```
 NOT DESIGNED
+  ◐ TRACKERS             docs/27   everything that renews. briefed.
   ▢ CATALOG BROWSER      MAIN      the last dense screen. docs/14's facet
                                    variant was designed for it.
   ▢ INVOICE              document  follows estimate v12's box grammar

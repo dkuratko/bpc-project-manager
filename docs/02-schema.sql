@@ -301,20 +301,49 @@ CREATE TABLE equipment_maintenance_log (
   --     annual MILES, so time off the road does not move $/mi. See 00-TREE §10.
 );
 
--- Registration, DOT inspection, insurance — anything with an expiry that stops
--- a unit leaving the yard. An extensible LIST rather than a column each,
--- because the next one is data entry and not a migration; the same principle
--- as component_specifications and procurement fees.
+-- EVERYTHING THAT RENEWS — company obligations and equipment paperwork in one
+-- table, because "what is about to expire" does not care whose. A lapsed
+-- general liability policy and a lapsed truck registration both stop you
+-- working; they differ only in owner.
 --
--- The Equipment window's Maintenance counters read this table. That is what
--- earns it typed columns instead of living in equipment_specifications.
-CREATE TABLE equipment_compliance (
+-- Replaces the earlier equipment_compliance. The Equipment window's
+-- Maintenance counters now read this. See docs/27.
+CREATE TABLE trackers (
   id                  TEXT PRIMARY KEY,
-  sourcing_method_id  TEXT NOT NULL REFERENCES equipment_sourcing_methods(id),
-  name                TEXT NOT NULL,        -- 'Registration' · 'DOT inspection'
-  last_at             TEXT,
-  interval_months     INTEGER,
+  owner_type          TEXT NOT NULL CHECK(owner_type IN ('company','equipment')),
+  sourcing_method_id  TEXT REFERENCES equipment_sourcing_methods(id),
+  category            TEXT NOT NULL
+                      CHECK(category IN ('insurance','bond','licence',
+                                         'classification','other')),
+  name                TEXT NOT NULL,
+  issuer              TEXT,
+  reference           TEXT,                 -- policy or licence number
+  effective_at        TEXT,
+  expires_at          TEXT,                 -- NULL = DOES NOT LAPSE, which is
+                                            -- not the same as unknown. A ROC
+                                            -- classification is a permission
+                                            -- you hold. The list shows —.
+  renewal_months      INTEGER,
+  cost                REAL,                 -- per term
+  lead_days           INTEGER NOT NULL DEFAULT 60,
+  attachment_path     TEXT,
+  notes               TEXT,
+  active              INTEGER NOT NULL DEFAULT 1,
+  CHECK((owner_type='company'   AND sourcing_method_id IS NULL)
+     OR (owner_type='equipment' AND sourcing_method_id IS NOT NULL))
+);
+
+-- Each renewal is a RECORD, not an edit. Overtyping expires_at would silently
+-- lose the history — and the history is the only place a premium rising 6% a
+-- year is visible. Same loop as the maintenance log suggesting a rate.
+CREATE TABLE tracker_renewals (
+  id                  TEXT PRIMARY KEY,
+  tracker_id          TEXT NOT NULL REFERENCES trackers(id),
+  renewed_at          TEXT NOT NULL,
   expires_at          TEXT,
+  cost                REAL,
+  reference           TEXT,
+  attachment_path     TEXT,
   notes               TEXT
 );
 

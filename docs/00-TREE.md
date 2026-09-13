@@ -743,6 +743,9 @@ hold anything you would want to keep looking at.
     outstanding, raises an alert on the version while open, and closes
     only by reopening the shipment and switching it to approved —
     correcting the fact, never a separate resolve record. docs/25.
+[?] does a lapsed company tracker belong on the project browser at all —
+    one counter tile, or nothing? it must NOT lip project rows: versions
+    carry their own problems and the lip would stop meaning either.
 [?] is an unpaid warranty callback recorded against the version?
 [?] does the app ever SEND anything itself, or only address documents and
     track that you sent them? contact_defaults assumes the latter.
