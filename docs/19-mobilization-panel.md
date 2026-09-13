@@ -64,10 +64,16 @@ invent.
 
 ```
 component   from the version's scope — ship_weight_lb × qty
-equipment   an OWNED machine you are hauling. rented equipment never
-            appears: the supplier delivers it, which is what its delivery
-            and pickup fees are.
+equipment   an OWNED machine you are hauling
+rental      a COLLECTED rental. a delivered one never appears — the
+            supplier brings it, which is what its delivery and pickup
+            fees are.
 ```
+
+**`rental` rows are the ones people forget.** A compactor you fetch from
+Sunstate is 220 lb on your trailer and a stop on your route, and it looks
+exactly like something the supplier handles until you check the `MOVE` on its
+offering.
 
 ### `HAULED` — because not everything rides your rig
 
@@ -88,11 +94,10 @@ quoting time this is the estimator's assumption, overtypeable per row.
 ## Box 2 · CAPACITY
 
 ```
-Truck bed payload            F-450                    [?] lb
-Trailer capacity             20 ft flatbed            [?] lb
-  capped by tow rating       tow [?] − tare [?]    usable [?] lb
+Truck bed payload            2012 Ford F-450         4,800 lb
+Trailer capacity             20 ft flatbed          10,600 lb
 ──────────────────────────────────────────────────────────────
-Combined capacity                                     [?] lb
+Combined capacity                                   15,400 lb
 ```
 
 The middle line only appears **when the cap actually bites** — when the truck
@@ -104,11 +109,17 @@ stands and the line is absent rather than showing a no-op.
 ## Box 3 · TRIPS
 
 ```
-Computed      ceil( 4,260 + [?]  ÷  [?] )  =  [?]
+Computed      ceil( 12,880 ÷ 15,400 )  =  1      from known weights only
 Used          [ 2 ] ✎ overtyped
 
 ⚠ Longest item 22.0 ft exceeds the 20.0 ft deck.
 ```
+
+`from known weights only` sits beside the computed figure in `#a00` **whenever
+any row is missing a weight.** A trip count that looks confident while one
+contributor is unaccounted for is the failure this panel exists to prevent —
+but refusing to show a number at all would be worse, so it shows the number and
+says what it does not know.
 
 **Trips stay overtypeable** — `docs/06` settled that, because trips also depend
 on customer demand and site access, not just arithmetic. The panel shows the
@@ -151,21 +162,18 @@ is what proved load time is already inside the install durations.
 Use the sample fleet from `docs/18`.
 
 ```
-LOAD       components 4,260 lb  +  Bobcat T66 8,400 lb  =  12,660 lb
-CAPACITY   bed 4,800  +  trailer 10,600  =  15,400 lb
-           tow cap does not bite: 3,400 tare + 10,600 = 14,000 ≤ 16,000,
-           so the `capped by tow rating` line is ABSENT
-TRIPS      ceil(12,660 ÷ 15,400) = 1     ·     used [ 2 ] ✎ overtyped
+LOAD       2,480 + 1,140 + 640 + 8,400 + 220  =  12,880 lb   + one unknown
+CAPACITY   bed 4,800  +  trailer 10,600       =  15,400 lb
+           the tow cap does NOT bite here: 3,400 tare + 10,600 = 14,000
+           ≤ 16,000, so the `capped by tow rating` line is ABSENT —
+           the correct rendering of a well-matched rig
+TRIPS      ceil(12,880 ÷ 15,400) = 1   ·   used [ 2 ] ✎ overtyped
 ```
 
-**The `[?]` on the Bobcat's weight row stays, and it is not missing data.** It
-is the alarm state being demonstrated — one row deliberately blank so the
-`4,260 lb + [?]` total and the red line can be seen doing their job. Every
-other cell carries a real figure.
-
-That is the difference worth keeping straight: sample data is fine everywhere
-in this project, but a **total that silently omits a contributor** is the bug
-this panel exists to prevent, and a render has to show it happening.
+**Exactly one cell is blank**, and it is the alarm being demonstrated rather
+than missing data. Sample data is fine everywhere in this project; a **total
+that silently omits a contributor** is the bug this panel exists to prevent,
+and a render has to show it happening.
 
 ---
 
@@ -177,5 +185,8 @@ this panel exists to prevent, and a render has to show it happening.
   of them is fixed by another trip.
 - **A non-overtypeable trip count.**
 - **The tow-cap line when the cap does not bite.**
-- **Filling in the Bobcat's weight.** It is blank on purpose, to show the
-  alarm. Every other cell carries a figure.
+- **Filling in the shade fabric's weight.** It is blank on purpose, to show
+  the alarm. Every other cell carries a figure.
+- **Omitting the `rental` row**, or showing a delivered rental in the load.
+- **A trip count with no `from known weights only` caveat** while a row is
+  missing a weight.

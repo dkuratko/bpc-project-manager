@@ -130,7 +130,7 @@ docs/design/component-wizard.final.dc.html` | — |
 | — | Fuel prices | POPUP | v6 accepted | `docs/design/equipment-render2.v6.dc.html` | `18` |
 | — | Supplier · new + properties | POPUP | **✔ FINAL v3** | `docs/design/supplier-dialog.v3.dc.html` | `20` |
 | — | New type / categories | POPUP | **not designed** | — | `18` |
-| — | Rental offering + 2 row editors | POPUP | briefed, awaiting render | — | `21` |
+| — | Rental offering + 2 row editors | POPUP | **✔ FINAL v1** | `docs/design/rental-offering.v1.dc.html` | `21` |
 | — | Contacts | MAIN · list | **✔ FINAL v2** | `docs/design/contacts.v2.dc.html` | `14` + `15` |
 
 Its dialog grammar — the `100px 1fr` field grid, read-only values as `#c0c0c0`
@@ -165,6 +165,12 @@ Grid becomes `14px 20px minmax(0,1fr) 148px 108px 200px 36px 64px`.
    equipment is now **individual units** with their own serial and their own
    rate, so the dropdown names the unit: `Ford F-450 · Truck 2`. Rentals read
    as before, by supplier. See `docs/18`.
+
+**Rental offering v1** — one:
+
+1. On the **New** panel the `Rates` table shows one empty display-only row.
+   `Fees` correctly shows none. An empty row you cannot type into is a dead
+   end — the table should be header plus `＋ Add a rate…` only.
 
 **Supplier v3** — one:
 
