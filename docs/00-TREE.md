@@ -610,6 +610,11 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
      let "what do United rent me" and "who rents me lifts" both be one
      click. from ideas-6b-catalog. the catalog browser uses the same.
      vehicle units get a COMPUTED $/mile; everything else is typed for now.
+     RENTED holds TWO RATES — the card costing uses and what you were last
+     billed. last paid SUGGESTS updating the card, never overwrites: one
+     invoice is a data point about a price, not a new price. grouped by
+     SUPPLIER then TYPE, two band tiers. MOVE says delivered or collected,
+     and a collected rental IS load on your own trailer.
 ◐ MOBILIZATION PANEL — briefed in docs/19. where the LOAD becomes
      visible: every component and owned machine, what each weighs and
      how long it is, against combined capacity. a missing ship weight

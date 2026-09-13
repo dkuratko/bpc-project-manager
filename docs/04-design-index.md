@@ -123,7 +123,7 @@ docs/design/component-wizard.final.dc.html` | — |
 | — | Customer / Contact dialogs | POPUP · 2 × 2 modes | **✔ FINAL v1** | `docs/design/customer-contact-dialogs.v1.dc.html` | `16` |
 | — | Mobilization panel | POPUP | briefed, awaiting render | — | `19` |
 | — | Equipment · Owned tab | MAIN · list + detail | v6 accepted | `docs/design/equipment-render2.v6.dc.html` | `18` |
-| — | Equipment · Rented tab | MAIN · list + detail | **not drawn** | — | `18` |
+| — | Equipment · Rented tab | MAIN · list + detail | design approved, awaiting render | — | `18` |
 | — | Equipment properties · 4 tabs | POPUP | v2 + v6 accepted | `docs/design/equipment-properties-tabs.v2.dc.html` | `18` |
 | — | Add a specification | POPUP | v2 accepted | same file | `18` |
 | — | Log entry · add + edit | POPUP | v1 accepted | `docs/design/equipment-log-entry.v1.dc.html` | `18` |

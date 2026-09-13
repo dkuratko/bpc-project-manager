@@ -23,6 +23,15 @@ Apply `03f-money-formatting.md` and `11-date-formatting.md`.
 Three panes inside one sunken inset panel. No dialogs open, no menu open.
 Window **1180 × 640**.
 
+**Render 5 · the RENTED tab.** The whole Equipment window, **1180 × 640**, with
+`Rented` active instead of `Owned`. Everything outside the tab panel is
+unchanged from `equipment-render2.v6` — same title bar, menu, toolbar including
+`Fuel prices…`, same filter band (its `Category` dropdown reading `All`), same
+status-bar geometry with the rental counters. Only the tab strip's active tab,
+the list and the detail pane change.
+
+One window on the teal desk. Nothing after `</x-dc>`.
+
 **Render 3 · the log entry dialog**, two 600 px panels side by side.
 
 **Render 4 · the sheet's other three tabs**, three 980 px panels stacked.
