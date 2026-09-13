@@ -146,18 +146,26 @@ is what proved load time is already inside the install durations.
 
 ---
 
-## Numbers this panel cannot be rendered without
+## The figures — sample, and consistent
+
+Use the sample fleet from `docs/18`.
 
 ```
-F-450          bed payload lb · tow capacity lb
-20 ft flatbed  capacity lb · tare weight lb
-Bobcat T66     operating weight lb · length × width × height
-crew           who goes, and their rates
+LOAD       components 4,260 lb  +  Bobcat T66 8,400 lb  =  12,660 lb
+CAPACITY   bed 4,800  +  trailer 10,600  =  15,400 lb
+           tow cap does not bite: 3,400 tare + 10,600 = 14,000 ≤ 16,000,
+           so the `capped by tow rating` line is ABSENT
+TRIPS      ceil(12,660 ÷ 15,400) = 1     ·     used [ 2 ] ✎ overtyped
 ```
 
-**Render it with `[?]` in those cells rather than plausible figures.** A panel
-whose whole argument is *"a missing number must be visible"* cannot be
-illustrated with invented ones.
+**The `[?]` on the Bobcat's weight row stays, and it is not missing data.** It
+is the alarm state being demonstrated — one row deliberately blank so the
+`4,260 lb + [?]` total and the red line can be seen doing their job. Every
+other cell carries a real figure.
+
+That is the difference worth keeping straight: sample data is fine everywhere
+in this project, but a **total that silently omits a contributor** is the bug
+this panel exists to prevent, and a render has to show it happening.
 
 ---
 
@@ -169,4 +177,5 @@ illustrated with invented ones.
   of them is fixed by another trip.
 - **A non-overtypeable trip count.**
 - **The tow-cap line when the cap does not bite.**
-- **Invented weights.** `[?]` until Damian supplies them.
+- **Filling in the Bobcat's weight.** It is blank on purpose, to show the
+  alarm. Every other cell carries a figure.

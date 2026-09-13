@@ -121,7 +121,7 @@ docs/design/component-wizard.final.dc.html` | — |
 | — | Record dialogs (4) | POPUP · family | **✔ FINAL v13** · revision state unrendered | `docs/design/record-dialogs.v13.dc.html` | `17` |
 | — | New Option / New Version | POPUP · two roles | **✔ FINAL v3** | `docs/design/new-option-version.v3.dc.html` | `13` |
 | — | Customer / Contact dialogs | POPUP · 2 × 2 modes | **✔ FINAL v1** | `docs/design/customer-contact-dialogs.v1.dc.html` | `16` |
-| — | Mobilization panel | POPUP | briefed, needs real weights | — | `19` |
+| — | Mobilization panel | POPUP | briefed, awaiting render | — | `19` |
 | — | Equipment · Owned tab | MAIN · list + detail | v6 accepted | `docs/design/equipment-render2.v6.dc.html` | `18` |
 | — | Equipment · Rented tab | MAIN · list + detail | **not drawn** | — | `18` |
 | — | Equipment properties · 4 tabs | POPUP | v2 + v6 accepted | `docs/design/equipment-properties-tabs.v2.dc.html` | `18` |
@@ -174,6 +174,9 @@ Grid becomes `14px 20px minmax(0,1fr) 148px 108px 200px 36px 64px`.
 2. `FIT` needs the two fields added since: a truck's `Capacity` is its **bed
    payload** and should say so, and a trailer needs `Tare weight` beside its
    capacity. See `docs/06`.
+3. The sample fleet is now the 2012 F-450 / 20 ft flatbed / Bobcat T66 with
+   consistent figures — `docs/18`. The F-450's rate is `$0.81 /mi`, not
+   `$0.91`: a used 2012 depreciates far less than the new truck first drawn.
 
 **Record dialogs v13** — five, all mechanical:
 

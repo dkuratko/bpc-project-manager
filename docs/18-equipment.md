@@ -127,58 +127,74 @@ bed, and it should say so.
 
 ---
 
-## ⚠ THE REAL FLEET — replace every invented unit
+## THE SAMPLE FLEET — use these everywhere
 
-Damian owns **three** things. Every render so far used invented equipment;
-these replace it everywhere.
+**This is sample data, like every other render in this project.** Exerplay,
+Verrado Elementary and `26-12A0` are invented too and nobody mistakes them for
+records. The rule that matters is **internal consistency** — the build-up sums
+to the rate, the intervals add up — not authenticity. Damian enters his real
+equipment once the application runs.
 
-```
-Trucks     2012 Ford F-450
-Trailers   20 ft flatbed trailer
-Loaders    Bobcat T66 skid steer          ← NOT a vehicle
-```
-
-### What this settles: one unit per type
-
-**He owns one of each, so every type has exactly one unit.** The type/unit
-layer stays in the schema — a rental offering is type-level, and
-`equipment_requirements` must point at a type so owned and rented can both
-satisfy it — but **the Equipment window never mentions it.** A row is a unit;
-`Type` appears only as a dropdown inside the properties sheet.
-
-Do not surface the distinction in the list, in a column, or in a group band.
-
-### What this changes: the Bobcat is not a vehicle
+The three machines are his, because it costs nothing and makes the screens feel
+like his app. The figures are plausible and **consistent**; replace them freely
+if better ones turn up.
 
 ```
-capacity · deck     blank. those belong to a CARRIER.
-identifier          a SERIAL, not a VIN.
-rate                per HOUR, typed. the per-mile build-up does not apply —
-                    a skid steer does not accrue cost by driving to site.
-ship weight & dims  IT HAS THEM, because it rides the flatbed. See docs/06.
+Trucks     2012 Ford F-450            VIN 1FDUF4HT5CEC00001 · AZ CG-84102
+Trailers   20 ft flatbed trailer      VIN 5JW1C2027M1000003
+Loaders    Bobcat T66 skid steer      serial B3T611234       ← NOT a vehicle
 ```
 
-### Numbers still needed — the render should wait for these
+### F-450 — fit and rate
 
 ```
-F-450         VIN · plate · odometer · purchase price · salvage · life miles
-              mpg · annual miles · annual maintenance · insurance + registration
-              tow rating · GVWR · bed length
-              ★ it is a 2012, so the depreciation figures are nothing like the
-                new-truck numbers used so far
-20 ft flatbed VIN · capacity lb · deck width · rate inputs
-Bobcat T66    serial · operating weight · length × width × height
-              hourly rate · in-service date
-compliance    registration, DOT and insurance dates for each
-rentals       who you rent from, what, and at what rate
+Bed payload      4,800 lb          Tow capacity   16,000 lb
+Odometer        41,280 mi          In service     14 Mar 2024
+
+Fuel          $3.85 /gal ÷ 13 mpg ......................  0.2962
+Maintenance   $2,800 /yr ÷ 15,000 mi/yr .................  0.1867
+Tyres         $1,600 /set ÷ 50,000 mi ...................  0.0320
+Depreciation  ($38,000 − $14,000) ÷ 250,000 mi ..........  0.0960
+Fixed         ($2,400 + $600) ÷ 15,000 mi/yr ............  0.2000
+                                                          ────────
+                                                           0.8108 /mi
 ```
 
-**Nothing invented gets rendered.** Give me the ones you have and the rest can
-carry a visible `[?]` rather than a plausible-looking lie.
+Shown in every list as **`$0.81 /mi`**.
+
+**A 2012 bought used depreciates far less than the new truck the earlier
+renders showed** — `0.0960` against `0.2320` — and fixed costs and maintenance
+matter proportionally more as a result. That flip is worth keeping: it is what
+a real second-hand truck's rate actually looks like.
+
+### 20 ft flatbed
+
+```
+Capacity   10,600 lb        Tare   3,400 lb        Deck   20.0 × 8.5 ft
+```
+
+**The tow cap does not bite here:** `3,400 + 10,600 = 14,000 ≤ 16,000`, so the
+trailer's own capacity stands and the `capped by tow rating` line is **absent**.
+That is the correct rendering of a well-matched rig, and the line exists for
+when someone pairs badly.
+
+### Bobcat T66
+
+```
+Operating weight  8,400 lb     11.8 × 6.0 × 6.8 ft
+Rate              $210.00 /day, TYPED — no mileage to divide by
+Capacity · deck   blank. it is cargo, not a carrier.
+```
+
+### Combined capacity
+
+```
+bed 4,800  +  trailer 10,600  =  15,400 lb
+```
 
 ---
 
-## The idea — three kinds of thing, all already in the catalog
+## The idea — three kinds of thing, all already in the catalog## The idea — three kinds of thing, all already in the catalog
 
 ```
 EQUIPMENT TYPE    "Ford F-450" · "64' boom lift"
