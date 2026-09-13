@@ -1119,14 +1119,31 @@ CREATE TABLE shipments (
 
 -- Completeness is CUMULATIVE across shipments, at COMPONENT level.
 -- Crates are not opened until on site, so part shortages surface mid-install.
+-- TWO outcomes, not three. An earlier draft had ok/damaged/short, but the
+-- categories were never exhaustive — wrong colour, wrong part number and
+-- missing hardware fit none of them — and nobody should have to classify a
+-- problem before describing it.
+--
+-- AN ISSUE IS TRACKED, NOT NOTED:
+--   · it keeps the item OUTSTANDING, so it reappears on the next truck
+--   · it raises an alert on the version for as long as it is open
+--   · it closes only by reopening the shipment and switching to 'approved'
+-- Resolving is correcting the fact, never a separate "resolve" record — the
+-- same principle the whole derived-status model runs on. See docs/25.
 CREATE TABLE shipment_items (
   id             TEXT PRIMARY KEY,
   shipment_id    TEXT NOT NULL REFERENCES shipments(id),
   cost_object_id TEXT REFERENCES cost_objects(id),
   description    TEXT,
   quantity       REAL NOT NULL DEFAULT 1,
-  condition      TEXT CHECK(condition IN ('ok','damaged','short',NULL)),
-  notes          TEXT
+  arrived        INTEGER NOT NULL DEFAULT 0,   -- was it on THIS truck
+  condition      TEXT NOT NULL DEFAULT 'approved'
+                 CHECK(condition IN ('approved','issue')),
+  issue_text     TEXT,          -- REQUIRED when condition = 'issue'
+  issue_opened_at   TEXT,
+  issue_resolved_at TEXT,       -- set when it flips back to 'approved'
+  notes          TEXT,
+  CHECK(condition = 'approved' OR issue_text IS NOT NULL)
 );
 
 CREATE TABLE attachments (

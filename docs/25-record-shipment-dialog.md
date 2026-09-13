@@ -73,35 +73,72 @@ already arrived. Completeness is cumulative at component level, so a second
 truck shows only what the first did not bring.
 
 ```
-☑  PlayBooster PB-4400 structure        qty 1    [ ok       ▼ ]
-☑  Shade sail 20 ft × 20 ft             qty 2    [ short    ▼ ]
-     ⚠  [ 1 of 2 sails on the truck                            ]
-☐  Benches, 6 ea                        qty 6    [ —        ▼ ]
-     not on this truck
+☑  PlayBooster PB-4400 structure     qty 1    ◉ Approved   ○ Issue
+☑  Shade sail 20 ft × 20 ft          qty 2    ○ Approved   ◉ Issue
+     ⚠  [ 1 of 2 sails on the truck — replacement promised 18 Sep    ]
+☐  Benches, 6 ea                     qty 6    not on this truck
 
-                        2 of 3 line items received · 1 short
+                        2 of 3 line items received · 1 issue open
 ```
 
-### Anything but `ok` keeps the item outstanding
+Columns `19px minmax(0,1fr) 54px 150px`. The tick says **whether it came on
+this truck**; the selection says **whether it was any good**. An unticked row
+shows neither selection — it reads `not on this truck` in `#808080`.
 
-`condition` is `ok · damaged · short`. **A short crate is not a received
-crate** — the item stays on the outstanding list and appears again on the next
-truck's dialog.
+### Approved or Issue — two options, not three
 
-Selecting `short` or `damaged` **opens a one-line note field beneath the row**,
-prefixed `⚠` in `#a00`. It is not optional: a shortfall with no description is
-a shortfall nobody can chase.
+An earlier draft had `ok · damaged · short`. **Two is better:** you should not
+have to pre-categorise a problem before describing it, and the categories were
+never exhaustive anyway — wrong colour, wrong part number, and missing hardware
+all fit none of them.
 
-### Why this list is editable in place
+```
+◉ Approved    default. it arrived and it is fine.
+○ Issue       something is wrong. say what in the line below.
+```
 
-`docs/12` bans rows of inputs — **this complies.** Each row carries a checkbox
-and a picker, which do not count against the limit, and at most one text field
-(the note) which appears on its own line beneath.
+`Approved` is selected on every ticked row until someone says otherwise, so
+unloading a clean truck is ticking boxes and nothing else.
 
-**It would also be wrong to make this a popup.** Ticking off a truck is the
-primary action of the dialog; opening ten row editors to unload one delivery
-would be the tail wagging the dog. The rule exists for tables that are
-*reference*, not for the thing the screen is for.
+### An Issue opens a text line, and it is not optional
+
+Choosing `Issue` reveals a full-width field beneath the row, prefixed `⚠` in
+`#a00`. **A problem nobody described is a problem nobody can chase**, so the
+dialog will not record with an empty issue line.
+
+---
+
+## ★ An issue is TRACKED, not noted
+
+This is the part that makes `Issue` more than a comment.
+
+```
+OPENS      the moment the shipment is recorded
+KEEPS      the item OUTSTANDING — it reappears on the next truck's dialog
+RAISES     an alert on the version, for as long as it is open
+CLOSES     only when someone reopens this shipment and switches the row
+           to Approved
+```
+
+**Resolving an issue is switching it to `Approved`.** No second dialog: the
+replacement sail arrives, you reopen shipment 2, tick it over, and everything
+downstream corrects itself. That is the same principle the whole status model
+runs on — correct the fact, not the conclusion.
+
+### What "monitored" means concretely
+
+While any shipment issue is open, the version carries it everywhere a problem
+is already shown:
+
+```
+PROJECT BROWSER   a 4 px #CC0000 lip in the gutter on that version's row
+VERSION VIEW      the same lip on the status strip, alert text in #a00
+STATUS BAR        ⚠ Next displaced — a problem always outranks the
+                  ordinary next step
+```
+
+**Nothing new is invented to carry it.** An open shipment issue is a problem
+like any other, and the application already knows how to show one.
 
 ---
 
@@ -133,10 +170,11 @@ all received, install date set        SCHEDULED            #8ECF8E
 
 ```
 📋 26-09A0 becomes
-   ▌ SCHEDULED   22 Sep 2026        ⚠ no equipment received
+   ▌ SCHEDULED   22 Sep 2026        ⚠ 1 open shipment issue
    ──────────────
-   1 of 2 shade sails still outstanding. The job keeps its date and keeps
-   the warning until the last crate lands.
+   1 of 2 shade sails still outstanding. The issue stays open and visible
+   on this job until someone marks it Approved — until then 26-09A0
+   carries a red lip in the browser and an alert on its version view.
 ```
 
 `#8ECF8E` ground, `var(--t)` bevel, a 4 px `#CC0000` lip on the chip's **left**
@@ -164,8 +202,11 @@ arrive at the same answer without either knowing about the other.
 ## Failure modes — do not reproduce
 
 - **Listing what has already arrived.** Outstanding only.
-- **`short` or `damaged` clearing the item.** It stays outstanding.
-- **A note field that is optional** on a shortfall.
+- **A three-way condition.** Approved or Issue.
+- **`Issue` clearing the item.** It stays outstanding until resolved.
+- **An optional issue line.** The dialog will not record without it.
+- **A separate resolve dialog.** Reopen the shipment and tick it Approved.
+- **Radios on an unticked row.** It did not come on this truck.
 - **A status dropdown.** Status is derived.
 - **A red tint** on the chip. 4 px lip, `#a00` text.
 - **Turning the item list into row-editor popups.** It is the dialog's
