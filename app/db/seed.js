@@ -22,9 +22,17 @@ function seed(db) {
 
   const tx = db.transaction(() => {
     customers(db);
-    projects(db);
+    // Equipment BEFORE projects: a version's mobilization names the truck and
+    // the trailer, so the fleet has to exist first.
     equipment(db);
+    projects(db);
+    // AFTER projects: a rental's last-paid evidence cites the job it was
+    // billed on, and that version has to exist to point at.
+    rentalEvidence(db);
     trackers(db);
+    catalog(db);
+    scope(db);
+    estimate(db);
   });
   tx();
   return true;
@@ -95,6 +103,12 @@ function projects(db) {
   const FA = db.prepare(`INSERT INTO version_facts (version_id,approved_at,invoice_sent_at,paid_at) VALUES (?,?,?,?)`);
   const SC = db.prepare(`INSERT INTO version_schedule (version_id,install_date,started_at,completed_at,buffer_days) VALUES (?,?,?,?,?)`);
   const WA = db.prepare(`INSERT INTO warranties (version_id,starts_at,months,expires_at) VALUES (?,?,?,?)`);
+  const MOB = db.prepare(`INSERT INTO version_mobilization
+    (version_id,trips,total_weight_lb,longest_piece_ft,widest_piece_ft,
+     truck_equipment_id,trailer_equipment_id) VALUES (?,?,?,?,?,?,?)`);
+  const RUN = db.prepare(`INSERT INTO calculation_runs
+    (id,version_id,run_number,purpose,status,total_cost,adjusted_cost,
+     computed_price,created_at) VALUES (?,?,?,?,?,?,?,?,?)`);
   const DO = db.prepare(`INSERT INTO documents
     (id,version_id,doc_type,reference,created_at,sent_at,locked,expires_at,
      quoted_price,computed_price)
@@ -159,10 +173,25 @@ function projects(db) {
       // The estimate. Its 30-day expiry is what makes 26-14 flag.
       const ref = `BPCe-26-${String(r.seq).padStart(2, '0')}${letter}${n}`;
       // quoted_price is what the customer was shown; computed_price is what
-      // the engine said it costs. GM% is the gap, and it is NULL unless both
-      // exist — docs/22.
+      // the ENGINE priced — both are PRICES. Cost does not live on a document
+      // at all; it lives on the calculation run that produced the price, which
+      // is why a run is seeded below. Storing cost in computed_price is what
+      // made the board compute margin against the wrong number.
       DO.run(uid('doc', ref), vid, 'e', ref, r.sent, r.sent, 1,
-             addDays(r.sent, 30), price, cost);
+             addDays(r.sent, 30), price, price);
+
+      // The run behind that price. A version with a priced, sent estimate had
+      // a calculation behind it by definition — this is that calculation.
+      // adjusted = computed ÷ (1 + markup); conditions are the gap between
+      // adjusted and raw cost, and contingency is added FLAT, never marked up.
+      if (price != null && cost != null) {
+        // computed = adjusted × (1 + markup) + adjusted × contingency.
+        // Contingency is added FLAT and is NEVER marked up, so the divisor is
+        // 1.25 at 20% + 5%, not 1.20. Leaving it out is what made 26-10A0's
+        // ladder fail to add up.
+        RUN.run(`run_${vid}`, vid, 1, 'base', 'complete',
+                cost, price / 1.25, price, r.sent);
+      }
 
       // Facts only on the first version — the others are standing offers.
       if (i > 0) return;
@@ -170,6 +199,12 @@ function projects(db) {
       if (r.install || r.started) SC.run(vid, r.install ?? null, r.started ?? null, r.completed ?? null, 1);
       if (r.warranty) WA.run(vid, r.warranty[0], 12, r.warranty[1]);
       if (r.shipAll || r.shipShort) shipment(db, vid, r.shipShort);
+
+      // Mobilization. The F-450 tows the flatbed on every job — that is the
+      // rig, and it is a SERVICE, not an equipment selection. Without this the
+      // equipment audit called the truck and the trailer unused on every job
+      // they ever hauled.
+      MOB.run(vid, 1, 2400, 20.0, 8.5, uid('eq', 'truck'), uid('eq', 'trailer'));
     });
   }
 }
@@ -311,25 +346,6 @@ function equipment(db) {
    'Rated operating capacity,2200,lb', 'Lift height,10.9,ft']
     .forEach((t, i) => spec('esm_t66', i, ...t.split(',')));
 
-  /* ── what you were actually billed · docs/18 ──────────────────────────
-     The card is what costing uses; last paid is evidence. They are seeded
-     apart on purpose, because the gap between them is the Rented tab's
-     entire reason for existing. */
-  const LP = db.prepare(`UPDATE equipment_sourcing_methods
-    SET last_paid_rate = ?, last_paid_at = ?, last_paid_version_id = ?,
-        last_paid_source = ?, last_paid_recorded_at = ?, rate_confirmed_at = ?
-    WHERE id = ?`);
-  //      id               paid   on            version      confirmed
-  LP.run(520, '2026-08-22', 'prj_26-09_A0', 'post_cost', '2026-08-25', '2026-03-14', 'esm_ur_boom64');
-  LP.run(365, '2026-06-11', null,           'typed',     '2026-06-12', '2026-03-14', 'esm_ur_boom45');
-  LP.run(68,  '2026-09-04', null,           'post_cost', '2026-09-06', '2026-09-04', 'esm_ss_comp');
-  LP.run(145, '2026-07-18', null,           'post_cost', '2026-07-20', '2026-07-18', 'esm_ss_truck');
-  LP.run(345, '2026-09-19', null,           'post_cost', '2026-09-21', '2026-05-02', 'esm_hr_mini');
-  // esm_ur_flat is left alone — never rented, and its card was last confirmed
-  // over a year ago. One row has to be each of those or the counters are
-  // decoration.
-  db.prepare(`UPDATE equipment_sourcing_methods SET rate_confirmed_at = ? WHERE id = ?`)
-    .run('2025-06-01', 'esm_ur_flat');
 }
 
 /* ─── trackers.v1 ──────────────────────────────────────────────────────── */
@@ -380,3 +396,271 @@ function addDays(iso, n) {
 }
 
 module.exports = { seed };
+
+
+/* ─── the catalog · docs/03a–03c ─────────────────────────────────────────
+   Enough of one to make the Scope tab real. These are invented, like the
+   fleet and the eight projects — what matters is that a scope row can name a
+   manufacturer, a part number and a category, and that a service row cannot.
+   ────────────────────────────────────────────────────────────────────── */
+
+function catalog(db) {
+  const C = db.prepare(`INSERT INTO components
+    (id,name,manufacturer,part_number,type,status,ship_weight_lb,ship_length_ft,
+     ship_width_ft,ship_height_ft)
+    VALUES (@id,@name,@mfr,@part,@type,'active',@w,@l,@wd,@h)`);
+  const IM = db.prepare(`INSERT INTO installation_methods
+    (id,component_id,code,name,duration_hr,is_default) VALUES (?,?,?,?,?,?)`);
+
+  // id, name, manufacturer, part, category, [methods], ship w/l/wd/h
+  const parts = [
+    ['pb_deck',  'Deck, square 48"',      'Landscape Structures', 'PB-D4848', 'Deck',
+     [['DB', 'Direct bury', 2.5, 1]], 310, 4.2, 4.2, 0.6],
+    ['pb_post',  "Post, 5\" × 12'",       'Landscape Structures', 'PB-P512',  'Post',
+     [['DB', 'Direct bury', 1.5, 1]], 96, 12.0, 0.5, 0.5],
+    ['pb_slide', 'Slide, 6 ft spiral',    'Landscape Structures', 'PB-S6SP',  'Slide',
+     [['BO', 'Bolt on', 3.0, 1]], 240, 8.0, 3.0, 6.0],
+    ['pb_arch',  'Arch Climber Panel',    'Landscape Structures', 'PB-88412', 'Play panel',
+     [['BO', 'Bolt on', 1.5, 1]], 85, 4.0, 3.5, 0.4],
+    ['pb_barr',  'Barrier Panel',         'Landscape Structures', 'PB-BR100', 'Play panel',
+     [['BO', 'Bolt on', 1.0, 1]], 62, 4.0, 3.0, 0.3],
+    ['pb_grab',  'Grab Handle, straight', 'Landscape Structures', 'PB-2201',  'Hardware',
+     [['BO', 'Bolt on', 0.3, 1]], 4, 1.5, 0.3, 0.3],
+    ['hip_shade','24x24x12 Hip Shade',    'Shade Systems',        'HIP-242412','Shade structure',
+     [['SM', 'Surface mount', 9.0, 1], ['DB', 'Direct bury', 11.0, 0]], 1850, 24.0, 24.0, 12.0],
+    ['bench6',   'Bench, 6 ft',           'Exerplay',             'BN-6',     'Site furnishing',
+     [['DB', 'Direct bury', 1.2, 1], ['SM', 'Surface mount', 0.8, 0]], 140, 6.0, 2.0, 2.5],
+  ];
+
+  for (const [id, name, mfr, part, type, methods, w, l, wd, h] of parts) {
+    C.run({ id: `cmp_${id}`, name, mfr, part, type, w, l, wd, h });
+    methods.forEach(([code, mname, hrs, def], i) =>
+      IM.run(`im_${id}_${code}`, `cmp_${id}`, code, mname, hrs, def));
+  }
+
+  // Materials. Native soil, removed EWF and concrete are three different
+  // disposal bills, so they are three materials rather than one "spoil".
+  const M = db.prepare(`INSERT INTO materials
+    (id,name,category,base_unit,density_lb_per_cy,swell_factor,waste_pct)
+    VALUES (?,?,?,?,?,?,?)`);
+  M.run('mat_soil',  'Native soil — hard clay', 'Earth',     'CY', 2700, 1.25, 0);
+  M.run('mat_ewf',   'Engineered wood fibre',   'Surfacing', 'CY',  600, 1.15, 5);
+  M.run('mat_conc',  'Concrete, 3000 psi',      'Concrete',  'CY', 4050, null, 8);
+
+  // Footings. "— catalog —" on a scope row means the method's own footing
+  // stands; an override names one of these instead.
+  const F = db.prepare(`INSERT INTO footing_specs
+    (id,name,shape,diameter_ft,depth_ft) VALUES (?,?,?,?,?)`);
+  F.run('ft_f2x4',  'F-2x4',  'cylindrical', 2.0, 4.0);
+  F.run('ft_f3x12', 'F-3x12', 'cylindrical', 3.0, 12.0);
+
+  // Services. A service row carries NO manufacturer and NO part number — the
+  // Scope tab leaves those cells genuinely blank, not dashed.
+  const S = db.prepare(`INSERT INTO services
+    (id,name,category,binding,binds_to_spec_type,default_unit,duration_hr_per_unit)
+    VALUES (?,?,?,?,?,?,?)`);
+  S.run('svc_excav',   'Site excavation',             'Earthwork',     'standalone', null, 'CY', 0.35);
+  S.run('svc_ewf',     'Remove EWF surfacing',        'Surfacing',     'standalone', null, 'SF', 0.004);
+  S.run('svc_ft_dig',  'Excavate footing',            'Earthwork',     'spec_bound', 'footing_spec', 'EA', 0.75);
+  S.run('svc_ft_pour', 'Set & pour footing',          'Earthwork',     'spec_bound', 'footing_spec', 'EA', 1.10);
+  S.run('svc_locate',  'Private utility line locate', 'Site services', 'standalone', null, 'LS', 4.0);
+}
+
+/* ─── the scope of 26-10A0 · docs/03c renders exactly this ──────────────── */
+
+function scope(db) {
+  const vid = 'prj_26-10_A0';
+  const G = db.prepare(`INSERT INTO scope_groups
+    (id,version_id,name,note,sequence_no,collapsed) VALUES (?,?,?,?,?,?)`);
+  const O = db.prepare(`INSERT INTO cost_objects
+    (id,version_id,kind,delta_id,group_id,component_id,installation_method_id,
+     service_id,quantity,unit,sequence_no)
+    VALUES (@id,@v,@kind,@delta,@grp,@cmp,@im,@svc,@qty,@unit,@seq)`);
+  const blank = { v: vid, delta: null, grp: null, cmp: null, im: null,
+                  svc: null, qty: 1, unit: 'EA', seq: 0 };
+
+  // The cost breakdown document itself. BPCc- is the classifier; the letter
+  // 'c' is what doc_type stores.
+  db.prepare(`INSERT INTO documents (id,version_id,doc_type,reference,created_at,locked)
+              VALUES (?,?,'c',?,?,0)`)
+    .run('doc_c_26-10A0', vid, 'BPCc-26-10A0', '2026-09-07');
+
+  // docs/03a's ladder: contingency 5%, markup 20%. Contingency is added FLAT
+  // and is NEVER marked up.
+  db.prepare(`UPDATE versions SET markup_pct = 20, contingency_pct = 5`).run();
+
+  G.run('grp_pb', vid, 'PlayBooster PB-4400', 'Landscape Structures', 0, 0);
+  G.run('grp_shade', vid, 'Shade and site furnishings', null, 1, 1);  // collapsed
+
+  const row = (id, grp, cmp, code, qty, seq) => O.run({ ...blank, id, kind: 'scope_row',
+    grp, cmp: `cmp_${cmp}`, im: `im_${cmp}_${code}`, qty, seq });
+
+  row('co_deck',  'grp_pb', 'pb_deck',  'DB', 4, 0);
+  row('co_post',  'grp_pb', 'pb_post',  'DB', 6, 1);
+  row('co_slide', 'grp_pb', 'pb_slide', 'BO', 1, 2);
+  row('co_arch',  'grp_pb', 'pb_arch',  'BO', 2, 3);
+  row('co_barr',  'grp_pb', 'pb_barr',  'BO', 3, 4);
+  row('co_grab',  'grp_pb', 'pb_grab',  'BO', 6, 5);
+
+  row('co_hip',   'grp_shade', 'hip_shade', 'SM', 1, 6);
+  row('co_bench', 'grp_shade', 'bench6',    'DB', 4, 7);
+
+  // Ungrouped. An ungrouped row is just a row — there is no "Ungrouped" header.
+  O.run({ ...blank, id: 'co_excav', kind: 'direct_service', svc: 'svc_excav',
+          qty: 12, unit: 'CY', seq: 8 });
+  O.run({ ...blank, id: 'co_ewf', kind: 'direct_service', svc: 'svc_ewf',
+          qty: 1700, unit: 'SF', seq: 9 });
+
+  /* ── add options · priced as a MARGINAL recompute ──────────────────────
+     An option can come out cheaper than pricing it on its own because it
+     rides on the same concrete truck. The prices here are the deltas two
+     calculation runs produced; the engine will recompute them. */
+  const D = db.prepare(`INSERT INTO scope_deltas
+    (id,version_id,kind,sequence_no,name,attaches_to,estimate_line_id,price_delta,cost_delta)
+    VALUES (?,?,'add_option',?,?,?,?,?,?)`);
+  D.run('dl_footing', vid, 1, 'Footing installation', 'line', 'co_hip', 1045.00, 742.95);
+  D.run('dl_locate',  vid, 2, 'Private utility line locate', 'job', null, 1200.00, 860.00);
+
+  O.run({ ...blank, id: 'co_ft_dig',  kind: 'direct_service', delta: 'dl_footing',
+          svc: 'svc_ft_dig',  qty: 4, unit: 'EA', seq: 0 });
+  O.run({ ...blank, id: 'co_ft_pour', kind: 'direct_service', delta: 'dl_footing',
+          svc: 'svc_ft_pour', qty: 4, unit: 'EA', seq: 1 });
+  O.run({ ...blank, id: 'co_locate',  kind: 'direct_service', delta: 'dl_locate',
+          svc: 'svc_locate',  qty: 1, unit: 'LS', seq: 0 });
+
+  /* ── site conditions · they move OUT of the identity strip and into the
+        Scope tab's own body, where they belong. docs/03j. */
+  const PC = db.prepare(`INSERT INTO project_conditions
+    (id,project_id,name,multiplier,affects_equipment,sequence_no) VALUES (?,?,?,?,?,?)`);
+  PC.run('pc_26-10_soil',   'prj_26-10', 'soil — hard clay',    1.15, 1, 0);
+  PC.run('pc_26-10_access', 'prj_26-10', 'access — restricted', 1.30, 1, 1);
+  db.prepare(`UPDATE projects SET native_material_id = ? WHERE id = ?`)
+    .run('mat_soil', 'prj_26-10');
+}
+
+
+/* ─── the estimate of 26-10A0 · docs/05f · 05g · 05h ─────────────────────
+   The document the customer sees. Its lines are UNIT PRICED and they sum to
+   the quoted total; cost appears nowhere on them — it lives on the cost
+   objects assigned to each line, and surfaces only inside a row expansion.
+   ────────────────────────────────────────────────────────────────────── */
+
+function estimate(db) {
+  const vid = 'prj_26-10_A0';
+  const doc = db.prepare(
+    `SELECT id FROM documents WHERE version_id = ? AND doc_type = 'e'`).get(vid);
+  if (!doc) return;
+
+  // COMPUTED is what the engine priced; QUOTED is what you decided to charge.
+  // The gap between them is the discount, and it is the whole point of the
+  // price bar.
+  // The exact ladder, and it has to add up:
+  //   cost        12,462.07   the assigned cost objects
+  //   conditions  +2,482.08   soil ×1.15 and access ×1.30, on labour and plant
+  //   adjusted    14,944.15
+  //   contingency   +747.21   5% of adjusted, FLAT — never marked up
+  //   markup      +2,988.83   20% of adjusted
+  //   computed    18,680.19
+  //   quoted      17,500.00   what you decided to charge — a $1,180.19 discount
+  db.prepare(`UPDATE documents SET computed_price = 18680.19, quoted_price = 17500.00
+               WHERE id = ?`).run(doc.id);
+  db.prepare(`UPDATE calculation_runs
+                 SET total_cost = 12462.07, adjusted_cost = 14944.15,
+                     computed_price = 18680.19
+               WHERE version_id = ?`).run(vid);
+
+  const L = db.prepare(`INSERT INTO document_lines
+    (id,document_id,parent_id,sequence_no,line_number,label,design_no,
+     quantity,unit,unit_price,amount,section,from_scope_group_id,delta_id)
+    VALUES (@id,@doc,@parent,@seq,@no,@label,@design,@qty,@unit,@price,@amount,
+            @section,@grp,@delta)`);
+  const base = { doc: doc.id, parent: null, no: null, design: null, qty: 1,
+                 unit: 'LS', section: 'scope', grp: null, delta: null };
+
+  //   no  id         label                                     qty unit  amount
+  L.run({ ...base, id: 'dl_01', seq: 0, no: 1,
+          label: 'INSTALLATION of Design #4471', design: '4471',
+          price: 10588.82, amount: 10588.82, grp: 'grp_pb' });
+  L.run({ ...base, id: 'dl_01_1', parent: 'dl_01', seq: 1,
+          label: 'PlayBooster PB-4400 — decks, posts, panels, slide',
+          price: null, amount: null });     // a sub-item is INCLUSIVE and PARTIAL
+  L.run({ ...base, id: 'dl_02', seq: 2, no: 2, label: '24x24x12 Hip Shade',
+          qty: 1, unit: 'EA', price: 3138.23, amount: 3138.23 });
+  L.run({ ...base, id: 'dl_03', seq: 3, no: 3, label: 'Bench, 6 ft',
+          qty: 4, unit: 'EA', price: 125.77, amount: 503.08 });
+  // LINE-SPECIFIC add option — 02.O1. It hangs off line 02 and is excluded
+  // from the total, same as a job-level one.
+  L.run({ ...base, id: 'dl_02_o1', parent: 'dl_02', seq: 3,
+          label: 'Footing installation', price: 1045.00, amount: 1045.00,
+          delta: 'dl_footing' });
+  L.run({ ...base, id: 'dl_04', seq: 4, no: 4,
+          label: 'SITE WORK — excavation and EWF removal',
+          price: 2818.11, amount: 2818.11 });
+  L.run({ ...base, id: 'dl_04_1', parent: 'dl_04', seq: 5,
+          label: 'Site excavation', qty: 12, unit: 'CY', price: null, amount: null });
+  L.run({ ...base, id: 'dl_04_2', parent: 'dl_04', seq: 6,
+          label: 'Remove EWF surfacing', qty: 1700, unit: 'SF', price: null, amount: null });
+  // Mobilization has NO cost objects. Expanded it reads "— no cost objects —",
+  // which is a real state the screen has to render.
+  L.run({ ...base, id: 'dl_05', seq: 7, no: 5, label: 'Mobilization',
+          price: 451.76, amount: 451.76 });
+
+  // Job-level add options are EXCLUDED from the total — the headline reads
+  // "BASE SCOPE, OPTIONS EXCLUDED".
+  L.run({ ...base, id: 'dl_o1', seq: 8, label: 'Private utility line locate',
+          price: 1200.00, amount: 1200.00, section: 'job_add_option',
+          delta: 'dl_locate' });
+
+  /* ── cost objects assigned to lines · docs/05f ──────────────────────────
+     A line's cost is everything assigned to it OR to anything beneath it, so
+     the PlayBooster parts hang off the sub-item and still count toward 01. */
+  const A = db.prepare(`INSERT INTO document_line_objects
+    (id,document_id,document_line_id,cost_object_id,allocated_cost) VALUES (?,?,?,?,?)`);
+  const assign = (obj, line, cost) => A.run(`dlo_${obj}`, doc.id, line, obj, cost);
+
+  assign('co_deck',  'dl_01_1', 1333.61);
+  assign('co_post',  'dl_01_1', 4628.29);
+  assign('co_slide', 'dl_01_1',  580.53);
+  assign('co_arch',  'dl_01_1',  306.00);
+  assign('co_barr',  'dl_01_1',  306.00);
+  assign('co_grab',  'dl_01_1',  204.00);
+  assign('co_hip',   'dl_02',   2181.07);
+  assign('co_bench', 'dl_03',    349.63);
+  assign('co_excav', 'dl_04_1', 1865.74);
+  assign('co_ewf',   'dl_04_2',  707.20);
+  assign('co_ft_dig', 'dl_02_o1', 612.40);
+  assign('co_ft_pour','dl_02_o1', 317.10);
+  assign('co_locate', 'dl_o1',   1050.00);
+
+  const N = db.prepare(`INSERT INTO document_notes
+    (id,document_id,line_id,kind,text,sequence_no) VALUES (?,?,?,?,?,?)`);
+  N.run('dn_1', doc.id, 'dl_04', 'assumption',
+        'Spoil hauled off site. Price assumes no rock or caliche below 18".', 0);
+  N.run('dn_2', doc.id, null, 'exclusion',
+        'Permits, fencing and private utility locating by others unless optioned.', 1);
+}
+
+
+/* ─── rental evidence · needs versions, so it runs after them ─────────── */
+
+function rentalEvidence(db) {
+  /* ── what you were actually billed · docs/18 ──────────────────────────
+     The card is what costing uses; last paid is evidence. They are seeded
+     apart on purpose, because the gap between them is the Rented tab's
+     entire reason for existing. */
+  const LP = db.prepare(`UPDATE equipment_sourcing_methods
+    SET last_paid_rate = ?, last_paid_at = ?, last_paid_version_id = ?,
+        last_paid_source = ?, last_paid_recorded_at = ?, rate_confirmed_at = ?
+    WHERE id = ?`);
+  //      id               paid   on            version      confirmed
+  LP.run(520, '2026-08-22', 'prj_26-09_A0', 'post_cost', '2026-08-25', '2026-03-14', 'esm_ur_boom64');
+  LP.run(365, '2026-06-11', null,           'typed',     '2026-06-12', '2026-03-14', 'esm_ur_boom45');
+  LP.run(68,  '2026-09-04', null,           'post_cost', '2026-09-06', '2026-09-04', 'esm_ss_comp');
+  LP.run(145, '2026-07-18', null,           'post_cost', '2026-07-20', '2026-07-18', 'esm_ss_truck');
+  LP.run(345, '2026-09-19', null,           'post_cost', '2026-09-21', '2026-05-02', 'esm_hr_mini');
+  // esm_ur_flat is left alone — never rented, and its card was last confirmed
+  // over a year ago. One row has to be each of those or the counters are
+  // decoration.
+  db.prepare(`UPDATE equipment_sourcing_methods SET rate_confirmed_at = ? WHERE id = ?`)
+    .run('2025-06-01', 'esm_ur_flat');
+}

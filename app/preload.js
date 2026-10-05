@@ -26,6 +26,8 @@ contextBridge.exposeInMainWorld('bpc', {
   version: async (id) => (await unwrap('domain:version')(id)).version,
   contacts: async (opts) => (await unwrap('domain:contacts')(opts)).list,
   setContactActive: async (opts) => await unwrap('domain:contact-active')(opts),
+  estimate: async (id) => (await unwrap('domain:estimate')(id)).doc,
+  costBreakdown: async (id) => (await unwrap('domain:cost-breakdown')(id)).data,
   equipment: async (opts) => (await unwrap('domain:equipment')(opts)).data,
   equipmentDetail: async (id) => (await unwrap('domain:equipment-detail')(id)).detail,
   fuelPrices: async () => (await unwrap('domain:fuel-prices')()).prices,

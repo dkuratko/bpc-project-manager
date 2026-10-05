@@ -19,6 +19,8 @@
  */
 
 import { openMain, openPopup } from '../shell.js';
+import { openCostBreakdown } from './cost-breakdown.js';
+import { openEstimate } from './estimate.js';
 
 export async function openVersionView(versionId) {
   const d = await window.bpc.version(versionId);
@@ -51,8 +53,8 @@ function toolbar(d) {
   // docs/09 · Post cost is greyed until the job is complete.
   const postCostLive = !!d.money.paid;
   el.innerHTML = `
-    <span class="w-btn">Cost breakdown</span>
-    <span class="w-btn">Estimate</span>
+    <span class="w-btn" data-open="cost">Cost breakdown</span>
+    <span class="w-btn" data-open="estimate">Estimate</span>
     <span class="w-sep"></span>
     <span class="w-btn" data-pop="approval">Record approval…</span>
     <span class="w-btn" data-pop="shipment">Record shipment…</span>
@@ -63,6 +65,11 @@ function toolbar(d) {
 
   // §9b · these four open popups. The rooms are specified and not yet built,
   // so the route exists before the room does.
+  el.querySelector('[data-open=cost]').addEventListener('click',
+    () => openCostBreakdown(d.id));
+  el.querySelector('[data-open=estimate]').addEventListener('click',
+    () => openEstimate(d.id));
+
   el.querySelectorAll('[data-pop]').forEach((b) =>
     b.addEventListener('click', () => notBuiltYet(b.textContent.replace('…', ''), b.dataset.pop)));
   return el;

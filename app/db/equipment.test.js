@@ -49,10 +49,14 @@ is('one stale rate',           o.counters.staleRate, 1);
 // Compliance earned a typed home in trackers; the audit reads it from there.
 is('the lapsed DOT is caught', unit('F-450').problems[0], 'DOT inspection expired 2026-08-30');
 
-// ⛔ Unused-12-months reads calculation runs, and none exist. It must not
-//    flag the whole fleet for a reason that is really "nothing was costed".
-is('unused reports zero',          o.counters.unused, 0);
-is('and says why it cannot tell',  o.counters.unusedMeaningless, true);
+// Calculations now exist, so the audit is live and means what it says.
+is('the audit can tell now',       o.counters.unusedMeaningless, false);
+// ⛔ The haul rig is used by MOBILIZATION, which is a service rather than an
+//    equipment selection. Counting selections alone called the F-450 and the
+//    flatbed unused on every job they ever towed.
+is('the truck counts as used',     o.counters.unused, 1);
+is('and it is the Bobcat left over',
+   o.units.filter((u) => u.problems.length === 0).length >= 1, true);
 
 /* ─── the build-up has to SUM ──────────────────────────────────────────── */
 

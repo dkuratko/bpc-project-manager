@@ -152,11 +152,32 @@ function ownedCounters(db, units, today) {
   };
 }
 
+/**
+ * "Used" means used on a JOB — and a job uses a machine two different ways.
+ *
+ *   equipment_selections   the machine does the work: a boom lift, a skid
+ *                          steer. Chosen by the engine, priced per period.
+ *   version_mobilization   the machine CARRIES the work. The F-450 and the
+ *                          flatbed are the haul rig, and they never appear in
+ *                          a selection — mobilization is its own service.
+ *
+ * Counting only the first flagged the truck and the trailer as unused on
+ * every job they ever towed, which is the opposite of true.
+ */
 function usedWithin(db, methodId, today, months) {
   const row = db.prepare(`
-    SELECT MAX(r.created_at) AS last FROM equipment_selections s
-      JOIN calculation_runs r ON r.id = s.run_id
-     WHERE s.sourcing_method_id = ?`).get(methodId);
+    SELECT MAX(last) AS last FROM (
+      SELECT r.created_at AS last FROM equipment_selections s
+        JOIN calculation_runs r ON r.id = s.run_id
+       WHERE s.sourcing_method_id = ?
+      UNION ALL
+      SELECT COALESCE(sc.install_date, d.created_at) AS last
+        FROM version_mobilization vm
+        JOIN equipment_sourcing_methods m
+          ON m.equipment_id IN (vm.truck_equipment_id, vm.trailer_equipment_id)
+        LEFT JOIN version_schedule sc ON sc.version_id = vm.version_id
+        LEFT JOIN documents d ON d.version_id = vm.version_id AND d.doc_type = 'e'
+       WHERE m.id = ?)`).get(methodId, methodId);
   if (!row?.last) return false;
   return (Date.parse(today) - Date.parse(row.last)) / MONTH <= months;
 }

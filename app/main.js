@@ -18,6 +18,8 @@ const { board, counters } = require('./db/board');
 const { versionDetail } = require('./db/version');
 const { contactList, setActive } = require('./db/contacts');
 const EQ = require('./db/equipment');
+const { costBreakdown } = require('./db/scope');
+const { estimateDoc } = require('./db/estimate');
 
 let db = null;
 
@@ -177,6 +179,16 @@ ipcMain.handle('domain:fuel-preview', (_e, prices) => {
 
 ipcMain.handle('domain:fuel-apply', (_e, prices) => {
   try { return EQ.fuelApply(database(), prices ?? {}, today()); }
+  catch (err) { return { error: err.message }; }
+});
+
+ipcMain.handle('domain:cost-breakdown', (_e, id) => {
+  try { return { data: costBreakdown(database(), id, today()) }; }
+  catch (err) { return { error: err.message }; }
+});
+
+ipcMain.handle('domain:estimate', (_e, id) => {
+  try { return { doc: estimateDoc(database(), id, today()) }; }
   catch (err) { return { error: err.message }; }
 });
 

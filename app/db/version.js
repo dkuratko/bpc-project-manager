@@ -105,7 +105,7 @@ function versionDetail(db, versionId, today = new Date().toISOString().slice(0, 
       issues: sh.items.filter((i) => i.condition === 'issue').length,
     })),
     documents: documentRows(docs, v),
-    money: money(docs, v, approval),
+    money: money(db, docs, v, approval),
     schedule: {
       install: v.install_date,
       buffer: v.buffer_days,
@@ -219,10 +219,16 @@ function documentRows(docs, v) {
 }
 
 /** docs/09 · the money ladder. Cost in #606060 — internal, never on paper. */
-function money(docs, v, approval) {
+function money(db, docs, v, approval) {
   const est = docs.find((d) => d.doc_type === 'e');
   const quoted = est?.quoted_price ?? null;
-  const cost = est?.computed_price ?? null;
+  // Cost comes from the calculation RUN. computed_price on a document is the
+  // price the engine arrived at, not what the job costs — reading it as cost
+  // is what gave 26-09A0 a margin of 0.0% once the document carried both.
+  const cost = db.prepare(`
+    SELECT total_cost FROM calculation_runs
+     WHERE version_id = ? AND purpose = 'base' AND status = 'complete'
+     ORDER BY run_number DESC LIMIT 1`).get(v.id)?.total_cost ?? null;
   const approved = v.approved_at ? (approval?.po_amount ?? quoted) : null;
   const changeOrders = 0;
   const revised = approved == null ? null : approved + changeOrders;

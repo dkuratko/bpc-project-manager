@@ -36,6 +36,13 @@ const ROWS = `
          d.sent_at       AS estimate_sent,
          d.created_at    AS estimate_created,
          d.quoted_price, d.computed_price, d.expires_at AS quote_expires,
+         -- COST comes from the calculation run, never from the document.
+         -- computed_price is a PRICE; using it as cost gave 26-10A0 a margin
+         -- of −2.5% the moment the document carried its real engine price.
+         (SELECT cr.total_cost FROM calculation_runs cr
+           WHERE cr.version_id = v.id AND cr.purpose = 'base'
+             AND cr.status = 'complete'
+           ORDER BY cr.run_number DESC LIMIT 1) AS run_cost,
          (SELECT count(*) FROM shipment_items si
             JOIN shipments sh ON sh.id = si.shipment_id
            WHERE sh.version_id = v.id
@@ -97,7 +104,7 @@ function board(db, today = new Date().toISOString().slice(0, 10)) {
       name: r.version_name,
       // A version's money is its own. A project has none — docs/07.
       value: r.quoted_price ?? r.computed_price ?? null,
-      margin: marginPct(r.quoted_price, r.computed_price),
+      margin: marginPct(r.quoted_price ?? r.computed_price, r.run_cost),
       status,
       flags: versionFlags(r, status, today),
     });

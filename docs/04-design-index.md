@@ -38,7 +38,7 @@ thin File · Window · Help menu. See the note at the end of this file.
 
 | # | Screen | Kind | Status | File | Brief |
 |---|---|---|---|---|---|
-| 1 | Scope | MAIN · tab 1 | **✔ FINAL v4** | `docs/design/cost-breakdown-01-scope.v4.dc.html` | `03a` + `03b` + `03c` |
+| 1 | Scope | MAIN · tab 1 | **✔ FINAL v4 · BUILT** | `docs/design/cost-breakdown-01-scope.v4.dc.html` | `03a` + `03b` + `03c` |
 | 2 | Requirements | MAIN · tab 2 | **✔ FINAL v1** | `docs/design/cost-breakdown-02-requirements.v1.dc.html` | `03d` |
 | 3 | Purchasing | MAIN · tab 3 | **✔ FINAL v1** *(pending $ format)* | `docs/design/cost-breakdown-03-purchasing.v1.dc.html` | `03e` |
 | 4 | Cost | MAIN · tab 4 | **✔ FINAL v2** | `docs/design/cost-breakdown-04-cost.v2.dc.html` | `03g` + `03h` |
@@ -58,7 +58,7 @@ spine down the whole selected group, and never touches the row's status tint.
 
 | # | Screen | Kind | Status | File | Brief |
 |---|---|---|---|---|---|
-| — | Estimate editor | MAIN | **✔ FINAL v12** | `docs/design/estimate-editor.v12.dc.html` | `05f` · `05g` · `05h` |
+| — | Estimate editor | MAIN | **✔ FINAL v12 · BUILT** | `docs/design/estimate-editor.v12.dc.html` | `05f` · `05g` · `05h` |
 
 **★ One build-time addition.** The rendered `Optional add-ons` box lists its one
 row but has no way to create another — the brief gained that after the render.
