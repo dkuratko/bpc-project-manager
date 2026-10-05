@@ -1,3 +1,14 @@
+-- BPC · Project Manager — schema
+-- VALIDATED 04 Oct 2026: runs clean in SQLite, 79 tables, 113 indexes,
+-- integrity_check ok, no unindexed foreign keys.
+--
+-- Re-validate after any edit:
+--     sqlite3 /tmp/check.db < docs/02-schema.sql && echo ok
+-- Regenerate the index section from the schema itself rather than by hand;
+-- see section 14.
+
+PRAGMA foreign_keys = ON;
+
 -- ============================================================================
 -- BUILD PLAY CONTRACTING — schema draft 1
 -- SQLite. Single user, one machine, local file.
@@ -1400,3 +1411,181 @@ CREATE TABLE crew_members (
   labor_role_id TEXT REFERENCES labor_roles(id),
   PRIMARY KEY(crew_id, user_id)
 );
+
+-- ═══════════════════════════════════════════════ 14 · INDEXES ══
+-- Every foreign key gets one. SQLite does NOT index a REFERENCES column for
+-- you, so without these every join and every referential check is a table
+-- scan — which is invisible on seed data and crippling on five years of
+-- calculation runs.
+-- Generated from the schema itself, so it cannot drift out of step with it.
+
+-- actual_entries
+CREATE INDEX IF NOT EXISTS ix_actual_entries_cost_object_id ON actual_entries(cost_object_id);
+CREATE INDEX IF NOT EXISTS ix_actual_entries_post_cost_id ON actual_entries(post_cost_id);
+CREATE INDEX IF NOT EXISTS ix_actual_entries_sourcing_method_id ON actual_entries(sourcing_method_id);
+-- alerts
+CREATE INDEX IF NOT EXISTS ix_alerts_version_id ON alerts(version_id);
+-- approval_lines
+CREATE INDEX IF NOT EXISTS ix_approval_lines_document_line_id ON approval_lines(document_line_id);
+-- approvals
+CREATE INDEX IF NOT EXISTS ix_approvals_document_id ON approvals(document_id);
+CREATE INDEX IF NOT EXISTS ix_approvals_revision_document_id ON approvals(revision_document_id);
+CREATE INDEX IF NOT EXISTS ix_approvals_version_id ON approvals(version_id);
+-- assemblies
+CREATE INDEX IF NOT EXISTS ix_assemblies_material_id ON assemblies(material_id);
+-- assembly_members
+CREATE INDEX IF NOT EXISTS ix_assembly_members_assembly_id ON assembly_members(assembly_id);
+-- billing_draws
+CREATE INDEX IF NOT EXISTS ix_billing_draws_document_id ON billing_draws(document_id);
+-- calculation_gaps
+CREATE INDEX IF NOT EXISTS ix_calculation_gaps_run_id ON calculation_gaps(run_id);
+-- component_specifications
+CREATE INDEX IF NOT EXISTS ix_component_specifications_component_id ON component_specifications(component_id);
+-- components
+CREATE INDEX IF NOT EXISTS ix_components_copied_from_id ON components(copied_from_id);
+CREATE INDEX IF NOT EXISTS ix_components_promoted_from_id ON components(promoted_from_id);
+-- contact_defaults
+CREATE INDEX IF NOT EXISTS ix_contact_defaults_add_contact_id ON contact_defaults(add_contact_id);
+CREATE INDEX IF NOT EXISTS ix_contact_defaults_contact_id ON contact_defaults(contact_id);
+CREATE INDEX IF NOT EXISTS ix_contact_defaults_customer_id ON contact_defaults(customer_id);
+-- contacts
+CREATE INDEX IF NOT EXISTS ix_contacts_customer_id ON contacts(customer_id);
+-- cost_lines
+CREATE INDEX IF NOT EXISTS ix_cost_lines_cost_object_id ON cost_lines(cost_object_id);
+-- cost_objects
+CREATE INDEX IF NOT EXISTS ix_cost_objects_component_id ON cost_objects(component_id);
+CREATE INDEX IF NOT EXISTS ix_cost_objects_delta_id ON cost_objects(delta_id);
+CREATE INDEX IF NOT EXISTS ix_cost_objects_footing_override_id ON cost_objects(footing_override_id);
+CREATE INDEX IF NOT EXISTS ix_cost_objects_group_id ON cost_objects(group_id);
+CREATE INDEX IF NOT EXISTS ix_cost_objects_installation_method_id ON cost_objects(installation_method_id);
+CREATE INDEX IF NOT EXISTS ix_cost_objects_service_id ON cost_objects(service_id);
+CREATE INDEX IF NOT EXISTS ix_cost_objects_version_id ON cost_objects(version_id);
+-- crew_members
+CREATE INDEX IF NOT EXISTS ix_crew_members_labor_role_id ON crew_members(labor_role_id);
+CREATE INDEX IF NOT EXISTS ix_crew_members_user_id ON crew_members(user_id);
+-- disposition_methods
+CREATE INDEX IF NOT EXISTS ix_disposition_methods_material_id ON disposition_methods(material_id);
+CREATE INDEX IF NOT EXISTS ix_disposition_methods_supplier_id ON disposition_methods(supplier_id);
+-- disposition_selections
+CREATE INDEX IF NOT EXISTS ix_disposition_selections_disposition_method_id ON disposition_selections(disposition_method_id);
+CREATE INDEX IF NOT EXISTS ix_disposition_selections_material_id ON disposition_selections(material_id);
+-- document_line_objects
+CREATE INDEX IF NOT EXISTS ix_document_line_objects_cost_object_id ON document_line_objects(cost_object_id);
+CREATE INDEX IF NOT EXISTS ix_document_line_objects_document_line_id ON document_line_objects(document_line_id);
+-- document_lines
+CREATE INDEX IF NOT EXISTS ix_document_lines_delta_id ON document_lines(delta_id);
+CREATE INDEX IF NOT EXISTS ix_document_lines_document_id ON document_lines(document_id);
+CREATE INDEX IF NOT EXISTS ix_document_lines_from_scope_group_id ON document_lines(from_scope_group_id);
+CREATE INDEX IF NOT EXISTS ix_document_lines_parent_id ON document_lines(parent_id);
+-- document_notes
+CREATE INDEX IF NOT EXISTS ix_document_notes_document_id ON document_notes(document_id);
+CREATE INDEX IF NOT EXISTS ix_document_notes_line_id ON document_notes(line_id);
+-- documents
+CREATE INDEX IF NOT EXISTS ix_documents_run_id ON documents(run_id);
+CREATE INDEX IF NOT EXISTS ix_documents_version_id ON documents(version_id);
+-- equipment_maintenance_log
+CREATE INDEX IF NOT EXISTS ix_equipment_maintenance_log_sourcing_method_id ON equipment_maintenance_log(sourcing_method_id);
+CREATE INDEX IF NOT EXISTS ix_equipment_maintenance_log_supplier_id ON equipment_maintenance_log(supplier_id);
+-- equipment_requirements
+CREATE INDEX IF NOT EXISTS ix_equipment_requirements_cost_object_id ON equipment_requirements(cost_object_id);
+CREATE INDEX IF NOT EXISTS ix_equipment_requirements_equipment_id ON equipment_requirements(equipment_id);
+CREATE INDEX IF NOT EXISTS ix_equipment_requirements_instance_id ON equipment_requirements(instance_id);
+CREATE INDEX IF NOT EXISTS ix_equipment_requirements_run_id ON equipment_requirements(run_id);
+-- equipment_selections
+CREATE INDEX IF NOT EXISTS ix_equipment_selections_equipment_id ON equipment_selections(equipment_id);
+CREATE INDEX IF NOT EXISTS ix_equipment_selections_sourcing_method_id ON equipment_selections(sourcing_method_id);
+-- equipment_sourcing_methods
+CREATE INDEX IF NOT EXISTS ix_equipment_sourcing_methods_equipment_id ON equipment_sourcing_methods(equipment_id);
+CREATE INDEX IF NOT EXISTS ix_equipment_sourcing_methods_last_paid_version_id ON equipment_sourcing_methods(last_paid_version_id);
+CREATE INDEX IF NOT EXISTS ix_equipment_sourcing_methods_supplier_id ON equipment_sourcing_methods(supplier_id);
+-- equipment_specifications
+CREATE INDEX IF NOT EXISTS ix_equipment_specifications_sourcing_method_id ON equipment_specifications(sourcing_method_id);
+-- equipment_totals
+CREATE INDEX IF NOT EXISTS ix_equipment_totals_equipment_id ON equipment_totals(equipment_id);
+-- generated_outputs
+CREATE INDEX IF NOT EXISTS ix_generated_outputs_cost_object_id ON generated_outputs(cost_object_id);
+CREATE INDEX IF NOT EXISTS ix_generated_outputs_instance_id ON generated_outputs(instance_id);
+CREATE INDEX IF NOT EXISTS ix_generated_outputs_material_id ON generated_outputs(material_id);
+CREATE INDEX IF NOT EXISTS ix_generated_outputs_run_id ON generated_outputs(run_id);
+-- installation_method_crew
+CREATE INDEX IF NOT EXISTS ix_installation_method_crew_installation_method_id ON installation_method_crew(installation_method_id);
+CREATE INDEX IF NOT EXISTS ix_installation_method_crew_labor_role_id ON installation_method_crew(labor_role_id);
+-- labor_requirements
+CREATE INDEX IF NOT EXISTS ix_labor_requirements_cost_object_id ON labor_requirements(cost_object_id);
+CREATE INDEX IF NOT EXISTS ix_labor_requirements_instance_id ON labor_requirements(instance_id);
+CREATE INDEX IF NOT EXISTS ix_labor_requirements_labor_role_id ON labor_requirements(labor_role_id);
+CREATE INDEX IF NOT EXISTS ix_labor_requirements_run_id ON labor_requirements(run_id);
+-- material_requirements
+CREATE INDEX IF NOT EXISTS ix_material_requirements_cost_object_id ON material_requirements(cost_object_id);
+CREATE INDEX IF NOT EXISTS ix_material_requirements_instance_id ON material_requirements(instance_id);
+CREATE INDEX IF NOT EXISTS ix_material_requirements_material_id ON material_requirements(material_id);
+CREATE INDEX IF NOT EXISTS ix_material_requirements_run_id ON material_requirements(run_id);
+-- material_totals
+CREATE INDEX IF NOT EXISTS ix_material_totals_material_id ON material_totals(material_id);
+-- output_totals
+CREATE INDEX IF NOT EXISTS ix_output_totals_material_id ON output_totals(material_id);
+-- post_costs
+CREATE INDEX IF NOT EXISTS ix_post_costs_baseline_run_id ON post_costs(baseline_run_id);
+CREATE INDEX IF NOT EXISTS ix_post_costs_document_id ON post_costs(document_id);
+-- procurement_methods
+CREATE INDEX IF NOT EXISTS ix_procurement_methods_material_id ON procurement_methods(material_id);
+CREATE INDEX IF NOT EXISTS ix_procurement_methods_supplier_id ON procurement_methods(supplier_id);
+-- procurement_selections
+CREATE INDEX IF NOT EXISTS ix_procurement_selections_material_id ON procurement_selections(material_id);
+CREATE INDEX IF NOT EXISTS ix_procurement_selections_procurement_method_id ON procurement_selections(procurement_method_id);
+-- product_procurement
+CREATE INDEX IF NOT EXISTS ix_product_procurement_cost_object_id ON product_procurement(cost_object_id);
+CREATE INDEX IF NOT EXISTS ix_product_procurement_supplier_id ON product_procurement(supplier_id);
+-- project_conditions
+CREATE INDEX IF NOT EXISTS ix_project_conditions_project_id ON project_conditions(project_id);
+-- project_contacts
+CREATE INDEX IF NOT EXISTS ix_project_contacts_contact_id ON project_contacts(contact_id);
+-- projects
+CREATE INDEX IF NOT EXISTS ix_projects_customer_id ON projects(customer_id);
+CREATE INDEX IF NOT EXISTS ix_projects_native_material_id ON projects(native_material_id);
+-- rate_observations
+CREATE INDEX IF NOT EXISTS ix_rate_observations_footing_spec_id ON rate_observations(footing_spec_id);
+CREATE INDEX IF NOT EXISTS ix_rate_observations_post_cost_id ON rate_observations(post_cost_id);
+CREATE INDEX IF NOT EXISTS ix_rate_observations_service_id ON rate_observations(service_id);
+-- record_audit
+CREATE INDEX IF NOT EXISTS ix_record_audit_user_id ON record_audit(user_id);
+-- requirement_instances
+CREATE INDEX IF NOT EXISTS ix_requirement_instances_cost_object_id ON requirement_instances(cost_object_id);
+CREATE INDEX IF NOT EXISTS ix_requirement_instances_parent_instance_id ON requirement_instances(parent_instance_id);
+CREATE INDEX IF NOT EXISTS ix_requirement_instances_run_id ON requirement_instances(run_id);
+-- requirements
+CREATE INDEX IF NOT EXISTS ix_requirements_installation_method_id ON requirements(installation_method_id);
+-- schedule_blocks
+CREATE INDEX IF NOT EXISTS ix_schedule_blocks_cost_object_id ON schedule_blocks(cost_object_id);
+CREATE INDEX IF NOT EXISTS ix_schedule_blocks_crew_id ON schedule_blocks(crew_id);
+CREATE INDEX IF NOT EXISTS ix_schedule_blocks_version_id ON schedule_blocks(version_id);
+-- scope_groups
+CREATE INDEX IF NOT EXISTS ix_scope_groups_version_id ON scope_groups(version_id);
+-- selection_fees
+CREATE INDEX IF NOT EXISTS ix_selection_fees_fee_id ON selection_fees(fee_id);
+-- service_crew
+CREATE INDEX IF NOT EXISTS ix_service_crew_labor_role_id ON service_crew(labor_role_id);
+CREATE INDEX IF NOT EXISTS ix_service_crew_service_id ON service_crew(service_id);
+-- service_rates
+CREATE INDEX IF NOT EXISTS ix_service_rates_equipment_id ON service_rates(equipment_id);
+CREATE INDEX IF NOT EXISTS ix_service_rates_footing_spec_id ON service_rates(footing_spec_id);
+-- services
+CREATE INDEX IF NOT EXISTS ix_services_consumes_material_id ON services(consumes_material_id);
+CREATE INDEX IF NOT EXISTS ix_services_equipment_id ON services(equipment_id);
+CREATE INDEX IF NOT EXISTS ix_services_generates_material_id ON services(generates_material_id);
+-- shipment_items
+CREATE INDEX IF NOT EXISTS ix_shipment_items_cost_object_id ON shipment_items(cost_object_id);
+CREATE INDEX IF NOT EXISTS ix_shipment_items_shipment_id ON shipment_items(shipment_id);
+-- shipments
+CREATE INDEX IF NOT EXISTS ix_shipments_version_id ON shipments(version_id);
+-- tracker_renewals
+CREATE INDEX IF NOT EXISTS ix_tracker_renewals_tracker_id ON tracker_renewals(tracker_id);
+-- trackers
+CREATE INDEX IF NOT EXISTS ix_trackers_sourcing_method_id ON trackers(sourcing_method_id);
+-- version_design_numbers
+CREATE INDEX IF NOT EXISTS ix_version_design_numbers_version_id ON version_design_numbers(version_id);
+-- version_mobilization
+CREATE INDEX IF NOT EXISTS ix_version_mobilization_trailer_equipment_id ON version_mobilization(trailer_equipment_id);
+CREATE INDEX IF NOT EXISTS ix_version_mobilization_truck_equipment_id ON version_mobilization(truck_equipment_id);
+-- versions
+CREATE INDEX IF NOT EXISTS ix_versions_copied_from_id ON versions(copied_from_id);
