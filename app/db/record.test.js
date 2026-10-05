@@ -69,5 +69,68 @@ R.recordSchedule(db, V, { install: '2026-11-02', started: '2026-11-02',
 // reassert itself.
 is('off site, and still ACTIVE', R.preview(db, V, {}, TODAY).label, 'ACTIVE');
 
+/* ─── Record shipment · docs/25 ────────────────────────────────────────── */
+
+const S = 'prj_26-10_A0';          // has eight scope rows and no shipments yet
+const v0 = R.shipmentView(db, S);
+
+// ⛔ Outstanding ONLY. Listing what has already arrived would make a second
+//    truck a re-run of the first.
+is('every line is outstanding at first', v0.lines.length, 8);
+is('and this is truck 1',                v0.sequenceNo, 1);
+
+// ★ Quantity is a FACT, condition is a JUDGMENT, and they are independent.
+R.recordShipment(db, S, {
+  sequenceNo: 1, receivedAt: '2026-09-10', destination: 'lot',
+  lines: v0.lines.map((l) => ({ ...l,
+    // the posts come up short, and the deck arrives damaged
+    qty: l.name.startsWith('Post') ? 4 : l.owed,
+    condition: l.name.startsWith('Deck') ? 'issue' : 'approved',
+    issueText: l.name.startsWith('Deck') ? 'two decks scratched in transit' : null })),
+});
+
+const o1 = R.outstanding(db, S);
+is('the short line is still owed', o1.lines.find((l) => l.name.startsWith('Post')).outstanding, 2);
+is('the rest arrived',             o1.lines.find((l) => l.name.startsWith('Slide')).outstanding, 0);
+// 4 of 6 · Approved is PARTIAL AND FINE. Only an issue says it is wrong.
+is('a partial delivery is not an issue by itself', o1.openIssues.length, 1);
+is('and the issue is the one described', o1.openIssues[0].text,
+   'two decks scratched in transit');
+
+// ★ EQUIPMENT RECEIVED needs BOTH gates.
+is('not complete — quantities short AND an issue open', o1.complete, false);
+
+const v1 = R.shipmentView(db, S);
+is('truck 2 lists only what is left', v1.lines.length, 2);
+is('and it is truck 2',               v1.sequenceNo, 2);
+
+// ⛔ A problem nobody described is a problem nobody can chase.
+const refused = R.recordShipment(db, S, {
+  sequenceNo: 2, receivedAt: '2026-09-14',
+  lines: [{ objectId: 'co_post', name: 'Post', qty: 2, condition: 'issue', issueText: '' }],
+});
+is('an issue with no description is refused', /needs a description/.test(refused.error), true);
+
+// The rest of the posts arrive.
+R.recordShipment(db, S, { sequenceNo: 2, receivedAt: '2026-09-14',
+  lines: [{ objectId: 'co_post', name: 'Post, 5" × 12\'', qty: 2, condition: 'approved' }] });
+const o2 = R.outstanding(db, S);
+is('quantities now clear', o2.totalOutstanding, 0);
+// ...but the deck issue is still open, and that alone holds it back.
+is('still not received, because the issue is open', o2.complete, false);
+
+// ★ RESOLVING AN ISSUE IS SWITCHING IT TO APPROVED. No second dialog —
+//   reopen the truck it came on and correct the fact.
+const truck1 = db.prepare(
+  `SELECT id FROM shipments WHERE version_id = ? AND sequence_no = 1`).get(S).id;
+const reopened = R.shipmentView(db, S, truck1);
+R.recordShipment(db, S, {
+  shipmentId: truck1, sequenceNo: 1, receivedAt: '2026-09-10',
+  lines: reopened.lines.map((l) => ({ ...l, qty: l.onThisTruck, condition: 'approved' })),
+});
+const o3 = R.outstanding(db, S);
+is('the issue closed',  o3.openIssues.length, 0);
+is('and NOW it is received equipment', o3.complete, true);
+
 console.log(fails ? `\n${fails} failed` : '\nrecord dialogs: all assertions hold');
 process.exit(fails ? 1 : 0);

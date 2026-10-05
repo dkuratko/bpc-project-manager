@@ -22,6 +22,7 @@ import { openMain, openPopup } from '../shell.js';
 import { openCostBreakdown } from './cost-breakdown.js';
 import { openEstimate } from './estimate.js';
 import { openSchedule } from '../dialogs/schedule.js';
+import { openShipment } from '../dialogs/shipment.js';
 
 // openMain raises an open window rather than rebuilding it, so a dialog that
 // changed a fact has to say "draw this again" explicitly.
@@ -87,7 +88,10 @@ function toolbar(d) {
 
   // §9b · the rest are specified and not yet built, so the route exists
   // before the room does.
-  el.querySelectorAll('[data-pop]:not([data-pop=schedule])').forEach((b) =>
+  el.querySelector('[data-pop=shipment]').addEventListener('click',
+    () => openShipment(d, () => refreshVersionView(d.id)));
+
+  el.querySelectorAll('[data-pop]:not([data-pop=schedule]):not([data-pop=shipment])').forEach((b) =>
     b.addEventListener('click', () => notBuiltYet(b.textContent.replace('…', ''), b.dataset.pop)));
   return el;
 }

@@ -234,6 +234,16 @@ ipcMain.handle('domain:record-schedule', (_e, id, vals) => {
   catch (err) { return { error: err.message }; }
 });
 
+ipcMain.handle('domain:shipment-view', (_e, id, shipId) => {
+  try { return { data: REC.shipmentView(database(), id, shipId ?? null) }; }
+  catch (err) { return { error: err.message }; }
+});
+
+ipcMain.handle('domain:record-shipment', (_e, id, vals) => {
+  try { return REC.recordShipment(database(), id, vals); }
+  catch (err) { return { error: err.message }; }
+});
+
 ipcMain.handle('domain:preview-status', (_e, id, proposed) => {
   try { return { status: REC.preview(database(), id, proposed ?? {}, today()) }; }
   catch (err) { return { error: err.message }; }

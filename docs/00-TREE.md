@@ -872,7 +872,7 @@ BUILD DECISIONS, 04 Oct 2026:
                       first. the money screens wait on the catalog, which has
                       no content and no screen to enter it with.
 
-STANDING IN CODE, 05 Oct 2026 — app/, 256 assertions green:
+STANDING IN CODE, 05 Oct 2026 — app/, 272 assertions green:
   db/open.js ........ builds from docs/02-schema.sql itself. one source, never
                       a copy. verify() refuses an unindexed foreign key.
   db/status.js ...... deriveStatus() — the 14 statuses from independent facts,
@@ -908,6 +908,8 @@ STANDING IN CODE, 05 Oct 2026 — app/, 256 assertions green:
                       counters, the screen strip that never collapses.
   screens/equipment.js ........ docs/18. 1180×640, two tabs, detail pane
                       instead of a strip, maintenance counters that filter.
+  dialogs/shipment.js ......... docs/25. Quantity is a fact, condition is a
+                      judgment, and three of four outcomes hold the status.
   dialogs/schedule.js ......... docs/24. The signature case: type an install
                       date and the preview turns green WITH the red lip.
   screens/trackers.js ......... docs/27. 1000×600, countdown chips on white
@@ -921,8 +923,7 @@ STANDING IN CODE, 05 Oct 2026 — app/, 256 assertions green:
   LABOUR is settled: docs/03g named the three roles and their rates in its
         worked allocation — Installer 68 · Laborer 52 · Operator 82.
 
-  NEXT: the other three record dialogs — approval (17) · shipment (25) ·
-        invoice (26). Then the creation dialogs, then the catalog browser,
+  NEXT: the other two record dialogs — approval (17) · invoice (26). Then the creation dialogs, then the catalog browser,
         which is the only way to enter a component today.
         against tables that already exist. THEN the catalog, which unblocks
         the engine and with it every money screen.
