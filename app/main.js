@@ -20,6 +20,7 @@ const { contactList, setActive } = require('./db/contacts');
 const EQ = require('./db/equipment');
 const { costBreakdown } = require('./db/scope');
 const { estimateDoc } = require('./db/estimate');
+const ENGINE = require('./db/engine');
 
 let db = null;
 
@@ -190,6 +191,20 @@ ipcMain.handle('domain:cost-breakdown', (_e, id) => {
 ipcMain.handle('domain:estimate', (_e, id) => {
   try { return { doc: estimateDoc(database(), id, today()) }; }
   catch (err) { return { error: err.message }; }
+});
+
+ipcMain.handle('domain:engine', (_e, id) => {
+  try { return { result: ENGINE.calculate(database(), id) }; }
+  catch (err) { return { error: err.message }; }
+});
+
+ipcMain.handle('domain:recalculate', (_e, id) => {
+  try {
+    const db = database();
+    const result = ENGINE.calculate(db, id);
+    ENGINE.persist(db, id, result, { today: today() });
+    return { result };
+  } catch (err) { return { error: err.message }; }
 });
 
 ipcMain.handle('domain:version', (_e, id) => {

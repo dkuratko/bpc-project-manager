@@ -264,6 +264,13 @@ function equipment(db) {
   M.run({ ...blank, id: 'esm_flatbed', eq: uid('eq', 'trailer'), name: '20 ft flatbed trailer',
           kind: 'owned', serial: '5JW1C2027M1000003', rate: 0.45, basis: 'mile', def: 1,
           cap: 10600, tare: 3400, deckL: 20, deckW: 8.5, inservice: '2024-03-14' });
+  // A towable mixer. Owned, billed by the hour — docs/03e's "— " in the
+  // Periods column is exactly this: an owned machine has no periods.
+  db.prepare(`INSERT INTO equipment (id,name,is_vehicle) VALUES ('eq_mixer','mixer',0)`).run();
+
+  M.run({ ...blank, id: 'esm_mixer', eq: uid('eq', 'mixer'), name: 'Towable mixer, 9 cf',
+          kind: 'owned', serial: 'MX-0000-0005', rate: 42.00, basis: 'hour',
+          inService: '2023-05-10', def: 1 });
   M.run({ ...blank, id: 'esm_t66', eq: uid('eq', 'loader'), name: 'Bobcat T66 skid steer',
           kind: 'owned', serial: 'B3T611234', rate: 210, basis: 'day', def: 1,
           shipW: 8400, shipL: 11.8, shipWd: 6.0, shipH: 6.8, inservice: '2024-06-02' });
@@ -451,6 +458,7 @@ function catalog(db) {
   // stands; an override names one of these instead.
   const F = db.prepare(`INSERT INTO footing_specs
     (id,name,shape,diameter_ft,depth_ft) VALUES (?,?,?,?,?)`);
+  F.run('ft_f1x2',  'F-1x2',  'cylindrical', 1.0, 2.0);
   F.run('ft_f2x4',  'F-2x4',  'cylindrical', 2.0, 4.0);
   F.run('ft_f3x12', 'F-3x12', 'cylindrical', 3.0, 12.0);
 
@@ -464,6 +472,116 @@ function catalog(db) {
   S.run('svc_ft_dig',  'Excavate footing',            'Earthwork',     'spec_bound', 'footing_spec', 'EA', 0.75);
   S.run('svc_ft_pour', 'Set & pour footing',          'Earthwork',     'spec_bound', 'footing_spec', 'EA', 1.10);
   S.run('svc_locate',  'Private utility line locate', 'Site services', 'standalone', null, 'LS', 4.0);
+
+  // What a service PRODUCES. Excavating generates spoil, and spoil is a
+  // disposal bill — native soil, removed EWF and concrete are three different
+  // bills, which is why they are three materials.
+  db.prepare(`UPDATE services SET generates_material_id = ?, generates_qty_per_unit = ?
+               WHERE id = ?`).run('mat_soil', 1.0, 'svc_excav');
+  // 1,700 SF lifted 1 ft deep is 1,700 cf — 62.96 CY bank.
+  db.prepare(`UPDATE services SET generates_material_id = ?, generates_qty_per_unit = ?
+               WHERE id = ?`).run('mat_ewf', 1 / 27, 'svc_ewf');
+
+  /* ── what KIND of work a service is ───────────────────────────────────
+     A site condition does not make every task harder. Hard clay slows the
+     digging; it does not slow bolting a panel on. So a condition carries
+     tags and applies only to work that carries the same one. */
+  const ST = db.prepare(`INSERT INTO service_tags (service_id,tag) VALUES (?,?)`);
+  ST.run('svc_excav',   'EXCAVATION');
+  ST.run('svc_ft_dig',  'EXCAVATION');
+  ST.run('svc_ewf',     'EXCAVATION');
+  ST.run('svc_ewf',     'MATERIAL_HANDLING');
+  ST.run('svc_ft_pour', 'MATERIAL_HANDLING');
+  // svc_locate carries none: a utility locate is unaffected by either.
+
+  /* ── labour · docs/03g names the three roles and their rates ─────────── */
+  const LR = db.prepare(`INSERT INTO labor_roles (id,name,hourly_rate) VALUES (?,?,?)`);
+  LR.run('lr_installer', 'Installer', 68.00);
+  LR.run('lr_laborer',   'Laborer',   52.00);
+  LR.run('lr_operator',  'Operator',  82.00);
+
+  // Crew on an installation METHOD: duration is clock time, crew turns it
+  // into man-hours. Three installers on a deck is 3× the man-hours of one.
+  const IMC = db.prepare(`INSERT INTO installation_method_crew
+    (id,installation_method_id,labor_role_id,count) VALUES (?,?,?,?)`);
+  for (const [m, n] of [['im_pb_deck_DB', 3], ['im_pb_post_DB', 3],
+                        ['im_pb_slide_BO', 2], ['im_pb_arch_BO', 2],
+                        ['im_pb_barr_BO', 2], ['im_pb_grab_BO', 1],
+                        ['im_hip_shade_SM', 3], ['im_hip_shade_DB', 3],
+                        ['im_bench6_DB', 2], ['im_bench6_SM', 2]]) {
+    IMC.run(`imc_${m}`, m, 'lr_installer', n);
+  }
+
+  const SC = db.prepare(`INSERT INTO service_crew
+    (id,service_id,labor_role_id,count) VALUES (?,?,?,?)`);
+  SC.run('sc_excav',   'svc_excav',   'lr_operator', 1);
+  SC.run('sc_ewf',     'svc_ewf',     'lr_laborer',  2);
+  SC.run('sc_ft_dig',  'svc_ft_dig',  'lr_operator', 1);
+  SC.run('sc_ft_pour', 'svc_ft_pour', 'lr_laborer',  2);
+  SC.run('sc_locate',  'svc_locate',  'lr_laborer',  1);
+
+  // Equipment a service runs. The machine may run for only part of the
+  // duration, which is why it is its own field.
+  db.prepare(`UPDATE services SET equipment_id = ?, equipment_hr_per_unit = ?
+               WHERE id = ?`).run('eq_excavator', 0.25, 'svc_excav');
+
+  /* ── spec-bound rates · and the gap the briefs are built around ───────
+     A footing service is priced PER SPEC: digging a 1 ft hole and a 3 ft hole
+     are not the same job. svc_ft_dig has NO RATE FOR F-2x4 — that gap is
+     deliberate. It is the "Excavate Footing has no rate for F-2x4" problem
+     the Requirements and Cost tabs are written around, and nothing is
+     interpolated to fill it. */
+  const SR = db.prepare(`INSERT INTO service_rates
+    (id,service_id,footing_spec_id,duration_hr_per_ea,equipment_id,equipment_hr_per_ea)
+    VALUES (?,?,?,?,?,?)`);
+  SR.run('sr_dig_f1x2',  'svc_ft_dig',  'ft_f1x2',  0.30, 'eq_excavator', 0.20);
+  SR.run('sr_dig_f3x12', 'svc_ft_dig',  'ft_f3x12', 1.20, 'eq_excavator', 0.90);
+  //    ⛔ svc_ft_dig × ft_f2x4 is MISSING ON PURPOSE.
+  SR.run('sr_pour_f1x2', 'svc_ft_pour', 'ft_f1x2',  0.40, 'eq_mixer', 0.20);
+  SR.run('sr_pour_f2x4', 'svc_ft_pour', 'ft_f2x4',  0.70, 'eq_mixer', 0.40);
+  SR.run('sr_pour_f3x12','svc_ft_pour', 'ft_f3x12', 1.60, 'eq_mixer', 1.10);
+
+  /* ── what an installation method REQUIRES ─────────────────────────────
+     A direct-bury post needs a footing; a bolt-on panel does not. This is
+     where "— catalog —" in the Footing column comes from. */
+  const RQ = db.prepare(`INSERT INTO requirements
+    (id,installation_method_id,requirement_type,referenced_id,quantity,binding_tag)
+    VALUES (?,?,?,?,?,?)`);
+  RQ.run('rq_post',  'im_pb_post_DB', 'footing_spec', 'ft_f2x4', 1, 'footings');
+  RQ.run('rq_deck',  'im_pb_deck_DB', 'footing_spec', 'ft_f2x4', 1, 'footings');
+  RQ.run('rq_bench', 'im_bench6_DB',  'footing_spec', 'ft_f1x2', 2, 'footings');
+
+  /* ── how a material is BOUGHT ─────────────────────────────────────────
+     Purchase rounding is its own rounding: you cannot buy 2.91 CY of
+     ready-mix, you buy 3.50. */
+  const PM = db.prepare(`INSERT INTO procurement_methods
+    (id,material_id,name,supplier_id,purchase_unit,units_per_purchase,unit_price,
+     waste_pct,round_purchase_to,minimum_quantity,is_default)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?)`);
+  PM.run('pm_concrete', 'mat_conc', 'Ready-mix, ABC Concrete', null,
+         'CY', 1, 185.00, 5, 0.5, null, 1);
+
+  const PF = db.prepare(`INSERT INTO fees
+    (id,owner_type,owner_id,name,basis,amount,condition_field,condition_op,
+     condition_value,sequence_no) VALUES (?,?,?,?,?,?,?,?,?,?)`);
+  PF.run('fee_conc_del',  'procurement_method', 'pm_concrete', 'Delivery',
+         'flat', 85.00, null, null, null, 0);
+  // A fee that does not apply is SHOWN GREYED WITH ITS REASON, never hidden.
+  PF.run('fee_conc_short','procurement_method', 'pm_concrete', 'Short load',
+         'flat', 150.00, 'purchased_quantity', '<', 4.0, 1);
+  PF.run('fee_conc_fuel', 'procurement_method', 'pm_concrete', 'Fuel surcharge',
+         'percent', 3, null, null, null, 2);
+
+  /* ── how an output is DISPOSED OF ────────────────────────────────────
+     Removed EWF has NO disposition method, on purpose. "— not selected —"
+     is not "$0.00": an output with no disposition is a hole in the estimate,
+     not a free one. That is the second of the two problems. */
+  const DM = db.prepare(`INSERT INTO disposition_methods
+    (id,material_id,name,supplier_id,billing_basis,rate,truck_capacity_cy,is_default)
+    VALUES (?,?,?,?,?,?,?,?)`);
+  DM.run('dm_soil', 'mat_soil', 'Haul off, Miller Pit', null, 'per_ton', 38.00, 12, 1);
+  PF.run('fee_soil_gate', 'disposition_method', 'dm_soil', 'Gate fee',
+         'flat', 220.00, null, null, null, 0);
 }
 
 /* ─── the scope of 26-10A0 · docs/03c renders exactly this ──────────────── */
@@ -521,10 +639,14 @@ function scope(db) {
   D.run('dl_footing', vid, 1, 'Footing installation', 'line', 'co_hip', 1045.00, 742.95);
   D.run('dl_locate',  vid, 2, 'Private utility line locate', 'job', null, 1200.00, 860.00);
 
+  const FO = db.prepare(`UPDATE cost_objects SET footing_override_id = ? WHERE id = ?`);
   O.run({ ...blank, id: 'co_ft_dig',  kind: 'direct_service', delta: 'dl_footing',
           svc: 'svc_ft_dig',  qty: 4, unit: 'EA', seq: 0 });
   O.run({ ...blank, id: 'co_ft_pour', kind: 'direct_service', delta: 'dl_footing',
           svc: 'svc_ft_pour', qty: 4, unit: 'EA', seq: 1 });
+  // A spec-bound service has to say WHICH spec. "Excavate footing, F-3x12".
+  FO.run('ft_f3x12', 'co_ft_dig');
+  FO.run('ft_f3x12', 'co_ft_pour');
   O.run({ ...blank, id: 'co_locate',  kind: 'direct_service', delta: 'dl_locate',
           svc: 'svc_locate',  qty: 1, unit: 'LS', seq: 0 });
 
@@ -536,6 +658,10 @@ function scope(db) {
   PC.run('pc_26-10_access', 'prj_26-10', 'access — restricted', 1.30, 1, 1);
   db.prepare(`UPDATE projects SET native_material_id = ? WHERE id = ?`)
     .run('mat_soil', 'prj_26-10');
+
+  const PCT = db.prepare(`INSERT INTO project_condition_tags (condition_id,tag) VALUES (?,?)`);
+  PCT.run('pc_26-10_soil',   'EXCAVATION');
+  PCT.run('pc_26-10_access', 'MATERIAL_HANDLING');
 }
 
 
@@ -544,6 +670,8 @@ function scope(db) {
    the quoted total; cost appears nowhere on them — it lives on the cost
    objects assigned to each line, and surfaces only inside a row expansion.
    ────────────────────────────────────────────────────────────────────── */
+
+const round2 = (n) => Math.round(n * 100) / 100;
 
 function estimate(db) {
   const vid = 'prj_26-10_A0';
@@ -554,20 +682,38 @@ function estimate(db) {
   // COMPUTED is what the engine priced; QUOTED is what you decided to charge.
   // The gap between them is the discount, and it is the whole point of the
   // price bar.
-  // The exact ladder, and it has to add up:
-  //   cost        12,462.07   the assigned cost objects
-  //   conditions  +2,482.08   soil ×1.15 and access ×1.30, on labour and plant
-  //   adjusted    14,944.15
-  //   contingency   +747.21   5% of adjusted, FLAT — never marked up
-  //   markup      +2,988.83   20% of adjusted
-  //   computed    18,680.19
-  //   quoted      17,500.00   what you decided to charge — a $1,180.19 discount
-  db.prepare(`UPDATE documents SET computed_price = 18680.19, quoted_price = 17500.00
-               WHERE id = ?`).run(doc.id);
-  db.prepare(`UPDATE calculation_runs
-                 SET total_cost = 12462.07, adjusted_cost = 14944.15,
-                     computed_price = 18680.19
-               WHERE version_id = ?`).run(vid);
+  /* ── RUN THE ENGINE ───────────────────────────────────────────────────
+     26-10A0 is the one version with a real scope and a real catalog behind
+     it, so its numbers are CALCULATED rather than typed. The placeholder run
+     seeded with every other version is replaced by the engine's own. */
+  const { calculate, persist } = require('./engine.js');
+  db.prepare(`DELETE FROM calculation_runs WHERE version_id = ?`).run(vid);
+  const result = calculate(db, vid);
+  persist(db, vid, result, { today: '2026-09-04' });
+
+  /* ── add options are priced as a MARGINAL RECOMPUTE ───────────────────
+     What the job costs WITH the option, minus what it costs without. That is
+     why an option can come out cheaper than pricing it on its own: it rides
+     on the same concrete truck. Each one gets its own run. */
+  const deltaLines = new Map();
+  for (const d of db.prepare(
+    `SELECT id FROM scope_deltas WHERE version_id = ? ORDER BY sequence_no`).all(vid)) {
+    const withIt = calculate(db, vid, { includeDeltas: [d.id] });
+    persist(db, vid, withIt, { purpose: 'delta_price', today: '2026-09-04' });
+    db.prepare(`UPDATE scope_deltas SET cost_delta = ?, price_delta = ? WHERE id = ?`)
+      .run(round2(withIt.money.cost - result.money.cost),
+           round2(withIt.money.price - result.money.price), d.id);
+    for (const l of withIt.lines) {
+      if (!result.lines.some((b) => b.objId === l.objId)) {
+        deltaLines.set(l.objId, (deltaLines.get(l.objId) ?? 0) + l.extendedCost);
+      }
+    }
+  }
+
+  // COMPUTED is what the engine priced. QUOTED is what you decided to charge,
+  // and the gap between them is the discount — a decision, not a calculation.
+  db.prepare(`UPDATE documents SET computed_price = ?, quoted_price = 17500.00
+               WHERE id = ?`).run(result.money.price, doc.id);
 
   const L = db.prepare(`INSERT INTO document_lines
     (id,document_id,parent_id,sequence_no,line_number,label,design_no,
@@ -616,21 +762,42 @@ function estimate(db) {
      the PlayBooster parts hang off the sub-item and still count toward 01. */
   const A = db.prepare(`INSERT INTO document_line_objects
     (id,document_id,document_line_id,cost_object_id,allocated_cost) VALUES (?,?,?,?,?)`);
-  const assign = (obj, line, cost) => A.run(`dlo_${obj}`, doc.id, line, obj, cost);
 
-  assign('co_deck',  'dl_01_1', 1333.61);
-  assign('co_post',  'dl_01_1', 4628.29);
-  assign('co_slide', 'dl_01_1',  580.53);
-  assign('co_arch',  'dl_01_1',  306.00);
-  assign('co_barr',  'dl_01_1',  306.00);
-  assign('co_grab',  'dl_01_1',  204.00);
-  assign('co_hip',   'dl_02',   2181.07);
-  assign('co_bench', 'dl_03',    349.63);
-  assign('co_excav', 'dl_04_1', 1865.74);
-  assign('co_ewf',   'dl_04_2',  707.20);
-  assign('co_ft_dig', 'dl_02_o1', 612.40);
-  assign('co_ft_pour','dl_02_o1', 317.10);
-  assign('co_locate', 'dl_o1',   1050.00);
+  // What each cost object COSTS is the engine's answer, summed from its cost
+  // lines — never a number typed beside it. Which LINE it lands on is the
+  // only decision here.
+  const byObject = new Map(deltaLines);
+  for (const l of result.lines) {
+    byObject.set(l.objId, (byObject.get(l.objId) ?? 0) + l.extendedCost);
+  }
+  // An object the engine never costed has an UNKNOWN cost, not a zero one —
+  // co_ft_dig has no rate for its spec, so nobody knows what it costs.
+  const assign = (obj, line) =>
+    A.run(`dlo_${obj}`, doc.id, line, obj,
+          byObject.has(obj) ? round2(byObject.get(obj)) : null);
+
+  assign('co_deck',  'dl_01_1');
+  assign('co_post',  'dl_01_1');
+  assign('co_slide', 'dl_01_1');
+  assign('co_arch',  'dl_01_1');
+  assign('co_barr',  'dl_01_1');
+  assign('co_grab',  'dl_01_1');
+  assign('co_hip',   'dl_02');
+  assign('co_bench', 'dl_03');
+  assign('co_excav', 'dl_04_1');
+  assign('co_ewf',   'dl_04_2');
+  assign('co_ft_dig', 'dl_02_o1');
+  assign('co_ft_pour','dl_02_o1');
+  assign('co_locate', 'dl_o1');
+
+  // An option's amount on the document IS its marginal price — what the job
+  // costs with it minus without, marked up. Typing a different number is
+  // allowed, but the default has to be the computation.
+  for (const [line, delta] of [['dl_02_o1', 'dl_footing'], ['dl_o1', 'dl_locate']]) {
+    const d = db.prepare(`SELECT price_delta FROM scope_deltas WHERE id = ?`).get(delta);
+    db.prepare(`UPDATE document_lines SET unit_price = ?, amount = ? WHERE id = ?`)
+      .run(d.price_delta, d.price_delta, line);
+  }
 
   const N = db.prepare(`INSERT INTO document_notes
     (id,document_id,line_id,kind,text,sequence_no) VALUES (?,?,?,?,?,?)`);

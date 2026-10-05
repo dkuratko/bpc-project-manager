@@ -74,18 +74,25 @@ is('one attaches to a line', footing.attachesTo, 'line');
 // inside the COLLAPSED group — correct and intentional, docs/03c.
 is('and names it',           footing.attachedLine, '24x24x12 Hip Shade');
 is('the other is job level', locate.attachesTo, 'job');
-is('prices are the deltas',  `${footing.price}/${locate.price}`, '1045/1200');
+// ⛔ An add option's price is a MARGINAL RECOMPUTE — what the job costs with
+//    it minus what it costs without, marked up. It is not a number typed
+//    beside the option, which is why it can come out cheaper than pricing the
+//    work on its own: it rides on the same concrete truck.
+is('prices are the deltas',  `${footing.price}/${locate.price}`, '2393.33/260');
 is('and they carry cost too, which the tab never shows',
    footing.cost != null, true);
 
 /* ─── the ladder is the ENGINE's, and the engine has not run ───────────── */
 
 // The ladder has to ADD UP, and that is the whole reason it is a ladder.
-is('cost is the assigned objects', d.money.cost.toFixed(2), '12462.07');
-is('conditions lift it',           d.money.conditions.toFixed(2), '2482.08');
-is('to the adjusted cost',         d.money.adjusted.toFixed(2), '14944.15');
-is('contingency is 5% of adjusted', d.money.contingency.toFixed(2), '747.21');
-is('markup is 20% of adjusted',     d.money.markup.toFixed(2), '2988.83');
+// Every rung is the ENGINE's now, not a typed number.
+is('cost is what the engine computed', d.money.cost.toFixed(2), '13016.43');
+// Conditions apply BY TAG — hard clay slows the digging, not the bolting —
+// so the uplift is 8%, not the 49% a blanket ×1.15 × ×1.30 would give.
+is('conditions lift it',           d.money.conditions.toFixed(2), '1064.21');
+is('to the adjusted cost',         d.money.adjusted.toFixed(2), '14080.64');
+is('contingency is 5% of adjusted', d.money.contingency.toFixed(2), '704.03');
+is('markup is 20% of adjusted',     d.money.markup.toFixed(2), '2816.13');
 // ⛔ Contingency is added FLAT and is NEVER marked up — so the rungs SUM,
 //    they do not compound.
 is('and the rungs sum to the price',
@@ -94,7 +101,13 @@ is('and the rungs sum to the price',
 // The percentages are version facts and ARE known, even with no run.
 is('contingency is still 5%',    d.money.contingencyPct, 5);
 is('markup is still 20%',        d.money.markupPct, 20);
-is('a run exists, so no problem', d.problems.length, 0);
+// ⛔ The two problems every brief in this series is written around, and both
+//    are REAL gaps in the catalog rather than decoration:
+//      a service with no rate for one footing spec, and an output nobody has
+//      said what to do with. Neither is interpolated and neither is zero.
+is('exactly two problems', d.problems.length, 2);
+is('the missing rate',  d.problems.some((p) => /no rate for F-2x4/.test(p)), true);
+is('the undecided spoil', d.problems.some((p) => /no disposition/.test(p)), true);
 
 /* ─── conditions left the identity strip for the body ──────────────────── */
 

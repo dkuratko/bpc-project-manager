@@ -30,7 +30,7 @@ is('a type has a name and a role, nothing else',
 const o = EQ.owned(db, T);
 const unit = (n) => o.units.find((u) => u.name.includes(n));
 
-is('three owned machines', o.units.length, 3);
+is('four owned machines', o.units.length, 4);
 // A truck's capacity is its BED; a trailer's is its payload.
 is('the truck reports its bed',      unit('F-450').capacity, 4800);
 is('the trailer reports its payload', unit('flatbed').capacity, 10600);
@@ -54,7 +54,9 @@ is('the audit can tell now',       o.counters.unusedMeaningless, false);
 // ⛔ The haul rig is used by MOBILIZATION, which is a service rather than an
 //    equipment selection. Counting selections alone called the F-450 and the
 //    flatbed unused on every job they ever towed.
-is('the truck counts as used',     o.counters.unused, 1);
+// The mixer earns its keep through a calculation RUN; the truck and trailer
+// through mobilization. Only the Bobcat is genuinely idle.
+is('only the Bobcat is idle',      o.counters.unused, 1);
 is('and it is the Bobcat left over',
    o.units.filter((u) => u.problems.length === 0).length >= 1, true);
 

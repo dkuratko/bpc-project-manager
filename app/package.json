@@ -8,7 +8,7 @@
   "scripts": {
     "start": "electron .",
     "check": "ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/check.js",
-    "test": "ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/status.test.js && ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/seed.test.js && ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/board.test.js && ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/version.test.js && ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/contacts.test.js && ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/equipment.test.js && ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/scope.test.js && ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/estimate.test.js",
+    "test": "ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/status.test.js && ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/seed.test.js && ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/board.test.js && ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/version.test.js && ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/contacts.test.js && ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/equipment.test.js && ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/engine.test.js && ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/scope.test.js && ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/estimate.test.js",
     "rebuild": "electron-rebuild -f -w better-sqlite3",
     "reseed": "electron . --reseed"
   },

@@ -39,9 +39,9 @@ thin File · Window · Help menu. See the note at the end of this file.
 | # | Screen | Kind | Status | File | Brief |
 |---|---|---|---|---|---|
 | 1 | Scope | MAIN · tab 1 | **✔ FINAL v4 · BUILT** | `docs/design/cost-breakdown-01-scope.v4.dc.html` | `03a` + `03b` + `03c` |
-| 2 | Requirements | MAIN · tab 2 | **✔ FINAL v1** | `docs/design/cost-breakdown-02-requirements.v1.dc.html` | `03d` |
-| 3 | Purchasing | MAIN · tab 3 | **✔ FINAL v1** *(pending $ format)* | `docs/design/cost-breakdown-03-purchasing.v1.dc.html` | `03e` |
-| 4 | Cost | MAIN · tab 4 | **✔ FINAL v2** | `docs/design/cost-breakdown-04-cost.v2.dc.html` | `03g` + `03h` |
+| 2 | Requirements | MAIN · tab 2 | **✔ FINAL v1 · BUILT** | `docs/design/cost-breakdown-02-requirements.v1.dc.html` | `03d` |
+| 3 | Purchasing | MAIN · tab 3 | **✔ FINAL v1 · BUILT** | `docs/design/cost-breakdown-03-purchasing.v1.dc.html` | `03e` |
+| 4 | Cost | MAIN · tab 4 | **✔ FINAL v2 · BUILT** | `docs/design/cost-breakdown-04-cost.v2.dc.html` | `03g` + `03h` |
 | — | Problems panel | POPUP | **✔ FINAL v1** | `docs/design/cost-breakdown-problems-panel.v1.dc.html` | `03i` |
 
 ## Shell

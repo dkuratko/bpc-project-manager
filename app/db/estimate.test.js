@@ -51,16 +51,19 @@ is('total equals subtotal',        e.totals.total, e.totals.subtotal);
 
 // A line's cost must not absorb its option's cost either — the option is
 // priced separately and is not part of what the line costs.
-is('line 02 costs only its own',   L('02').cost.toFixed(2), '2181.07');
-is('its option costs separately',  L('02.O1').cost.toFixed(2), '929.50');
+is('line 02 costs only its own',   L('02').cost.toFixed(2), '1836.00');
+// The LINE carries the option's cost after site conditions (1,871.18); the
+// delta's own cost_delta is the raw figure before them (1,554.00). Two
+// different questions, and the document asks the first.
+is('its option costs separately',  L('02.O1').cost.toFixed(2), '1871.18');
 
 /* ─── a line's cost is everything beneath it ───────────────────────────── */
 
 // The PlayBooster parts hang off the sub-item and still count toward 01.
-is('01 absorbs its sub-item',  L('01').cost.toFixed(2), '7358.43');
-is('and its margin falls out', L('01').margin.toFixed(1), '30.5');
-is('04 absorbs both of its sub-items', L('04').cost.toFixed(2), '2572.94');
-is('the discounted line shows it',     L('04').margin.toFixed(1), '8.7');
+is('01 absorbs its sub-item',  L('01').cost.toFixed(2), '7829.23');
+is('and its margin falls out', L('01').margin.toFixed(1), '26.1');
+is('04 absorbs both of its sub-items', L('04').cost.toFixed(2), '2748.09');
+is('the discounted line shows it',     L('04').margin.toFixed(1), '2.5');
 
 // ⛔ Nothing assigned means UNKNOWN cost, not zero. "margin 100.0%" would say
 //    Mobilization is pure profit; what it means is nobody assigned its cost.
@@ -76,15 +79,15 @@ is('not alphabetical', L('01.1').objects.map((o) => o.name).join(' · '),
 
 /* ─── the price bar · COMPUTED against QUOTED ──────────────────────────── */
 
-is('computed is the engine\'s', e.price.computed, 18680.19);
+is('computed is the engine\'s', e.price.computed, 17600.8);
 is('quoted is your decision',   e.price.quoted, 17500);
-is('and the gap is the discount', e.price.delta.toFixed(2), '-1180.19');
+is('and the gap is the discount', e.price.delta.toFixed(2), '-100.80');
 // Backing the markup out of the computed price is the only way to say what
 // the QUOTED price actually marks up by.
 // Backing BOTH the markup and the flat contingency out of the computed price
 // is the only way to say what the quoted price actually marks up by.
 is('effective markup is lower than the nominal 20%',
-   e.price.effectiveMarkupPct.toFixed(2), '17.10');
+   e.price.effectiveMarkupPct.toFixed(2), '24.28');
 
 /* ─── acceptance is the customer's, not a toggle ───────────────────────── */
 

@@ -33,7 +33,7 @@ is('versions across them', rows.flatMap((p) => p.versions).length, 10);
 /* docs/07 · the three San Tan versions, with the render's own margins. */
 const sanTan = rows.find((p) => p.number === '26-10');
 is('26-10 A0 value', money(sanTan.versions[0].value), '$17,500.00');
-is('26-10 A0 margin', sanTan.versions[0].margin.toFixed(1), '28.8');
+is('26-10 A0 margin', sanTan.versions[0].margin.toFixed(1), '25.6');
 is('26-10 A1 margin', sanTan.versions[1].margin.toFixed(1), '28.7');
 is('26-10 B0 margin', sanTan.versions[2].margin.toFixed(1), '28.0');
 
