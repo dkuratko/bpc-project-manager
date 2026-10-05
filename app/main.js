@@ -14,6 +14,7 @@ const path = require('path');
 const { open, verify } = require('./db/open');
 const { seed } = require('./db/seed');
 const { board, counters } = require('./db/board');
+const { versionDetail } = require('./db/version');
 
 let db = null;
 
@@ -94,6 +95,11 @@ ipcMain.handle('domain:board', () => {
     const rows = board(database());
     return { projects: rows, counters: counters(rows) };
   } catch (err) { return { error: err.message }; }
+});
+
+ipcMain.handle('domain:version', (_e, id) => {
+  try { return { version: versionDetail(database(), id) }; }
+  catch (err) { return { error: err.message }; }
 });
 
 ipcMain.handle('frame:minimize', (e) => BrowserWindow.fromWebContents(e.sender)?.minimize());

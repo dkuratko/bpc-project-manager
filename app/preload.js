@@ -22,7 +22,8 @@ contextBridge.exposeInMainWorld('bpc', {
   run: async (sql, params = []) => await unwrap('db:run')(sql, params),
 
   /* Domain calls — anything that needs a derivation. */
-  board: async () => await unwrap('domain:board')(),
+  board:   async () => await unwrap('domain:board')(),
+  version: async (id) => (await unwrap('domain:version')(id)).version,
 
   frame: {
     minimize: () => ipcRenderer.invoke('frame:minimize'),

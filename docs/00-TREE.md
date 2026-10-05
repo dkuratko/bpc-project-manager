@@ -872,6 +872,29 @@ BUILD DECISIONS, 04 Oct 2026:
                       first. the money screens wait on the catalog, which has
                       no content and no screen to enter it with.
 
+STANDING IN CODE, 04 Oct 2026 — app/, 56 assertions green:
+  db/open.js ........ builds from docs/02-schema.sql itself. one source, never
+                      a copy. verify() refuses an unindexed foreign key.
+  db/status.js ...... deriveStatus() — the 14 statuses from independent facts,
+                      rollUp() for the project row. nothing stored.
+  db/seed.js ........ facts only, no statuses. the 8 board colours fall out.
+  db/board.js ....... the browser's rows and its 5 counters.
+  db/version.js ..... versionDetail() — progress marks, the document rows that
+                      name what has NOT happened, the money ladder, and the
+                      derived Next that a problem displaces.
+  ui/win2000.css .... 29 tokens, 85 classes. the vocabulary the 29 renders
+                      repeated inline, said once.
+  ui/shell.js ....... openMain/openPopup to §9b. the browser cannot close;
+                      popups are modal on a scrim that swallows stray clicks.
+  screens/project-browser.js .. docs/07 v14. keyboard: ↑↓ walk the drawn rows,
+                      → expands, ← steps out then collapses, Enter opens.
+  screens/version-view.js ..... docs/09 v3. 1000×780, five boxes, the body one
+                      flex row of exactly two columns.
+
+  NEXT: contacts · equipment · trackers · the record dialogs — all data entry
+        against tables that already exist. THEN the catalog, which unblocks
+        the engine and with it every money screen.
+
 OUT OF SCOPE, decided:
   payment / receivables / aging ....... QuickBooks
   approval workflows .................. none. completeness gates only.

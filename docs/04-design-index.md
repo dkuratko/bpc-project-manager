@@ -48,7 +48,7 @@ thin File · Window · Help menu. See the note at the end of this file.
 
 | # | Screen | Kind | Status | File | Brief |
 |---|---|---|---|---|---|
-| — | Project browser | MAIN · the frame | **✔ FINAL v14** | `docs/design/project-browser.v14.dc.html` | `07` + `08` |
+| — | Project browser | MAIN · the frame | **✔ FINAL v14 · BUILT** | `docs/design/project-browser.v14.dc.html` | `07` + `08` |
 
 The MDI frame's client area **is** the browser. Rows expand to versions;
 option groups get labelled bands; the cursor is a gutter arrow plus a black
@@ -65,7 +65,7 @@ row but has no way to create another — the brief gained that after the render.
 Add a `#dfdfdf` footer row with `＋ Add option` inside that box, and make its
 label and amount editable on double-click like every other cell. Mechanical;
 no re-render.
-| — | Version view | MAIN | **✔ FINAL v3** | `docs/design/version-view.v3.dc.html` | `09` |
+| — | Version view | MAIN | **✔ FINAL v3 · BUILT** | `docs/design/version-view.v3.dc.html` | `09` |
 
 All MAIN screens follow `10-main-window-template.md`: identity strip, tinted
 status strip, body, optional screen strip, derived status bar. The cost

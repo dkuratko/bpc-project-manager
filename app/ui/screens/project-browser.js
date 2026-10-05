@@ -21,6 +21,7 @@
  */
 
 import { openMain } from '../shell.js';
+import { openVersionView } from './version-view.js';
 
 const COLS = '14px 20px 112px 190px minmax(0,1fr) 150px 130px 112px 58px 104px 54px 44px';
 
@@ -30,7 +31,8 @@ const TIER_ORDER = ['quoting', 'accepted', 'received', 'scheduled',
 const state = {
   projects: [],
   counters: [],
-  selected: null,        // project id
+  selected: null,        // project id — the row the cursor sits on
+  selectedVersion: null, // version id, when the cursor is on a version row
   expanded: new Set(),
   sort: { col: 'number', dir: 1 },
   find: '',
@@ -58,6 +60,7 @@ export function openProjectBrowser() {
       toolbar(body.querySelector('[data-part=toolbar]'));
       filters(body.querySelector('[data-part=filters]'), body);
       head(body.querySelector('[data-part=head]'), body);
+      keys(body);
       load(body);
     },
   });
@@ -74,6 +77,7 @@ async function load(body) {
     state.expanded.add(first.id);
   }
   draw(body);
+  body.querySelector('[data-part=rows]').focus();
 }
 
 /* ─── chrome ────────────────────────────────────────────────────────────── */
@@ -144,6 +148,68 @@ function head(host, body) {
   });
 }
 
+/* ─── the keyboard ──────────────────────────────────────────────────────── */
+
+/**
+ * The status bar says "Enter opens a version · → expands", so the window has
+ * to keep that promise. Up/Down walk the rows as they are DRAWN — a collapsed
+ * project's versions are not there to be walked onto.
+ */
+function keys(body) {
+  const host = body.querySelector('[data-part=rows]');
+  host.tabIndex = 0;
+
+  host.addEventListener('keydown', (e) => {
+    const flat = [];
+    for (const p of visible()) {
+      flat.push({ project: p.id, version: null });
+      if (state.expanded.has(p.id) && state.showVersions) {
+        p.versions.forEach((v) => flat.push({ project: p.id, version: v.id }));
+      }
+    }
+    if (!flat.length) return;
+
+    const at = Math.max(0, flat.findIndex(
+      (r) => r.project === state.selected && r.version === state.selectedVersion));
+
+    const move = (to) => {
+      const r = flat[Math.min(flat.length - 1, Math.max(0, to))];
+      state.selected = r.project; state.selectedVersion = r.version;
+      draw(body);
+      host.querySelector('[data-cursor]')?.scrollIntoView({ block: 'nearest' });
+    };
+
+    switch (e.key) {
+      case 'ArrowDown': e.preventDefault(); move(at + 1); break;
+      case 'ArrowUp':   e.preventDefault(); move(at - 1); break;
+
+      // → opens a project. On a version row there is nothing further in, so
+      // it does nothing rather than jumping somewhere surprising.
+      case 'ArrowRight':
+        e.preventDefault();
+        if (!state.selectedVersion) { state.expanded.add(state.selected); draw(body); }
+        break;
+
+      // ← collapses, or steps out of a version onto its project.
+      case 'ArrowLeft':
+        e.preventDefault();
+        if (state.selectedVersion) state.selectedVersion = null;
+        else state.expanded.delete(state.selected);
+        draw(body);
+        break;
+
+      case 'Enter':
+        e.preventDefault();
+        if (state.selectedVersion) openVersionView(state.selectedVersion);
+        else state.expanded.has(state.selected)
+          ? state.expanded.delete(state.selected)
+          : state.expanded.add(state.selected);
+        if (!state.selectedVersion) draw(body);
+        break;
+    }
+  });
+}
+
 /* ─── the list ──────────────────────────────────────────────────────────── */
 
 function draw(body) {
@@ -192,7 +258,10 @@ function rows(host, body) {
   for (const p of list) {
     const isOpen = state.expanded.has(p.id);
     const isSel = state.selected === p.id;
-    host.appendChild(projectRow(p, isOpen, isSel, body));
+    // The spine marks the selected FAMILY; the caret marks the one row the
+    // cursor is actually on. With a version selected, the project above it
+    // keeps its spine and gives up its caret.
+    host.appendChild(projectRow(p, isOpen, isSel, isSel && !state.selectedVersion, body));
 
     if (!isOpen || !state.showVersions) continue;
 
@@ -202,7 +271,7 @@ function rows(host, body) {
       // where one option ends and the next begins.
       if (prev && prev.letter !== v.letter) host.appendChild(optionBreak(isSel));
       else if (prev) host.appendChild(versionRule(isSel));
-      host.appendChild(versionRow(p, v, isSel, body));
+      host.appendChild(versionRow(p, v, isSel, state.selectedVersion === v.id, body));
     });
   }
 
@@ -214,7 +283,7 @@ function rows(host, body) {
   }
 }
 
-function projectRow(p, isOpen, isSel, body) {
+function projectRow(p, isOpen, isSel, isCursor, body) {
   const el = document.createElement('div');
   el.className = 'w-row';
   el.style.gridTemplateColumns = COLS;
@@ -222,10 +291,12 @@ function projectRow(p, isOpen, isSel, body) {
   el.style.background = p.status.colour;
   if (p.status.hasProblem) el.classList.add('w-row--problem');
 
+  if (isCursor) el.dataset.cursor = '1';
+
   el.innerHTML = `
     <span class="w-gutter">${isSel ? '<span class="w-spine"></span>' : ''}${
       p.status.hasProblem && !isSel ? '<span class="w-problem-lip"></span>' : ''}${
-      isSel ? '<span class="w-caret"></span>' : ''}</span>
+      isCursor ? '<span class="w-caret"></span>' : ''}</span>
     <span style="display:flex;align-items:center;justify-content:center">
       <span class="w-expand">${isOpen ? '−' : '+'}</span></span>
     <span class="mono">${p.number}</span>
@@ -239,7 +310,9 @@ function projectRow(p, isOpen, isSel, body) {
     <span class="w-na">—</span>
     <span style="text-align:center">${p.flags.join(' ')}</span>`;
 
-  el.addEventListener('click', () => { state.selected = p.id; draw(body); });
+  el.addEventListener('click', () => {
+    state.selected = p.id; state.selectedVersion = null; draw(body);
+  });
   el.querySelector('.w-expand').addEventListener('click', (e) => {
     e.stopPropagation();
     state.expanded.has(p.id) ? state.expanded.delete(p.id) : state.expanded.add(p.id);
@@ -249,16 +322,19 @@ function projectRow(p, isOpen, isSel, body) {
   return el;
 }
 
-function versionRow(p, v, isSel, body) {
+function versionRow(p, v, isSel, isCursor, body) {
   const el = document.createElement('div');
   el.className = 'w-row';
   el.style.gridTemplateColumns = COLS;
   el.style.background = v.status.colour;
   if (v.status.hasProblem) el.classList.add('w-row--problem');
 
+  if (isCursor) el.dataset.cursor = '1';
+
   el.innerHTML = `
     <span class="w-gutter">${isSel ? '<span class="w-spine"></span>' : ''}${
-      v.status.hasProblem && !isSel ? '<span class="w-problem-lip"></span>' : ''}</span>
+      v.status.hasProblem && !isSel ? '<span class="w-problem-lip"></span>' : ''}${
+      isCursor ? '<span class="w-caret"></span>' : ''}</span>
     <span></span>
     <span class="mono" style="padding-left:16px">${v.tag}</span>
     <span${v.status.hasProblem ? ' style="color:var(--bad)"' : ''}>${label(v.status)}</span>
@@ -271,9 +347,11 @@ function versionRow(p, v, isSel, body) {
     <span class="num mono">${v.margin == null ? '<span class="w-na">—</span>' : v.margin.toFixed(1)}</span>
     <span style="text-align:center">${v.flags.join(' ')}</span>`;
 
-  el.addEventListener('click', () => { state.selected = p.id; draw(body); });
+  el.addEventListener('click', () => {
+    state.selected = p.id; state.selectedVersion = v.id; draw(body);
+  });
   // §9b · double-click a version opens the VERSION VIEW.
-  el.addEventListener('dblclick', () => openVersionView(v));
+  el.addEventListener('dblclick', () => openVersionView(v.id));
   return el;
 }
 
@@ -332,18 +410,3 @@ const money = (n) =>
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g,
   (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
-function openVersionView(v) {
-  // The hub for one job — docs/09. Not built yet; this is the hook §9b names.
-  openMain({
-    id: `version:${v.id}`,
-    title: `Version ${v.tag} — ${v.name ?? ''}`,
-    menu: ['File', 'Edit', 'Version', 'Documents', 'Tools', 'Window', 'Help'],
-    width: 1000, height: 780,
-    build: (body) => {
-      body.innerHTML = `<div style="padding:12px;color:var(--ink-2);line-height:1.6">
-        <b>Version view — docs/09, FINAL v3.</b><br>
-        Not built yet. §9b has it opening from here, so the route exists
-        before the room does.</div>`;
-    },
-  });
-}
