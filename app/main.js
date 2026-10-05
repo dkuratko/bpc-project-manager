@@ -11,13 +11,54 @@
 
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const { open, verify } = require('./db/open');
+const fs = require('fs');
+const { open, verify, DB_PATH } = require('./db/open');
 const { seed } = require('./db/seed');
 const { board, counters } = require('./db/board');
 const { versionDetail } = require('./db/version');
 const { contactList, setActive } = require('./db/contacts');
 
 let db = null;
+
+/**
+ * `electron . --reseed` rebuilds the database from the schema and the seed,
+ * then quits without opening a window.
+ *
+ * It lives HERE rather than in its own script for one reason: userData is
+ * derived from the app name, and a bare `electron some-script.js` never reads
+ * package.json, so it resolves a different folder — twice now I have watched a
+ * reseed rebuild a database the app had never heard of. Run inside the app's
+ * own entry point, the path is the same by construction.
+ *
+ * It DESTROYS the file. Safe only while it holds nothing but sample data,
+ * which is true until the entry screens land — so it says what it is about to
+ * throw away and refuses without --force.
+ */
+function reseed() {
+  const target = DB_PATH();
+  const force = process.argv.includes('--force');
+
+  if (fs.existsSync(target)) {
+    const old = new (require('better-sqlite3'))(target, { readonly: true });
+    const n = (t) => { try { return old.prepare(`SELECT COUNT(*) c FROM ${t}`).get().c; }
+                       catch { return 0; } };
+    const held = ['projects', 'versions', 'customers', 'contacts', 'documents']
+      .map((t) => `${n(t)} ${t}`).join(' · ');
+    old.close();
+
+    console.log(`about to destroy ${target}\n  it holds: ${held}`);
+    if (!force) return console.log('\nrun `npm run reseed -- --force` to go ahead.');
+
+    for (const f of [target, target + '-wal', target + '-shm'])
+      if (fs.existsSync(f)) fs.unlinkSync(f);
+  }
+
+  const fresh = open();
+  seed(fresh);
+  const problems = verify(fresh);
+  console.log(`reseeded ${target}\n  ` +
+              (problems.length ? '✗ ' + problems.join(', ') : '✓ clean'));
+}
 
 function database() {
   if (db) return db;
@@ -121,6 +162,9 @@ ipcMain.handle('frame:maximize', (e) => {
 ipcMain.handle('frame:close', (e) => BrowserWindow.fromWebContents(e.sender)?.close());
 
 app.whenReady().then(() => {
+  // --reseed does its work and leaves. No window, no IPC, no frame.
+  if (process.argv.includes('--reseed')) { reseed(); return app.quit(); }
+
   createFrame();
   app.on('activate', () => {
     if (!BrowserWindow.getAllWindows().length) createFrame();
