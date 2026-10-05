@@ -24,6 +24,7 @@ import { openMain } from '../shell.js';
 import { openVersionView } from './version-view.js';
 import { openContacts } from './contacts.js';
 import { openEquipment } from './equipment.js';
+import { openTrackers } from './trackers.js';
 
 const COLS = '14px 20px 112px 190px minmax(0,1fr) 150px 130px 112px 58px 104px 54px 44px';
 
@@ -92,7 +93,7 @@ function toolbar(bar) {
     `<span class="w-sep"></span>` + btn('Open') + btn('Duplicate…') +
     `<span class="w-sep"></span>` +
     btn('Catalog ▸') + btn('Contacts', 'contacts') + btn('Equipment', 'equipment') +
-    btn('Trackers') +
+    btn('Trackers', 'trackers') +
     `<span style="flex:1"></span>
      <span style="color:var(--ink-3)">Estimator</span>
      <span class="w-field w-select" style="width:150px">
@@ -101,6 +102,7 @@ function toolbar(bar) {
   bar.addEventListener('click', (e) => {
     if (e.target.closest('[data-act=contacts]')) openContacts();
     if (e.target.closest('[data-act=equipment]')) openEquipment();
+    if (e.target.closest('[data-act=trackers]')) openTrackers();
   });
 }
 

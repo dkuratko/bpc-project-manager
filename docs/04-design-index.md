@@ -118,7 +118,7 @@ docs/design/component-wizard.final.dc.html` | — |
 | # | Screen | Kind | Status | File | Brief |
 |---|---|---|---|---|---|
 | — | New Project | POPUP | **✔ FINAL v2** | `docs/design/new-project.v2.dc.html` | `12` |
-| — | Trackers | MAIN · list + detail | **✔ FINAL v1** | `docs/design/trackers.v1.dc.html` | `27` |
+| — | Trackers | MAIN · list + detail | **✔ FINAL v1** · BUILT | `docs/design/trackers.v1.dc.html` | `27` |
 | — | Schedule… | POPUP | **✔ FINAL v1** | `docs/design/schedule-dialog.v1.dc.html` | `24` |
 | — | Invoice… · sent + paid | POPUP | **✔ FINAL v1** | `docs/design/invoice-dialog.v1.dc.html` | `26` |
 | — | Invoice… · progress billing + Add a draw | POPUP | **✔ FINAL v2** | `docs/design/invoice-progress-billing.v2.dc.html` | `26` |

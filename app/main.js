@@ -21,6 +21,7 @@ const EQ = require('./db/equipment');
 const { costBreakdown } = require('./db/scope');
 const { estimateDoc } = require('./db/estimate');
 const ENGINE = require('./db/engine');
+const TR = require('./db/trackers');
 
 let db = null;
 
@@ -205,6 +206,21 @@ ipcMain.handle('domain:recalculate', (_e, id) => {
     ENGINE.persist(db, id, result, { today: today() });
     return { result };
   } catch (err) { return { error: err.message }; }
+});
+
+ipcMain.handle('domain:trackers', (_e, opts = {}) => {
+  try { return { data: TR.trackerList(database(), today(), opts) }; }
+  catch (err) { return { error: err.message }; }
+});
+
+ipcMain.handle('domain:tracker-detail', (_e, id) => {
+  try { return { detail: TR.trackerDetail(database(), id, today()) }; }
+  catch (err) { return { error: err.message }; }
+});
+
+ipcMain.handle('domain:record-renewal', (_e, opts) => {
+  try { return TR.recordRenewal(database(), opts); }
+  catch (err) { return { error: err.message }; }
 });
 
 ipcMain.handle('domain:version', (_e, id) => {

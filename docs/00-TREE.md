@@ -872,7 +872,7 @@ BUILD DECISIONS, 04 Oct 2026:
                       first. the money screens wait on the catalog, which has
                       no content and no screen to enter it with.
 
-STANDING IN CODE, 05 Oct 2026 — app/, 219 assertions green:
+STANDING IN CODE, 05 Oct 2026 — app/, 244 assertions green:
   db/open.js ........ builds from docs/02-schema.sql itself. one source, never
                       a copy. verify() refuses an unindexed foreign key.
   db/status.js ...... deriveStatus() — the 14 statuses from independent facts,
@@ -883,6 +883,8 @@ STANDING IN CODE, 05 Oct 2026 — app/, 219 assertions green:
                       the AUTO marker's two rule kinds. one rule, one marker.
   db/equipment.js ... both tabs, the rate build-up that must SUM, and the
                       fuel preview that writes nothing.
+  db/trackers.js .... two thresholds PER ITEM, and renewal as a record
+                      rather than an edit.
   db/engine.js ...... THE CALCULATION. requirements → purchasing → cost.
                       The three roundings, the effective rate over REQUIRED,
                       conditions by TAG, largest-remainder allocation.
@@ -904,6 +906,8 @@ STANDING IN CODE, 05 Oct 2026 — app/, 219 assertions green:
                       counters, the screen strip that never collapses.
   screens/equipment.js ........ docs/18. 1180×640, two tabs, detail pane
                       instead of a strip, maintenance counters that filter.
+  screens/trackers.js ......... docs/27. 1000×600, countdown chips on white
+                      rows, counters that ask each item its own question.
   screens/cost-breakdown.js ... docs/03a–03j. 1180×720, ALL FOUR TABS.
                       NO MONEY in base scope · NO MONEY on Requirements ·
                       both Cost views reconcile to the cent.
@@ -913,8 +917,8 @@ STANDING IN CODE, 05 Oct 2026 — app/, 219 assertions green:
   LABOUR is settled: docs/03g named the three roles and their rates in its
         worked allocation — Installer 68 · Laborer 52 · Operator 82.
 
-  NEXT: trackers · the record dialogs · the creation dialogs. Then the
-        catalog browser, which is the only way to enter a component today.
+  NEXT: the record dialogs · the creation dialogs. Then the catalog
+        browser, which is the only way to enter a component today.
         against tables that already exist. THEN the catalog, which unblocks
         the engine and with it every money screen.
 
