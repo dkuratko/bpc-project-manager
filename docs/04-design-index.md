@@ -267,7 +267,7 @@ contradicting the box above it.
 1. Ashley's `Notes` box reads **`Sends POs on Fridays.`**, matching the note the
    Contacts screen strip shows for her. One person, two documents, one note.
 
-## Still to do — as of 12 Sep 2026
+## Still to do — as of 04 Oct 2026
 
 ```
 NOT DESIGNED
@@ -281,7 +281,13 @@ NOT DESIGNED
   ▢ catalog popups                 new service · new assembly ·
                                    service rate table · new group ·
                                    new add option
+  ▢ Tracker + Record renewal       POPUP · specified in docs/27
 ```
+
+**12 build-time fix blocks** are listed above, across as many screens. They
+are all one-liners and none blocks a render — but a consolidating pass is
+worth doing before the build starts, because a few have been superseded
+(the `Category → Type` entries partly overlap the generic-types rewrite).
 
 ---
 
