@@ -1,6 +1,6 @@
 {
   "name": "bpc-project-manager",
-  "productName": "Build Play Contracting \u2014 Project Manager",
+  "productName": "Build Play Contracting — Project Manager",
   "version": "0.1.0",
   "private": true,
   "description": "Rebuilt from the walkthrough in docs/. Nothing is carried over from reference/v0.",
@@ -11,6 +11,7 @@
     "test": "node db/status.test.js && node db/seed.test.js"
   },
   "devDependencies": {
+    "@electron/rebuild": "^4.2.0",
     "electron": "^32.0.0"
   },
   "dependencies": {

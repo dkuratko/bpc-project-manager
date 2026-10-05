@@ -10,8 +10,8 @@
 
 const { contextBridge, ipcRenderer } = require('electron');
 
-const unwrap = (key) => async (sql, params = []) => {
-  const res = await ipcRenderer.invoke(key, sql, params);
+const unwrap = (key) => async (...args) => {
+  const res = await ipcRenderer.invoke(key, ...args);
   if (res && res.error) throw new Error(res.error);
   return res;
 };
@@ -20,6 +20,9 @@ contextBridge.exposeInMainWorld('bpc', {
   all: async (sql, params = []) => (await unwrap('db:all')(sql, params)).rows,
   get: async (sql, params = []) => (await unwrap('db:get')(sql, params)).row,
   run: async (sql, params = []) => await unwrap('db:run')(sql, params),
+
+  /* Domain calls — anything that needs a derivation. */
+  board: async () => await unwrap('domain:board')(),
 
   frame: {
     minimize: () => ipcRenderer.invoke('frame:minimize'),

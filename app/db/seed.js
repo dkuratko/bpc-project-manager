@@ -83,43 +83,44 @@ function projects(db) {
   const SC = db.prepare(`INSERT INTO version_schedule (version_id,install_date,started_at,completed_at,buffer_days) VALUES (?,?,?,?,?)`);
   const WA = db.prepare(`INSERT INTO warranties (version_id,starts_at,months,expires_at) VALUES (?,?,?,?)`);
   const DO = db.prepare(`INSERT INTO documents
-    (id,version_id,doc_type,reference,created_at,sent_at,locked,expires_at,quoted_price)
-    VALUES (?,?,?,?,?,?,?,?,?)`);
+    (id,version_id,doc_type,reference,created_at,sent_at,locked,expires_at,
+     quoted_price,computed_price)
+    VALUES (?,?,?,?,?,?,?,?,?,?)`);
 
   // seq, title, customer, contact, city, miles, drive, versions, facts
   const rows = [
     { seq: 7,  title: 'Kino Sports Complex — Shade',  cus: 'tucson',     con: 'angela', city: 'Tucson',    miles: 118, drive: 95,
-      vers: [['A', 0, 'Base']], sent: '2026-05-04', approved: '2026-05-20',
+      vers: [['A', 0, 'Base', 5390, 3876.08]], sent: '2026-05-04', approved: '2026-05-20',
       install: '2026-07-14', started: '2026-07-14', completed: '2026-07-16',
       invoiced: '2026-07-20', warranty: ['2026-07-20', '2027-07-20'] },
 
     { seq: 8,  title: 'Freestone Park Ramadas',       cus: 'haydon',     con: 'kyle',   city: 'Gilbert',   miles: 12,  drive: 20,
-      vers: [['A', 0, 'Base']], sent: '2026-06-18', approved: '2026-07-02',
+      vers: [['A', 0, 'Base', 61420, 43669.72]], sent: '2026-06-18', approved: '2026-07-02',
       install: '2026-09-28', started: '2026-09-28', shipAll: true },
 
     // ★ the signature row: green, with a red lip. Scheduled, equipment short.
     { seq: 9,  title: 'Dobson Park Ramadas',          cus: 'exerplay',   con: 'grant',  city: 'Chandler',  miles: 18,  drive: 24,
-      vers: [['A', 0, 'Base']], sent: '2026-08-04', approved: '2026-08-19',
+      vers: [['A', 0, 'Base', 43270, 30776.98]], sent: '2026-08-04', approved: '2026-08-19',
       install: '2026-09-22', shipShort: true },
 
     { seq: 10, title: 'San Tan Shade Installation',   cus: 'exerplay',   con: 'grant',  city: 'Chandler',  miles: 18,  drive: 24,
-      vers: [['A', 0, 'Base — ramada, drilled footings'],
-             ['A', 1, 'Repriced — Sep 2026 steel'],
-             ['B', 0, 'Surface mount — no ramada']],
+      vers: [['A', 0, 'Base — ramada, drilled footings', 17500, 12460.00],
+             ['A', 1, 'Repriced — Sep 2026 steel',        18240, 13005.12],
+             ['B', 0, 'Surface mount — no ramada',         4180,  3009.60]],
       sent: '2026-09-04' },
 
     { seq: 11, title: 'Riverview Park — Swing Bay',   cus: 'tucson',     con: 'angela', city: 'Mesa',      miles: 22,  drive: 28,
-      vers: [['A', 0, 'Base']], sent: '2026-08-28', approved: '2026-09-08' },
+      vers: [['A', 0, 'Base', 32839, 23314.69]], sent: '2026-08-28', approved: '2026-09-08' },
 
     { seq: 12, title: 'Verrado Elementary — Ramada Add', cus: 'litchfield', con: 'dana', city: 'Buckeye',  miles: 46,  drive: 52,
-      vers: [['A', 0, 'Base']], sent: '2026-08-28' },
+      vers: [['A', 0, 'Base', 40710, 28904.10]], sent: '2026-08-28' },
 
     { seq: 13, title: 'Pecos Park — Bench Replacement', cus: 'cusd',     con: 'bev',    city: 'Chandler',  miles: 16,  drive: 22,
-      vers: [['A', 0, 'Base']], sent: '2026-09-09' },
+      vers: [['A', 0, 'Base', 11960, 8551.40]], sent: '2026-09-09' },
 
     // Quoted 11 Jul, so it is past the 30-day expiry: white row, red lip.
     { seq: 14, title: 'Desert Breeze — Shade Sails',   cus: 'cusd',      con: 'bev',    city: 'Chandler',  miles: 16,  drive: 22,
-      vers: [['A', 0, 'Base']], sent: '2026-07-11' },
+      vers: [['A', 0, 'Base', 26480, 18907.44]], sent: '2026-07-11' },
   ];
 
   for (const r of rows) {
@@ -130,14 +131,17 @@ function projects(db) {
              miles: r.miles, drive: r.drive, created: r.sent });
     PC.run(uid('pc', pid), pid, uid('con', r.con), 'primary');
 
-    r.vers.forEach(([letter, n, name], i) => {
+    r.vers.forEach(([letter, n, name, price = null, cost = null], i) => {
       const vid = `${pid}_${letter}${n}`;
       VE.run(vid, pid, letter, n, name, r.sent);
 
       // The estimate. Its 30-day expiry is what makes 26-14 flag.
       const ref = `BPCe-26-${String(r.seq).padStart(2, '0')}${letter}${n}`;
+      // quoted_price is what the customer was shown; computed_price is what
+      // the engine said it costs. GM% is the gap, and it is NULL unless both
+      // exist — docs/22.
       DO.run(uid('doc', ref), vid, 'e', ref, r.sent, r.sent, 1,
-             addDays(r.sent, 30), null);
+             addDays(r.sent, 30), price, cost);
 
       // Facts only on the first version — the others are standing offers.
       if (i > 0) return;

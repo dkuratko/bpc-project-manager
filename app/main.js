@@ -12,6 +12,8 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const { open, verify } = require('./db/open');
+const { seed } = require('./db/seed');
+const { board, counters } = require('./db/board');
 
 let db = null;
 
@@ -22,6 +24,9 @@ function database() {
   // Structural problems are cheap to find now and expensive to find later.
   const problems = verify(db);
   if (problems.length) console.error('database:\n  ' + problems.join('\n  '));
+
+  // First run only. seed() is a no-op once there are projects.
+  if (seed(db)) console.log('seeded sample data');
 
   return db;
 }
@@ -42,6 +47,16 @@ function createFrame() {
       sandbox: false,
     },
   });
+
+  // Renderer errors are otherwise silent — they go to a DevTools console
+  // nobody has open. Forward them, so a screen that fails to draw says so.
+  win.webContents.on('console-message', (_e, level, message, line, source) => {
+    const tag = ['log', 'warn', 'error'][level - 1] ?? 'log';
+    const where = source ? ` (${source.split('/').pop()}:${line})` : '';
+    console[tag === 'error' ? 'error' : 'log'](`renderer ${tag}: ${message}${where}`);
+  });
+  win.webContents.on('render-process-gone', (_e, d) =>
+    console.error('renderer gone:', d.reason));
 
   win.loadFile(path.join(__dirname, 'ui', 'shell.html'));
   return win;
@@ -67,6 +82,17 @@ ipcMain.handle('db:run', (_e, sql, params = []) => {
   try {
     const r = database().prepare(sql).run(params);
     return { changes: r.changes, lastInsertRowid: String(r.lastInsertRowid) };
+  } catch (err) { return { error: err.message }; }
+});
+
+/* The domain side of the bridge. Status is DERIVED, and the renderer has no
+   Node access — so rather than duplicate the rules across the bridge, where
+   two copies of a rule start disagreeing, the main process owns the domain
+   and the renderer draws what it is handed. */
+ipcMain.handle('domain:board', () => {
+  try {
+    const rows = board(database());
+    return { projects: rows, counters: counters(rows) };
   } catch (err) { return { error: err.message }; }
 });
 

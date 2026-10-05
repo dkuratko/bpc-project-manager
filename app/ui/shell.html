@@ -2,6 +2,10 @@
 <html>
 <head>
 <meta charset="utf-8">
+<!-- Everything is local. No remote script, style, font or image is ever
+     loaded, so say so rather than leave Electron warning about it. -->
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'">
 <title>Build Play Contracting — Project Manager</title>
 <link rel="stylesheet" href="win2000.css">
 <style>
