@@ -598,7 +598,15 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
      cost breakdown adopts it AT BUILD — chrome only, no re-render.
 ✔ SHELL IS MDI — child windows in one Project Manager frame,
      Window menu, Cascade, Ctrl+Tab. the teal desk is the client area.
-     ★ menu/toolbar placement (frame vs child) still undecided
+     ✔ EACH CHILD OWNS ITS OWN MENU AND TOOLBAR — decided 04 Oct 2026.
+          which is what all 29 renders already show: every window carries
+          File · Edit · View · <Screen> · Window · Help. the FRAME has no
+          chrome of its own, only a drawn outer title bar and the teal
+          desk. the Window menu lives on each child, listing what is open
+          and offering Cascade — which is why every render has it.
+          true Win2000 MDI puts one menu on the frame; that was rejected
+          because it contradicts every approved render and would mean
+          stripping chrome out of all of them.
 ✔ NEW OPTION / NEW VERSION — FINAL v3 (POPUP). docs/13.
      ONE popup, TWO roles. the role is set by which command was pressed,
      never by a control inside the dialog.
@@ -783,6 +791,25 @@ CARRIED INTO THE BUILD, no re-render needed:
   contact dialog ..... Ashley's note reads "Sends POs on Fridays."
   new option ......... no record block while Empty is selected
   everywhere .......... every date carries its year
+
+BUILD DECISIONS, 04 Oct 2026:
+  shell ............. one Electron window. drawn outer title bar, teal desk
+                      as the client area, children as floating windows that
+                      each carry their own chrome.
+  documents ......... printed to PDF, AND a copy written into the app's data
+                      folder linked to the version — so BPCe-26-12A0 REV1 is
+                      retrievable years later as the exact paper that was sent.
+                      an issued document is evidence, not a view.
+  attachments ....... COPIED into the app's data folder, never referenced in
+                      place. the evidence for an approval is the last thing
+                      that can afford to break when someone tidies a folder,
+                      and one backup then covers everything.
+  database .......... better-sqlite3, WAL, foreign_keys ON. one file in
+                      userData. NOT sql.js — v0 used it, which is why v0 is
+                      littered with db.save() and why missing one lost work.
+  build order ....... the shell and every screen that is pure data entry
+                      first. the money screens wait on the catalog, which has
+                      no content and no screen to enter it with.
 
 OUT OF SCOPE, decided:
   payment / receivables / aging ....... QuickBooks
