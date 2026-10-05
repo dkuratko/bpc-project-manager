@@ -51,7 +51,8 @@ function customers(db) {
       ['kyle', 'Kyle Nunez', 'Superintendent', 'knunez@haydonbc.com', '(602) 555-0173'],
     ]],
     ['cusd', 'Chandler Unified School Dist.', 'school', 'Chandler', 'AZ', [
-      ['bev', 'Bev Oyler', 'Facilities', 'oyler.b@cusd.k12.az.us', '(480) 555-0190'],
+      ['bev',    'Bev Oyler',     'Facilities', 'oyler.b@cusd.k12.az.us', '(480) 555-0190'],
+      ['rachel', 'Rachel Ibarra', 'Purchasing', 'ibarra.r@cusd.k12.az.us', '(480) 555-0204'],
     ]],
     ['litchfield', 'Litchfield ESD', 'school', 'Litchfield Park', 'AZ', [
       ['dana', 'Dana Ruiz', 'Facilities Director', 'druiz@lesd79.org', '(623) 555-0128'],
@@ -64,10 +65,22 @@ function customers(db) {
       P.run(uid('con', pid), uid('cus', id), pname, title, email, phone);
   }
 
-  // "wherever Grant goes, cc Ashley" — contacts.v2's AUTO column
-  db.prepare(`INSERT INTO contact_defaults
-              (id,scope_kind,contact_id,add_contact_id,role) VALUES (?,?,?,?,?)`)
-    .run('cd_grant_ashley', 'contact', uid('con', 'grant'), uid('con', 'ashley'), 'cc');
+  // The AUTO column, and the two kinds of rule it has to tell apart — docs/15.
+  const CD = db.prepare(`INSERT INTO contact_defaults
+    (id,scope_kind,customer_id,contact_id,add_contact_id,role) VALUES (?,?,?,?,?,?)`);
+
+  // attached to a PERSON — "wherever Grant goes, cc Ashley". Ashley is
+  // Grant's assistant and does NOT follow Dave's jobs.
+  CD.run('cd_grant_ashley', 'contact', null, uid('con', 'grant'), uid('con', 'ashley'), 'cc');
+
+  // attached to a COMPANY — "cc the Chandler front office on everything",
+  // whoever else is on the job. Same marker, different rule; the screen strip
+  // is the only place they are told apart.
+  CD.run('cd_cusd_rachel', 'customer', uid('cus', 'cusd'), null, uid('con', 'rachel'), 'cc');
+
+  // A note, so the screen strip has something other than a dash to hold.
+  db.prepare(`UPDATE contacts SET notes = ? WHERE id = ?`)
+    .run('Sends POs on Fridays.', uid('con', 'grant'));
 }
 
 /* ─── project-browser.v14 · eight projects, eight states ────────────────── */
@@ -130,6 +143,14 @@ function projects(db) {
              city: r.city, state: 'AZ', zip: null,
              miles: r.miles, drive: r.drive, created: r.sent });
     PC.run(uid('pc', pid), pid, uid('con', r.con), 'primary');
+
+    // The cc rows the contact_defaults rules WROTE when the primary was added.
+    // They are ordinary rows from that moment on — editable, deletable, never
+    // re-evaluated — so they are seeded as rows, not recomputed on read.
+    // This is also what makes a company's project count differ from the sum of
+    // its people's: Grant and Ashley are on the same jobs. docs/15.
+    const cc = r.con === 'grant' ? 'ashley' : r.cus === 'cusd' ? 'rachel' : null;
+    if (cc) PC.run(`${uid('pc', pid)}_${cc}`, pid, uid('con', cc), 'cc');
 
     r.vers.forEach(([letter, n, name, price = null, cost = null], i) => {
       const vid = `${pid}_${letter}${n}`;

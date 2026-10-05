@@ -22,6 +22,7 @@
 
 import { openMain } from '../shell.js';
 import { openVersionView } from './version-view.js';
+import { openContacts } from './contacts.js';
 
 const COLS = '14px 20px 112px 190px minmax(0,1fr) 150px 130px 112px 58px 104px 54px 44px';
 
@@ -83,16 +84,21 @@ async function load(body) {
 /* ─── chrome ────────────────────────────────────────────────────────────── */
 
 function toolbar(bar) {
-  const btn = (label) => `<span class="w-btn">${label}</span>`;
+  const btn = (label, act) =>
+    `<span class="w-btn"${act ? ` data-act="${act}"` : ''}>${label}</span>`;
   bar.innerHTML =
     btn('New project') + btn('New option') + btn('New version') +
     `<span class="w-sep"></span>` + btn('Open') + btn('Duplicate…') +
     `<span class="w-sep"></span>` +
-    btn('Catalog ▸') + btn('Contacts') + btn('Equipment') + btn('Trackers') +
+    btn('Catalog ▸') + btn('Contacts', 'contacts') + btn('Equipment') + btn('Trackers') +
     `<span style="flex:1"></span>
      <span style="color:var(--ink-3)">Estimator</span>
      <span class="w-field w-select" style="width:150px">
        <span>DK — Damian Kuratko</span><span class="w-arrow"></span></span>`;
+
+  bar.addEventListener('click', (e) => {
+    if (e.target.closest('[data-act=contacts]')) openContacts();
+  });
 }
 
 function filters(band, body) {

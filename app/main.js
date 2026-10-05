@@ -15,6 +15,7 @@ const { open, verify } = require('./db/open');
 const { seed } = require('./db/seed');
 const { board, counters } = require('./db/board');
 const { versionDetail } = require('./db/version');
+const { contactList, setActive } = require('./db/contacts');
 
 let db = null;
 
@@ -95,6 +96,16 @@ ipcMain.handle('domain:board', () => {
     const rows = board(database());
     return { projects: rows, counters: counters(rows) };
   } catch (err) { return { error: err.message }; }
+});
+
+ipcMain.handle('domain:contacts', (_e, opts) => {
+  try { return { list: contactList(database(), opts) }; }
+  catch (err) { return { error: err.message }; }
+});
+
+ipcMain.handle('domain:contact-active', (_e, opts) => {
+  try { return setActive(database(), opts); }
+  catch (err) { return { error: err.message }; }
 });
 
 ipcMain.handle('domain:version', (_e, id) => {

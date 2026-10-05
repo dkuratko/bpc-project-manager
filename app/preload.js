@@ -24,6 +24,8 @@ contextBridge.exposeInMainWorld('bpc', {
   /* Domain calls — anything that needs a derivation. */
   board:   async () => await unwrap('domain:board')(),
   version: async (id) => (await unwrap('domain:version')(id)).version,
+  contacts: async (opts) => (await unwrap('domain:contacts')(opts)).list,
+  setContactActive: async (opts) => await unwrap('domain:contact-active')(opts),
 
   frame: {
     minimize: () => ipcRenderer.invoke('frame:minimize'),

@@ -136,7 +136,7 @@ docs/design/component-wizard.final.dc.html` | — |
 | — | Supplier · new + properties | POPUP | **✔ FINAL v3** | `docs/design/supplier-dialog.v3.dc.html` | `20` |
 | — | Equipment type · new + properties | POPUP | **✔ FINAL v1** | `docs/design/equipment-type.v1.dc.html` | `23` |
 | — | Rental offering + 2 row editors | POPUP | **✔ FINAL v1** | `docs/design/rental-offering.v1.dc.html` | `21` |
-| — | Contacts | MAIN · list | **✔ FINAL v2** | `docs/design/contacts.v2.dc.html` | `14` + `15` |
+| — | Contacts | MAIN · list | **✔ FINAL v2** · BUILT | `docs/design/contacts.v2.dc.html` | `14` + `15` |
 
 Its dialog grammar — the `100px 1fr` field grid, read-only values as `#c0c0c0`
 chips, grey explanation lines, and the two callout weights (`#ffffe1` for a
