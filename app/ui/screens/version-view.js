@@ -21,6 +21,18 @@
 import { openMain, openPopup } from '../shell.js';
 import { openCostBreakdown } from './cost-breakdown.js';
 import { openEstimate } from './estimate.js';
+import { openSchedule } from '../dialogs/schedule.js';
+
+// openMain raises an open window rather than rebuilding it, so a dialog that
+// changed a fact has to say "draw this again" explicitly.
+const bodies = new Map();
+
+export async function refreshVersionView(versionId) {
+  const body = bodies.get(versionId);
+  if (!body?.isConnected) return;
+  const d = await window.bpc.version(versionId);
+  if (d) draw(body, d);
+}
 
 export async function openVersionView(versionId) {
   const d = await window.bpc.version(versionId);
@@ -31,7 +43,7 @@ export async function openVersionView(versionId) {
     title: `Version ${d.tag} — ${d.name ?? ''}`,
     menu: ['File', 'Edit', 'Version', 'Documents', 'Tools', 'Window', 'Help'],
     width: 1000, height: 780,
-    build: (body) => draw(body, d),
+    build: (body) => { bodies.set(versionId, body); draw(body, d); },
   });
 }
 
@@ -70,7 +82,12 @@ function toolbar(d) {
   el.querySelector('[data-open=estimate]').addEventListener('click',
     () => openEstimate(d.id));
 
-  el.querySelectorAll('[data-pop]').forEach((b) =>
+  el.querySelector('[data-pop=schedule]').addEventListener('click',
+    () => openSchedule(d, () => refreshVersionView(d.id)));
+
+  // §9b · the rest are specified and not yet built, so the route exists
+  // before the room does.
+  el.querySelectorAll('[data-pop]:not([data-pop=schedule])').forEach((b) =>
     b.addEventListener('click', () => notBuiltYet(b.textContent.replace('…', ''), b.dataset.pop)));
   return el;
 }

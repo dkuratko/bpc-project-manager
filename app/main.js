@@ -22,6 +22,7 @@ const { costBreakdown } = require('./db/scope');
 const { estimateDoc } = require('./db/estimate');
 const ENGINE = require('./db/engine');
 const TR = require('./db/trackers');
+const REC = require('./db/record');
 
 let db = null;
 
@@ -220,6 +221,21 @@ ipcMain.handle('domain:tracker-detail', (_e, id) => {
 
 ipcMain.handle('domain:record-renewal', (_e, opts) => {
   try { return TR.recordRenewal(database(), opts); }
+  catch (err) { return { error: err.message }; }
+});
+
+ipcMain.handle('domain:schedule', (_e, id) => {
+  try { return { data: REC.scheduleView(database(), id) }; }
+  catch (err) { return { error: err.message }; }
+});
+
+ipcMain.handle('domain:record-schedule', (_e, id, vals) => {
+  try { return REC.recordSchedule(database(), id, vals); }
+  catch (err) { return { error: err.message }; }
+});
+
+ipcMain.handle('domain:preview-status', (_e, id, proposed) => {
+  try { return { status: REC.preview(database(), id, proposed ?? {}, today()) }; }
   catch (err) { return { error: err.message }; }
 });
 
