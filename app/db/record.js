@@ -241,5 +241,138 @@ function recordSchedule(db, versionId, { install, buffer, started, completed }) 
   return { ok: true };
 }
 
+/* ─── Invoice · docs/26 ─────────────────────────────────────────────────── */
+
+/**
+ * ★ A DRAW IS NOT THE INVOICE, and this is the thing the brief got wrong
+ *   until it was drawn.
+ *
+ *   The warranty clock starts when the invoice is SENT — but with draws,
+ *   WHICH invoice? A deposit goes out before anyone turns up. If it started
+ *   the warranty you would be covering a job you have not built.
+ *
+ *     draw 1 of 3   a deposit. the job has not started.
+ *     draw 2 of 3   progress. the crew is on site.
+ *     draw 3 of 3   THE INVOICE. warranty starts here.
+ *
+ *   Only the FINAL draw moves the status and starts the clock. Every earlier
+ *   one leaves the job exactly where it was — the same shape as Record
+ *   shipment, where three of four outcomes hold the status.
+ */
+function invoiceView(db, versionId) {
+  const inv = db.prepare(
+    `SELECT * FROM documents WHERE version_id = ? AND doc_type = 'i'`).get(versionId);
+  const f = db.prepare(`SELECT * FROM version_facts WHERE version_id = ?`)
+    .get(versionId) ?? {};
+  const w = db.prepare(`SELECT * FROM warranties WHERE version_id = ?`).get(versionId);
+  const draws = db.prepare(
+    `SELECT * FROM billing_draws WHERE version_id = ? ORDER BY sequence_no`).all(versionId);
+
+  const approval = db.prepare(
+    `SELECT * FROM approvals WHERE version_id = ? ORDER BY received_at DESC LIMIT 1`)
+    .get(versionId);
+  const est = db.prepare(
+    `SELECT * FROM documents WHERE version_id = ? AND doc_type = 'e'`).get(versionId);
+  const changeOrders = db.prepare(`
+    SELECT COALESCE(SUM(price_delta), 0) t FROM scope_deltas
+     WHERE version_id = ? AND kind = 'change_order' AND accepted = 1`).get(versionId).t;
+
+  // Approved scope plus change orders.
+  const jobTotal = (approval?.po_amount ?? est?.quoted_price ?? 0) + changeOrders;
+  const scheduled = draws.reduce((t, d) => t + (d.amount ?? 0), 0);
+
+  const tag = db.prepare(`
+    SELECT p.number || v.option_letter || v.version_number AS tag
+      FROM versions v JOIN projects p ON p.id = v.project_id WHERE v.id = ?`)
+    .get(versionId).tag;
+
+  return {
+    reference: inv?.reference ?? null,     // assigned on save
+    sent: inv?.sent_at ?? f.invoice_sent_at ?? null,
+    paid: f.paid_at ?? null,
+    amount: inv?.quoted_price ?? jobTotal,
+    jobTotal,
+    warranty: {
+      starts: w?.starts_at ?? null,
+      months: w?.months ?? 12,
+      expires: w?.expires_at ?? null,
+    },
+    progress: draws.length > 0,
+    draws: draws.map((d) => ({
+      id: d.id, no: d.sequence_no, of: draws.length, label: d.label,
+      percent: d.percent, amount: d.amount, isFinal: !!d.is_final,
+      // SENT and PAID are DERIVED — they come from each draw's own invoice,
+      // never typed into the schedule.
+      sent: d.document_id ? db.prepare(`SELECT sent_at FROM documents WHERE id = ?`)
+        .get(d.document_id)?.sent_at ?? null : null,
+      paid: null,
+    })),
+    scheduled,
+    // ⛔ A billing schedule that does not add up to the work is money you will
+    //    never send an invoice for.
+    schedulePlh: Math.round((jobTotal - scheduled) * 100) / 100,
+    tag,
+  };
+}
+
+/** Starts + Length. Derived, never typed. */
+function warrantyExpiry(starts, months) {
+  if (!starts || !months) return null;
+  const d = new Date(starts + 'T00:00:00Z');
+  d.setUTCMonth(d.getUTCMonth() + months);
+  return d.toISOString().slice(0, 10);
+}
+
+function recordInvoice(db, versionId, { sent, paid, amount, warrantyMonths,
+                                        drawNo = null, isFinal = true }) {
+  const v = invoiceView(db, versionId);
+  // ★ Only the final draw IS the invoice. An earlier one records the money
+  //   going out and nothing else.
+  const theInvoice = !v.progress || isFinal;
+
+  db.transaction(() => {
+    if (theInvoice) {
+      const ref = v.reference ?? `BPCi-${v.tag}`;
+      db.prepare(`
+        INSERT INTO documents (id,version_id,doc_type,reference,created_at,sent_at,
+                               locked,quoted_price)
+        VALUES (?,?,'i',?,?,?,1,?)
+        ON CONFLICT(id) DO UPDATE SET sent_at = excluded.sent_at,
+                                      quoted_price = excluded.quoted_price`)
+        .run(`doc_i_${versionId}`, versionId, ref, sent || null, sent || null,
+             amount ?? null);
+
+      // SENDING THE INVOICE STARTS THE WARRANTY CLOCK. That is a real
+      // consequence of this dialog, not a detail hidden on another screen.
+      const months = warrantyMonths ?? 12;
+      db.prepare(`
+        INSERT INTO warranties (version_id,starts_at,months,expires_at)
+        VALUES (?,?,?,?)
+        ON CONFLICT(version_id) DO UPDATE SET
+          starts_at = excluded.starts_at, months = excluded.months,
+          expires_at = excluded.expires_at`)
+        .run(versionId, sent || null, months, warrantyExpiry(sent, months));
+    }
+
+    db.prepare(`
+      INSERT INTO version_facts (version_id,invoice_sent_at,paid_at)
+      VALUES (?,?,?)
+      ON CONFLICT(version_id) DO UPDATE SET
+        invoice_sent_at = CASE WHEN ? THEN excluded.invoice_sent_at
+                               ELSE version_facts.invoice_sent_at END,
+        paid_at = excluded.paid_at`)
+      .run(versionId, theInvoice ? (sent || null) : null, paid || null,
+           theInvoice ? 1 : 0);
+
+    if (drawNo != null) {
+      db.prepare(`UPDATE billing_draws SET document_id = ?
+                   WHERE version_id = ? AND sequence_no = ?`)
+        .run(theInvoice ? `doc_i_${versionId}` : null, versionId, drawNo);
+    }
+  })();
+  return { ok: true };
+}
+
 module.exports = { facts, preview, scheduleView, recordSchedule,
-                   outstanding, shipmentView, recordShipment };
+                   outstanding, shipmentView, recordShipment,
+                   invoiceView, recordInvoice, warrantyExpiry };

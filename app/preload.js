@@ -30,6 +30,8 @@ contextBridge.exposeInMainWorld('bpc', {
   recordSchedule: async (id, v) => await unwrap('domain:record-schedule')(id, v),
   shipmentView: async (id, s) => (await unwrap('domain:shipment-view')(id, s)).data,
   recordShipment: async (id, v) => await unwrap('domain:record-shipment')(id, v),
+  invoiceView: async (id) => (await unwrap('domain:invoice-view')(id)).data,
+  recordInvoice: async (id, v) => await unwrap('domain:record-invoice')(id, v),
   previewStatus: async (id, p) => (await unwrap('domain:preview-status')(id, p)).status,
   trackers: async (o) => (await unwrap('domain:trackers')(o)).data,
   trackerDetail: async (id) => (await unwrap('domain:tracker-detail')(id)).detail,

@@ -132,5 +132,61 @@ const o3 = R.outstanding(db, S);
 is('the issue closed',  o3.openIssues.length, 0);
 is('and NOW it is received equipment', o3.complete, true);
 
+/* ─── Invoice · docs/26 ────────────────────────────────────────────────── */
+
+const I = 'prj_26-08_A0';          // ACTIVE, crew off site, not invoiced
+is('it is active before invoicing', R.preview(db, I, {}, TODAY).label, 'ACTIVE');
+
+// ★ SENDING THE INVOICE STARTS THE WARRANTY CLOCK.
+R.recordInvoice(db, I, { sent: '2026-09-25', warrantyMonths: 12 });
+const iv = R.invoiceView(db, I);
+is('the reference was assigned on save', iv.reference, 'BPCi-26-08A0');
+is('and the warranty started',           iv.warranty.starts, '2026-09-25');
+// Expires is DERIVED — Starts + Length — never typed.
+is('expiring a year later',              iv.warranty.expires, '2027-09-25');
+is('status becomes invoice sent',
+   R.preview(db, I, {}, TODAY).label, 'INVOICE SENT, PAYMENT REQUIRED');
+
+// ★ "becomes", twice — the only record dialog where both moments move it.
+R.recordInvoice(db, I, { sent: '2026-09-25', paid: '2026-10-02', warrantyMonths: 12 });
+// ⛔ NOT "COMPLETED, PAID". The warranty clock starts when the invoice is
+//    SENT, so a job is always inside its warranty by the time it is paid —
+//    which is why that status can never occur and the list is wrong, not the
+//    derivation. docs/26 flags it; this pins what actually happens.
+is('paid, and in warranty', R.preview(db, I, {}, TODAY).label, 'WARRANTY');
+
+/* ─── ★ A DRAW IS NOT THE INVOICE ──────────────────────────────────────── */
+
+const D = 'prj_26-09_A0';
+db.prepare(`INSERT INTO billing_draws (id,version_id,sequence_no,label,percent,amount,is_final)
+            VALUES (?,?,?,?,?,?,?)`).run('bd_1', D, 1, 'Deposit', 30, 12981, 0);
+db.prepare(`INSERT INTO billing_draws (id,version_id,sequence_no,label,percent,amount,is_final)
+            VALUES (?,?,?,?,?,?,?)`).run('bd_2', D, 2, 'Progress', 40, 17308, 0);
+db.prepare(`INSERT INTO billing_draws (id,version_id,sequence_no,label,percent,amount,is_final)
+            VALUES (?,?,?,?,?,?,?)`).run('bd_3', D, 3, 'Final', 30, 12981, 1);
+
+const dv = R.invoiceView(db, D);
+is('three draws', dv.draws.length, 3);
+is('they sum to the job', dv.schedulePlh, 0);
+is('and only one is final', dv.draws.filter((x) => x.isFinal).length, 1);
+
+const was = R.preview(db, D, {}, TODAY).label;
+// A deposit goes out before anyone turns up. If it started the warranty you
+// would be covering a job you have not built.
+R.recordInvoice(db, D, { sent: '2026-08-14', amount: 12981, drawNo: 1, isFinal: false });
+is('a non-final draw holds the status', R.preview(db, D, {}, TODAY).label, was);
+is('and starts no warranty clock',
+   db.prepare(`SELECT starts_at FROM warranties WHERE version_id = ?`).get(D)?.starts_at ?? null,
+   null);
+
+// Draw 3 of 3 IS the invoice.
+R.recordInvoice(db, D, { sent: '2026-11-20', amount: 12981, drawNo: 3, isFinal: true,
+                         warrantyMonths: 12 });
+is('the final draw moves it',
+   R.preview(db, D, {}, TODAY).label, 'INVOICE SENT, PAYMENT REQUIRED');
+is('and starts the clock',
+   db.prepare(`SELECT starts_at FROM warranties WHERE version_id = ?`).get(D).starts_at,
+   '2026-11-20');
+
 console.log(fails ? `\n${fails} failed` : '\nrecord dialogs: all assertions hold');
 process.exit(fails ? 1 : 0);

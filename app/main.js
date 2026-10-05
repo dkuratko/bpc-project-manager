@@ -244,6 +244,16 @@ ipcMain.handle('domain:record-shipment', (_e, id, vals) => {
   catch (err) { return { error: err.message }; }
 });
 
+ipcMain.handle('domain:invoice-view', (_e, id) => {
+  try { return { data: REC.invoiceView(database(), id) }; }
+  catch (err) { return { error: err.message }; }
+});
+
+ipcMain.handle('domain:record-invoice', (_e, id, vals) => {
+  try { return REC.recordInvoice(database(), id, vals); }
+  catch (err) { return { error: err.message }; }
+});
+
 ipcMain.handle('domain:preview-status', (_e, id, proposed) => {
   try { return { status: REC.preview(database(), id, proposed ?? {}, today()) }; }
   catch (err) { return { error: err.message }; }

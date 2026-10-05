@@ -23,6 +23,7 @@ import { openCostBreakdown } from './cost-breakdown.js';
 import { openEstimate } from './estimate.js';
 import { openSchedule } from '../dialogs/schedule.js';
 import { openShipment } from '../dialogs/shipment.js';
+import { openInvoice } from '../dialogs/invoice.js';
 
 // openMain raises an open window rather than rebuilding it, so a dialog that
 // changed a fact has to say "draw this again" explicitly.
@@ -91,7 +92,10 @@ function toolbar(d) {
   el.querySelector('[data-pop=shipment]').addEventListener('click',
     () => openShipment(d, () => refreshVersionView(d.id)));
 
-  el.querySelectorAll('[data-pop]:not([data-pop=schedule]):not([data-pop=shipment])').forEach((b) =>
+  el.querySelector('[data-pop=invoice]').addEventListener('click',
+    () => openInvoice(d, () => refreshVersionView(d.id)));
+
+  el.querySelectorAll('[data-pop=approval]').forEach((b) =>
     b.addEventListener('click', () => notBuiltYet(b.textContent.replace('…', ''), b.dataset.pop)));
   return el;
 }
