@@ -1,0 +1,327 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   BPC · Project Manager — the Win2000 vocabulary
+   ───────────────────────────────────────────────────────────────────────
+   Extracted from the approved renders in docs/design/. Every one of them
+   repeated these values as inline styles; this is the single place they
+   live now.
+
+   Nothing here is invented. Each value traces to a settled decision:
+     bevels and chrome ....... every render since cost-breakdown v4
+     10px / .05em type ....... docs/14 — never 11px, that drift is a bug
+     status ramp ............. docs/08
+     block grounds ........... docs/22
+     cursor and gutter ....... docs/07 project-browser v14, settled after
+                               four rounds: arrow and spine, never a wash
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* The three bevels. Raised, sunken-field, thin-sunken. */
+  --raised: inset -1px -1px #0a0a0a, inset 1px 1px #fff,
+            inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+  --sunken: inset 1px 1px #808080, inset -1px -1px #fff,
+            inset 2px 2px #0a0a0a, inset -2px -2px #dfdfdf;
+  --thin:   inset 1px 1px #808080, inset -1px -1px #fff;
+
+  --desk:       #008080;   /* the teal client area */
+  --chrome:     #c0c0c0;
+  --chrome-lit: #dfdfdf;
+  --edge:       #808080;
+
+  --ink:    #000;
+  --ink-2:  #404040;   /* secondary — explanations, column headers */
+  --ink-3:  #808080;   /* tertiary — labels, units, not-applicable */
+  --hint:   #a0a0a0;   /* placeholder text in an empty field */
+  --bad:    #a00;      /* a problem, in text */
+  --lip:    #CC0000;   /* the 4px problem lip */
+
+  /* docs/08 · the status ramp. A PROGRESSION, not severity.
+     A red row always means FINISHED. Problems never tint a row. */
+  --st-quoting:   #ffffff;   /*  1–5  */
+  --st-accepted:  #9CC3E2;   /*  6–7  blue   */
+  --st-received:  #B5E3B5;   /*  8    light green */
+  --st-scheduled: #8ECF8E;   /*  9    green  */
+  --st-active:    #F5E183;   /* 10    yellow */
+  --st-invoiced:  #F0B778;   /* 11    orange */
+  --st-closed:    #E89494;   /* 12–14 red    */
+
+  /* docs/22 · three block grounds, three meanings */
+  --alarm-bg:  #ffe0e0;  --alarm-edge:  #a00;      /* wrong NOW        */
+  --tip-bg:    #ffffe1;  --tip-edge:    #000;      /* a standing rule  */
+  --record-bg: #ffffc0;  --record-edge: #808080;   /* what gets written */
+  --unknown-edge: #d8d0a0;                         /* the [?] chip     */
+
+  --row-rule:  #f2f2f2;
+  --band:      #f4f4f4;
+  --band-2:    #dfdfdf;
+  --band-rule: #d4d4d4;
+  --cell-rule: #ececec;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--desk);
+  /* 10px, letter-spacing .05em. NEVER 11px — docs/14. */
+  font: 10px Tahoma, Verdana, Geneva, sans-serif;
+  letter-spacing: .05em;
+  color: var(--ink);
+}
+
+a       { color: #000080; }
+a:hover { color: #1084d0; }
+
+/* Numbers align in a column only if they are monospaced. */
+.mono, .num {
+  font: 10px 'Lucida Console', monospace;
+  letter-spacing: .04em;
+}
+.num { text-align: right; }
+
+/* ─── WINDOW ──────────────────────────────────────────────────────────── */
+
+.w-window {
+  background: var(--chrome);
+  box-shadow: var(--raised);
+  padding: 3px;
+  display: flex;
+  flex-direction: column;
+}
+
+.w-titlebar {
+  height: 20px;
+  background: linear-gradient(90deg, #000080, #1084d0);
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 3px 0 4px;
+  flex: none;
+}
+.w-title { color: #fff; font-weight: bold; flex: 1; white-space: nowrap;
+           overflow: hidden; text-overflow: ellipsis; }
+
+.w-titlebtn {
+  width: 16px; height: 14px; flex: none;
+  background: var(--chrome); box-shadow: var(--raised);
+  display: flex; align-items: center; justify-content: center;
+  cursor: default; position: relative;
+}
+
+/* ─── MENU · TOOLBAR · FILTER BAND · STATUS BAR ───────────────────────── */
+
+.w-menubar { display: flex; gap: 2px; padding: 2px; flex: none; }
+.w-menu    { padding: 2px 7px; cursor: default; white-space: nowrap; }
+.w-menu:hover { background: #000080; color: #fff; }
+.w-menu u  { text-decoration: underline; }
+
+.w-toolbar {
+  display: flex; align-items: center; gap: 4px;
+  padding: 3px 4px; box-shadow: var(--thin); flex: none;
+}
+
+.w-btn {
+  height: 23px; padding: 0 9px;
+  background: var(--chrome); box-shadow: var(--raised);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: default; white-space: nowrap;
+}
+.w-btn:active            { box-shadow: var(--sunken); padding: 1px 8px 0 10px; }
+.w-btn--default          { font-weight: bold; outline: 1px solid #000;
+                           outline-offset: 1px; }
+.w-btn--sm               { height: 19px; }
+.w-btn[aria-disabled]    { color: var(--ink-3); }
+
+.w-sep { width: 2px; height: 19px; box-shadow: var(--thin);
+         flex: none; margin: 0 5px; }
+
+.w-band {
+  box-shadow: var(--thin); padding: 5px 8px;
+  display: flex; align-items: center; gap: 7px;
+  flex: none; flex-wrap: wrap;
+}
+
+.w-statusbar { display: flex; gap: 3px; flex: none; }
+.w-statusbar > div { box-shadow: var(--thin); padding: 3px 8px;
+                     white-space: nowrap; overflow: hidden;
+                     text-overflow: ellipsis; }
+.w-statusbar > .grow { flex: 1; min-width: 0; }
+
+/* ─── FIELDS ──────────────────────────────────────────────────────────── */
+
+.w-field {
+  height: 19px; padding: 0 4px;
+  background: #fff; box-shadow: var(--sunken);
+  display: inline-flex; align-items: center;
+  white-space: nowrap; overflow: hidden;
+}
+.w-field--num   { justify-content: flex-end; }
+.w-field--date  { width: 80px; }        /* 80, never 56 — docs/11 */
+.w-field .hint  { color: var(--hint); }
+
+.w-select { padding-right: 0; gap: 4px; }
+.w-select > span:first-child { flex: 1; min-width: 0; overflow: hidden;
+                               text-overflow: ellipsis; }
+.w-arrow {
+  width: 17px; height: 17px; flex: none; margin: 1px;
+  background: var(--chrome); box-shadow: var(--raised);
+  display: flex; align-items: center; justify-content: center;
+}
+.w-arrow::after {
+  content: ''; width: 0; height: 0;
+  border-left: 3px solid transparent; border-right: 3px solid transparent;
+  border-top: 4px solid #000;
+}
+
+.w-check {
+  width: 13px; height: 13px; flex: none;
+  background: #fff; box-shadow: var(--sunken);
+  display: inline-flex; align-items: center; justify-content: center;
+  font: 10px 'Lucida Console', monospace; line-height: 1;
+}
+.w-checkrow { display: inline-flex; align-items: center; gap: 6px;
+              white-space: nowrap; }
+
+.w-chip {                                /* a read-only value */
+  background: var(--chrome); box-shadow: var(--thin);
+  color: var(--ink-2); padding: 2px 7px;
+  display: inline-block; white-space: nowrap;
+}
+.w-req { color: var(--bad); flex: none; }   /* the ★ */
+
+/* ─── GROUP BOX · the dialog idiom ────────────────────────────────────── */
+
+.w-group { box-shadow: var(--thin); padding: 13px 9px 8px; position: relative; }
+.w-group > legend, .w-group > .legend {
+  position: absolute; top: -6px; left: 9px;
+  background: var(--chrome); padding: 0 4px;
+  font-weight: bold; white-space: nowrap;
+}
+/* docs/12 · the field grid. 100px label column, everywhere. */
+.w-fields { display: grid; grid-template-columns: 100px 1fr;
+            gap: 4px 8px; align-items: center; }
+.w-fields .note { color: var(--ink-2); line-height: 1.5; }
+
+/* ─── DIALOG ──────────────────────────────────────────────────────────── */
+
+.w-scrim { min-height: 100vh; background: rgba(0,0,0,.42);
+           display: flex; align-items: flex-start; gap: 18px; padding: 34px 24px; }
+.w-dialog { background: var(--chrome); padding: 3px;
+            box-shadow: var(--raised), 4px 4px 14px rgba(0,0,0,.45); }
+.w-dialog--600 { width: 600px; flex: none; }   /* every entity dialog */
+.w-dialog--480 { width: 480px; flex: none; }   /* a row editor */
+.w-dialog-body { padding: 10px 9px 9px; display: flex;
+                 flex-direction: column; gap: 10px; }
+.w-buttons { display: flex; justify-content: flex-end; gap: 7px; padding-top: 1px; }
+
+/* ─── LIST ────────────────────────────────────────────────────────────── */
+
+.w-list { flex: 1; min-height: 0; background: #fff;
+          box-shadow: var(--sunken); display: flex; flex-direction: column; }
+.w-list-head {
+  background: var(--chrome); box-shadow: var(--raised); flex: none;
+  display: grid; align-items: center;
+}
+.w-list-head > span {
+  padding: 5px 6px; color: var(--ink-2); letter-spacing: .11em;
+  white-space: nowrap; overflow: hidden;
+  border-right: 1px solid var(--cell-rule);
+}
+.w-list-head > span:last-child { border-right: 0; }
+.w-list-body { flex: 1; min-height: 0; overflow: hidden; }
+
+.w-row  { display: grid; align-items: center; border-bottom: 1px solid var(--row-rule); }
+.w-row > span { padding: 5px 6px; white-space: nowrap;
+                overflow: hidden; text-overflow: ellipsis; }
+
+/* One band tier. Two tiers: docs/14 — the second gets NO fill. */
+.w-bandrow   { display: grid; align-items: center; background: var(--band);
+               border-top: 1px solid var(--band-rule); font-weight: bold; }
+.w-bandrow--2 { background: none; color: var(--ink-2);
+                border-top: 1px solid var(--cell-rule); }
+
+/* docs/07 · the cursor. Settled after four rounds: ARROW AND SPINE ONLY.
+   No wash, no fill, no darkening. The row keeps its own colour. */
+.w-gutter { display: flex; align-items: stretch; height: 100%; }
+.w-spine  { display: block; width: 3px; flex: none; background: #000; }
+.w-caret  { flex: 1; display: flex; align-items: center; padding-left: 1px; }
+.w-caret::after {
+  content: ''; display: block; width: 0; height: 0;
+  border-top: 4px solid transparent; border-bottom: 4px solid transparent;
+  border-left: 6px solid #000;
+}
+/* A problem is a lip in the gutter. NEVER a row tint. */
+.w-problem-lip { display: block; width: 4px; height: 100%;
+                 flex: none; background: var(--lip); }
+.w-row--problem { color: var(--bad); }
+
+/* The ± expander. Its own 20px column on one tier; inline when two. */
+.w-expand {
+  width: 9px; height: 9px; flex: none;
+  border: 1px solid var(--edge); background: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  font: 9px 'Lucida Console', monospace; line-height: 1; cursor: default;
+}
+
+/* ─── DETAIL PANE ─────────────────────────────────────────────────────── */
+
+.w-detail { background: var(--chrome); box-shadow: var(--raised);
+            padding: 9px; display: flex; flex-direction: column; gap: 9px;
+            min-height: 0; flex: none; }
+.w-detail-title { font-size: 12px; font-weight: bold; line-height: 1.25; }
+.w-detail-sub   { color: var(--ink-2); padding-top: 2px; }
+.w-section-label { color: var(--ink-2); letter-spacing: .11em;
+                   padding: 0 0 3px; white-space: nowrap; }
+.w-well { background: #fff; box-shadow: var(--sunken); padding: 5px 7px; }
+
+/* ─── BLOCKS · docs/22 ────────────────────────────────────────────────── */
+
+.w-alarm, .w-tip, .w-record {
+  padding: 6px 8px; line-height: 1.5;
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.w-alarm  { background: var(--alarm-bg);  box-shadow: inset 0 0 0 1px var(--alarm-edge);
+            color: var(--bad); }
+.w-tip    { background: var(--tip-bg);    box-shadow: inset 0 0 0 1px var(--tip-edge); }
+.w-record { background: var(--record-bg); box-shadow: inset 0 0 0 1px var(--record-edge); }
+
+/* [?] — unknown, and it MATTERS. Never an empty cell, a zero or a dash. */
+.w-unknown {
+  font: 10px 'Lucida Console', monospace; letter-spacing: .04em;
+  color: var(--bad); background: var(--tip-bg);
+  box-shadow: inset 0 0 0 1px var(--unknown-edge);
+  padding: 0 3px; white-space: nowrap;
+}
+.w-na { color: var(--ink-3); }    /* — · not applicable, a different claim */
+
+/* ─── STATUS CHIP ─────────────────────────────────────────────────────── */
+
+.w-status { display: inline-flex; align-items: stretch;
+            box-shadow: var(--thin); flex: none; }
+.w-status > .name { padding: 3px 9px; font-size: 11px; font-weight: bold;
+                    white-space: nowrap; }
+.w-status > .when { padding: 3px 9px 3px 0; font: 10px 'Lucida Console', monospace;
+                    letter-spacing: .04em; display: flex; align-items: center;
+                    white-space: nowrap; }
+.w-status > .lip  { display: block; width: 4px; flex: none; background: var(--lip); }
+
+.st-quoting   { background: var(--st-quoting); }
+.st-accepted  { background: var(--st-accepted); }
+.st-received  { background: var(--st-received); }
+.st-scheduled { background: var(--st-scheduled); }
+.st-active    { background: var(--st-active); }
+.st-invoiced  { background: var(--st-invoiced); }
+.st-closed    { background: var(--st-closed); }
+
+/* ─── TABS ────────────────────────────────────────────────────────────── */
+
+.w-tabs { display: flex; align-items: flex-end; gap: 2px;
+          padding: 0 2px; margin-bottom: -3px;
+          position: relative; z-index: 1; flex: none; }
+.w-tab  { padding: 3px 15px 4px; margin-bottom: 1px;
+          background: var(--chrome); box-shadow: var(--raised);
+          color: var(--ink-2); cursor: default; white-space: nowrap; }
+.w-tab--on { padding: 4px 15px 6px; margin-bottom: 0;
+             background: var(--chrome-lit); font-weight: bold; color: var(--ink);
+             box-shadow: inset 1px 1px #fff, inset -1px 0 #0a0a0a,
+                         inset -2px 0 var(--edge); }
+.w-tabpanel { flex: 1; min-height: 0; box-shadow: var(--thin);
+              background: var(--chrome); padding: 9px;
+              display: flex; gap: 9px; }
