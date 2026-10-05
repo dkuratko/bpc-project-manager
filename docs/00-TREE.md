@@ -668,43 +668,104 @@ CATALOG ──▶ COST BREAKDOWN ──▶ ESTIMATE ──▶ JOB ──▶ POST
 
 
 ## 9b · NAVIGATION — how you get anywhere ✔
+**Rebuilt 04 Oct 2026** from all 27 briefs. The earlier version predated
+Equipment, Trackers and every popup designed after 09 Sep. This is the map the
+build works from, so it has to be complete rather than representative.
 
 ```
-FRAME                     Project Browser. always present, it IS the client
-                          area. never closes.
-   double-click a PROJECT   →  expands in place. no window.
-   double-click a VERSION   →  opens VERSION VIEW
+FRAME ─── PROJECT BROWSER
+          always present. IT IS THE CLIENT AREA and never closes — no close
+          button at all, not a disabled one. opens filling the desk; the teal
+          shows when you un-maximise it. docs/07.
 
-VERSION VIEW              MDI child. the hub for one job. stays open.
-   [Cost breakdown]         →  COST BREAKDOWN     MDI child, 4 tabs
-   [Estimate]               →  ESTIMATE EDITOR    MDI child
-   [Post cost]              →  POST COST          MDI child
-   [Record approval…]       →  popup
-   [Record shipment…]       →  popup
-   [Schedule…]              →  popup
-   [Invoice…]               →  popup
+  toolbar  New project ─────────▶ NEW PROJECT              popup
+           New option ──────────▶ NEW OPTION / NEW VERSION popup, role A
+           New version ─────────▶ NEW OPTION / NEW VERSION popup, role B
+           Open ────────────────▶ VERSION VIEW             MDI child
+           Catalog ▸ ───────────▶ CATALOG BROWSER          MDI child  ▢
+           Contacts ────────────▶ CONTACTS                 MDI child
+           Equipment ───────────▶ EQUIPMENT                MDI child
+           Trackers ────────────▶ TRACKERS                 MDI child
+  list     double-click PROJECT ─▶ expands in place. NO window.
+           double-click VERSION ─▶ VERSION VIEW            MDI child
+           right-click ─────────▶ Open version · New option · New version ·
+                                   Record approval… · Post cost ▸ · Delete
+  counters click a tile ────────▶ filters the list. no window.
 
-COST BREAKDOWN            MDI child
-   "2 problems" chip        →  PROBLEMS PANEL     popup
-   [Issue estimate]         →  creates BPCe- and opens the ESTIMATE EDITOR
-   [Add component ▼]        →  catalog picker     popup
-   [New one-time…]          →  COMPONENT WIZARD   popup
-   Fix… on a rate gap       →  SERVICE RATE TABLE popup
+VERSION VIEW ─── MDI child, the hub for one job. stays open.
+  [Cost breakdown] ────────────▶ COST BREAKDOWN            MDI child, 4 tabs
+  [Estimate] ──────────────────▶ ESTIMATE EDITOR           MDI child
+  [Post cost] ─────────────────▶ POST COST                 MDI child  ▢
+                                  greyed until the job is complete
+  [Record approval…] ──────────▶ RECORD APPROVAL           popup
+  [Record shipment…] ──────────▶ RECORD SHIPMENT           popup
+  [Schedule…] ─────────────────▶ SCHEDULE                  popup
+  [Invoice…] ──────────────────▶ INVOICE                   popup
 
-ESTIMATE EDITOR           MDI child
-   right-click a row        →  context menu
-   [Issue estimate]         →  locks it. forever.
+COST BREAKDOWN ─── MDI child
+  "2 problems" chip ───────────▶ PROBLEMS PANEL            popup
+  [Issue estimate] ────────────▶ creates BPCe- · opens the ESTIMATE EDITOR
+  [Add component ▼] ───────────▶ catalog picker            popup  ▢
+  [New one-time…] ─────────────▶ COMPONENT WIZARD          popup
+  Fix… on a rate gap ──────────▶ SERVICE RATE TABLE        popup  ▢
+  Purchasing · [Mobilization…] ▶ MOBILIZATION PANEL        popup
 
-CATALOG / CONTACTS / VEHICLES   from the browser toolbar. MDI children.
+ESTIMATE EDITOR ─── MDI child
+  right-click a row ───────────▶ context menu · Delete
+  ＋ Add option ───────────────▶ a job-level add option, created in place
+  [Issue estimate] ────────────▶ locks it. forever.
+
+CONTACTS ─── MDI child
+  New customer / dbl-click ────▶ CUSTOMER properties       popup
+  New contact / dbl-click ─────▶ CONTACT properties        popup
+  PROJECTS count ──────────────▶ filters the PROJECT BROWSER. no window.
+
+EQUIPMENT ─── MDI child, two tabs: Owned · Rented
+  New type ────────────────────▶ EQUIPMENT TYPE            popup
+  New unit / Properties ───────▶ EQUIPMENT PROPERTIES      popup, 4 tabs
+      Maintenance · ＋ Add an entry ▶ LOG ENTRY            popup
+      Specifications · ＋ Add ──▶ ADD A SPECIFICATION      row editor
+      General · ＋ Add an item ─▶ ADD A COMPLIANCE ITEM    row editor
+  New offering / Properties ───▶ RENTAL OFFERING           popup
+      Rates · ＋ Add a rate ───▶ ADD A RATE                row editor
+      Fees  · ＋ Add a fee ────▶ ADD A FEE                 row editor
+  New supplier / Properties ───▶ SUPPLIER                  popup
+  Fuel prices… ────────────────▶ FUEL PRICES               popup
+  detail · [Set it on the type…] ▶ EQUIPMENT TYPE          popup
+
+TRACKERS ─── MDI child
+  New tracker / Properties ────▶ TRACKER                   popup  ▢
+  Record renewal… ─────────────▶ RECORD RENEWAL            popup  ▢
+  counters ────────────────────▶ filter the list. no window.
+
+POPUPS THAT OPEN POPUPS ─── the only three
+  RECORD APPROVAL · ◉ Create revision ▶ LINE ITEMS         popup
+  INVOICE · ＋ Add a draw ─────────────▶ ADD A DRAW        row editor
+  any ＋ Add a … row ─────────────────▶ its row editor     480 px
 ```
+
+### Rules
 
 **Everything MAIN stays open.** Two jobs, each with a version view and a cost
 breakdown, is four child windows and the Window menu lists them all. That is
 what MDI bought us and it is worth using — the alternative was closing one job
 to look at another.
 
+**Asking for a MAIN window twice raises the one that is open.** It never
+stacks a duplicate nobody asked for.
+
 **Popups block, then close back.** They record a fact or fix a gap; they never
-hold anything you would want to keep looking at.
+hold anything you would want to keep looking at. Modal, on a
+`rgba(0,0,0,.42)` scrim, over the window that opened them.
+
+**A popup that opens a popup stays modal to its parent**, not to the window
+behind it. Cancelling `Line items` returns to `Record approval`, not to the
+version view — and cancelling `Record approval` discards the revision with it,
+because the popup wrote nothing.
+
+**Nothing navigates on save.** `Record` commits and closes back to where you
+were. The two exceptions are explicit and labelled as such:
+`Create & open cost breakdown` and `Issue estimate`.
 
 ---
 
