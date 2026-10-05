@@ -1,14 +1,15 @@
 {
   "name": "bpc-project-manager",
-  "productName": "Build Play Contracting — Project Manager",
+  "productName": "Build Play Contracting \u2014 Project Manager",
   "version": "0.1.0",
   "private": true,
   "description": "Rebuilt from the walkthrough in docs/. Nothing is carried over from reference/v0.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "check": "node db/check.js",
-    "test": "node db/status.test.js && node db/seed.test.js"
+    "check": "ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/check.js",
+    "test": "ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/status.test.js && ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/seed.test.js && ELECTRON_RUN_AS_NODE=1 ./node_modules/.bin/electron db/board.test.js",
+    "rebuild": "electron-rebuild -f -w better-sqlite3"
   },
   "devDependencies": {
     "@electron/rebuild": "^4.2.0",
