@@ -872,7 +872,7 @@ BUILD DECISIONS, 04 Oct 2026:
                       first. the money screens wait on the catalog, which has
                       no content and no screen to enter it with.
 
-STANDING IN CODE, 04 Oct 2026 — app/, 73 assertions green:
+STANDING IN CODE, 05 Oct 2026 — app/, 113 assertions green:
   db/open.js ........ builds from docs/02-schema.sql itself. one source, never
                       a copy. verify() refuses an unindexed foreign key.
   db/status.js ...... deriveStatus() — the 14 statuses from independent facts,
@@ -881,6 +881,8 @@ STANDING IN CODE, 04 Oct 2026 — app/, 73 assertions green:
   db/board.js ....... the browser's rows and its 5 counters.
   db/contacts.js .... contactList() — the two counts that must not agree, and
                       the AUTO marker's two rule kinds. one rule, one marker.
+  db/equipment.js ... both tabs, the rate build-up that must SUM, and the
+                      fuel preview that writes nothing.
   db/version.js ..... versionDetail() — progress marks, the document rows that
                       name what has NOT happened, the money ladder, and the
                       derived Next that a problem displaces.
@@ -894,8 +896,10 @@ STANDING IN CODE, 04 Oct 2026 — app/, 73 assertions green:
                       flex row of exactly two columns.
   screens/contacts.js ......... docs/15 + docs/14. 1000×640, grouped, no
                       counters, the screen strip that never collapses.
+  screens/equipment.js ........ docs/18. 1180×640, two tabs, detail pane
+                      instead of a strip, maintenance counters that filter.
 
-  NEXT: equipment · trackers · the record dialogs — all data entry
+  NEXT: trackers · the record dialogs — all data entry
         against tables that already exist. THEN the catalog, which unblocks
         the engine and with it every money screen.
 

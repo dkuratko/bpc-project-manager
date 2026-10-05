@@ -17,6 +17,7 @@ const { seed } = require('./db/seed');
 const { board, counters } = require('./db/board');
 const { versionDetail } = require('./db/version');
 const { contactList, setActive } = require('./db/contacts');
+const EQ = require('./db/equipment');
 
 let db = null;
 
@@ -146,6 +147,36 @@ ipcMain.handle('domain:contacts', (_e, opts) => {
 
 ipcMain.handle('domain:contact-active', (_e, opts) => {
   try { return setActive(database(), opts); }
+  catch (err) { return { error: err.message }; }
+});
+
+const today = () => new Date().toISOString().slice(0, 10);
+
+ipcMain.handle('domain:equipment', (_e, opts = {}) => {
+  try {
+    const db = database();
+    return { data: { owned: EQ.owned(db, today(), opts),
+                     rented: EQ.rented(db, today(), opts) } };
+  } catch (err) { return { error: err.message }; }
+});
+
+ipcMain.handle('domain:equipment-detail', (_e, id) => {
+  try { return { detail: EQ.detail(database(), id, today()) }; }
+  catch (err) { return { error: err.message }; }
+});
+
+ipcMain.handle('domain:fuel-prices', () => {
+  try { return { prices: EQ.fuelPrices(database()) }; }
+  catch (err) { return { error: err.message }; }
+});
+
+ipcMain.handle('domain:fuel-preview', (_e, prices) => {
+  try { return { preview: EQ.fuelPreview(database(), prices ?? {}, today()) }; }
+  catch (err) { return { error: err.message }; }
+});
+
+ipcMain.handle('domain:fuel-apply', (_e, prices) => {
+  try { return EQ.fuelApply(database(), prices ?? {}, today()); }
   catch (err) { return { error: err.message }; }
 });
 

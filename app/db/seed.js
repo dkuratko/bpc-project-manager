@@ -234,16 +234,18 @@ function equipment(db) {
           shipW: 8400, shipL: 11.8, shipWd: 6.0, shipH: 6.8, inservice: '2024-06-02' });
 
   // Rented — the offerings from equipment-rented.v2
-  const offer = (id, eq, sup, rate, basis, move, shipW) =>
-    M.run({ ...blank, id, eq: uid('eq', eq), sup: uid('sup', sup), name: null,
+  // An offering NEEDS a name. The type is generic — United rent two different
+  // boom lifts, and "boom lift" twice in one list is unusable.
+  const offer = (id, eq, sup, name, rate, basis, move, shipW) =>
+    M.run({ ...blank, id, eq: uid('eq', eq), sup: uid('sup', sup), name,
             kind: 'rented', rate, basis, def: 0, move, shipW });
 
-  offer('esm_ur_boom64', 'boomlift',  'united',   485, 'day', 'delivered', null);
-  offer('esm_ur_boom45', 'boomlift',  'united',   365, 'day', 'delivered', null);
-  offer('esm_ur_flat',   'trailer',   'united',    85, 'day', 'collected', null);
-  offer('esm_ss_comp',   'compactor', 'sunstate',  68, 'day', 'collected', 220);
-  offer('esm_ss_truck',  'truck',     'sunstate', 145, 'day', 'collected', null);
-  offer('esm_hr_mini',   'excavator', 'herc',     310, 'day', 'delivered', 7100);
+  offer('esm_ur_boom64', 'boomlift',  'united',   "64' boom lift",          485, 'day', 'delivered', null);
+  offer('esm_ur_boom45', 'boomlift',  'united',   "45' boom lift",          365, 'day', 'delivered', null);
+  offer('esm_ur_flat',   'trailer',   'united',   '20 ft equipment trailer', 85, 'day', 'collected', null);
+  offer('esm_ss_comp',   'compactor', 'sunstate', 'Plate compactor',         68, 'day', 'collected', 220);
+  offer('esm_ss_truck',  'truck',     'sunstate', '¾ ton pickup',           145, 'day', 'collected', null);
+  offer('esm_hr_mini',   'excavator', 'herc',     'Mini excavator',         310, 'day', 'delivered', 7100);
 
   // A weekly bracket: three day-rates, so it bites at four days
   const R = db.prepare(`INSERT INTO rental_rates (id,sourcing_method_id,basis,rate) VALUES (?,?,?,?)`);
@@ -258,6 +260,76 @@ function equipment(db) {
     F.run(`fee_${m}_pick`, 'equipment_sourcing_method', m, 'Pickup', 'flat', 150);
   }
   F.run('fee_boom64_dw', 'equipment_sourcing_method', 'esm_ur_boom64', 'Damage waiver', 'percent', 12);
+
+  /* ── one fuel price per FUEL TYPE, not per fleet ───────────────────────
+     A diesel F-450 and a gasoline pickup do not move together, so a single
+     global number would be wrong the moment the fleet is mixed. A unit's
+     `Fuel` specification says which price it uses. */
+  const AS = db.prepare(`INSERT INTO app_settings (key,value,notes) VALUES (?,?,?)`);
+  AS.run('vehicle.fuel_price.diesel',   '3.85', 'set 12 Jun 2026');
+  AS.run('vehicle.fuel_price.gasoline', '3.40', 'set 12 Jun 2026');
+  AS.run('vehicle.fuel_price.set_at',   '2026-06-12', null);
+  AS.run('vehicle.rate_method', 'computed',
+         'computed from inputs · the alternative is a typed rate per unit');
+
+  /* ── the rate build-ups · docs/18 ──────────────────────────────────────
+     Without these the detail pane's whole point — components that visibly
+     sum to the rate — has nothing to show. Four decimals where they have to
+     add up, two where it is a price. */
+  const RI = db.prepare(`INSERT INTO vehicle_rate_inputs
+    (sourcing_method_id,mpg,fuel_price,annual_maintenance,annual_miles,
+     tyre_set_cost,tyre_life_miles,purchase_price,salvage_value,life_miles,
+     insurance_annual,registration_annual,computed_rate,computed_at)
+    VALUES (@id,@mpg,@fuel,@maint,@miles,@tyre,@tyreLife,@buy,@salvage,@life,
+            @ins,@reg,@rate,@at)`);
+
+  // 3.85/13 + 2800/15000 + 1600/50000 + 24000/250000 + 3000/15000 = 0.8108
+  RI.run({ id: 'esm_f450', mpg: 13, fuel: null, maint: 2800, miles: 15000,
+           tyre: 1600, tyreLife: 50000, buy: 38000, salvage: 14000, life: 250000,
+           ins: 2400, reg: 600, rate: 0.8108, at: '2026-09-08' });
+
+  // No engine, so no fuel line at all — mpg NULL, not zero. The trailer is the
+  // honest detail in the fuel dialog: a recompute cannot touch it.
+  // 900/6000 + 900/40000 + 7000/40000 + 615/6000 = 0.4500
+  RI.run({ id: 'esm_flatbed', mpg: null, fuel: null, maint: 900, miles: 6000,
+           tyre: 900, tyreLife: 40000, buy: 9000, salvage: 2000, life: 40000,
+           ins: 300, reg: 315, rate: 0.4500, at: '2025-08-14' });   // 13 months — stale
+
+  // The Bobcat is TYPED at $210/day. There is no mileage to divide by, so it
+  // has no build-up and must not be given a fake one.
+
+  /* ── specifications · the detail pane's SPECIFICATIONS box ──────────── */
+  const SP = db.prepare(`INSERT INTO equipment_specifications
+    (id,sourcing_method_id,name,value,unit,sequence_no) VALUES (?,?,?,?,?,?)`);
+  const spec = (m, i, name, value, unit = null) =>
+    SP.run(`spec_${m}_${i}`, m, name, value, unit, i);
+  ['Make,Ford', 'Model,F-450 Super Duty', 'Year,2012', 'Fuel,Diesel',
+   'GVWR,14000,lb', 'Bed,8.0,ft'].forEach((t, i) => spec('esm_f450', i, ...t.split(',')));
+  ['Make,Big Tex', 'Model,22GN', 'Year,2021', 'Axles,2']
+    .forEach((t, i) => spec('esm_flatbed', i, ...t.split(',')));
+  ['Make,Bobcat', 'Model,T66', 'Year,2021', 'Fuel,Diesel',
+   'Rated operating capacity,2200,lb', 'Lift height,10.9,ft']
+    .forEach((t, i) => spec('esm_t66', i, ...t.split(',')));
+
+  /* ── what you were actually billed · docs/18 ──────────────────────────
+     The card is what costing uses; last paid is evidence. They are seeded
+     apart on purpose, because the gap between them is the Rented tab's
+     entire reason for existing. */
+  const LP = db.prepare(`UPDATE equipment_sourcing_methods
+    SET last_paid_rate = ?, last_paid_at = ?, last_paid_version_id = ?,
+        last_paid_source = ?, last_paid_recorded_at = ?, rate_confirmed_at = ?
+    WHERE id = ?`);
+  //      id               paid   on            version      confirmed
+  LP.run(520, '2026-08-22', 'prj_26-09_A0', 'post_cost', '2026-08-25', '2026-03-14', 'esm_ur_boom64');
+  LP.run(365, '2026-06-11', null,           'typed',     '2026-06-12', '2026-03-14', 'esm_ur_boom45');
+  LP.run(68,  '2026-09-04', null,           'post_cost', '2026-09-06', '2026-09-04', 'esm_ss_comp');
+  LP.run(145, '2026-07-18', null,           'post_cost', '2026-07-20', '2026-07-18', 'esm_ss_truck');
+  LP.run(345, '2026-09-19', null,           'post_cost', '2026-09-21', '2026-05-02', 'esm_hr_mini');
+  // esm_ur_flat is left alone — never rented, and its card was last confirmed
+  // over a year ago. One row has to be each of those or the counters are
+  // decoration.
+  db.prepare(`UPDATE equipment_sourcing_methods SET rate_confirmed_at = ? WHERE id = ?`)
+    .run('2025-06-01', 'esm_ur_flat');
 }
 
 /* ─── trackers.v1 ──────────────────────────────────────────────────────── */
