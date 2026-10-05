@@ -8,7 +8,7 @@
   "scripts": {
     "start": "electron .",
     "check": "node db/check.js",
-    "test": "node db/status.test.js"
+    "test": "node db/status.test.js && node db/seed.test.js"
   },
   "devDependencies": {
     "electron": "^32.0.0"

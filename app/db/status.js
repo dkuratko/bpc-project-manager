@@ -70,18 +70,24 @@ function deriveStatus(f, today = new Date().toISOString().slice(0, 10)) {
   if (f.approvedAt) {
     const short = !f.equipmentComplete || f.openIssues > 0;
 
-    if (short) {
-      alerts.push(f.openIssues > 0
-        ? `${f.openIssues} open shipment issue${f.openIssues > 1 ? 's' : ''}`
-        : 'no equipment received');
-    }
-
     if (f.installDate) {
-      // The dangerous one, and the alert this application exists to raise.
-      // The date is NOT blocked — the customer set it and reality does not
+      // ★ The dangerous one, and the alert this application exists to raise.
+      // The shortfall is only a PROBLEM once a date exists — awaiting
+      // delivery with nothing delivered is just awaiting delivery, and
+      // flagging that would put a red lip on half the board and teach
+      // everyone to ignore it. The schema's derivation table puts the alert
+      // on this row alone.
+      //
+      // The date is NOT blocked. The customer set it and reality does not
       // care what the app thinks.
+      if (short) {
+        alerts.push(f.openIssues > 0
+          ? `${f.openIssues} open shipment issue${f.openIssues > 1 ? 's' : ''}`
+          : 'no equipment received');
+      }
       return done('SCHEDULED', f.installDate, 'scheduled', alerts);
     }
+
     return short
       ? done('AWAITING DELIVERY', null, 'accepted', alerts)
       : done('EQUIPMENT RECEIVED', null, 'received', alerts);

@@ -40,9 +40,12 @@ check('sent, inside 30 days',
 check('sent, past the 30-day expiry',
   { estimateSentAt: '2026-07-15' }, { label: 'SENT, AWAITING', colour: W, problem: true });
 
-check('approved, nothing delivered',
+// NOT a problem. Awaiting delivery with nothing delivered is just awaiting
+// delivery — flagging it would lip half the board and teach everyone to
+// ignore the lip. The shortfall only becomes a problem once a date exists.
+check('awaiting delivery is not itself a problem',
   { approvedAt: '2026-09-01', equipmentComplete: false },
-  { label: 'AWAITING DELIVERY', colour: BLUE, problem: true });
+  { label: 'AWAITING DELIVERY', colour: BLUE, problem: false });
 check('approved, everything delivered',
   { approvedAt: '2026-09-01', equipmentComplete: true },
   { label: 'EQUIPMENT RECEIVED', colour: LGREEN, problem: false });
