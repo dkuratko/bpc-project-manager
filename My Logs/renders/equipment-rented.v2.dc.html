@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><style>
+body{margin:0;background:#008080;font:10px Tahoma,Verdana,Geneva,sans-serif;letter-spacing:.05em;color:#000;
+--r:inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+--s:inset 1px 1px #808080, inset -1px -1px #fff, inset 2px 2px #0a0a0a, inset -2px -2px #dfdfdf;
+--t:inset 1px 1px #808080, inset -1px -1px #fff}
+*{box-sizing:border-box}
+a{color:#000080}
+a:hover{color:#1084d0}
+</style></helmet>
+<div style="min-height:100vh;background:#008080;padding:18px 20px;display:flex;justify-content:flex-start;overflow-x:auto;font:10px Tahoma,Verdana,Geneva,sans-serif;letter-spacing:.05em">
+<div style="width:1180px;height:640px;flex:none;background:#c0c0c0;box-shadow:var(--r);padding:3px;display:flex;flex-direction:column">
+<div style="height:20px;background:linear-gradient(90deg,#000080,#1084d0);display:flex;align-items:center;padding:0 3px 0 4px;gap:6px;flex:none">
+<span style="color:#fff;font-weight:bold;flex:1;white-space:nowrap">Equipment</span>
+<div style="display:flex;gap:2px">
+<div style="width:16px;height:14px;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:flex-end;justify-content:center;padding-bottom:2px;cursor:default"><span style="display:block;width:7px;height:2px;background:#000"></span></div>
+<div style="width:16px;height:14px;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;cursor:default"><span style="display:block;width:8px;height:7px;border:1px solid #000;border-top-width:2px"></span></div>
+<div style="width:16px;height:14px;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;cursor:default;position:relative"><span style="position:absolute;width:9px;height:1px;background:#000;transform:rotate(45deg)"></span><span style="position:absolute;width:9px;height:1px;background:#000;transform:rotate(-45deg)"></span></div>
+</div>
+</div>
+<div style="display:flex;gap:2px;padding:2px 2px 3px;flex:none">
+<div style="padding:2px 7px;cursor:default" style-hover="background:#000080;color:#fff">File</div><div style="padding:2px 7px;cursor:default" style-hover="background:#000080;color:#fff">Edit</div><div style="padding:2px 7px;cursor:default" style-hover="background:#000080;color:#fff">View</div><div style="padding:2px 7px;cursor:default" style-hover="background:#000080;color:#fff">Equipment</div><div style="padding:2px 7px;cursor:default" style-hover="background:#000080;color:#fff">Window</div><div style="padding:2px 7px;cursor:default" style-hover="background:#000080;color:#fff">Help</div>
+</div>
+<div style="display:flex;align-items:center;gap:4px;padding:3px 4px;box-shadow:var(--t);margin:0 1px 3px;flex:none">
+<span style="padding:0 9px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center" style-active="box-shadow:var(--s);padding:1px 8px 0 10px">New unit</span><span style="padding:0 9px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center" style-active="box-shadow:var(--s);padding:1px 8px 0 10px">New offering</span><span style="padding:0 9px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center" style-active="box-shadow:var(--s);padding:1px 8px 0 10px">New supplier</span><span style="width:2px;height:19px;box-shadow:var(--t);flex:none;margin:0 5px"></span><span style="padding:0 9px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center" style-active="box-shadow:var(--s);padding:1px 8px 0 10px">Properties</span><span style="padding:0 9px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center" style-active="box-shadow:var(--s);padding:1px 8px 0 10px">Deactivate</span><span style="width:2px;height:19px;box-shadow:var(--t);flex:none;margin:0 5px"></span><span style="padding:0 9px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center" style-active="box-shadow:var(--s);padding:1px 8px 0 10px">Fuel prices…</span>
+</div>
+<div style="box-shadow:var(--t);padding:5px 8px;display:flex;align-items:center;gap:7px;margin:0 1px 4px;flex:none;flex-wrap:wrap">
+<span style="display:flex;align-items:center;gap:5px;flex:none"><span style="color:#808080;white-space:nowrap">Find</span><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;width:150px;flex:none;white-space:nowrap;overflow:hidden"></span></span>
+<span style="display:flex;align-items:center;gap:5px;flex:none"><span style="color:#808080;white-space:nowrap">Type</span><span style="box-shadow:var(--s);background:#fff;padding:0 0 0 4px;height:19px;display:inline-flex;align-items:center;gap:4px;width:110px;flex:none;"><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">All</span><span style="width:17px;height:17px;flex:none;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;margin:1px"><span style="display:block;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid #000"></span></span></span></span>
+<span style="display:flex;align-items:center;gap:5px;flex:none"><span style="color:#808080;white-space:nowrap">Move</span><span style="box-shadow:var(--s);background:#fff;padding:0 0 0 4px;height:19px;display:inline-flex;align-items:center;gap:4px;width:100px;flex:none;"><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">All</span><span style="width:17px;height:17px;flex:none;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;margin:1px"><span style="display:block;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid #000"></span></span></span></span>
+<span style="display:flex;align-items:center;gap:5px;flex:none"><span style="color:#808080;white-space:nowrap">Sort</span><span style="box-shadow:var(--s);background:#fff;padding:0 0 0 4px;height:19px;display:inline-flex;align-items:center;gap:4px;width:110px;flex:none;"><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Name</span><span style="width:17px;height:17px;flex:none;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;margin:1px"><span style="display:block;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid #000"></span></span></span></span>
+<span style="flex:1"></span><span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap;flex:none"><span style="width:13px;height:13px;flex:none;box-shadow:var(--s);background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1"></span>Show inactive</span>
+</div>
+<div style="display:flex;align-items:flex-end;gap:2px;padding:0 2px;margin-bottom:-3px;position:relative;z-index:1;flex:none">
+<div style="padding:3px 15px 4px;margin-bottom:1px;background:#c0c0c0;box-shadow:var(--r);color:#404040;cursor:default;white-space:nowrap">Owned</div><div style="padding:4px 15px 6px;background:#dfdfdf;box-shadow:inset 1px 1px #fff, inset -1px 0 #0a0a0a, inset -2px 0 #808080;font-weight:bold;cursor:default;white-space:nowrap">Rented</div><div style="flex:1"></div>
+</div>
+<div style="flex:1;min-height:0;box-shadow:var(--t);background:#c0c0c0;padding:9px;margin:0 1px;display:flex;gap:9px">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;box-shadow:var(--s);background:#fff">
+<div style="display:grid;grid-template-columns:14px minmax(0,1fr) 130px 160px 54px 76px;background:#c0c0c0;box-shadow:var(--r);flex:none;padding-left:4px">
+<span></span><span style="padding:5px 6px;text-align:left;color:#404040;letter-spacing:.11em;white-space:nowrap;overflow:hidden;border-right:1px solid #ececec;">NAME ▲</span><span style="padding:5px 6px;text-align:left;color:#404040;letter-spacing:.11em;white-space:nowrap;overflow:hidden;border-right:1px solid #ececec;">CARD RATE</span><span style="padding:5px 6px;text-align:left;color:#404040;letter-spacing:.11em;white-space:nowrap;overflow:hidden;border-right:1px solid #ececec;">LAST PAID</span><span style="padding:5px 6px;text-align:left;color:#404040;letter-spacing:.11em;white-space:nowrap;overflow:hidden;border-right:1px solid #ececec;">MIN</span><span style="padding:5px 6px;text-align:left;color:#404040;letter-spacing:.11em;white-space:nowrap;overflow:hidden;">MOVE</span>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding-left:4px">
+<div style="display:grid;grid-template-columns:14px minmax(0,1fr) 130px 160px 54px 76px;background:#f4f4f4;border-top:1px solid #d4d4d4;align-items:center">
+<span style="display:flex;align-items:stretch;height:100%"><span style="display:block;width:3px;flex:none;background:#000"></span></span>
+<span style="padding:5px 6px;display:flex;align-items:center;gap:7px;min-width:0;border-right:1px solid #ececec;"><span style="width:9px;height:9px;flex:none;border:1px solid #808080;background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1;font-size:9px;cursor:default">−</span><span style="font-weight:bold;white-space:nowrap">United Rentals</span></span>
+<span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span></span></div>
+<div style="display:grid;grid-template-columns:14px minmax(0,1fr) 130px 160px 54px 76px;border-top:1px solid #ececec;align-items:center">
+<span style="display:flex;align-items:stretch;height:100%"><span style="display:block;width:3px;flex:none;background:#000"></span></span>
+<span style="padding:4px 6px 4px 22px;display:flex;align-items:center;gap:7px;min-width:0;border-right:1px solid #ececec;"><span style="width:9px;height:9px;flex:none;border:1px solid #808080;background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1;font-size:9px;cursor:default">−</span><span style="font-weight:bold;color:#404040;white-space:nowrap">Lifts</span></span>
+<span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span></span></div>
+<div style="display:grid;grid-template-columns:14px minmax(0,1fr) 130px 160px 54px 76px;align-items:center;border-bottom:1px solid #f4f4f4;color:#a00;">
+<span style="display:flex;align-items:stretch;height:100%"><span style="display:block;width:3px;flex:none;background:#000"></span><span style="flex:1;display:flex;align-items:center;padding-left:1px"><span style="display:block;width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:6px solid #000"></span></span></span>
+<span style="padding:5px 6px 5px 44px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;font-weight:bold;">64' boom lift</span>
+<span style="padding:5px 6px;border-right:1px solid #ececec;display:flex;align-items:baseline;gap:5px;min-width:0"><span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap">$485.00 /day</span><span style="color:#a00;white-space:nowrap">+wk</span></span>
+<span style="padding:5px 6px;border-right:1px solid #ececec;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">$520.00 · 22 Aug 2026</span>
+<span style="padding:5px 6px;white-space:nowrap;border-right:1px solid #ececec;">1 day</span>
+<span style="padding:5px 6px;white-space:nowrap">delivered</span>
+</div>
+<div style="display:grid;grid-template-columns:14px minmax(0,1fr) 130px 160px 54px 76px;align-items:center;border-bottom:1px solid #f4f4f4;">
+<span style="display:flex;align-items:stretch;height:100%"><span style="display:block;width:3px;flex:none;background:#000"></span></span>
+<span style="padding:5px 6px 5px 44px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">45' boom lift</span>
+<span style="padding:5px 6px;border-right:1px solid #ececec;display:flex;align-items:baseline;gap:5px;min-width:0"><span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap">$365.00 /day</span></span>
+<span style="padding:5px 6px;border-right:1px solid #ececec;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">$365.00 · 11 Jun 2026</span>
+<span style="padding:5px 6px;white-space:nowrap;border-right:1px solid #ececec;">1 day</span>
+<span style="padding:5px 6px;white-space:nowrap">delivered</span>
+</div>
+<div style="display:grid;grid-template-columns:14px minmax(0,1fr) 130px 160px 54px 76px;border-top:1px solid #ececec;align-items:center">
+<span style="display:flex;align-items:stretch;height:100%"><span style="display:block;width:3px;flex:none;background:#000"></span></span>
+<span style="padding:4px 6px 4px 22px;display:flex;align-items:center;gap:7px;min-width:0;border-right:1px solid #ececec;"><span style="width:9px;height:9px;flex:none;border:1px solid #808080;background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1;font-size:9px;cursor:default">+</span><span style="font-weight:bold;color:#404040;white-space:nowrap">Trailers</span><span style="color:#808080;white-space:nowrap">(1)</span></span>
+<span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span></span></div>
+<div style="display:grid;grid-template-columns:14px minmax(0,1fr) 130px 160px 54px 76px;background:#f4f4f4;border-top:1px solid #d4d4d4;align-items:center">
+<span></span>
+<span style="padding:5px 6px;display:flex;align-items:center;gap:7px;min-width:0;border-right:1px solid #ececec;"><span style="width:9px;height:9px;flex:none;border:1px solid #808080;background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1;font-size:9px;cursor:default">−</span><span style="font-weight:bold;white-space:nowrap">Sunstate Equipment</span></span>
+<span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span></span></div>
+<div style="display:grid;grid-template-columns:14px minmax(0,1fr) 130px 160px 54px 76px;border-top:1px solid #ececec;align-items:center">
+<span></span>
+<span style="padding:4px 6px 4px 22px;display:flex;align-items:center;gap:7px;min-width:0;border-right:1px solid #ececec;"><span style="width:9px;height:9px;flex:none;border:1px solid #808080;background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1;font-size:9px;cursor:default">−</span><span style="font-weight:bold;color:#404040;white-space:nowrap">Compaction</span></span>
+<span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span></span></div>
+<div style="display:grid;grid-template-columns:14px minmax(0,1fr) 130px 160px 54px 76px;align-items:center;border-bottom:1px solid #f4f4f4;">
+<span></span>
+<span style="padding:5px 6px 5px 44px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">Plate compactor</span>
+<span style="padding:5px 6px;border-right:1px solid #ececec;display:flex;align-items:baseline;gap:5px;min-width:0"><span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap">$68.00 /day</span></span>
+<span style="padding:5px 6px;border-right:1px solid #ececec;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">$68.00 · 04 Sep 2026</span>
+<span style="padding:5px 6px;white-space:nowrap;border-right:1px solid #ececec;">1 day</span>
+<span style="padding:5px 6px;white-space:nowrap">collected</span>
+</div>
+<div style="display:grid;grid-template-columns:14px minmax(0,1fr) 130px 160px 54px 76px;border-top:1px solid #ececec;align-items:center">
+<span></span>
+<span style="padding:4px 6px 4px 22px;display:flex;align-items:center;gap:7px;min-width:0;border-right:1px solid #ececec;"><span style="width:9px;height:9px;flex:none;border:1px solid #808080;background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1;font-size:9px;cursor:default">−</span><span style="font-weight:bold;color:#404040;white-space:nowrap">Trucks</span></span>
+<span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span></span></div>
+<div style="display:grid;grid-template-columns:14px minmax(0,1fr) 130px 160px 54px 76px;align-items:center;border-bottom:1px solid #f4f4f4;">
+<span></span>
+<span style="padding:5px 6px 5px 44px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-right:1px solid #ececec;">¾ ton pickup</span>
+<span style="padding:5px 6px;border-right:1px solid #ececec;display:flex;align-items:baseline;gap:5px;min-width:0"><span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap">$145.00 /day</span><span style="color:#808080;white-space:nowrap">+wk</span></span>
+<span style="padding:5px 6px;border-right:1px solid #ececec;font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">$145.00 · 18 Jul 2026</span>
+<span style="padding:5px 6px;white-space:nowrap;border-right:1px solid #ececec;">1 day</span>
+<span style="padding:5px 6px;white-space:nowrap">collected</span>
+</div>
+<div style="display:grid;grid-template-columns:14px minmax(0,1fr) 130px 160px 54px 76px;background:#f4f4f4;border-top:1px solid #d4d4d4;align-items:center">
+<span></span>
+<span style="padding:5px 6px;display:flex;align-items:center;gap:7px;min-width:0;border-right:1px solid #ececec;"><span style="width:9px;height:9px;flex:none;border:1px solid #808080;background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1;font-size:9px;cursor:default">+</span><span style="font-weight:bold;white-space:nowrap">Herc Rentals</span><span style="color:#808080;white-space:nowrap">(1)</span></span>
+<span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span style="border-right:1px solid #ececec;"></span><span></span></div>
+</div>
+</div>
+<div style="width:330px;flex:none;box-shadow:var(--r);background:#c0c0c0;padding:9px 9px 8px;display:flex;flex-direction:column;gap:9px;min-height:0">
+<div style="flex:none">
+<div style="font-size:12px;font-weight:bold;line-height:1.25">64' boom lift</div>
+<div style="color:#404040;padding-top:2px">Lifts · United Rentals · delivered</div>
+</div>
+<div style="flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:7px;padding-right:2px">
+<div style="flex:none">
+<div style="display:flex;align-items:baseline;gap:8px;padding:0 0 3px">
+<span style="color:#404040;letter-spacing:.11em;white-space:nowrap">RATE</span><span style="flex:1"></span>
+</div>
+<div style="box-shadow:var(--s);background:#fff;padding:5px 7px"><div style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:3px 8px;align-items:baseline"><span style="color:#404040;white-space:nowrap">Card</span><span style="min-width:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap"><span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap">$485.00 /day</span><span style="flex:1"></span><span style="color:#808080;white-space:nowrap">confirmed 14 Mar 2026</span></span>
+<span></span><span style="min-width:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap"><span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap">$1,455.00 /week</span><span style="flex:1"></span><span style="color:#808080;white-space:nowrap">cheaper from 4 days</span></span>
+<span style="color:#404040;white-space:nowrap">Last paid</span><span style="min-width:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap"><span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap">$520.00 /day</span><span style="flex:1"></span><span style="color:#808080;white-space:nowrap">22 Aug 2026 · 26-09A0</span></span></div><div style="border-top:1px solid #ececec;margin-top:5px;padding-top:4px;color:#a00;line-height:1.55">⚠ Card is <span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap">$35.00</span> under the last invoice</div></div>
+</div>
+<div style="flex:none">
+<div style="display:flex;align-items:baseline;gap:8px;padding:0 0 3px">
+<span style="color:#404040;letter-spacing:.11em;white-space:nowrap">TERMS</span><span style="flex:1"></span>
+</div>
+<div style="box-shadow:var(--s);background:#fff;padding:5px 7px"><div style="line-height:1.55">Minimum 1 day · Delivery $150.00 · Pickup $150.00</div></div>
+</div>
+<div style="flex:none">
+<div style="display:flex;align-items:baseline;gap:8px;padding:0 0 3px">
+<span style="color:#404040;letter-spacing:.11em;white-space:nowrap">TYPE FIT</span><span style="flex:1"></span>
+</div>
+<div style="box-shadow:var(--s);background:#fff;padding:5px 7px"><div style="line-height:1.55;color:#404040">A boom lift is cargo, not a carrier — no capacity, tare or deck.</div></div>
+</div>
+<div style="flex:none">
+<div style="display:flex;align-items:baseline;gap:8px;padding:0 0 3px">
+<span style="color:#404040;letter-spacing:.11em;white-space:nowrap">SUPPLIER</span><span style="flex:1"></span>
+</div>
+<div style="box-shadow:var(--s);background:#fff;padding:5px 7px"><div style="line-height:1.6">United Rentals</div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;line-height:1.6"><span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap">(602) 555-0181</span><span style="color:#808080;white-space:nowrap">· account</span><span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;white-space:nowrap">BPC-4471</span></div></div>
+</div>
+<div style="flex:none">
+<div style="display:flex;align-items:baseline;gap:8px;padding:0 0 3px">
+<span style="color:#404040;letter-spacing:.11em;white-space:nowrap">RENTED ON</span><span style="flex:1"></span>
+</div>
+<div style="box-shadow:var(--s);background:#fff;padding:5px 7px"><div style="line-height:1.55">6 versions · last 26-09A0, 22 Aug 2026</div></div>
+</div>
+</div>
+<div style="display:flex;gap:5px;flex:none"><span style="flex:1;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;padding:0 6px;overflow:hidden" style-active="box-shadow:var(--s)">Edit offering…</span><span style="flex:1;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;padding:0 6px;overflow:hidden" style-active="box-shadow:var(--s)">Update card to $520.00</span></div>
+</div>
+</div>
+<div style="display:flex;gap:3px;flex:none;padding-top:4px;margin:0 1px">
+<div style="box-shadow:var(--t);padding:3px 8px;flex:none;white-space:nowrap">6 offerings · 3 suppliers · 5 categories</div>
+<div style="box-shadow:var(--t);padding:3px 8px;flex:1;min-width:0;overflow:hidden;display:flex;align-items:center;gap:12px">
+<span style="color:#808080;white-space:nowrap">Maintenance</span><span style="display:flex;align-items:center;gap:5px;cursor:default;white-space:nowrap;color:#a00">⚠ Card differs from last paid<span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;">2</span></span><span style="display:flex;align-items:center;gap:5px;cursor:default;white-space:nowrap;color:#a00">⚠ Card unconfirmed 12 months<span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;">1</span></span><span style="display:flex;align-items:center;gap:5px;cursor:default;white-space:nowrap;color:#808080">Never rented<span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;">1</span></span>
+</div>
+<div style="box-shadow:var(--t);padding:3px 8px;width:188px;flex:none;white-space:nowrap">Equipment · 3 owned · 6 rented</div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240,&quot;height&quot;:700}}">
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

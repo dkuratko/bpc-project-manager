@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><style>
+body{margin:0;background:#008080;font:10px Tahoma,Verdana,Geneva,sans-serif;letter-spacing:.05em;color:#000;
+--r:inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+--s:inset 1px 1px #808080, inset -1px -1px #fff, inset 2px 2px #0a0a0a, inset -2px -2px #dfdfdf;
+--t:inset 1px 1px #808080, inset -1px -1px #fff}
+*{box-sizing:border-box}
+a{color:#000080}
+a:hover{color:#1084d0}
+</style></helmet>
+<div style="min-height:100vh;background:rgba(0,0,0,.42);display:flex;align-items:flex-start;justify-content:center;padding:44px 24px;font:10px Tahoma,Verdana,Geneva,sans-serif;letter-spacing:.05em">
+<div style="width:600px;flex:none;background:#c0c0c0;box-shadow:var(--r), 4px 4px 14px rgba(0,0,0,.45);padding:3px">
+
+<div style="height:20px;background:linear-gradient(90deg,#000080,#1084d0);display:flex;align-items:center;padding:0 3px 0 4px;gap:6px">
+<span style="color:#fff;font-weight:bold;flex:1;white-space:nowrap">New Project</span>
+<div style="width:16px;height:14px;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;cursor:default;position:relative"><span style="position:absolute;width:9px;height:1px;background:#000;transform:rotate(45deg)"></span><span style="position:absolute;width:9px;height:1px;background:#000;transform:rotate(-45deg)"></span></div>
+</div>
+
+<div style="padding:10px 9px 9px;display:flex;flex-direction:column;gap:10px">
+
+<div style="box-shadow:var(--t);padding:13px 9px 8px;position:relative">
+<div style="position:absolute;top:-6px;left:9px;background:#c0c0c0;padding:0 4px;font-weight:bold;white-space:nowrap">Identify it</div>
+<div style="display:grid;grid-template-columns:100px 1fr;gap:4px 8px;align-items:center">
+
+<span style="white-space:nowrap">Project number</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="background:#c0c0c0;box-shadow:var(--t);color:#404040;padding:2px 7px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;display:inline-block">26-15</span><span style="color:#404040;white-space:nowrap">assigned on save</span></span>
+<span></span><span style="color:#404040;line-height:1.4">Numbers run <span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;">26-1</span> upward and reset every January. <b>The number is assigned when you save, not now</b> — two people with this dialog open would otherwise both be shown <span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;">26-15</span>.</span>
+<span style="white-space:nowrap">Title</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;width:100%;white-space:nowrap;overflow:hidden">San Tan Shade Installation<span style="display:block;width:1px;height:12px;background:#000;margin-left:1px"></span></span><span style="color:#a00;flex:none">★</span></span>
+<span style="white-space:nowrap">Estimator</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="box-shadow:var(--s);background:#fff;padding:0 0 0 4px;height:19px;display:inline-flex;align-items:center;gap:4px;flex:1;min-width:0;"><span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">DK — Damian Kuratko</span><span style="width:17px;height:17px;flex:none;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;margin:1px"><span style="display:block;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid #000"></span></span></span><span style="width:9px;flex:none"></span></span>
+<span style="white-space:nowrap;color:#808080">Created</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="background:#c0c0c0;box-shadow:var(--t);color:#404040;padding:2px 7px;font:10px 'Lucida Console',monospace;letter-spacing:.04em;display:inline-block">09 Sep 2026</span><span style="color:#808080;white-space:nowrap">today · not editable</span></span>
+</div>
+</div>
+
+<div style="box-shadow:var(--t);padding:13px 9px 8px;position:relative">
+<div style="position:absolute;top:-6px;left:9px;background:#c0c0c0;padding:0 4px;font-weight:bold;white-space:nowrap">Customer</div>
+<div style="display:grid;grid-template-columns:100px 1fr;gap:4px 8px;align-items:center">
+
+<span style="white-space:nowrap">Customer</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="box-shadow:var(--s);background:#fff;padding:0 0 0 4px;height:19px;display:inline-flex;align-items:center;gap:4px;flex:1;min-width:0;"><span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Exerplay, Inc.</span><span style="width:17px;height:17px;flex:none;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;margin:1px"><span style="display:block;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid #000"></span></span></span><span style="width:19px;height:19px;flex:none;background:#c0c0c0;box-shadow:var(--r);display:inline-flex;align-items:center;justify-content:center;cursor:default;" style-active="box-shadow:var(--s)">＋</span><span style="color:#a00;flex:none">★</span></span>
+<span style="white-space:nowrap">Contacts</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="box-shadow:var(--s);background:#fff;padding:0 0 0 4px;height:19px;display:inline-flex;align-items:center;gap:4px;flex:1;min-width:0;"><span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Grant Smith</span><span style="width:17px;height:17px;flex:none;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;margin:1px"><span style="display:block;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid #000"></span></span></span><span style="width:54px;flex:none;color:#404040;white-space:nowrap">primary</span><span style="width:19px;height:19px;flex:none;background:#c0c0c0;box-shadow:var(--r);display:inline-flex;align-items:center;justify-content:center;cursor:default;" style-active="box-shadow:var(--s)">＋</span><span style="width:19px;height:19px;flex:none;background:#c0c0c0;box-shadow:var(--r);display:inline-flex;align-items:center;justify-content:center;cursor:default;color:#808080;" style-active="box-shadow:var(--s)">✕</span><span style="width:9px;flex:none"></span></span>
+<span></span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="box-shadow:var(--s);background:#fff;padding:0 0 0 4px;height:19px;display:inline-flex;align-items:center;gap:4px;flex:1;min-width:0;"><span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Maria Villanueva</span><span style="width:17px;height:17px;flex:none;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;margin:1px"><span style="display:block;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid #000"></span></span></span><span style="width:54px;flex:none;color:#404040;white-space:nowrap">site</span><span style="width:19px;height:19px;flex:none;background:#c0c0c0;box-shadow:var(--r);display:inline-flex;align-items:center;justify-content:center;cursor:default;" style-active="box-shadow:var(--s)">＋</span><span style="width:19px;height:19px;flex:none;background:#c0c0c0;box-shadow:var(--r);display:inline-flex;align-items:center;justify-content:center;cursor:default;color:#808080;" style-active="box-shadow:var(--s)">✕</span><span style="width:9px;flex:none"></span></span>
+<span></span><span style="color:#404040;cursor:default;white-space:nowrap" style-hover="color:#000080">＋ Add another contact</span>
+<span></span><span style="color:#404040;line-height:1.4">A project has several contacts, each with a role — the person who asked, the person on site, whoever pays. Roles are an open list, not a fixed set.</span>
+</div>
+</div>
+
+<div style="box-shadow:var(--t);padding:13px 9px 8px;position:relative">
+<div style="position:absolute;top:-6px;left:9px;background:#c0c0c0;padding:0 4px;font-weight:bold;white-space:nowrap">Site</div>
+<div style="display:grid;grid-template-columns:100px 1fr;gap:4px 8px;align-items:center">
+
+<span style="white-space:nowrap">Address</span><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;width:100%;white-space:nowrap;overflow:hidden">1625 W Ryan Rd</span>
+<span style="white-space:nowrap">City</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;width:140px;white-space:nowrap;overflow:hidden">Chandler</span><span style="color:#404040;white-space:nowrap;padding-left:8px">State</span><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;width:40px;white-space:nowrap;overflow:hidden">AZ</span><span style="color:#404040;white-space:nowrap;padding-left:8px">Zip</span><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;width:70px;white-space:nowrap;overflow:hidden">85286</span></span>
+<span style="white-space:nowrap">Distance</span><span style="display:flex;align-items:center;gap:6px;min-width:0"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;width:54px;white-space:nowrap;overflow:hidden">18</span><span style="color:#404040;white-space:nowrap">mi</span><span style="color:#404040;white-space:nowrap;padding-left:22px">Drive time</span><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;width:50px;white-space:nowrap;overflow:hidden">24</span><span style="color:#404040;white-space:nowrap">min each way</span></span>
+<span></span><span style="color:#404040;line-height:1.4">Both price mobilization — distance drives the vehicle, drive time drives the crew. Neither is required now.</span>
+</div>
+</div>
+
+<div style="box-shadow:var(--t);padding:13px 9px 8px;position:relative">
+<div style="position:absolute;top:-6px;left:9px;background:#c0c0c0;padding:0 4px;font-weight:bold;white-space:nowrap">Notes</div>
+<div style="display:grid;grid-template-columns:100px 1fr;gap:4px 8px;align-items:center">
+<span></span><span style="box-shadow:var(--s);background:#fff;height:36px;display:block"></span>
+</div>
+</div>
+
+<div style="background:#ffffe1;box-shadow:inset 0 0 0 1px #000;padding:6px 8px;line-height:1.45">
+Only <b>Title</b> and <b>Customer</b> are required. Everything else can be added later — this dialog reopens as <b>Project properties</b>.<br>
+<b>Native material and site conditions are not here.</b> They are learned from the site, not from the request, and live on the cost breakdown's <i>Site conditions</i> box.
+</div>
+
+<div style="background:#ffffc0;box-shadow:inset 0 0 0 1px #808080;padding:6px 8px;line-height:1.45;display:flex;gap:8px">
+<span style="flex:none">📋</span>
+<span><b>Creates project <span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;">26-15</span> and version <span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;">A0</span>, and opens A0's cost breakdown.</b><br>The project number is taken at that moment. <span style="font:10px 'Lucida Console',monospace;letter-spacing:.04em;">A0</span> starts empty — there is no earlier version to copy on a new project.</span>
+</div>
+
+<div style="display:flex;justify-content:flex-end;gap:7px;padding-top:1px">
+<span style="width:110px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;" style-active="box-shadow:var(--s)">Create</span><span style="width:170px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;outline:1px solid #000;outline-offset:1px;font-weight:bold;" style-active="box-shadow:var(--s)">Create &amp; start version A0</span><span style="width:78px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;" style-active="box-shadow:var(--s)">Cancel</span>
+</div>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:720,&quot;height&quot;:760}}">
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

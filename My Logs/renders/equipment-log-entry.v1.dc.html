@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><style>
+body{margin:0;background:#008080;font:10px Tahoma,Verdana,Geneva,sans-serif;letter-spacing:.05em;color:#000;
+--r:inset -1px -1px #0a0a0a, inset 1px 1px #fff, inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+--s:inset 1px 1px #808080, inset -1px -1px #fff, inset 2px 2px #0a0a0a, inset -2px -2px #dfdfdf;
+--t:inset 1px 1px #808080, inset -1px -1px #fff}
+*{box-sizing:border-box}
+a{color:#000080}
+a:hover{color:#1084d0}
+</style></helmet>
+<div style="min-height:100vh;background:rgba(0,0,0,.42);display:flex;align-items:flex-start;justify-content:flex-start;gap:18px;padding:34px 24px;overflow-x:auto;font:10px Tahoma,Verdana,Geneva,sans-serif;letter-spacing:.05em">
+
+<div style="flex:none">
+<div style="color:#fff;font-weight:bold;font-size:11px;letter-spacing:.06em;padding:0 2px 7px;white-space:nowrap">ADD — blank, from ＋ Add an entry</div>
+<div style="width:600px;flex:none;background:#c0c0c0;box-shadow:var(--r), 4px 4px 14px rgba(0,0,0,.45);padding:3px">
+<div style="height:20px;background:linear-gradient(90deg,#000080,#1084d0);display:flex;align-items:center;padding:0 3px 0 4px;gap:6px;flex:none">
+<span style="color:#fff;font-weight:bold;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Add log entry — Ford F-450</span>
+<div style="width:16px;height:14px;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;cursor:default;position:relative;flex:none"><span style="position:absolute;width:9px;height:1px;background:#000;transform:rotate(45deg)"></span><span style="position:absolute;width:9px;height:1px;background:#000;transform:rotate(-45deg)"></span></div>
+</div>
+<div style="padding:10px 9px 9px;display:flex;flex-direction:column;gap:10px">
+<div style="box-shadow:var(--t);padding:13px 9px 9px;position:relative">
+<div style="position:absolute;top:-6px;left:9px;background:#c0c0c0;padding:0 4px;font-weight:bold;white-space:nowrap">When</div>
+<div style="display:grid;grid-template-columns:100px 1fr;gap:5px 8px;align-items:start">
+<span style="white-space:nowrap;padding-top:2px">Date</span><span style="display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;width:96px;flex:none;color:#a0a0a0;white-space:nowrap;overflow:hidden">dd mmm yyyy</span><span style="color:#000;flex:none">★</span></span>
+<span style="white-space:nowrap;padding-top:2px">Odometer</span><span style="display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;width:74px;flex:none;white-space:nowrap;overflow:hidden"></span><span style="white-space:nowrap">mi</span><span style="color:#808080;white-space:nowrap">— since the last entry, once you type it</span></span>
+<span style="white-space:nowrap;padding-top:2px">Kind</span><span style="display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap"><span style="box-shadow:var(--s);background:#fff;padding:0 0 0 4px;height:19px;display:inline-flex;align-items:center;gap:4px;width:190px;flex:none;"><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#a0a0a0;">— choose —</span><span style="width:17px;height:17px;flex:none;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;margin:1px"><span style="display:block;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid #000"></span></span></span><span style="color:#000;flex:none">★</span></span>
+<span></span><span style="color:#808080;white-space:nowrap">the note here follows your choice</span>
+</div>
+</div>
+<div style="box-shadow:var(--t);padding:13px 9px 9px;position:relative">
+<div style="position:absolute;top:-6px;left:9px;background:#c0c0c0;padding:0 4px;font-weight:bold;white-space:nowrap">Work</div>
+<div style="display:grid;grid-template-columns:100px 1fr;gap:5px 8px;align-items:start">
+<span style="white-space:nowrap;padding-top:2px">Work</span><span style="display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;width:100%;color:#a0a0a0;white-space:nowrap;overflow:hidden">what was done</span></span>
+<span style="white-space:nowrap;padding-top:2px">Notes</span><span style="box-shadow:var(--s);background:#fff;padding:3px 4px;height:36px;display:block;width:100%;color:#a0a0a0;line-height:1.45;overflow:hidden">optional</span>
+</div>
+</div>
+<div style="box-shadow:var(--t);padding:13px 9px 9px;position:relative">
+<div style="position:absolute;top:-6px;left:9px;background:#c0c0c0;padding:0 4px;font-weight:bold;white-space:nowrap">Cost</div>
+<div style="display:grid;grid-template-columns:100px 1fr;gap:5px 8px;align-items:start">
+<span style="white-space:nowrap;padding-top:2px">Vendor</span><span style="display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap"><span style="box-shadow:var(--s);background:#fff;padding:0 0 0 4px;height:19px;display:inline-flex;align-items:center;gap:4px;width:230px;flex:none;"><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#a0a0a0;">— choose —</span><span style="width:17px;height:17px;flex:none;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;margin:1px"><span style="display:block;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid #000"></span></span></span></span>
+<span style="white-space:nowrap;padding-top:2px">Invoice</span><span style="display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;width:130px;flex:none;white-space:nowrap;overflow:hidden"></span></span>
+<span style="white-space:nowrap;padding-top:2px">Cost</span><span style="display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;width:96px;flex:none;white-space:nowrap;overflow:hidden"></span></span>
+<span style="white-space:nowrap;padding-top:2px">Days down</span><span style="display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;width:44px;flex:none;white-space:nowrap;overflow:hidden"></span><span style="display:flex;align-items:center;gap:6px;cursor:default;flex:none"><span style="width:13px;height:13px;flex:none;box-shadow:var(--s);background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1"></span><span style="white-space:nowrap">unplanned</span></span></span>
+<span style="white-space:nowrap;padding-top:2px">Attachment</span><span style="display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;width:100%;white-space:nowrap;overflow:hidden"></span><span style="padding:0 9px;height:19px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center;flex:none" style-active="box-shadow:var(--s)">Browse…</span></span>
+</div>
+</div>
+<div style="background:#ffffe1;box-shadow:inset 0 0 0 1px #000;padding:6px 8px;line-height:1.5"><b>Days down are recorded, not priced.</b><br>The rate divides annual cost by annual MILES, so a week off the road neither raises nor lowers $/mi. This number is here to tell you which truck keeps stopping, not to feed a calculation.</div>
+<div style="display:flex;justify-content:flex-end;gap:7px;padding-top:1px"><span style="width:110px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;outline:1px solid #000;outline-offset:1px;font-weight:bold;" style-active="box-shadow:var(--s)">Add</span><span style="width:78px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;" style-active="box-shadow:var(--s)">Cancel</span></div>
+</div>
+</div>
+</div>
+
+<div style="flex:none">
+<div style="color:#fff;font-weight:bold;font-size:11px;letter-spacing:.06em;padding:0 2px 7px;white-space:nowrap">EDIT — the same dialog, double-clicked from the log</div>
+<div style="width:600px;flex:none;background:#c0c0c0;box-shadow:var(--r), 4px 4px 14px rgba(0,0,0,.45);padding:3px">
+<div style="height:20px;background:linear-gradient(90deg,#000080,#1084d0);display:flex;align-items:center;padding:0 3px 0 4px;gap:6px;flex:none">
+<span style="color:#fff;font-weight:bold;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Log entry — 02 Aug 2026</span>
+<div style="width:16px;height:14px;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;cursor:default;position:relative;flex:none"><span style="position:absolute;width:9px;height:1px;background:#000;transform:rotate(45deg)"></span><span style="position:absolute;width:9px;height:1px;background:#000;transform:rotate(-45deg)"></span></div>
+</div>
+<div style="padding:10px 9px 9px;display:flex;flex-direction:column;gap:10px">
+<div style="box-shadow:var(--t);padding:13px 9px 9px;position:relative">
+<div style="position:absolute;top:-6px;left:9px;background:#c0c0c0;padding:0 4px;font-weight:bold;white-space:nowrap">When</div>
+<div style="display:grid;grid-template-columns:100px 1fr;gap:5px 8px;align-items:start">
+<span style="white-space:nowrap;padding-top:2px">Date</span><span style="display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;width:96px;flex:none;white-space:nowrap;overflow:hidden">02 Aug 2026</span><span style="color:#000;flex:none">★</span></span>
+<span style="white-space:nowrap;padding-top:2px">Odometer</span><span style="display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;width:74px;flex:none;white-space:nowrap;overflow:hidden">38,940</span><span style="white-space:nowrap">mi</span><span style="color:#808080;white-space:nowrap">3,830 mi since the last entry</span></span>
+<span style="white-space:nowrap;padding-top:2px">Kind</span><span style="display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap"><span style="box-shadow:var(--s);background:#fff;padding:0 0 0 4px;height:19px;display:inline-flex;align-items:center;gap:4px;width:190px;flex:none;"><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">service</span><span style="width:17px;height:17px;flex:none;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;margin:1px"><span style="display:block;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid #000"></span></span></span><span style="color:#000;flex:none">★</span></span>
+<span></span><span style="color:#808080;white-space:nowrap">counts toward the rate's MAINTENANCE line</span>
+</div>
+</div>
+<div style="box-shadow:var(--t);padding:13px 9px 9px;position:relative">
+<div style="position:absolute;top:-6px;left:9px;background:#c0c0c0;padding:0 4px;font-weight:bold;white-space:nowrap">Work</div>
+<div style="display:grid;grid-template-columns:100px 1fr;gap:5px 8px;align-items:start">
+<span style="white-space:nowrap;padding-top:2px">Work</span><span style="display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;width:100%;white-space:nowrap;overflow:hidden">Oil, filters, rotate tyres</span></span>
+<span style="white-space:nowrap;padding-top:2px">Notes</span><span style="box-shadow:var(--s);background:#fff;padding:3px 4px;height:36px;display:block;width:100%;line-height:1.45;overflow:hidden"></span>
+</div>
+</div>
+<div style="box-shadow:var(--t);padding:13px 9px 9px;position:relative">
+<div style="position:absolute;top:-6px;left:9px;background:#c0c0c0;padding:0 4px;font-weight:bold;white-space:nowrap">Cost</div>
+<div style="display:grid;grid-template-columns:100px 1fr;gap:5px 8px;align-items:start">
+<span style="white-space:nowrap;padding-top:2px">Vendor</span><span style="display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap"><span style="box-shadow:var(--s);background:#fff;padding:0 0 0 4px;height:19px;display:inline-flex;align-items:center;gap:4px;width:230px;flex:none;"><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Gilbert Fleet Service</span><span style="width:17px;height:17px;flex:none;background:#c0c0c0;box-shadow:var(--r);display:flex;align-items:center;justify-content:center;margin:1px"><span style="display:block;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid #000"></span></span></span></span>
+<span style="white-space:nowrap;padding-top:2px">Invoice</span><span style="display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;width:130px;flex:none;white-space:nowrap;overflow:hidden">GFS-40118</span></span>
+<span style="white-space:nowrap;padding-top:2px">Cost</span><span style="display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;width:96px;flex:none;white-space:nowrap;overflow:hidden">$184.00</span></span>
+<span style="white-space:nowrap;padding-top:2px">Days down</span><span style="display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;width:44px;flex:none;white-space:nowrap;overflow:hidden">1</span><span style="display:flex;align-items:center;gap:6px;cursor:default;flex:none"><span style="width:13px;height:13px;flex:none;box-shadow:var(--s);background:#fff;display:inline-flex;align-items:center;justify-content:center;font:10px 'Lucida Console',monospace;letter-spacing:.04em;line-height:1"></span><span style="white-space:nowrap">unplanned</span></span></span>
+<span style="white-space:nowrap;padding-top:2px">Attachment</span><span style="display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap"><span style="box-shadow:var(--s);background:#fff;padding:0 4px;height:19px;display:inline-flex;align-items:center;width:100%;white-space:nowrap;overflow:hidden">GFS-40118.pdf</span><span style="padding:0 9px;height:19px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center;flex:none" style-active="box-shadow:var(--s)">Browse…</span></span>
+</div>
+</div>
+<div style="display:flex;justify-content:flex-end;gap:7px;padding-top:1px"><span style="width:110px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;outline:1px solid #000;outline-offset:1px;font-weight:bold;" style-active="box-shadow:var(--s)">OK</span><span style="width:78px;height:23px;background:#c0c0c0;box-shadow:var(--r);cursor:default;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;" style-active="box-shadow:var(--s)">Cancel</span></div>
+</div>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:820}}">
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
