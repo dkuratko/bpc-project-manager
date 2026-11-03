@@ -75,6 +75,37 @@ trackers.v1              component-wizard.final
 
 ---
 
+## briefs/ — the 43 design documents
+
+Every brief each render was drawn from, plus the rules they all share.
+
+```
+01   the first process map — SUPERSEDED by 00-TREE.md, kept for the record
+03*  the cost breakdown, its four tabs and its revisions
+05*  the estimate editor, v1 through v12
+06   mobilization          07  project browser        08  status colours
+09   version view          10  main window template   11  date formatting
+12   new project           13  new option / version   14  list window template
+15   contacts              16  customer + contact dialogs
+17   the record dialogs    18  equipment              19  mobilization panel
+20   supplier              21  rental offering        22  unknowns and alarms
+23   new type              24  schedule               25  record shipment
+26   invoice               27  trackers
+```
+
+The ones worth reading on their own, whatever you are doing:
+
+- **`08-status-colours.md`** — the ramp is a progression, not severity. A red
+  row always means FINISHED, and a problem is never a tint.
+- **`22-unknowns-and-alarms.md`** — `[?]` means unknown and it matters, `—`
+  means not applicable, `0` means zero. Three different things.
+- **`11-date-formatting.md`** — every date carries its year.
+- **`03f-money-formatting.md`** — where `$` goes and how many decimals.
+- **`10-main-window-template.md`** and **`14-list-window-template.md`** — the
+  two shapes every screen in the application is built from.
+
+---
+
 ## What is NOT in here, and why
 
 `docs/design/reference/` holds the old mock-ups and two real estimate PDFs you
